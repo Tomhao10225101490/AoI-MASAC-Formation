@@ -213,7 +213,13 @@ def _print_summary(summary: dict) -> None:
         ("waypoint_fraction", "航路点完成比例"),
         ("nlos_fraction", "视线被建筑物挡住的比例"),
         ("min_clearance", "最近障碍间隙(米)"),
-        ("mean_belief_std", "平均预测标准差(米)"),
+        ("mean_belief_std", "平均槽位标准差(米)"),
+        ("los_mean_formation_error", "视距段编队误差(米)"),
+        ("nlos_mean_formation_error", "非视距段编队误差(米)"),
+        ("los_mean_aoi", "视距段平均AoI(步)"),
+        ("nlos_mean_aoi", "非视距段平均AoI(步)"),
+        ("los_mean_slot_std", "视距段槽位标准差(米)"),
+        ("nlos_mean_slot_std", "非视距段槽位标准差(米)"),
     ]
     print(f"共 {int(summary['n_episodes'])} 个回合（下面是平均值 ± 样本标准差）")
     for key, label in labels:
@@ -245,6 +251,12 @@ def _write_episodes(path: Path, rows: list[dict]) -> None:
         "nlos_fraction",
         "min_clearance",
         "mean_belief_std",
+        "los_mean_formation_error",
+        "nlos_mean_formation_error",
+        "los_mean_aoi",
+        "nlos_mean_aoi",
+        "los_mean_slot_std",
+        "nlos_mean_slot_std",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys, extrasaction="ignore")

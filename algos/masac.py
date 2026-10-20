@@ -3,7 +3,7 @@
 This one class trains four of the paper's methods. They share the update
 and differ only in what the environment writes into the actor observation:
 
-* ``belief_masac``      coasted leader state + AoI + position std
+* ``belief_masac``      coasted leader state + AoI + slot std
 * ``aoi_masac``         last leader measurement + AoI, no coast
 * ``vanilla_masac``     trained with a perfect link (see configs)
 * ``masac_hold``        stale leader state, AoI feature forced to 0

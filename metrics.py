@@ -34,6 +34,12 @@ EPISODE_METRIC_KEYS = (
     "nlos_fraction",
     "min_clearance",
     "mean_belief_std",
+    "los_mean_formation_error",
+    "nlos_mean_formation_error",
+    "los_mean_aoi",
+    "nlos_mean_aoi",
+    "los_mean_slot_std",
+    "nlos_mean_slot_std",
 )
 
 # Keys that become "<name>" and "<name>_std" after summarize_episodes.
@@ -55,11 +61,19 @@ SUMMARY_KEYS = (
     "nlos_fraction",
     "min_clearance",
     "mean_belief_std",
+    "los_mean_formation_error",
+    "nlos_mean_formation_error",
+    "los_mean_aoi",
+    "nlos_mean_aoi",
+    "los_mean_slot_std",
+    "nlos_mean_slot_std",
 )
 
 
-def _mean_std(values: Iterable[float]) -> tuple[float, float]:
+def _mean_std(values: Iterable[float], skip_nonfinite: bool = False) -> tuple[float, float]:
     arr = np.asarray(list(values), dtype=np.float64)
+    if skip_nonfinite:
+        arr = arr[np.isfinite(arr)]
     if arr.size == 0:
         return float("nan"), float("nan")
     mean = float(arr.mean())
@@ -140,11 +154,22 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         the footprint and above the roof. Traffic uses the 3D gap.
 
     mean_belief_std
-        Mean, over episodes, of that episode's average leader-position
-        standard deviation in meters. Inside an episode the average is over
-        followers and over steps, taken after the packet draw. The three
-        axes are averaged first. Hold and AoI-only observations still run
-        the filter, so this column is defined for every mode.
+        Mean, over episodes, of that episode's average *slot* standard
+        deviation in meters. Inside an episode the average is over followers
+        and over steps, taken after the packet draw. The three world axes of
+        the slot are averaged first. This is the uncertainty of the slot the
+        follower is being told to fly, including heading lever-arm, not the
+        leader-position standard deviation alone. Hold and AoI-only
+        observations still run the filter, so this column is defined for
+        every mode. The actor only *sees* it in ``obs_mode=belief``.
+
+    los_mean_* / nlos_mean_*
+        The same quantities restricted to follower-steps whose
+        leader–follower segment does, or does not, intersect a building.
+        An episode with no samples on one side stores NaN for that side.
+        The summary skips those NaNs, so an open-field episode does not
+        pull the NLOS average down to zero. ``n_episodes_with_nlos`` counts
+        how many episodes contributed to the NLOS columns.
     """
     if not rows:
         raise ValueError("summarize_episodes received no episodes")
@@ -170,15 +195,38 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "nlos_fraction": col("nlos_fraction"),
         "min_clearance": col("min_clearance"),
         "mean_belief_std": col("mean_belief_std"),
+        "los_mean_formation_error": col("los_mean_formation_error"),
+        "nlos_mean_formation_error": col("nlos_mean_formation_error"),
+        "los_mean_aoi": col("los_mean_aoi"),
+        "nlos_mean_aoi": col("nlos_mean_aoi"),
+        "los_mean_slot_std": col("los_mean_slot_std"),
+        "nlos_mean_slot_std": col("nlos_mean_slot_std"),
+    }
+    skip_nan = {
+        "los_mean_formation_error",
+        "nlos_mean_formation_error",
+        "los_mean_aoi",
+        "nlos_mean_aoi",
+        "los_mean_slot_std",
+        "nlos_mean_slot_std",
     }
     out: dict[str, float] = {"n_episodes": float(len(rows))}
+    nlos_values = mapping["nlos_mean_formation_error"]
+    out["n_episodes_with_nlos"] = float(sum(math.isfinite(v) for v in nlos_values))
     for key, values in mapping.items():
-        mean, std = _mean_std(values)
+        mean, std = _mean_std(values, skip_nonfinite=key in skip_nan)
         out[key] = mean
         out[key + "_std"] = std
-    # Guard against accidental NaNs from empty inputs. _mean_std only emits
-    # NaN when `rows` is empty, which we already rejected.
+    # A NaN outside the LOS/NLOS split means an empty or broken input.
+    # Those six columns stay NaN when every episode lacked that side
+    # (an open-field run has no NLOS samples). That is a reported fact,
+    # not a broken aggregate.
     for key, value in out.items():
         if isinstance(value, float) and math.isnan(value):
+            # `nlos_mean_slot_std` already ends in `_std`, so also accept
+            # the key itself, not only the name with one `_std` stripped.
+            base = key[:-4] if key.endswith("_std") else key
+            if key in skip_nan or base in skip_nan:
+                continue
             raise RuntimeError(f"metric {key} is NaN")
     return out

@@ -17,16 +17,23 @@ pushes only the horizontal ground speed.
 
 The leader state reaches each follower on a downlink. Success probability
 falls with 3D distance and drops again when the 3D segment intersects a
-building (the ray is below the roof). A lost packet keeps the previous
-measurement, runs one constant-velocity predict, and increments AoI. The
-proposed observation (``obs_mode="belief"``) shows that prediction, the AoI,
-and the position standard deviation. The reward still uses the true leader
-pose, so a stale slot and the true slot disagree.
+building (the ray is below the roof). A lost packet keeps the previous measurement, runs one constant-velocity
+predict, and increments AoI. The mean heading stays at the last packet.
+Heading variance still grows, because the follower does not know the yaw
+the leader applied during the outage. The proposed observation
+(``obs_mode="belief"``) shows the coasted slot, the AoI, and the standard
+deviation of that slot. The reward for being in formation still uses the
+true leader pose, so a stale slot and the true slot disagree. The follower's
+heading-shaping term uses only the heading that follower is allowed to see.
 
-Onboard sensing of obstacles and the nearest teammate is limited by
-``sensor_range`` and is not sent on the lossy link. The Kalman filter's
-non-line-of-sight test uses the static building map, which is treated as
-known city geometry, not as a packet.
+Onboard sensing of obstacles, and of the nearest *other follower*, is
+limited by ``sensor_range`` and is not sent on the lossy link. A follower
+never receives the leader's true position through that sensor. The leader
+does see the nearest follower. The Kalman filter's non-line-of-sight test
+uses the static building map, which is treated as known city geometry, not
+as a packet. The actor observation does not contain a predicted-blockage
+bit; that bit used to be visible to every baseline, which made the
+uncertainty ablation compare two policies that both saw the same event.
 
 Actions are outer-loop commands at ``dt``: normalized longitudinal
 acceleration, yaw rate, and vertical acceleration.
@@ -82,9 +89,14 @@ class ObsIndex:
     REF_COS = 12
     REF_VZ = 13
     AOI = 14
+    # Slot-position standard deviation, world axes, divided by std_scale.
+    # Written only for obs_mode="belief". Every other mode stores zeros,
+    # which is the uncertainty ablation.
     STD_X = 15
     STD_Y = 16
     STD_Z = 17
+    # Kept so the rest of the vector does not shift. Always written as 0.
+    # Predicted blockage used to live here and was visible to every baseline.
     PRED_NLOS = 18
     SLOT_X = 19
     SLOT_Y = 20
@@ -118,7 +130,8 @@ def global_state_dim(
     Per aircraft: x, y, z, v, sin, cos, vz.
     Then wind (2), waypoint fraction (1), each waypoint (x, y, z),
     each obstacle slot (x, y, z, vx, vy, vz, radius, height),
-    and each follower link (AoI, belief xyz, belief velocity, position std, blocked).
+    and each follower link (AoI, belief xyz, belief velocity, believed heading,
+    slot std, blocked).
     """
     return (
         7 * n_agents
@@ -126,7 +139,7 @@ def global_state_dim(
         + 1
         + 3 * max_waypoints
         + 8 * max_obstacles
-        + 11 * n_followers
+        + 12 * n_followers
     )
 
 
@@ -177,6 +190,9 @@ class EnvConfig:
     belief_q_vel: float = 1.0
     belief_meas_var_pos: float = 1.0
     belief_meas_var_vel: float = 0.25
+    # About 1.8 degrees. A fresh packet should not already swing the slot
+    # by a large fraction of formation_tol.
+    belief_meas_var_heading: float = 0.001
     belief_var_cap: float = 22500.0
     std_scale: float = 80.0
     sensor_range: float = 250.0
@@ -194,12 +210,16 @@ class EnvConfig:
     w_heading: float = 0.05
     w_formation: float = 0.02
     w_form_progress: float = 0.25
+    # Linear formation cost stops growing past this error. Combined with
+    # collision_penalty, a crash is more expensive than flying a full
+    # episode while sitting on this cap. See docs/MODEL.md section 9.
+    formation_error_cap: float = 80.0
     w_smooth: float = 0.02
     w_step: float = 0.01
     w_clearance: float = 0.5
     clearance_margin: float = 20.0
     formation_bonus: float = 0.15
-    collision_penalty: float = 30.0
+    collision_penalty: float = 250.0
     success_bonus: float = 40.0
     wp_bonus: float = 8.0
     oob_penalty: float = 1.0
@@ -253,6 +273,10 @@ class EnvConfig:
             raise ValueError("wind_max must be positive")
         if self.std_scale <= 0.0 or self.nlos_q_scale < 1.0:
             raise ValueError("std_scale must be positive and nlos_q_scale must be >= 1")
+        if self.formation_error_cap <= 0.0:
+            raise ValueError("formation_error_cap must be positive")
+        if self.belief_meas_var_heading < 0.0:
+            raise ValueError("belief_meas_var_heading must be non-negative")
 
 
 def env_config_from_dict(data: dict) -> EnvConfig:
@@ -462,6 +486,7 @@ class UAVFormationEnv:
         terminated = bool(success or collided)
         truncated = bool(timeout)
         self._accumulate(errors, in_formation)
+        self._accumulate_visibility(errors)
         self._prev_wp_dist = wp_dist_after
         self._prev_form_err = errors
 
@@ -519,8 +544,8 @@ class UAVFormationEnv:
                 )
             else:
                 parts.extend([0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-        for link in self.links:
-            std = link.belief.position_std()
+        for i, link in enumerate(self.links):
+            std = self._slot_std(i)
             m = link.belief.mean
             parts.extend(
                 [
@@ -531,12 +556,14 @@ class UAVFormationEnv:
                     m[3] / cfg.v_max,
                     m[4] / cfg.v_max,
                     m[5] / cfg.vz_max,
+                    float(m[6] / math.pi),
                     float(std[0] / cfg.std_scale),
                     float(std[1] / cfg.std_scale),
                     float(std[2] / cfg.std_scale),
                     # Geometric blockage is always counted in nlos_fraction.
                     # The critic bit follows the ablation: when use_blockage is
-                    # off, the link is not treated as blocked.
+                    # off, the link is not treated as blocked. Actors do not
+                    # receive this bit.
                     float(link.blocked if self.ep_use_blockage else 0.0),
                 ]
             )
@@ -696,6 +723,7 @@ class UAVFormationEnv:
         return LeaderBelief(
             meas_var_pos=cfg.belief_meas_var_pos,
             meas_var_vel=cfg.belief_meas_var_vel,
+            meas_var_heading=cfg.belief_meas_var_heading,
             q_pos=cfg.belief_q_pos,
             q_vel=cfg.belief_q_vel,
             var_cap=cfg.belief_var_cap,
@@ -715,6 +743,7 @@ class UAVFormationEnv:
             leader.v * math.cos(leader.heading),
             leader.v * math.sin(leader.heading),
             leader.vz,
+            leader.heading,
         )
 
     def reset_belief_from_stored_measurement(self, follower_index: int) -> None:
@@ -727,6 +756,7 @@ class UAVFormationEnv:
             link.meas_v * math.cos(link.meas_heading),
             link.meas_v * math.sin(link.meas_heading),
             link.meas_vz,
+            link.meas_heading,
         )
 
     def _deliver_initial_leader_state(self) -> None:
@@ -906,7 +936,7 @@ class UAVFormationEnv:
                 link.aoi = int(min(link.aoi + 1, self.cfg.aoi_cap))
                 self._outage_streak[i] += 1
                 ok[i] = 0.0
-            std = link.belief.position_std()
+            std = self._slot_std(i)
             self._belief_std_sum += float(np.mean(std))
             self._aoi_sum += link.aoi
             self._aoi_max = max(self._aoi_max, link.aoi)
@@ -914,11 +944,24 @@ class UAVFormationEnv:
         self._packets_attempted += self.n_followers
         return ok
 
+    def _heading_process_variance(self) -> float:
+        """Variance of one coast step of heading when yaw is unknown.
+
+        Yaw rate is treated as uniform on [-max_yaw_rate, max_yaw_rate], so
+        the variance of the rate is max_yaw_rate^2 / 3 and one step of
+        heading moves by that times dt^2. This is applied on every lost
+        packet, not only behind a building: an outage can hide a turn in
+        open air too. NLOS multiplies it further.
+        """
+        cfg = self.cfg
+        return (cfg.max_yaw_rate * cfg.dt) ** 2 / 3.0
+
     def _predict_belief(self, link: _Link, follower: _UAV) -> None:
         """One coast step. NLOS against the predicted position inflates Q."""
         cfg = self.cfg
         # Mean first, so the blockage test sees where the coast lands.
-        link.belief.predict(cfg.dt, self.wind_obs_x, self.wind_obs_y, q_scale=0.0)
+        # The heading mean does not move.
+        link.belief.drift(cfg.dt, self.wind_obs_x, self.wind_obs_y)
         predicted_blocked = self._radio_blocked(
             link.belief.mean[0],
             link.belief.mean[1],
@@ -929,10 +972,12 @@ class UAVFormationEnv:
         )
         link.pred_blocked = int(self.ep_use_blockage and predicted_blocked)
         q_scale = cfg.nlos_q_scale if link.pred_blocked else 1.0
-        # predict() already moved the mean and added 0*Q. Add the noise now.
-        link.belief.P = link.belief.P + q_scale * link.belief.Q
-        link.belief.P = 0.5 * (link.belief.P + link.belief.P.T)
-        np.clip(link.belief.P, -cfg.belief_var_cap, cfg.belief_var_cap, out=link.belief.P)
+        link.belief.add_process_noise(q_scale, self._heading_process_variance())
+
+    def _slot_std(self, follower_index: int) -> np.ndarray:
+        """World-frame standard deviation of that follower's commanded slot."""
+        offset = self._offset_xyz(follower_index)
+        return self.links[follower_index].belief.slot_std(offset[:2])
 
     def _reference_pose(self, follower_index: int) -> np.ndarray:
         link = self.links[follower_index]
@@ -943,9 +988,11 @@ class UAVFormationEnv:
                 dtype=np.float64,
             )
         if self.ep_obs_mode in ("belief", "belief_point", "extrapolate"):
-            x, y, z, vx, vy, vz = (float(v) for v in link.belief.mean)
+            mean = link.belief.mean
+            x, y, z, vx, vy, vz = (float(v) for v in mean[:6])
             speed = math.hypot(vx, vy)
-            return np.array([x, y, z, speed, link.meas_heading, vz], dtype=np.float64)
+            # Mean heading is the last packet. It is not the true heading.
+            return np.array([x, y, z, speed, float(mean[6]), vz], dtype=np.float64)
         return np.array(
             [
                 link.meas_x,
@@ -990,12 +1037,13 @@ class UAVFormationEnv:
                 link = self.links[i - 1]
                 show_aoi = self.ep_obs_mode in ("aoi", "belief", "belief_point") and self.ep_use_aoi
                 aoi_norm = (link.aoi / cfg.aoi_cap) if show_aoi else 0.0
-                raw_std = link.belief.position_std()
                 if self.ep_obs_mode == "belief":
+                    raw_std = self._slot_std(i - 1)
                     std = tuple(float(s / cfg.std_scale) for s in raw_std)
                 else:
                     std = (0.0, 0.0, 0.0)
-                pred_nlos = float(link.pred_blocked) if self.ep_use_blockage else 0.0
+                # Always zero. See ObsIndex.PRED_NLOS.
+                pred_nlos = 0.0
                 slot = self._offset_xyz(i - 1)
                 des = self._slot_from((ref_x, ref_y, ref_z), ref_h, slot)
                 des_x, des_y, des_z = float(des[0]), float(des[1]), float(des[2])
@@ -1041,11 +1089,18 @@ class UAVFormationEnv:
         for j, other in enumerate(self.uavs):
             if j == index:
                 continue
+            # Followers learn the leader through the downlink only. Copying
+            # the leader's true position into the nearest-teammate slot made
+            # packet loss irrelevant for any follower whose nearest aircraft
+            # was the leader, which is the front row of the wedge.
+            if index != 0 and j == 0:
+                continue
             d = self._uav_distance(origin, other)
             if d < best_d:
                 best_d = d
                 best = other
-        assert best is not None
+        if best is None:
+            return
         if best_d <= cfg.sensor_range:
             obs[ObsIndex.TEAMMATE_REL_X] = (best.x - origin.x) / cfg.map_width
             obs[ObsIndex.TEAMMATE_REL_Y] = (best.y - origin.y) / cfg.map_height
@@ -1133,11 +1188,17 @@ class UAVFormationEnv:
         )
         for i in range(self.n_followers):
             smooth = float(np.sum(np.square(actions[i + 1])))
-            align = math.cos(wrap_angle(leader.heading - self.uavs[i + 1].heading))
+            # Match the heading this follower is allowed to know. The true
+            # heading still enters the formation error below, so a stale
+            # heading is paid for once, as slot error, not as a second
+            # privileged heading bonus.
+            known_heading = float(self._reference_pose(i)[4])
+            align = math.cos(wrap_angle(known_heading - self.uavs[i + 1].heading))
             bonus = cfg.formation_bonus if errors[i] <= cfg.formation_tol else 0.0
+            held_error = min(float(errors[i]), cfg.formation_error_cap)
             rewards[i + 1] = (
                 cfg.w_form_progress * (self._prev_form_err[i] - errors[i])
-                - cfg.w_formation * errors[i]
+                - cfg.w_formation * held_error
                 + cfg.w_heading * align
                 + bonus
                 - cfg.w_smooth * smooth
@@ -1168,6 +1229,14 @@ class UAVFormationEnv:
         self._packets_attempted = 0
         self._nlos_count = 0
         self._belief_std_sum = 0.0
+        self._nlos_err_sum = 0.0
+        self._los_err_sum = 0.0
+        self._nlos_aoi_sum = 0.0
+        self._los_aoi_sum = 0.0
+        self._nlos_std_sum = 0.0
+        self._los_std_sum = 0.0
+        self._nlos_link_steps = 0
+        self._los_link_steps = 0
         self._outage_streak = np.zeros(self.n_followers, dtype=np.int32)
         self._outage_lengths: list[int] = []
         self._stat_steps = 0
@@ -1178,6 +1247,33 @@ class UAVFormationEnv:
         self._form_err_sum += float(errors.mean())
         if in_formation:
             self._form_keep_steps += 1
+
+    def _accumulate_visibility(self, errors: np.ndarray) -> None:
+        """Split formation error, AoI, and slot std by geometric blockage.
+
+        One sample is one follower on one step. A step can contribute to
+        both sides when only some followers are behind a roof. Episodes
+        with no samples on a side report NaN for that side so a later
+        average does not treat "never blocked" as zero error.
+        """
+        for i, link in enumerate(self.links):
+            slot_std = float(np.mean(self._slot_std(i)))
+            if link.blocked:
+                self._nlos_err_sum += float(errors[i])
+                self._nlos_aoi_sum += float(link.aoi)
+                self._nlos_std_sum += slot_std
+                self._nlos_link_steps += 1
+            else:
+                self._los_err_sum += float(errors[i])
+                self._los_aoi_sum += float(link.aoi)
+                self._los_std_sum += slot_std
+                self._los_link_steps += 1
+
+    @staticmethod
+    def _mean_or_nan(total: float, count: int) -> float:
+        if count <= 0:
+            return float("nan")
+        return float(total) / float(count)
 
     def _episode_dict(
         self,
@@ -1214,11 +1310,21 @@ class UAVFormationEnv:
                 self._nlos_count / self._packets_attempted if self._packets_attempted else 0.0
             ),
             "min_clearance": float(clearance),
+            # Slot standard deviation in meters, not leader-position std.
+            # The name is kept so existing CSV readers still find the column.
             "mean_belief_std": (
                 self._belief_std_sum / (steps * self.n_followers)
                 if self._packets_attempted
                 else 0.0
             ),
+            "los_mean_formation_error": self._mean_or_nan(self._los_err_sum, self._los_link_steps),
+            "nlos_mean_formation_error": self._mean_or_nan(
+                self._nlos_err_sum, self._nlos_link_steps
+            ),
+            "los_mean_aoi": self._mean_or_nan(self._los_aoi_sum, self._los_link_steps),
+            "nlos_mean_aoi": self._mean_or_nan(self._nlos_aoi_sum, self._nlos_link_steps),
+            "los_mean_slot_std": self._mean_or_nan(self._los_std_sum, self._los_link_steps),
+            "nlos_mean_slot_std": self._mean_or_nan(self._nlos_std_sum, self._nlos_link_steps),
             "steps": int(self._step_count),
             "p0": float(self.ep_p0),
         }

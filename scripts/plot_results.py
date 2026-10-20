@@ -134,6 +134,41 @@ def plot_sweep(csv_path: Path, out: Path) -> None:
     _save(fig, out, "loss_rate_curves")
 
 
+def plot_geometry(csv_path: Path, out: Path) -> None:
+    """Formation error on the distance x blockage channel, split by blockage."""
+    rows = _read_csv(csv_path)
+    if not rows:
+        raise SystemExit(f"no rows in {csv_path}")
+    p0 = _column(rows, "p0")
+    fig, axes = plt.subplots(1, 2, figsize=(10, 4.2))
+    for ax, key, title, ylabel in (
+        (
+            axes[0],
+            "los_mean_formation_error",
+            "Line of sight",
+            "Formation error (m)",
+        ),
+        (
+            axes[1],
+            "nlos_mean_formation_error",
+            "Behind a roof",
+            "Formation error (m)",
+        ),
+    ):
+        mean = _column(rows, key)
+        std_key = key + "_std"
+        if std_key in rows[0] and rows[0][std_key] not in ("", "nan"):
+            std = _column(rows, std_key)
+            ax.errorbar(p0, mean, yerr=std, marker="o", color="#1f4e79", capsize=3)
+        else:
+            ax.plot(p0, mean, marker="o", color="#1f4e79")
+        ax.set_title(title)
+        ax.set_xlabel("p0")
+        ax.set_ylabel(ylabel)
+    fig.suptitle("Distance x blockage channel", fontsize=14)
+    _save(fig, out, "geometry_formation_error")
+
+
 def plot_trajectory(npz_path: Path, out: Path) -> None:
     data = np.load(npz_path)
     uav = data["uav_xy"]  # (T, N, 2)
@@ -191,6 +226,10 @@ def main(argv: list[str] | None = None) -> None:
     sweep.add_argument("--csv", required=True)
     sweep.add_argument("--out", required=True)
 
+    geometry = sub.add_parser("geometry")
+    geometry.add_argument("--csv", required=True)
+    geometry.add_argument("--out", required=True)
+
     traj = sub.add_parser("trajectory")
     traj.add_argument("--npz", required=True)
     traj.add_argument("--out", required=True)
@@ -201,6 +240,8 @@ def main(argv: list[str] | None = None) -> None:
         plot_training(Path(args.csv), Path(args.out), args.window)
     elif args.command == "sweep":
         plot_sweep(Path(args.csv), Path(args.out))
+    elif args.command == "geometry":
+        plot_geometry(Path(args.csv), Path(args.out))
     else:
         plot_trajectory(Path(args.npz), Path(args.out))
 
