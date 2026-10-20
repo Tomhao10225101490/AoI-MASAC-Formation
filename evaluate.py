@@ -220,6 +220,8 @@ def _print_summary(summary: dict) -> None:
         ("nlos_mean_aoi", "非视距段平均AoI(步)"),
         ("los_mean_slot_std", "视距段槽位标准差(米)"),
         ("nlos_mean_slot_std", "非视距段槽位标准差(米)"),
+        ("los_mean_alt_error", "视距段高度误差(米)"),
+        ("nlos_mean_alt_error", "非视距段高度误差(米)"),
     ]
     print(f"共 {int(summary['n_episodes'])} 个回合（下面是平均值 ± 样本标准差）")
     for key, label in labels:
@@ -257,6 +259,8 @@ def _write_episodes(path: Path, rows: list[dict]) -> None:
         "nlos_mean_aoi",
         "los_mean_slot_std",
         "nlos_mean_slot_std",
+        "los_mean_alt_error",
+        "nlos_mean_alt_error",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys, extrasaction="ignore")

@@ -49,6 +49,7 @@
 | `nlos_mean_formation_error` | 几何非视距的跟随者-步上的真实槽位误差（米）。没进楼后的回合是 NaN，不会被当成 0 | 丢掉 NaN 后对回合平均 |
 | `los_mean_aoi` / `nlos_mean_aoi` | 同一分割下、抽完包之后的 AoI | 丢掉 NaN 后对回合平均 |
 | `los_mean_slot_std` / `nlos_mean_slot_std` | 同一分割下的槽位标准差（米） | 丢掉 NaN 后对回合平均 |
+| `los_mean_alt_error` / `nlos_mean_alt_error` | 同一分割下，跟随者到真实平槽位的垂直距离绝对值（米）。这是爬高付出的高度。视距段也很大，说明它离开了编队，不是在楼后买测量 | 丢掉 NaN 后对回合平均 |
 
 编队保持率不是“平均每架飞机有多接近”，而是“这一步是不是**全队**都在槽位里”。失败的回合也算进去，不会只在成功回合上报一个好看的数。
 
@@ -61,6 +62,8 @@
 
 ## 丢包率扫描图的横轴
 
-主图是 `scripts/sweep_geometry.py`。信道保持距离乘遮挡，横轴是 `p0`。表里要同时看 `los_mean_formation_error` 和 `nlos_mean_formation_error`。方法如果有用，差别应该出现在非视距列，而不是被全程平均抹平。
+主图是 `scripts/sweep_geometry.py`。信道保持距离乘遮挡，横轴是 `p0`。表里要同时看视距和非视距的编队误差，以及 `los_mean_alt_error` 和 `nlos_mean_alt_error`。方法如果有用，高度代价的差别出现在非视距列，视距列保持小。全程平均会把这件事抹平。
+
+动机图不经过策略：`scripts/motivate_slot_std.py` 把默认信道和滤波器跑出来，说明 40 m 视距平均只丢 0.29 个包，屋顶挡住则丢 5.43 个，连丢 6 步后槽位标准差的最大轴到 11 m（楼后再放大过程噪声则到 22 m），领队位置标准差只有约 2 m。这张图可以写进论文，但必须标明没有训练。
 
 `scripts/sweep_packet_loss.py` 把信道临时改成与距离无关的独立丢包，名义丢包率 `loss_rate = 1 - p0`。图上的横轴是这个名义值。`packet_success_rate` 是仿真里真正收到的比例，应当接近 `1 - loss_rate`，可以用来检查随机数没有画错。这是压力测试。它和训练时用的距离相关信道不是同一个分布。`scripts/run_key_experiment.sh` 先跑几何扫描，再跑这一条。

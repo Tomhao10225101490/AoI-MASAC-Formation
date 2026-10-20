@@ -8,6 +8,7 @@ Examples
     python scripts/plot_results.py training --csv runs/<run>/metrics.csv --out figs
     python scripts/plot_results.py sweep --csv results/sweep/sweep.csv --out figs
     python scripts/plot_results.py trajectory --npz results/traj.npz --out figs
+    python scripts/plot_results.py motivation --csv results/motivation/slot_std_vs_lost_steps.csv --out figs
 """
 
 from __future__ import annotations
@@ -167,6 +168,59 @@ def plot_geometry(csv_path: Path, out: Path) -> None:
         ax.set_ylabel(ylabel)
     fig.suptitle("Distance x blockage channel", fontsize=14)
     _save(fig, out, "geometry_formation_error")
+    if "los_mean_alt_error" in rows[0]:
+        fig, axes = plt.subplots(1, 2, figsize=(9.2, 4.0), sharex=True)
+        for ax, key, title in (
+            (axes[0], "los_mean_alt_error", "Open line of sight"),
+            (axes[1], "nlos_mean_alt_error", "Behind a roof"),
+        ):
+            ax.plot(p0, _column(rows, key), marker="o", color="#b85c38")
+            ax.set_title(title)
+            ax.set_xlabel("p0")
+            ax.set_ylabel("Altitude error (m)")
+        fig.suptitle("Altitude paid, split by the roof", fontsize=14)
+        _save(fig, out, "geometry_altitude_error")
+
+
+def plot_motivation(csv_path: Path, out: Path) -> None:
+    """Slot doubt grows on the lever arm. Position doubt does not tell that story."""
+    rows = _read_csv(csv_path)
+    fig, ax = plt.subplots(figsize=(6.4, 4.2))
+    for regime, label, color, column in (
+        ("open", "Slot, open air", "#1f4e79", "slot_std_max_m"),
+        ("nlos_q", "Slot, roof inflates Q", "#b85c38", "slot_std_max_m"),
+        ("open", "Leader position, open air", "#7f8c8d", "position_std_mean_m"),
+    ):
+        chosen = [row for row in rows if row["regime"] == regime]
+        ax.plot(
+            [float(row["lost_steps"]) for row in chosen],
+            [float(row[column]) for row in chosen],
+            marker="o",
+            color=color,
+            label=label,
+        )
+    if rows:
+        los_gap = float(rows[0]["failures_between_successes_los"])
+        nlos_gap = float(rows[0]["failures_between_successes_nlos"])
+        ax.axvline(
+            los_gap,
+            color="#1f4e79",
+            linestyle=":",
+            linewidth=1.0,
+            label=f"Losses between successes, open ({los_gap:.2f})",
+        )
+        ax.axvline(
+            nlos_gap,
+            color="#b85c38",
+            linestyle=":",
+            linewidth=1.0,
+            label=f"Losses between successes, roof ({nlos_gap:.2f})",
+        )
+    ax.set_xlabel("Lost packets since the last delivery")
+    ax.set_ylabel("Standard deviation (m)")
+    ax.set_title("The slot lies on the heading lever arm")
+    ax.legend(fontsize=8)
+    _save(fig, out, "motivation_slot_std")
 
 
 def plot_trajectory(npz_path: Path, out: Path) -> None:
@@ -234,6 +288,10 @@ def main(argv: list[str] | None = None) -> None:
     traj.add_argument("--npz", required=True)
     traj.add_argument("--out", required=True)
 
+    motivation = sub.add_parser("motivation")
+    motivation.add_argument("--csv", required=True)
+    motivation.add_argument("--out", required=True)
+
     args = parser.parse_args(argv)
     _style()
     if args.command == "training":
@@ -242,6 +300,8 @@ def main(argv: list[str] | None = None) -> None:
         plot_sweep(Path(args.csv), Path(args.out))
     elif args.command == "geometry":
         plot_geometry(Path(args.csv), Path(args.out))
+    elif args.command == "motivation":
+        plot_motivation(Path(args.csv), Path(args.out))
     else:
         plot_trajectory(Path(args.npz), Path(args.out))
 

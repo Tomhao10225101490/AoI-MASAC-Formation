@@ -40,6 +40,8 @@ EPISODE_METRIC_KEYS = (
     "nlos_mean_aoi",
     "los_mean_slot_std",
     "nlos_mean_slot_std",
+    "los_mean_alt_error",
+    "nlos_mean_alt_error",
 )
 
 # Keys that become "<name>" and "<name>_std" after summarize_episodes.
@@ -67,6 +69,8 @@ SUMMARY_KEYS = (
     "nlos_mean_aoi",
     "los_mean_slot_std",
     "nlos_mean_slot_std",
+    "los_mean_alt_error",
+    "nlos_mean_alt_error",
 )
 
 
@@ -170,6 +174,11 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         The summary skips those NaNs, so an open-field episode does not
         pull the NLOS average down to zero. ``n_episodes_with_nlos`` counts
         how many episodes contributed to the NLOS columns.
+
+        ``los_mean_alt_error`` / ``nlos_mean_alt_error`` are the absolute
+        vertical miss of the true flat slot, in meters. Climbing to clear a
+        roof shows up here. A policy that climbs in the open as well is not
+        buying a measurement; it is just leaving the formation.
     """
     if not rows:
         raise ValueError("summarize_episodes received no episodes")
@@ -201,6 +210,8 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "nlos_mean_aoi": col("nlos_mean_aoi"),
         "los_mean_slot_std": col("los_mean_slot_std"),
         "nlos_mean_slot_std": col("nlos_mean_slot_std"),
+        "los_mean_alt_error": col("los_mean_alt_error"),
+        "nlos_mean_alt_error": col("nlos_mean_alt_error"),
     }
     skip_nan = {
         "los_mean_formation_error",
@@ -209,6 +220,8 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "nlos_mean_aoi",
         "los_mean_slot_std",
         "nlos_mean_slot_std",
+        "los_mean_alt_error",
+        "nlos_mean_alt_error",
     }
     out: dict[str, float] = {"n_episodes": float(len(rows))}
     nlos_values = mapping["nlos_mean_formation_error"]
@@ -218,7 +231,7 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         out[key] = mean
         out[key + "_std"] = std
     # A NaN outside the LOS/NLOS split means an empty or broken input.
-    # Those six columns stay NaN when every episode lacked that side
+    # The LOS/NLOS columns stay NaN when every episode lacked that side
     # (an open-field run has no NLOS samples). That is a reported fact,
     # not a broken aggregate.
     for key, value in out.items():

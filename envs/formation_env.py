@@ -1235,6 +1235,8 @@ class UAVFormationEnv:
         self._los_aoi_sum = 0.0
         self._nlos_std_sum = 0.0
         self._los_std_sum = 0.0
+        self._nlos_alt_sum = 0.0
+        self._los_alt_sum = 0.0
         self._nlos_link_steps = 0
         self._los_link_steps = 0
         self._outage_streak = np.zeros(self.n_followers, dtype=np.int32)
@@ -1255,18 +1257,27 @@ class UAVFormationEnv:
         both sides when only some followers are behind a roof. Episodes
         with no samples on a side report NaN for that side so a later
         average does not treat "never blocked" as zero error.
+
+        Altitude error is the absolute vertical distance to the true flat
+        slot. That is the price the reward charges for climbing. The story
+        the paper wants is a larger price behind a roof than in the open,
+        and only for the policy that can see slot doubt.
         """
+        slots = self._true_slots()
         for i, link in enumerate(self.links):
             slot_std = float(np.mean(self._slot_std(i)))
+            alt_err = abs(float(self.uavs[i + 1].z) - float(slots[i, 2]))
             if link.blocked:
                 self._nlos_err_sum += float(errors[i])
                 self._nlos_aoi_sum += float(link.aoi)
                 self._nlos_std_sum += slot_std
+                self._nlos_alt_sum += alt_err
                 self._nlos_link_steps += 1
             else:
                 self._los_err_sum += float(errors[i])
                 self._los_aoi_sum += float(link.aoi)
                 self._los_std_sum += slot_std
+                self._los_alt_sum += alt_err
                 self._los_link_steps += 1
 
     @staticmethod
@@ -1325,6 +1336,8 @@ class UAVFormationEnv:
             "nlos_mean_aoi": self._mean_or_nan(self._nlos_aoi_sum, self._nlos_link_steps),
             "los_mean_slot_std": self._mean_or_nan(self._los_std_sum, self._los_link_steps),
             "nlos_mean_slot_std": self._mean_or_nan(self._nlos_std_sum, self._nlos_link_steps),
+            "los_mean_alt_error": self._mean_or_nan(self._los_alt_sum, self._los_link_steps),
+            "nlos_mean_alt_error": self._mean_or_nan(self._nlos_alt_sum, self._nlos_link_steps),
             "steps": int(self._step_count),
             "p0": float(self.ep_p0),
         }

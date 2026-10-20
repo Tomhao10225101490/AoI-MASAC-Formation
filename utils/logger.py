@@ -73,6 +73,8 @@ class TrainLogger:
                 "nlos_mean_aoi",
                 "los_mean_slot_std",
                 "nlos_mean_slot_std",
+                "los_mean_alt_error",
+                "nlos_mean_alt_error",
                 "p0",
                 "critic_loss",
                 "actor_loss",

@@ -32,6 +32,8 @@ def _row(**kwargs):
         nlos_mean_aoi=4.0,
         los_mean_slot_std=1.0,
         nlos_mean_slot_std=6.0,
+        los_mean_alt_error=1.0,
+        nlos_mean_alt_error=12.0,
     )
     base.update(kwargs)
     return base

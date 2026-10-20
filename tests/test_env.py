@@ -649,6 +649,18 @@ def test_formation_cost_caps_and_collision_is_the_worse_outcome():
     assert default.collision_penalty > default.w_formation * default.formation_error_cap * discount
 
 
+def test_altitude_error_is_the_price_of_climbing_and_splits_by_roof():
+    env = UAVFormationEnv(_quiet_cfg(n_followers=2))
+    env.reset(seed=0)
+    env.uavs[1].z = env.uavs[0].z + 30.0
+    env.uavs[2].z = env.uavs[0].z
+    env.links[0].blocked = 1
+    env.links[1].blocked = 0
+    env._accumulate_visibility(env._formation_errors())
+    assert env._mean_or_nan(env._nlos_alt_sum, env._nlos_link_steps) == pytest.approx(30.0)
+    assert env._mean_or_nan(env._los_alt_sum, env._los_link_steps) == pytest.approx(0.0)
+
+
 def test_bad_action_shape_and_unknown_config_key():
     env = UAVFormationEnv(_quiet_cfg())
     env.reset(seed=0)

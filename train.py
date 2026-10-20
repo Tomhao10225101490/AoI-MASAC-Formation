@@ -279,6 +279,8 @@ def run_training(cfg: dict) -> Path:
             "nlos_mean_aoi": episode["nlos_mean_aoi"],
             "los_mean_slot_std": episode["los_mean_slot_std"],
             "nlos_mean_slot_std": episode["nlos_mean_slot_std"],
+            "los_mean_alt_error": episode["los_mean_alt_error"],
+            "nlos_mean_alt_error": episode["nlos_mean_alt_error"],
             "p0": episode["p0"],
             "critic_loss": mean_stats.get("critic_loss", ""),
             "actor_loss": mean_stats.get("actor_loss", ""),

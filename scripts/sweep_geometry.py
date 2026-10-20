@@ -107,6 +107,8 @@ def main(argv: list[str] | None = None) -> None:
             f"碰撞={summary['collision_rate']:.3f}  "
             f"视距编队误差={summary['los_mean_formation_error']:.2f}  "
             f"非视距编队误差={summary['nlos_mean_formation_error']:.2f}  "
+            f"视距高度误差={summary['los_mean_alt_error']:.2f}  "
+            f"非视距高度误差={summary['nlos_mean_alt_error']:.2f}  "
             f"非视距AoI={summary['nlos_mean_aoi']:.2f}  "
             f"有遮挡的回合={summary['n_episodes_with_nlos']:.0f}"
         )
