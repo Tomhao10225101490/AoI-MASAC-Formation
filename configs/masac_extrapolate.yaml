@@ -1,0 +1,10 @@
+# On a lost packet, the follower linearly extrapolates the leader position
+# from the last received speed and heading:
+#   pos_hat = last_pos + last_v * [cos(last_h), sin(last_h)] * dt * AoI
+# The AoI feature itself is hidden, so this is the "just predict" baseline.
+algo: masac_extrapolate
+env:
+  obs_mode: extrapolate
+  use_aoi: false
+  channel_mode: distance
+  randomize_channel: true

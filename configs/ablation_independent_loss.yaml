@@ -1,0 +1,10 @@
+# Ablation: packet loss does not depend on follower-leader distance.
+# p0 is fixed so this can be compared with a distance-mode run at the same p0
+# (configs/ablation_no_randomize.yaml).
+algo: aoi_masac
+env:
+  obs_mode: aoi
+  use_aoi: true
+  channel_mode: independent
+  randomize_channel: false
+  p0: 0.6

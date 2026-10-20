@@ -1,0 +1,11 @@
+# One static obstacle plus one obstacle that bounces vertically.
+# n_nearest_obstacles is 2 so each actor can see both. That changes the
+# observation length, so a checkpoint trained on configs/default.yaml
+# (nearest 1) cannot be loaded into this env.
+algo: aoi_masac
+env:
+  n_nearest_obstacles: 2
+  max_obstacles: 2
+  obstacles:
+    - {x: 400.0, y: 300.0, radius: 36.0, vx: 0.0, vy: 0.0}
+    - {x: 520.0, y: 180.0, radius: 28.0, vx: 0.0, vy: 1.5}

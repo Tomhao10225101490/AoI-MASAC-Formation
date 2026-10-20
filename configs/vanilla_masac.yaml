@@ -1,0 +1,12 @@
+# Vanilla MASAC: trained as if the leader link never drops a packet.
+# At test time, evaluate.py --obs-mode auto switches this policy to "hold"
+# when you place it on a lossy link, so it consumes stale leader state and
+# has no AoI feature. That is the "trained under perfect comm, tested under
+# loss" baseline.
+algo: vanilla_masac
+env:
+  obs_mode: perfect
+  use_aoi: false
+  channel_mode: perfect
+  randomize_channel: false
+  p0: 1.0

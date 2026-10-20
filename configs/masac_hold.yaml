@@ -1,0 +1,8 @@
+# MASAC trained on the lossy link. The actor sees the last received leader
+# state and does not see AoI. Same information as the no-AoI ablation.
+algo: masac_hold
+env:
+  obs_mode: hold
+  use_aoi: false
+  channel_mode: distance
+  randomize_channel: true
