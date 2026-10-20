@@ -13,18 +13,28 @@ from envs.geometry import desired_slot
 
 
 def _quiet_cfg(**kwargs) -> EnvConfig:
+    """Open-field config so unit tests are about one mechanism at a time."""
     base = dict(
         n_followers=1,
         max_steps=20,
         start_noise=0.0,
+        start_xy=(150.0, 400.0),
+        start_speed=2.0,
         randomize_channel=False,
+        randomize_wind=False,
+        wind_speed=0.0,
         obstacles=[],
+        extra_obstacles=[],
         max_obstacles=1,
         n_nearest_obstacles=1,
+        waypoints=[(900.0, 400.0)],
+        max_waypoints=1,
         channel_mode="independent",
         p0=0.0,
         obs_mode="hold",
         use_aoi=False,
+        use_blockage=False,
+        sensor_range=10_000.0,
     )
     base.update(kwargs)
     return EnvConfig(**base)
@@ -47,7 +57,7 @@ def test_reset_and_step_shapes():
     env = UAVFormationEnv(EnvConfig(n_followers=4, randomize_channel=False))
     obs, info = env.reset(seed=0)
     assert len(obs) == 5
-    assert obs[0].shape == (ObsIndex.dim(1),)
+    assert obs[0].shape == (ObsIndex.dim(env.cfg.n_nearest_obstacles),)
     assert env.global_state().shape == (env.global_dim,)
     assert obs[0][ObsIndex.IS_LEADER] == pytest.approx(1.0)
     assert obs[1][ObsIndex.IS_LEADER] == pytest.approx(0.0)
@@ -66,7 +76,8 @@ def test_reset_and_step_shapes():
 def test_obstacle_feature_present_and_absent():
     env = UAVFormationEnv(_quiet_cfg(obstacles=[{"x": 420.0, "y": 300.0, "radius": 40.0}]))
     obs, _ = env.reset(seed=0)
-    assert obs[0][ObsIndex.OBS_START + 3] == pytest.approx(1.0)
+    present = ObsIndex.OBS_START + ObsIndex.OBS_FEATS - 1
+    assert obs[0][present] == pytest.approx(1.0)
     # Relative obstacle position matches the leader pose.
     leader = env.uavs[0]
     rel_x = (420.0 - leader.x) / env.cfg.map_width
@@ -74,7 +85,7 @@ def test_obstacle_feature_present_and_absent():
 
     empty = UAVFormationEnv(_quiet_cfg())
     obs, _ = empty.reset(seed=0)
-    assert obs[0][ObsIndex.OBS_START + 3] == pytest.approx(0.0)
+    assert obs[0][ObsIndex.OBS_START + ObsIndex.OBS_FEATS - 1] == pytest.approx(0.0)
 
 
 def test_aoi_increments_caps_and_can_be_hidden():
@@ -207,7 +218,7 @@ def test_moving_obstacle_bounces_inside_the_map():
     env.reset(seed=0)
     y0 = env.obstacles[0].y
     env.step(np.zeros((2, 2), dtype=np.float32))
-    assert env.obstacles[0].y == pytest.approx(y0 + 3.0)
+    assert env.obstacles[0].y == pytest.approx(y0 + 3.0 * env.cfg.dt)
 
 
 def test_channel_randomization_changes_p0_and_option_overrides_it():
@@ -253,6 +264,71 @@ def test_desired_slot_rotates_with_heading():
     # Facing +y, "behind" is -world y.
     assert slot[0] == pytest.approx(10.0)
     assert slot[1] == pytest.approx(16.0)
+
+
+def test_building_on_the_segment_is_nlos_and_cuts_delivery():
+    open_p = packet_success_probability(100.0, 1.0, 200.0, "distance", blocked=False, nlos_factor=0.25)
+    blocked_p = packet_success_probability(100.0, 1.0, 200.0, "distance", blocked=True, nlos_factor=0.25)
+    assert blocked_p == pytest.approx(open_p * 0.25)
+    # The distance-independent ablation ignores buildings on purpose.
+    assert packet_success_probability(100.0, 0.4, 200.0, "independent", blocked=True) == pytest.approx(0.4)
+
+    env = UAVFormationEnv(
+        _quiet_cfg(
+            use_blockage=True,
+            channel_mode="distance",
+            p0=1.0,
+            d0=1.0e6,
+            nlos_factor=0.25,
+            obstacles=[{"x": 200.0, "y": 400.0, "radius": 20.0}],
+            start_xy=(100.0, 400.0),
+            start_noise=0.0,
+        )
+    )
+    env.reset(seed=0)
+    env.uavs[0].x, env.uavs[0].y = 100.0, 400.0
+    env.uavs[1].x, env.uavs[1].y = 300.0, 400.0
+    assert env.link_blocked(0)
+    env.uavs[1].y = 480.0
+    assert not env.link_blocked(0)
+
+
+def test_far_obstacles_fall_outside_the_sensor():
+    env = UAVFormationEnv(
+        _quiet_cfg(
+            sensor_range=40.0,
+            obstacles=[{"x": 900.0, "y": 400.0, "radius": 20.0}],
+            start_xy=(150.0, 400.0),
+            start_noise=0.0,
+        )
+    )
+    obs, _ = env.reset(seed=0)
+    present = ObsIndex.OBS_START + ObsIndex.OBS_FEATS - 1
+    assert obs[0][present] == pytest.approx(0.0)
+
+
+def test_default_route_is_a_cluttered_transit():
+    from envs.geometry import segment_hits_disk
+
+    env = UAVFormationEnv(
+        EnvConfig(randomize_channel=False, randomize_wind=False, start_noise=0.0)
+    )
+    env.reset(seed=0)
+    assert len(env.obstacles) >= 8
+    movers = [o for o in env.obstacles if o.vx != 0.0 or o.vy != 0.0]
+    assert len(movers) >= 2
+    blocked_legs = 0
+    for (ax, ay), (bx, by) in zip(env.waypoints[:-1], env.waypoints[1:]):
+        if any(
+            segment_hits_disk(ax, ay, bx, by, o.x, o.y, o.radius) for o in env.obstacles
+        ):
+            blocked_legs += 1
+    assert blocked_legs >= 2
+    for wx, wy in env.waypoints:
+        for o in env.obstacles:
+            assert math.hypot(wx - o.x, wy - o.y) > o.radius + env.cfg.wp_radius
+    _, _, _, _, info = env.step(np.zeros((env.n_agents, 2), dtype=np.float32))
+    assert info["collision"] is False
 
 
 def test_bad_action_shape_and_unknown_config_key():

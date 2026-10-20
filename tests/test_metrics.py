@@ -22,6 +22,9 @@ def _row(**kwargs):
         p0=0.5,
         return_sum=1.0,
         return_mean=0.2,
+        waypoint_fraction=0.25,
+        nlos_fraction=0.0,
+        min_clearance=10.0,
     )
     base.update(kwargs)
     return base

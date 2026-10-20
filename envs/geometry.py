@@ -33,20 +33,53 @@ def desired_slot(
     return np.asarray(leader_xy, dtype=np.float64) + body_to_world(offset_xy, leader_heading)
 
 
-def make_formation_offsets(n_followers: int) -> list[tuple[float, float]]:
-    """V-shape slots behind the leader, in the leader body frame (meters).
+def point_to_segment_distance(
+    px: float, py: float, ax: float, ay: float, bx: float, by: float
+) -> float:
+    """Euclidean distance from point P to the segment AB."""
+    abx = bx - ax
+    aby = by - ay
+    apx = px - ax
+    apy = py - ay
+    ab2 = abx * abx + aby * aby
+    if ab2 <= 1e-12:
+        return math.hypot(apx, apy)
+    t = max(0.0, min(1.0, (apx * abx + apy * aby) / ab2))
+    return math.hypot(px - (ax + t * abx), py - (ay + t * aby))
 
-    Follower 0 sits back-left, follower 1 back-right, then the next row, and
-    so on. Distances grow with the row index so the aircraft do not spawn
-    on top of each other.
+
+def segment_hits_disk(
+    ax: float,
+    ay: float,
+    bx: float,
+    by: float,
+    cx: float,
+    cy: float,
+    radius: float,
+) -> bool:
+    """True when the segment AB intersects a disk centered at C."""
+    return point_to_segment_distance(cx, cy, ax, ay, bx, by) <= radius
+
+
+def make_formation_offsets(
+    n_followers: int, spacing: float = 32.0
+) -> list[tuple[float, float]]:
+    """Wedge behind the leader, body frame, meters.
+
+    Body +x is the nose, +y is left. Row 1 is one spacing behind the leader;
+    each further row steps back by ``spacing`` and spreads by 0.75 spacing.
+    Spacing is large relative to the 4 m airframe radius so slots are not
+    already in collision.
     """
     if n_followers < 1:
         raise ValueError("n_followers must be >= 1")
+    if spacing <= 0.0:
+        raise ValueError("spacing must be positive")
     if n_followers == 1:
-        return [(-60.0, 0.0)]
+        return [(-spacing, 0.0)]
     offsets: list[tuple[float, float]] = []
     for i in range(n_followers):
         row = i // 2 + 1
         side = -1.0 if (i % 2 == 0) else 1.0
-        offsets.append((-55.0 * row, side * 40.0 * row))
+        offsets.append((-spacing * row, side * spacing * 0.75 * row))
     return offsets

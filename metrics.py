@@ -30,6 +30,9 @@ EPISODE_METRIC_KEYS = (
     "p0",
     "return_sum",
     "return_mean",
+    "waypoint_fraction",
+    "nlos_fraction",
+    "min_clearance",
 )
 
 # Keys that become "<name>" and "<name>_std" after summarize_episodes.
@@ -47,6 +50,9 @@ SUMMARY_KEYS = (
     "mean_outage_length",
     "mean_steps",
     "mean_return",
+    "waypoint_fraction",
+    "nlos_fraction",
+    "min_clearance",
 )
 
 
@@ -65,10 +71,10 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
 
     success_rate
         Fraction of episodes that ended in success. An episode is a success
-        only when, on the terminal step, the leader is inside ``goal_radius``
-        of the goal AND every follower is inside ``formation_tol`` of the
-        slot computed from the *true* leader pose AND the episode never
-        collided (obstacle or inter-UAV).
+        only when every waypoint has been captured AND, on the terminal step,
+        every follower is inside ``formation_tol`` of the slot computed from
+        the *true* leader pose AND the episode never collided (obstacle or
+        inter-UAV).
 
     collision_rate
         Fraction of episodes with at least one collision. Split further into
@@ -110,6 +116,23 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
 
     mean_return
         Mean over episodes of the sum of all agents' returns.
+
+    waypoint_fraction
+        Mean, over episodes, of (waypoints captured) / (waypoints in the
+        route). A timed-out or crashed episode keeps the fraction it had
+        reached. Success implies 1.
+
+    nlos_fraction
+        Mean, over episodes, of the fraction of packet attempts whose
+        follower–leader segment intersected a building disk. This is a
+        geometric fact about the path. Whether that intersection actually
+        multiplies the success probability is controlled by ``use_blockage``
+        and is not what this column measures.
+
+    min_clearance
+        Mean, over episodes, of the smallest surface gap (meters) between
+        any aircraft and any obstacle during that episode. Negative means
+        the aircraft penetrated an obstacle on the colliding step.
     """
     if not rows:
         raise ValueError("summarize_episodes received no episodes")
@@ -131,6 +154,9 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "mean_outage_length": col("mean_outage_length"),
         "mean_steps": col("steps"),
         "mean_return": col("return_sum"),
+        "waypoint_fraction": col("waypoint_fraction"),
+        "nlos_fraction": col("nlos_fraction"),
+        "min_clearance": col("min_clearance"),
     }
     out: dict[str, float] = {"n_episodes": float(len(rows))}
     for key, values in mapping.items():

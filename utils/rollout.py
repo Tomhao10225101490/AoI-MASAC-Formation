@@ -53,6 +53,7 @@ def _stack_frames(frames: list[dict], env: UAVFormationEnv) -> dict:
         "obstacle_r": frames[0]["obstacle_r"],
         "aoi": np.stack([f["aoi"] for f in frames], axis=0),
         "goal": frames[0]["goal"],
+        "waypoints": frames[0]["waypoints"],
         "map_size": np.array([env.cfg.map_width, env.cfg.map_height], dtype=np.float32),
         "uav_radius": np.float32(env.cfg.uav_radius),
     }

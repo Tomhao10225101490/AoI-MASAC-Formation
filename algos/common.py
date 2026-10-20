@@ -23,11 +23,11 @@ def clone_module(module: nn.Module) -> nn.Module:
 
 
 class OUNoise:
-    """Ornstein-Uhlenbeck noise, matching the undergrad MASAC setup.
+    """Optional Ornstein-Uhlenbeck action noise.
 
-    The original project added this on top of the action for the first 50
-    episodes. SAC already explores through entropy; the noise is optional and
-    controlled by ``ou_episodes``.
+    SAC already explores through entropy. Leave ``ou_episodes`` at 0 unless
+    a run needs extra temporally correlated noise. MADDPG and MATD3 use
+    Gaussian exploration instead of this class.
     """
 
     def __init__(self, dim: int, theta: float = 0.15, sigma: float = 0.2, seed: int = 0):

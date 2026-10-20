@@ -2,7 +2,7 @@
 # 800 episodes x 400 steps is the planned budget, not a tuned recommendation.
 algo: aoi_masac
 env:
-  max_steps: 400
+  max_steps: 500
   obs_mode: aoi
   use_aoi: true
   channel_mode: distance
@@ -16,7 +16,7 @@ train:
   batch_size: 256
   hidden: 256
   buffer_size: 200000
-  ou_episodes: 50
+  ou_episodes: 0
   eval_every: 25
   eval_episodes: 10
   save_every: 50

@@ -1,59 +1,71 @@
-# CPU-scale AoI-MASAC debug config.
-# `python train.py` uses this file. It is intentionally smaller than the
-# paper budget in configs/paper_*.yaml. Reward weights are a starting point,
-# not a tuned result.
+# CPU-scale debug config for the cluttered transit task.
+# `python train.py` uses this file. It is shorter than configs/paper_*.yaml.
+# Reward weights match the new dynamics (0.2 s steps, 16 m/s cruise) and are
+# a starting point, not a tuned result.
 
 algo: aoi_masac
 seed: 0
 device: auto
 
 env:
-  map_width: 700
-  map_height: 600
+  map_width: 1200
+  map_height: 800
   n_followers: 4
-  dt: 1.0
-  max_steps: 200
+  dt: 0.2
+  max_steps: 500
   v_min: 0.0
-  v_max: 6.0
-  max_speed_delta: 1.5
-  max_heading_delta: 0.40
-  uav_radius: 12.0
-  goal_radius: 40.0
-  formation_tol: 45.0
-  formation_scale: 120.0
-  n_nearest_obstacles: 1
-  max_obstacles: 1
-  obstacles:
-    - {x: 420.0, y: 300.0, radius: 40.0, vx: 0.0, vy: 0.0}
-  channel_mode: distance          # distance | independent | perfect
-  p0: 0.9
-  d0: 250.0
+  v_max: 16.0
+  max_accel: 6.0
+  max_yaw_rate: 1.2
+  uav_radius: 4.0
+  wp_radius: 30.0
+  formation_tol: 18.0
+  formation_spacing: 32.0
+  formation_scale: 96.0
+  n_nearest_obstacles: 3
+  max_obstacles: 11
+  max_waypoints: 4
+  # Buildings and crossing traffic live in envs/scenario.py so the geometry
+  # tests and the default config cannot drift apart. Leave obstacles unset
+  # here; override the list only when you want a different map.
+  channel_mode: distance
+  p0: 0.95
+  d0: 200.0
+  nlos_factor: 0.2
+  blockage_margin: 0.0
+  use_blockage: true
   randomize_channel: true
-  p0_low: 0.3
+  p0_low: 0.45
   p0_high: 1.0
-  aoi_cap: 30
-  obs_mode: aoi                   # aoi | perfect | hold | extrapolate
+  aoi_cap: 40
+  obs_mode: aoi
   use_aoi: true
-  goal_xy: [640.0, 300.0]
-  start_xy: [200.0, 300.0]
-  start_speed: 2.0
-  start_noise: 15.0
+  sensor_range: 250.0
+  start_xy: [150.0, 420.0]
+  start_speed: 10.0
+  start_noise: 12.0
+  wind_max: 4.0
+  randomize_wind: true
+  wind_obs_noise: 0.5
   seed: 0
-  w_progress: 0.05
-  w_heading: 0.10
-  w_formation: 0.01
-  w_form_progress: 0.05
+  w_progress: 0.25
+  w_heading: 0.05
+  w_formation: 0.02
+  w_form_progress: 0.25
   w_smooth: 0.02
-  w_step: 0.02
-  formation_bonus: 0.20
-  collision_penalty: 40.0
-  success_bonus: 50.0
-  oob_penalty: 2.0
+  w_step: 0.01
+  w_clearance: 0.5
+  clearance_margin: 20.0
+  formation_bonus: 0.15
+  collision_penalty: 30.0
+  success_bonus: 40.0
+  wp_bonus: 8.0
+  oob_penalty: 1.0
 
 train:
-  episodes: 30
-  warmup_steps: 1000
-  start_steps: 500
+  episodes: 40
+  warmup_steps: 2000
+  start_steps: 800
   batch_size: 128
   updates_per_step: 1
   gamma: 0.99
@@ -62,11 +74,11 @@ train:
   lr_critic: 0.0003
   lr_alpha: 0.0003
   hidden: 128
-  buffer_size: 50000
+  buffer_size: 100000
   grad_clip: 1.0
-  # OU noise on top of SAC exploration for the first N episodes (0 disables it).
-  ou_episodes: 50
-  ou_sigma: 0.3
+  # SAC explores via entropy. Leave this at 0.
+  ou_episodes: 0
+  ou_sigma: 0.2
   expl_noise: 0.1
   policy_delay: 2
   target_noise: 0.2

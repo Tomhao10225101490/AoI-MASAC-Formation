@@ -210,6 +210,9 @@ def _print_summary(summary: dict) -> None:
         ("mean_outage_length", "平均中断长度(步)"),
         ("mean_return", "平均总回报"),
         ("mean_steps", "平均步数"),
+        ("waypoint_fraction", "航路点完成比例"),
+        ("nlos_fraction", "视线被建筑物挡住的比例"),
+        ("min_clearance", "最近障碍间隙(米)"),
     ]
     print(f"共 {int(summary['n_episodes'])} 个回合（下面是平均值 ± 样本标准差）")
     for key, label in labels:
@@ -237,6 +240,9 @@ def _write_episodes(path: Path, rows: list[dict]) -> None:
         "p0",
         "return_sum",
         "return_mean",
+        "waypoint_fraction",
+        "nlos_fraction",
+        "min_clearance",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys, extrasaction="ignore")

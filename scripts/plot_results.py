@@ -168,7 +168,11 @@ def plot_trajectory(npz_path: Path, out: Path) -> None:
                     edgecolor="#666666",
                 )
                 ax.add_patch(circle)
-    ax.scatter([goal[0]], [goal[1]], marker="*", s=160, color="#e6b800", label="goal", zorder=5)
+    if "waypoints" in data.files:
+        wps = data["waypoints"]
+        ax.plot(wps[:, 0], wps[:, 1], color="#e6b800", linestyle=":", linewidth=1.2, label="route")
+        ax.scatter(wps[:, 0], wps[:, 1], marker="*", s=80, color="#e6b800", zorder=5)
+    ax.scatter([goal[0]], [goal[1]], marker="*", s=160, color="#e6b800", zorder=6)
     ax.legend(loc="upper left", fontsize=9)
     ax.set_title("One evaluation trajectory")
     _save(fig, out, "trajectory")

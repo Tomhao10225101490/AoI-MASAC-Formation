@@ -56,7 +56,7 @@ class MASAC:
         lr_critic = float(train_cfg.get("lr_critic", 3e-4))
         lr_alpha = float(train_cfg.get("lr_alpha", 3e-4))
         self.grad_clip = float(train_cfg.get("grad_clip", 1.0))
-        self.ou_episodes = int(train_cfg.get("ou_episodes", 50))
+        self.ou_episodes = int(train_cfg.get("ou_episodes", 0))
         self.target_entropy = -float(self.action_dim)
         critic_in = self.global_dim + self.n_agents * self.action_dim
 
