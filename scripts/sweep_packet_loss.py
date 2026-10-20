@@ -2,9 +2,9 @@
 
 The x-axis is a single number, so the channel is switched to
 ``independent`` mode where every follower loses a packet with probability
-``loss_rate`` regardless of distance (``p0 = 1 - loss_rate``). That is the
-curve the paper asks for. It is not the same thing as the distance-dependent
-channel used in training; the README explains how to read the two.
+``loss_rate`` regardless of distance (``p0 = 1 - loss_rate``). This is a
+stress test. The paper's main curve is ``scripts/sweep_geometry.py``, which
+keeps distance and roof blockage and splits metrics by line of sight.
 
 Distance-dependent training policies are still evaluated here. Their actor
 just has to fly under a channel whose loss rate we can put on a plot axis.

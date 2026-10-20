@@ -53,7 +53,7 @@ def resolve_test_observation(
         return trained_obs_mode, bool(trained_use_aoi), ""
     obs_mode = requested_obs
     if requested_use_aoi is None:
-        use_aoi = bool(trained_use_aoi) if obs_mode == "aoi" else False
+        use_aoi = bool(trained_use_aoi) if obs_mode in ("aoi", "belief", "belief_point") else False
     else:
         use_aoi = requested_use_aoi
     return obs_mode, use_aoi, ""
@@ -210,6 +210,18 @@ def _print_summary(summary: dict) -> None:
         ("mean_outage_length", "平均中断长度(步)"),
         ("mean_return", "平均总回报"),
         ("mean_steps", "平均步数"),
+        ("waypoint_fraction", "航路点完成比例"),
+        ("nlos_fraction", "视线被建筑物挡住的比例"),
+        ("min_clearance", "最近障碍间隙(米)"),
+        ("mean_belief_std", "平均槽位标准差(米)"),
+        ("los_mean_formation_error", "视距段编队误差(米)"),
+        ("nlos_mean_formation_error", "非视距段编队误差(米)"),
+        ("los_mean_aoi", "视距段平均AoI(步)"),
+        ("nlos_mean_aoi", "非视距段平均AoI(步)"),
+        ("los_mean_slot_std", "视距段槽位标准差(米)"),
+        ("nlos_mean_slot_std", "非视距段槽位标准差(米)"),
+        ("los_mean_alt_error", "视距段高度误差(米)"),
+        ("nlos_mean_alt_error", "非视距段高度误差(米)"),
     ]
     print(f"共 {int(summary['n_episodes'])} 个回合（下面是平均值 ± 样本标准差）")
     for key, label in labels:
@@ -237,6 +249,18 @@ def _write_episodes(path: Path, rows: list[dict]) -> None:
         "p0",
         "return_sum",
         "return_mean",
+        "waypoint_fraction",
+        "nlos_fraction",
+        "min_clearance",
+        "mean_belief_std",
+        "los_mean_formation_error",
+        "nlos_mean_formation_error",
+        "los_mean_aoi",
+        "nlos_mean_aoi",
+        "los_mean_slot_std",
+        "nlos_mean_slot_std",
+        "los_mean_alt_error",
+        "nlos_mean_alt_error",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys, extrasaction="ignore")

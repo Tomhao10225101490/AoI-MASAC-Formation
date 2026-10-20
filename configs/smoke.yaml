@@ -1,15 +1,26 @@
-# Tiny run used to check that training starts and writes a checkpoint.
-# This is not a scientific result.
-algo: aoi_masac
+# Tiny open-field run. It checks that training writes a checkpoint.
+# It is not the paper scenario: no buildings, no wind, two followers.
+algo: belief_masac
 seed: 0
 device: cpu
 
 env:
   n_followers: 2
   max_steps: 40
+  n_nearest_obstacles: 1
+  max_obstacles: 1
+  max_waypoints: 1
+  obstacles: []
+  waypoints: [[900.0, 400.0]]
+  start_xy: [150.0, 400.0]
+  start_speed: 8.0
+  start_noise: 0.0
   randomize_channel: false
+  randomize_wind: false
+  wind_speed: 0.0
+  use_blockage: false
   p0: 0.8
-  start_noise: 5.0
+  sensor_range: 400.0
 
 train:
   episodes: 3

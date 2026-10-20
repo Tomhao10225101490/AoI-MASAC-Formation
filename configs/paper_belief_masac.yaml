@@ -1,0 +1,25 @@
+# Paper-scale Belief-MASAC. Not what the smoke test runs.
+# 800 episodes, at most 500 steps each. This is the planned budget, not a
+# tuned recommendation and not a finished result.
+algo: belief_masac
+env:
+  max_steps: 500
+  obs_mode: belief
+  use_aoi: true
+  channel_mode: distance
+  randomize_channel: true
+  p0_low: 0.3
+  p0_high: 1.0
+  nlos_q_scale: 4.0
+train:
+  episodes: 800
+  warmup_steps: 5000
+  start_steps: 2000
+  batch_size: 256
+  hidden: 256
+  buffer_size: 200000
+  ou_episodes: 0
+  eval_every: 25
+  eval_episodes: 10
+  save_every: 50
+  log_dir: runs/paper

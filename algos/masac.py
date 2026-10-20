@@ -3,10 +3,11 @@
 This one class trains four of the paper's methods. They share the update
 and differ only in what the environment writes into the actor observation:
 
-* ``aoi_masac``          last leader state + AoI + last speed/heading
+* ``belief_masac``      coasted leader state + AoI + slot std
+* ``aoi_masac``         last leader measurement + AoI, no coast
 * ``vanilla_masac``     trained with a perfect link (see configs)
 * ``masac_hold``        stale leader state, AoI feature forced to 0
-* ``masac_extrapolate`` linear extrapolation, AoI feature forced to 0
+* ``masac_extrapolate`` constant-velocity coast, AoI and std forced to 0
 
 CTDE:
   * actor i sees only agent i's observation
@@ -56,7 +57,7 @@ class MASAC:
         lr_critic = float(train_cfg.get("lr_critic", 3e-4))
         lr_alpha = float(train_cfg.get("lr_alpha", 3e-4))
         self.grad_clip = float(train_cfg.get("grad_clip", 1.0))
-        self.ou_episodes = int(train_cfg.get("ou_episodes", 50))
+        self.ou_episodes = int(train_cfg.get("ou_episodes", 0))
         self.target_entropy = -float(self.action_dim)
         critic_in = self.global_dim + self.n_agents * self.action_dim
 

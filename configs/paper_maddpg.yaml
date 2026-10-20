@@ -1,6 +1,6 @@
 algo: maddpg
 env:
-  max_steps: 400
+  max_steps: 500
   obs_mode: hold
   use_aoi: false
   channel_mode: distance
