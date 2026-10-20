@@ -3,7 +3,7 @@
 # Reward weights match the new dynamics (0.2 s steps, 16 m/s cruise) and are
 # a starting point, not a tuned result.
 
-algo: aoi_masac
+algo: belief_masac
 seed: 0
 device: auto
 
@@ -38,8 +38,9 @@ env:
   p0_low: 0.45
   p0_high: 1.0
   aoi_cap: 40
-  obs_mode: aoi
+  obs_mode: belief
   use_aoi: true
+  nlos_q_scale: 4.0
   sensor_range: 250.0
   start_xy: [150.0, 420.0]
   start_speed: 10.0

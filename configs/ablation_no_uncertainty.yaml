@@ -1,0 +1,10 @@
+# Ablation: same coasted leader state and AoI as Belief-MASAC, but the
+# position-standard-deviation channels are forced to 0. This is the comparison
+# against "just predict the mean".
+algo: belief_point_masac
+env:
+  obs_mode: belief_point
+  use_aoi: true
+  channel_mode: distance
+  randomize_channel: true
+  nlos_q_scale: 4.0

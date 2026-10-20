@@ -272,6 +272,7 @@ def run_training(cfg: dict) -> Path:
             "waypoint_fraction": episode["waypoint_fraction"],
             "nlos_fraction": episode["nlos_fraction"],
             "min_clearance": episode["min_clearance"],
+            "mean_belief_std": episode["mean_belief_std"],
             "p0": episode["p0"],
             "critic_loss": mean_stats.get("critic_loss", ""),
             "actor_loss": mean_stats.get("actor_loss", ""),

@@ -15,6 +15,7 @@ SEEDS=${SEEDS:-0,1,2}
 DEVICE=${DEVICE:-cpu}
 
 CONFIGS=(
+  configs/paper_belief_masac.yaml
   configs/paper_aoi_masac.yaml
   configs/paper_vanilla_masac.yaml
   configs/paper_masac_hold.yaml

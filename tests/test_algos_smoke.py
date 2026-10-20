@@ -14,6 +14,7 @@ from utils.config import load_config
 
 
 ALGOS = [
+    "belief_masac",
     "aoi_masac",
     "vanilla_masac",
     "masac_hold",
@@ -23,6 +24,7 @@ ALGOS = [
 ]
 
 OBS_FOR_ALGO = {
+    "belief_masac": ("belief", True, "distance", True),
     "aoi_masac": ("aoi", True, "distance", True),
     "vanilla_masac": ("perfect", False, "perfect", False),
     "masac_hold": ("hold", False, "distance", True),
@@ -107,7 +109,7 @@ def test_mappo_is_an_explicit_stub():
 
 
 def test_checkpoint_roundtrip_is_deterministic(tmp_path: Path):
-    run_dir = run_training(_tiny_cfg("aoi_masac", tmp_path))
+    run_dir = run_training(_tiny_cfg("belief_masac", tmp_path))
     from evaluate import load_trained
 
     _, env, algo = load_trained(run_dir / "ckpt_final.pt", torch.device("cpu"))
@@ -115,7 +117,7 @@ def test_checkpoint_roundtrip_is_deterministic(tmp_path: Path):
     a = algo.act(obs, explore=False)
     b = algo.act(obs, explore=False)
     assert np.allclose(a, b)
-    assert a.shape == (env.n_agents, 2)
+    assert a.shape == (env.n_agents, env.action_dim)
 
 
 def test_every_yaml_config_builds_an_env_and_a_network():

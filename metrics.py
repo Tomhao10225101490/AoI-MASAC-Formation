@@ -33,6 +33,7 @@ EPISODE_METRIC_KEYS = (
     "waypoint_fraction",
     "nlos_fraction",
     "min_clearance",
+    "mean_belief_std",
 )
 
 # Keys that become "<name>" and "<name>_std" after summarize_episodes.
@@ -53,6 +54,7 @@ SUMMARY_KEYS = (
     "waypoint_fraction",
     "nlos_fraction",
     "min_clearance",
+    "mean_belief_std",
 )
 
 
@@ -133,6 +135,16 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         Mean, over episodes, of the smallest surface gap (meters) between
         any aircraft and any obstacle during that episode. Negative means
         the aircraft penetrated an obstacle on the colliding step.
+        For a building this is the horizontal gap while the aircraft is
+        beside or below the roof, and the vertical gap while it is inside
+        the footprint and above the roof. Traffic uses the 3D gap.
+
+    mean_belief_std
+        Mean, over episodes, of that episode's average leader-position
+        standard deviation in meters. Inside an episode the average is over
+        followers and over steps, taken after the packet draw. The three
+        axes are averaged first. Hold and AoI-only observations still run
+        the filter, so this column is defined for every mode.
     """
     if not rows:
         raise ValueError("summarize_episodes received no episodes")
@@ -157,6 +169,7 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "waypoint_fraction": col("waypoint_fraction"),
         "nlos_fraction": col("nlos_fraction"),
         "min_clearance": col("min_clearance"),
+        "mean_belief_std": col("mean_belief_std"),
     }
     out: dict[str, float] = {"n_episodes": float(len(rows))}
     for key, values in mapping.items():

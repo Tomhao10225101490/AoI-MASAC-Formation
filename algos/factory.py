@@ -11,12 +11,24 @@ from algos.matd3 import MATD3
 
 # Names that all train the MASAC class. The environment obs_mode, not the
 # class, is what distinguishes them. See configs/*.yaml.
-MASAC_NAMES = ("aoi_masac", "masac", "vanilla_masac", "masac_hold", "masac_extrapolate")
+MASAC_NAMES = (
+    "belief_masac",
+    "belief_point_masac",
+    "aoi_masac",
+    "masac",
+    "vanilla_masac",
+    "masac_hold",
+    "masac_extrapolate",
+)
 
 # Expected actor observation mode. train.py warns if a config disagrees.
+# belief_masac is the proposed method: coasted leader state, AoI, and
+# position standard deviation. aoi_masac keeps the age but not the coast.
 EXPECTED_OBS_MODE = {
+    "belief_masac": "belief",
+    "belief_point_masac": "belief_point",
     "aoi_masac": "aoi",
-    "masac": "aoi",
+    "masac": "belief",
     "vanilla_masac": "perfect",
     "masac_hold": "hold",
     "masac_extrapolate": "extrapolate",

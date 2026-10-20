@@ -66,6 +66,7 @@ class TrainLogger:
                 "waypoint_fraction",
                 "nlos_fraction",
                 "min_clearance",
+                "mean_belief_std",
                 "p0",
                 "critic_loss",
                 "actor_loss",

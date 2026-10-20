@@ -25,6 +25,7 @@ def _row(**kwargs):
         waypoint_fraction=0.25,
         nlos_fraction=0.0,
         min_clearance=10.0,
+        mean_belief_std=1.0,
     )
     base.update(kwargs)
     return base
@@ -56,7 +57,7 @@ def test_episode_flags_sum_to_one_on_a_short_rollout():
     info = {}
     terminated = truncated = False
     while not (terminated or truncated):
-        _, _, terminated, truncated, info = env.step(np.zeros((2, 2), dtype=np.float32))
+        _, _, terminated, truncated, info = env.step(np.zeros((2, env.action_dim), dtype=np.float32))
     ep = info["episode"]
     assert ep["success"] + ep["collision"] + ep["timeout"] == 1.0
     summary = summarize_episodes([{**ep, "return_sum": 0.0, "return_mean": 0.0}])

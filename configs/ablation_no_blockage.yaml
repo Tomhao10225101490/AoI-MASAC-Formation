@@ -1,8 +1,8 @@
 # Ablation: buildings still have to be avoided, but they do not cut the radio
 # link. Packet success falls with distance only.
-algo: aoi_masac
+algo: belief_masac
 env:
-  obs_mode: aoi
+  obs_mode: belief
   use_aoi: true
   channel_mode: distance
   use_blockage: false

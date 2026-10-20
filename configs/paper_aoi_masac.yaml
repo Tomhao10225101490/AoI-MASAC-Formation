@@ -1,5 +1,5 @@
-# Paper-scale AoI-MASAC. Not what the smoke test runs.
-# 800 episodes x 400 steps is the planned budget, not a tuned recommendation.
+# Paper-scale AoI-MASAC (age, no coast). Not what the smoke test runs.
+# 800 episodes, at most 500 steps each. Planned budget, not a tuned result.
 algo: aoi_masac
 env:
   max_steps: 500

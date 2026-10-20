@@ -3,10 +3,10 @@
 Only this link is lossy. Obstacle and teammate observations are onboard
 sensing with a finite range; they do not travel on this channel.
 
-The distance law is the standard exponential path-loss success model used as
-a simple stand-in for SNR-based packet delivery. Obstacle blockage is the
-part that recent "ideal communication" formation papers leave out: a building
-that the formation has to fly around also cuts the straight radio path.
+``distance`` is the 3D range. The success law is the usual exponential
+stand-in for SNR. ``blocked`` is computed by the environment: the segment
+hits a building volume, not merely the ground footprint. A ray that clears
+the roof is not blocked. Crossing aircraft are not radio blockers.
 """
 
 from __future__ import annotations

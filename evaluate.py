@@ -53,7 +53,7 @@ def resolve_test_observation(
         return trained_obs_mode, bool(trained_use_aoi), ""
     obs_mode = requested_obs
     if requested_use_aoi is None:
-        use_aoi = bool(trained_use_aoi) if obs_mode == "aoi" else False
+        use_aoi = bool(trained_use_aoi) if obs_mode in ("aoi", "belief", "belief_point") else False
     else:
         use_aoi = requested_use_aoi
     return obs_mode, use_aoi, ""
@@ -213,6 +213,7 @@ def _print_summary(summary: dict) -> None:
         ("waypoint_fraction", "航路点完成比例"),
         ("nlos_fraction", "视线被建筑物挡住的比例"),
         ("min_clearance", "最近障碍间隙(米)"),
+        ("mean_belief_std", "平均预测标准差(米)"),
     ]
     print(f"共 {int(summary['n_episodes'])} 个回合（下面是平均值 ± 样本标准差）")
     for key, label in labels:
@@ -243,6 +244,7 @@ def _write_episodes(path: Path, rows: list[dict]) -> None:
         "waypoint_fraction",
         "nlos_fraction",
         "min_clearance",
+        "mean_belief_std",
     ]
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys, extrasaction="ignore")

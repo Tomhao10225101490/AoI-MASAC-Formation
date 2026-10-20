@@ -1,6 +1,6 @@
 # Tiny open-field run. It checks that training writes a checkpoint.
 # It is not the paper scenario: no buildings, no wind, two followers.
-algo: aoi_masac
+algo: belief_masac
 seed: 0
 device: cpu
 
