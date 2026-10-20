@@ -1,0 +1,78 @@
+# CPU-scale AoI-MASAC debug config.
+# `python train.py` uses this file. It is intentionally smaller than the
+# paper budget in configs/paper_*.yaml. Reward weights are a starting point,
+# not a tuned result.
+
+algo: aoi_masac
+seed: 0
+device: auto
+
+env:
+  map_width: 700
+  map_height: 600
+  n_followers: 4
+  dt: 1.0
+  max_steps: 200
+  v_min: 0.0
+  v_max: 6.0
+  max_speed_delta: 1.5
+  max_heading_delta: 0.40
+  uav_radius: 12.0
+  goal_radius: 40.0
+  formation_tol: 45.0
+  formation_scale: 120.0
+  n_nearest_obstacles: 1
+  max_obstacles: 1
+  obstacles:
+    - {x: 420.0, y: 300.0, radius: 40.0, vx: 0.0, vy: 0.0}
+  channel_mode: distance          # distance | independent | perfect
+  p0: 0.9
+  d0: 250.0
+  randomize_channel: true
+  p0_low: 0.3
+  p0_high: 1.0
+  aoi_cap: 30
+  obs_mode: aoi                   # aoi | perfect | hold | extrapolate
+  use_aoi: true
+  goal_xy: [640.0, 300.0]
+  start_xy: [200.0, 300.0]
+  start_speed: 2.0
+  start_noise: 15.0
+  seed: 0
+  w_progress: 0.05
+  w_heading: 0.10
+  w_formation: 0.01
+  w_form_progress: 0.05
+  w_smooth: 0.02
+  w_step: 0.02
+  formation_bonus: 0.20
+  collision_penalty: 40.0
+  success_bonus: 50.0
+  oob_penalty: 2.0
+
+train:
+  episodes: 30
+  warmup_steps: 1000
+  start_steps: 500
+  batch_size: 128
+  updates_per_step: 1
+  gamma: 0.99
+  tau: 0.005
+  lr_actor: 0.0003
+  lr_critic: 0.0003
+  lr_alpha: 0.0003
+  hidden: 128
+  buffer_size: 50000
+  grad_clip: 1.0
+  # OU noise on top of SAC exploration for the first N episodes (0 disables it).
+  ou_episodes: 50
+  ou_sigma: 0.3
+  expl_noise: 0.1
+  policy_delay: 2
+  target_noise: 0.2
+  noise_clip: 0.5
+  eval_every: 10
+  eval_episodes: 5
+  save_every: 10
+  log_update_every: 50
+  log_dir: runs

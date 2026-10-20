@@ -1,0 +1,26 @@
+# Tiny run used to check that training starts and writes a checkpoint.
+# This is not a scientific result.
+algo: aoi_masac
+seed: 0
+device: cpu
+
+env:
+  n_followers: 2
+  max_steps: 40
+  randomize_channel: false
+  p0: 0.8
+  start_noise: 5.0
+
+train:
+  episodes: 3
+  warmup_steps: 20
+  start_steps: 10
+  batch_size: 32
+  hidden: 32
+  buffer_size: 2000
+  updates_per_step: 1
+  ou_episodes: 0
+  eval_every: 0
+  save_every: 3
+  log_update_every: 10
+  log_dir: runs/smoke

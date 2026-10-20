@@ -1,0 +1,8 @@
+# Ablation: AoI features stay on, but p0 is fixed instead of drawn per episode.
+algo: aoi_masac
+env:
+  obs_mode: aoi
+  use_aoi: true
+  channel_mode: distance
+  randomize_channel: false
+  p0: 0.6

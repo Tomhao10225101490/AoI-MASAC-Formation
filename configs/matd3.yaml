@@ -1,0 +1,15 @@
+# MATD3: twin critics, delayed actor updates, target-policy smoothing.
+# Same lossy observation as MASAC-hold.
+algo: matd3
+env:
+  obs_mode: hold
+  use_aoi: false
+  channel_mode: distance
+  randomize_channel: true
+train:
+  lr_actor: 0.0001
+  lr_critic: 0.001
+  expl_noise: 0.15
+  policy_delay: 2
+  target_noise: 0.2
+  noise_clip: 0.5

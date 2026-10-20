@@ -1,0 +1,12 @@
+# MADDPG on the same lossy task as MASAC-hold (stale leader state, no AoI).
+algo: maddpg
+env:
+  obs_mode: hold
+  use_aoi: false
+  channel_mode: distance
+  randomize_channel: true
+train:
+  lr_actor: 0.0001
+  lr_critic: 0.001
+  expl_noise: 0.15
+  policy_delay: 1

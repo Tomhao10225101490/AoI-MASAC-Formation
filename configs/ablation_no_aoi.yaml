@@ -1,0 +1,9 @@
+# Ablation: AoI-MASAC observation layout, but the AoI coordinate is forced to 0.
+# The actor still sees the stale leader pose. By construction this matches
+# masac_hold.yaml; running both is a sanity check that the flag does what it says.
+algo: aoi_masac
+env:
+  obs_mode: aoi
+  use_aoi: false
+  channel_mode: distance
+  randomize_channel: true

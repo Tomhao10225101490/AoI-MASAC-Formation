@@ -1,0 +1,8 @@
+# CPU and GPU machines can share this list. Install a CUDA torch build
+# yourself if you have a GPU; the versions below are minimums, not pins.
+numpy>=1.24
+PyYAML>=6.0
+matplotlib>=3.7
+tensorboard>=2.14
+pytest>=7.0
+torch>=2.1

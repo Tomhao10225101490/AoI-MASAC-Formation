@@ -1,0 +1,20 @@
+algo: vanilla_masac
+env:
+  max_steps: 400
+  obs_mode: perfect
+  use_aoi: false
+  channel_mode: perfect
+  randomize_channel: false
+  p0: 1.0
+train:
+  episodes: 800
+  warmup_steps: 5000
+  start_steps: 2000
+  batch_size: 256
+  hidden: 256
+  buffer_size: 200000
+  ou_episodes: 50
+  eval_every: 25
+  eval_episodes: 10
+  save_every: 50
+  log_dir: runs/paper
