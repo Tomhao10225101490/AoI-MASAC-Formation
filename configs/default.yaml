@@ -53,12 +53,17 @@ env:
   w_heading: 0.05
   w_formation: 0.02
   w_form_progress: 0.25
+  # Formation cost is linear only up to this many meters. Past the cap it
+  # does not grow, so a long bad episode cannot become cheaper than a crash.
+  formation_error_cap: 80.0
   w_smooth: 0.02
   w_step: 0.01
   w_clearance: 0.5
   clearance_margin: 20.0
   formation_bonus: 0.15
-  collision_penalty: 30.0
+  # Worse than flying max_steps at the formation-error cap.
+  # 0.02 m^-1 * 80 m * sum_{k=0}^{499} 0.99^k ≈ 159, and 250 is above that.
+  collision_penalty: 250.0
   success_bonus: 40.0
   wp_bonus: 8.0
   oob_penalty: 1.0

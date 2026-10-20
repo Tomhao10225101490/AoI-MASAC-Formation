@@ -512,6 +512,155 @@ def test_belief_point_hides_std_but_keeps_aoi():
     assert obs[1][ObsIndex.STD_Z] == pytest.approx(0.0)
 
 
+def test_follower_sensor_does_not_see_the_leader():
+    env = UAVFormationEnv(
+        EnvConfig(
+            n_followers=4,
+            start_noise=0.0,
+            randomize_channel=False,
+            randomize_wind=False,
+            sensor_range=10_000.0,
+        )
+    )
+    obs, _ = env.reset(seed=0)
+    leader = env.uavs[0]
+    for i, follower in enumerate(env.uavs[1:], start=1):
+        true_rel = (
+            (leader.x - follower.x) / env.cfg.map_width,
+            (leader.y - follower.y) / env.cfg.map_height,
+            (leader.z - follower.z) / env.alt_scale,
+        )
+        seen = (
+            float(obs[i][ObsIndex.TEAMMATE_REL_X]),
+            float(obs[i][ObsIndex.TEAMMATE_REL_Y]),
+            float(obs[i][ObsIndex.TEAMMATE_REL_Z]),
+        )
+        assert obs[i][ObsIndex.TEAMMATE_PRESENT] == pytest.approx(1.0)
+        assert not np.allclose(seen, true_rel, atol=1e-3)
+    # A single follower has no other follower, so the teammate slot stays empty.
+    alone = UAVFormationEnv(_quiet_cfg(n_followers=1))
+    alone_obs, _ = alone.reset(seed=0)
+    assert alone_obs[1][ObsIndex.TEAMMATE_PRESENT] == pytest.approx(0.0)
+
+
+def test_slot_std_grows_with_an_unobserved_turn():
+    env = UAVFormationEnv(
+        _quiet_cfg(
+            obs_mode="belief",
+            use_aoi=True,
+            p0=0.0,
+            wind_obs_noise=0.0,
+            start_speed=8.0,
+            max_steps=12,
+        )
+    )
+    env.reset(seed=0)
+    env.uavs[0].v = 8.0
+    env.uavs[0].heading = 0.0
+    env.links[0].meas_heading = 0.0
+    env.links[0].meas_v = 8.0
+    env.reset_belief_from_stored_measurement(0)
+    actions = np.zeros((2, env.action_dim), dtype=np.float32)
+    actions[0, 1] = 1.0
+    env.step(actions)
+    early = float(np.mean(env._slot_std(0)))
+    early_pos = float(env.links[0].belief.position_std().mean())
+    for _ in range(5):
+        env.step(actions)
+    late = float(np.mean(env._slot_std(0)))
+    assert late > early * 1.5
+    assert late > early_pos * 2.0
+    # The actor sees that growth. Other modes keep the same coast but hide it.
+    belief_obs = env._observations()
+    assert belief_obs[1][ObsIndex.STD_X] > 0.0
+    assert belief_obs[1][ObsIndex.PRED_NLOS] == pytest.approx(0.0)
+    hidden = UAVFormationEnv(_quiet_cfg(obs_mode="belief_point", use_aoi=True, p0=0.0))
+    hidden.reset(seed=0)
+    hidden_obs, _, _, _, _ = hidden.step(np.zeros((2, hidden.action_dim), dtype=np.float32))
+    assert hidden_obs[1][ObsIndex.STD_X] == pytest.approx(0.0)
+    assert hidden_obs[1][ObsIndex.PRED_NLOS] == pytest.approx(0.0)
+
+
+def test_follower_heading_reward_uses_the_visible_heading():
+    env = UAVFormationEnv(
+        _quiet_cfg(
+            obs_mode="hold",
+            p0=0.0,
+            w_heading=1.0,
+            w_progress=0.0,
+            w_formation=0.0,
+            w_form_progress=0.0,
+            w_smooth=0.0,
+            w_step=0.0,
+            w_clearance=0.0,
+            formation_bonus=0.0,
+            wp_bonus=0.0,
+            collision_penalty=0.0,
+            oob_penalty=0.0,
+        )
+    )
+    env.reset(seed=0)
+    env.uavs[0].v = 0.0
+    env.uavs[0].heading = 0.0
+    env.uavs[1].v = 0.0
+    env.uavs[1].heading = math.pi
+    env.links[0].meas_heading = math.pi
+    env.links[0].meas_v = 0.0
+    env.reset_belief_from_stored_measurement(0)
+    _, rewards, _, _, _ = env.step(np.zeros((2, env.action_dim), dtype=np.float32))
+    # Visible heading matches the follower. The true leader heading is opposite,
+    # so a privileged heading term would have been -1.
+    assert rewards[1] == pytest.approx(1.0, abs=1e-5)
+
+
+def test_formation_cost_caps_and_collision_is_the_worse_outcome():
+    env = UAVFormationEnv(
+        _quiet_cfg(
+            w_formation=1.0,
+            w_form_progress=0.0,
+            w_heading=0.0,
+            w_smooth=0.0,
+            w_step=0.0,
+            w_clearance=0.0,
+            formation_bonus=0.0,
+            formation_error_cap=80.0,
+            obstacles=[],
+        )
+    )
+    env.reset(seed=0)
+    env._prev_form_err = np.array([500.0])
+    env.uavs[1].x = env.uavs[0].x - 500.0
+    env.uavs[1].y = env.uavs[0].y
+    env.uavs[1].z = env.uavs[0].z
+    rewards = env._rewards(
+        actions=np.zeros((2, env.action_dim)),
+        errors=np.array([500.0]),
+        progress=0.0,
+        captured=0,
+        hit_obstacle=False,
+        hit_uav=False,
+        oob=np.zeros(2, dtype=bool),
+    )
+    assert rewards[1] == pytest.approx(-80.0)
+    # Discounted cost of sitting on the cap for a full episode at the default
+    # formation weight is about 159. Crashing has to cost more than that.
+    default = EnvConfig()
+    discount = (1.0 - 0.99 ** default.max_steps) / 0.01
+    assert default.collision_penalty > default.w_formation * default.formation_error_cap * discount
+
+
+def test_altitude_error_is_the_price_of_climbing_and_splits_by_roof():
+    env = UAVFormationEnv(_quiet_cfg(n_followers=2))
+    env.reset(seed=0)
+    env.uavs[1].z = env.uavs[0].z + 30.0
+    env.uavs[2].z = env.uavs[0].z
+    env.links[0].blocked = 1
+    env.links[1].blocked = 0
+    env._accumulate_visibility(env._formation_errors())
+    assert env._mean_or_nan(env._nlos_alt_sum, env._nlos_link_steps) == pytest.approx(30.0)
+    assert env._mean_or_nan(env._los_alt_sum, env._los_link_steps) == pytest.approx(0.0)
+
+
 def test_bad_action_shape_and_unknown_config_key():
     env = UAVFormationEnv(_quiet_cfg())
     env.reset(seed=0)

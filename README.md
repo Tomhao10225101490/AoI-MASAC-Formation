@@ -1,38 +1,71 @@
-# 带屋顶遮挡的三维编队：Belief-MASAC
+# 用高度把视线买回来
 
-论文题目：
+论文工作题目：
 
-**Belief-Aware Multi-Agent Soft Actor-Critic for UAV Formation under Geometry-Dependent Packet Loss**
+**Paying Altitude for a Measurement: Slot-Belief UAV Formation under Roof Blockage**
 
-中文：在距离和建筑物屋顶一起决定丢包的三维空域里，用带预测不确定性的多智能体软演员-评论家做编队和避障。
+中文：屋顶把下行链路挡住以后，常速度槽位会沿着编队力臂偏掉。僚机看见的是这个槽位有多不可信。爬高可以买回一包测量，但编队是平的，高度误差要自己付。
 
-目标会议是 CCGrid 2027 或 WoWMoM 2027，两个只能投一个。按目前的计划，全文截稿是 2026-12-01（AoE），CCGrid 还要在 2026-11-24 交摘要。
+两个会只能投一个。这篇的读者在无线链路和飞行动作互相决定的那一边，所以正文按 **WoWMoM 2027** 来写。CCGrid 的房间是分布式系统和资源调度，这里没有调度器、任务放置或集群，投过去会被问系统贡献在哪。两个会的全文截稿按计划都是 2026-12-01（AoE），CCGrid 的摘要是 2026-11-24。日期照旧准备，房间只留一个。
 
-这个仓库是这条研究线的可运行代码。更完整的公式、文献判断和已修错误在 `docs/MODEL.md`。指标定义在 `docs/METRICS.md`。奖励还没有调完。下面凡是耗时，都是这台机器上的冒烟或短跑，**不能写进论文**。
+这个仓库是这条研究线的可运行代码。故事和公式在 `docs/MODEL.md` 第 0 节。指标在 `docs/METRICS.md`。奖励还没有调完。下面凡是耗时，都是这台机器上的冒烟或短跑，**不能写进论文当策略的成绩**。动机图里的数是信道和滤波器自己的数，可以引用，但要写明没有策略参与。
 
 ---
 
-## 1. 二维地图还能发吗，算法还要不要往前走
+## 1. 这篇论文在讲的一件事
 
-二维还能发。2026 年 10 月 Drones 上的 DI-MATD3 就是平面窄门里的编队，信道是有界时延。2025 年也有论文把二维点模型当成正式的一档实验。所以“二维一律发不出来”不成立。
+僚机爬高，不是因为观测里写着“消息旧了”。旧消息在开阔地只丢零点几个包，槽位还站得住。旧消息一旦落在楼后，会连丢大约五个包，而且领队多半在绕楼，航向已经不是上一包那个航向。槽位是领队位置加上机体偏移转过航向。力臂 40 m 时，航向的不确定会把槽位拉开，领队位置本身只偏了两米出头。演员要看见的是这件槽位上的事。
 
-编队加障碍、以及“楼会不会挡住链路”这两支，近两年已经把高度写进模型：
+闭环就这一圈：
 
-- Xie 等人 2025 年的编队避障（arXiv:2410.18495）明确说，从二维走到三维会放大探索空间，他们做了仿真和真机。
-- 2025 年底的三维城市编队把建筑物当成有高度的盒子。
-- 2025 年初的遮挡感知数据采集用建筑物高度判断射线能不能从屋顶上面过去。
+丢包，航向均值停在上一包，航向方差往上涨。槽位标准差乘上力臂。演员看见怀疑。它可以付高度，让线段从屋顶上面过去。包一到，信念重置，怀疑塌掉，高度代价也就该停。奖励里没有“请把 AoI 变小”。爬高会直接变成编队误差。策略如果爬，只能是因为它觉得付这个高度，比追一个已经拧偏的槽位更值。
 
-没有高度，就没有“爬高恢复视线”这个动作。地图因此改成三维：楼有屋顶，有的矮于升限，可以飞越；航路中间有一栋高于升限，必须绕开，而且只要脚印还夹在两机之间，无线电就继续被挡。
+航路把这件事分成三幕，地图已经按这个摆好：
 
-算法也不能停在“观测里加一个 AoI”。DI-MATD3 已经做了每条链路的 AoI，以及由 AoI 驱动的卡尔曼均值，并和“不预测”“常速度外推”比过。本文在这之上多三件事，而且三件事绑在一起：
+1. **50 m 的楼**，在第一段上。巡航高度 40 m 会撞，也会挡住无线电。爬过屋顶，碰撞和遮挡一起消失。这里高度是双赢，故事最容易被学会，也最不能拿来当唯一证据。
+2. **160 m 的楼**，高于 120 m 的升限，在中间那段。飞不过去，只能绕。绕开之前，脚印还夹在两机之间，链路就一直是非视距。这里爬高买不回视线。贴着过期槽位从楼侧面挤过去，才会撞。这一幕用来证明策略不是见楼就爬。
+3. **70 m 的楼**，在最后一段。又是只有飞越才能同时躲开碰撞和遮挡。
 
-1. 丢包是随机的，概率由三维距离和屋顶遮挡一起决定，不是一个事先给定的时延上界。
-2. 跟随者本地的常速度卡尔曼把**位置标准差**交给演员。预测槽位落在楼后时，过程噪声放大，因为这时领导者多半在转弯，常速度最不可信。
-3. 骨干是 MASAC。信道是随机的，策略的熵针对这个随机性。更新本身是标准的集中训练、分布执行，没有另造一个策略梯度。
+领队负责把这条航路飞完。它不为僚机的链路负责。这样高度上的变化才能记在看见槽位怀疑的僚机身上。
 
-奖励不写“请减小 AoI”。爬高会拉大高度上的编队误差，所以恢复视线是有代价的。这个代价要由策略自己权衡。
+默认参数下，不训练任何策略，滤波器和信道给出：
 
-正式写相关工作之前，把上面提到的论文打开核对。这里的定位按题目和公开摘要来写，不代替你自己的阅读，也不引用他们的成功率当本文的结果。
+| | 40 m 视距 | 40 m、屋顶挡住 |
+|---|---|---|
+| 收包概率 | 0.778 | 0.156 |
+| 两次成功之间平均丢掉的包 | 0.29 | 5.43 |
+| 连丢 6 步后，槽位标准差的最大轴 | 11.1 m | 22.1 m（过程噪声再乘 4） |
+| 同一时刻领队位置标准差（空中，不放大） | 2.3 m | 放大后位置也涨，槽位仍然更大 |
+| 航向均值 | 停在上一包 | 停在上一包 |
+
+表从图上来，命令是：
+
+```bash
+python3 scripts/motivate_slot_std.py --out results/motivation
+python3 scripts/plot_results.py motivation \
+  --csv results/motivation/slot_std_vs_lost_steps.csv --out figs/motivation
+```
+
+过程噪声乘 4 只表示直线外推在楼后更不可信。它不读取真实偏航，所以不是转弯检测器。
+
+### 审稿人该看哪张图
+
+1. **动机图**，上面那条命令。没有策略。它说明为什么要报槽位标准差，以及为什么全程平均会把楼后那段稀释掉。
+2. **主图**，`scripts/sweep_geometry.py`。信道是距离乘遮挡，横轴是 `p0`。纵轴把视距和非视距分开，编队误差和高度误差都分。`belief` 相对 `belief_point` 的差别，应该出现在非视距的高度误差上。视距段不该为了怀疑乱爬。
+3. **压力图**，`scripts/sweep_packet_loss.py`。丢包率与距离无关。它只说明滤波器在长丢包下还在，不代替主图。
+
+### 什么情况说明故事是假的
+
+- `belief` 和 `belief_point` 的非视距高度误差一样。标准差通道没有被用上。
+- 视距段也在猛爬。策略离开了编队，不是在买测量。
+- 160 m 那栋楼后面还贴着屋顶往上爬。它没看懂这条视线买不回来。
+- 把预测遮挡位重新塞进演员观测。那一位是过程噪声的开关，消融就不再干净。
+
+### 贡献写成一句，算法放在后面
+
+贡献是这条信息结构：几何丢包让常速度槽位在力臂上失效，演员看见槽位标准差，并用真实的高度误差去买一包新测量。MASAC 是求解器。集中训练、分布执行、双 Q、自动温度，都是现成的。DI-MATD3 已经把每条链路的 AoI 和卡尔曼均值交给了策略，场景是平面窄门、有界时延、没有屋顶。本文和它的差别是屋顶、随机丢包，以及策略看见的是槽位有多不可信，而不只是均值和年龄。
+
+正式写相关工作之前，把提到的论文打开核对。定位按题目和公开摘要来写，不引用他们的成功率当本文的结果。二维设定这两年仍有接收，见 `docs/MODEL.md` 第 1 节。地图做成三维，是因为没有高度就没有爬高恢复视线这个动作。
 
 ---
 
@@ -55,7 +88,7 @@
 
 风每个回合抽一次，0–4 m/s，只推动水平地速。演员看到带噪声的估计，评论家看真实风。
 
-障碍和最近一架队友的探测距离默认 250 m。领队状态不走这个传感器，走第 4 节的链路。滤波器用的建筑底图视为已知，和这个有限距离的感知不是同一路。
+障碍和最近一架队友的探测距离默认 250 m。对僚机来说，最近队友只在其他僚机里挑，不会挑到领队。领队状态不走这个传感器，走第 4 节的链路。滤波器用的建筑底图视为已知，和这个有限距离的感知不是同一路。
 
 ---
 
@@ -108,13 +141,13 @@ perfect 模式:
 
 丢了包，AoI +1，上限 40，并做一步常速度预测。收到包，AoI 归零，信念重置成这次测量。回合开始的免费同步不计入链路成功率。
 
-预测用的风是这一步的噪声估计，不是真实风。预测落点如果仍被楼挡住，过程噪声乘 4。观测里除了预测位置，还有三个轴的位置标准差。公式和默认方差在 `docs/MODEL.md` 第 7 节。
+预测用的风是这一步的噪声估计，不是真实风。航向均值停在上一包，航向方差每丢一步都涨，楼后再乘 4。观测里给演员的三个标准差是**槽位**标准差，不是领队位置标准差。`belief` 和 `belief_point` 只差这三维。预测遮挡位不进演员观测。僚机的机载传感器看不见领队。谁看见什么，写在 `docs/MODEL.md` 第 0 节。
 
 六种观测，网络结构相同：
 
 | 模式 | 槽位依据 | 年龄 | 标准差 | 配置 |
 |---|---|---|---|---|
-| `belief` | 卡尔曼均值 | 给 | 给 | 本文方法 |
+| `belief` | 卡尔曼均值，航向均值停在上一包 | 给 | 槽位标准差 | 本文方法 |
 | `belief_point` | 卡尔曼均值 | 给 | 不给 | 消融：只给均值 |
 | `aoi` | 上一包测量，不外推 | 给 | 不给 | 只告诉它消息有多旧 |
 | `extrapolate` | 卡尔曼均值 | 不给 | 不给 | 只外推，不给年龄和不确定性 |
@@ -129,7 +162,7 @@ perfect 模式:
 
 领队的进度是“离**当前**航路点又近了多少”，三维距离。捕获发生时，先记这个差值，再把目标换成下一个点。若先换点再算，一两百米的间距会变成一大笔负奖励，把过点奖金抵消掉。
 
-僚机的进度是真实槽位误差的下降，另有一个与误差成正比的小惩罚。全队同时在 18 m 内有一小笔保持奖金。间隙小于 20 m 按比例罚该机。过一个点、整条航路完成、碰撞，是全队共享的奖金或惩罚。权重是起点，不是调完的结果。完整式子在 `docs/MODEL.md` 第 9 节。
+僚机的进度是真实槽位误差的下降，另有一个与误差成正比的小惩罚，80 m 以后不再变大。爬离领队高度算进这个误差。航向对齐用这架僚机看得到的航向，不用领队的真实航向。全队同时在 18 m 内有一小笔保持奖金。间隙小于 20 m 按比例罚该机。过一个点、整条航路完成、碰撞，是全队共享的奖金或惩罚。碰撞惩罚是 250，比贴着 80 m 误差飞完 500 步更亏。权重把方向摆正了，不是调完的结果。完整式子在 `docs/MODEL.md` 第 0 节和第 9 节。
 
 成功 = 全部航路点已捕获，且这一步全队在真实槽位内，且全程没有碰撞。碰撞和超时把剩下的回合分开，三者加起来是 1。
 
@@ -176,7 +209,9 @@ envs/formation_env.py     环境、观测、奖励
 algos/                    SAC、MADDPG、MATD3；MAPPO 是占位
 train.py  evaluate.py     训练和评估
 metrics.py                按回合宏平均
-scripts/sweep_packet_loss.py
+scripts/sweep_packet_loss.py  与距离无关的丢包压力测试
+scripts/sweep_geometry.py     主扫描：距离乘遮挡
+scripts/motivate_slot_std.py  动机图：信道和滤波器，没有策略
 scripts/plot_results.py
 scripts/train_paper.sh
 configs/                  含 paper_belief_masac.yaml
@@ -209,20 +244,26 @@ python3 train.py --config configs/maddpg.yaml --seeds 0,1,2
 python3 train.py --config configs/matd3.yaml --seeds 0,1,2
 ```
 
-评估和 0%→70% 的独立丢包扫描：
+先出动机图（没有策略），再做距离乘遮挡的主评估。独立丢包扫描是压力测试：
+
+```bash
+python3 scripts/motivate_slot_std.py --out results/motivation
+python3 scripts/plot_results.py motivation \
+  --csv results/motivation/slot_std_vs_lost_steps.csv --out figs/motivation
+```
 
 ```bash
 python3 evaluate.py \
   --checkpoint runs/<某次>/ckpt_final.pt \
   --episodes 20 \
-  --channel-mode independent --p0 0.5 \
+  --channel-mode distance --p0 0.6 \
   --out results/eval_one \
   --save-traj results/eval_one/traj.npz
 
-bash scripts/run_key_experiment.sh runs/<某次>/ckpt_final.pt 30 results/sweep_belief
+bash scripts/run_key_experiment.sh runs/<某次>/ckpt_final.pt 30 results/belief
 ```
 
-扫描的横轴是与距离无关的丢包率，这样横轴是一个数。训练分布是距离乘遮挡。论文里还要另报一条测试时仍用距离×遮挡的曲线。
+`results/belief/geometry` 是主图：横轴是 `p0`，遮挡开着，图上把视距和非视距的编队误差和高度误差分开。`results/belief/sweep_independent` 把丢包率从 0% 扫到 70%，横轴是一个与距离无关的数，用来检查压力，不代替主图。
 
 论文规模（先用第 9 节的秒数乘一遍再决定）：
 
@@ -237,6 +278,7 @@ TensorBoard：`python3 -m tensorboard.main --logdir runs --port 6006`。
 ```bash
 python3 scripts/plot_results.py training --csv runs/<某次>/metrics.csv --out figs/train
 python3 scripts/plot_results.py trajectory --npz results/eval_one/traj.npz --out figs/traj
+python3 scripts/plot_results.py geometry --csv results/belief/geometry/geometry.csv --out figs/geometry
 ```
 
 轨迹图是俯视图。npz 里另有每架飞机的高度和每栋楼的高度，图上还没把高度画出来。
@@ -278,8 +320,8 @@ python3 scripts/plot_results.py trajectory --npz results/eval_one/traj.npz --out
 1. 把相关工作的原文读完再引用。正文写清楚：他们要么通信理想，要么时延有界且没有屋顶，要么只把卡尔曼均值交给策略、不给标准差。
 2. 只改一项奖励，把航路完成比例和编队误差拉到能看的水平。
 3. 用 `configs/paper_*.yaml` 把已实现的算法各跑至少 3 个种子。
-4. 每个检查点做 0%→70% 的独立丢包扫描，每个点至少 50 个评估回合。再单独报一条距离×遮挡的测试曲线。
-5. 五个消融按同样的种子跑。`ablation_no_uncertainty` 用来说明“只外推均值”不够；`ablation_no_blockage` 用来说明屋顶遮挡不是摆设。
+4. 每个检查点先跑 `scripts/sweep_geometry.py`，每个 `p0` 至少 50 个评估回合。主表报视距和非视距的编队误差，以及 `los_mean_alt_error` 和 `nlos_mean_alt_error`。独立丢包扫描留作压力测试，不拿来当主图。
+5. 五个消融按同样的种子跑。`ablation_no_uncertainty`（`belief_point`）是贡献的消融：均值和年龄都在，只拿掉槽位标准差。`ablation_no_blockage` 用来说明屋顶遮挡不是摆设。
 6. `moving_obstacles.yaml` 作为更挤的附加实验，不要和主图混在一条曲线里。
 7. 多种子的均值和方差还要在画图脚本里接上。俯视图还没有把高度画出来。
 8. MAPPO 要么按 `algos/mappo.py` 顶部的步骤做完，要么在论文里写明不做。
@@ -294,18 +336,24 @@ python3 scripts/plot_results.py trajectory --npz results/eval_one/traj.npz --out
 - 只有领队到僚机这一条链路会丢。丢包是信道抽出来的，策略不能选择这一步不发。
 - 建筑底图对滤波器是已知的。障碍感知本身仍有距离限制。
 - 奖励没调完。短跑成功率是 0。
-- 扫描图横轴是与距离无关的丢包，和训练用的距离×遮挡不是同一个分布。
+- 压力扫描的横轴是与距离无关的丢包，和训练用的距离×遮挡不是同一个分布。主图必须用几何扫描。
 - MAPPO 没有实现。没有 GPU 计时。没有多种子的论文图。
 
 ---
 
 ## 13. English summary
 
-Published 2025–2026 formation papers still include planar maps, so a 2D setting is not by itself a reason for rejection. The formation-and-obstacle papers a reviewer will cite have moved to 3D, and blockage-aware UAV papers decide line of sight by whether the ray clears the roof. This repo therefore uses a 1200 m × 800 m × [15, 120] m transit: eight buildings with heights, three of them sitting on the route, one taller than the altitude ceiling, and three spherical intruders that collide but do not block radio.
+Working title: *Paying Altitude for a Measurement: Slot-Belief UAV Formation under Roof Blockage*. Write the paper for WoWMoM. The story is a wireless link and a flight action deciding each other. CCGrid reviews scheduling and distributed systems; this repo has neither.
 
-The closest communication-aware formation result (DI-MATD3, Drones, 11 Oct 2026) already feeds per-link AoI and a Kalman mean into MATD3 under a bounded delay, on a planar gate, with no buildings. The increment here is a Bernoulli downlink `p = p0 exp(-d/d0)`, multiplied by an NLOS factor when the 3D segment intersects a building, plus the Kalman position standard deviation as an actor input. Process noise is inflated when the predicted leader lies behind a roof. The backbone is MASAC. The reward uses the true leader pose and does not pay the agent to reduce AoI, so climbing to restore the link costs formation altitude error.
+One claim. After a roof blocks the downlink, a constant-velocity slot goes false along the formation lever arm. The follower sees how unsure that slot is, and may spend altitude to buy a new packet. The reward charges the true slot, so altitude is a real cost. There is no term that says "please reduce AoI." The leader flies the route and does not optimize the followers' links, so a climb can be attributed to the follower that saw the doubt.
 
-Baselines are perfect-link MASAC deployed with hold-last, hold, constant-velocity coasting, AoI without a coast, coasting without the variance channels, MADDPG, and MATD3. Ablations also remove blockage, distance dependence, or channel randomization. MAPPO is an explicit stub.
+The route is three acts. A 50 m roof on the first leg is cleared by climbing, which also restores the link. A 160 m building, above the 120 m ceiling, must be flown around and keeps blocking until the footprint is clear; climbing there buys nothing. A 70 m roof on the last leg again requires an overflight. The easy roof is not sufficient evidence. The tall building is the check that the policy is not climbing at every building.
+
+At the default parameters, with no policy in the loop: at 40 m, line-of-sight delivery probability is 0.778 and the expected losses between successes are 0.29 packets; behind the roof those numbers are 0.156 and 5.43. After six lost packets in open air the largest slot axis is 11.1 m and the leader-position standard deviation is 2.3 m. Scaling process noise by 4, which is what a predicted roof does, raises that slot axis to 22.1 m. The heading mean stays at the last packet. `scripts/motivate_slot_std.py` writes this table.
+
+The headline evaluation is `scripts/sweep_geometry.py`: distance times blockage, x-axis `p0`, formation error and altitude error split into line of sight and non-line-of-sight. The comparison that carries the claim is `belief` against `belief_point`. If their non-line-of-sight altitude errors match, the standard-deviation channels are unused. If line-of-sight altitude error is also large, the policy left the formation instead of buying a measurement. The independent-loss sweep is a stress test.
+
+The closest published neighbor (DI-MATD3, Drones, 11 Oct 2026) already feeds per-link AoI and a Kalman mean into MATD3 under a bounded delay, on a planar gate, with no buildings. MASAC is the solver here, not the contribution. Baselines are perfect-link MASAC deployed with hold-last, hold, constant-velocity coasting, AoI without a coast, coasting without the variance channels, MADDPG, and MATD3. MAPPO is an explicit stub.
 
 Section 9 records only smoke and short CPU runs on a 4-core machine with no GPU (20 Oct 2026). Success rate on those runs is 0. A 256-wide update costs about 0.040 s; at one update per step that is about 4.4 hours per 800-episode seed if episodes run to 500 steps. That product is not a finished training run.
 

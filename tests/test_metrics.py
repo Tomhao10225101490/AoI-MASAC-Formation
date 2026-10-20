@@ -26,6 +26,14 @@ def _row(**kwargs):
         nlos_fraction=0.0,
         min_clearance=10.0,
         mean_belief_std=1.0,
+        los_mean_formation_error=8.0,
+        nlos_mean_formation_error=20.0,
+        los_mean_aoi=0.5,
+        nlos_mean_aoi=4.0,
+        los_mean_slot_std=1.0,
+        nlos_mean_slot_std=6.0,
+        los_mean_alt_error=1.0,
+        nlos_mean_alt_error=12.0,
     )
     base.update(kwargs)
     return base
@@ -45,6 +53,36 @@ def test_summarize_macro_average_and_partition():
     assert summary["formation_keeping_rate"] == 0.5
     assert summary["mean_return"] == 5.0
     assert summary["success_rate_std"] > 0.0
+    assert summary["n_episodes_with_nlos"] == 2.0
+    assert summary["nlos_mean_formation_error"] == 20.0
+
+
+def test_nlos_average_skips_episodes_that_never_blocked():
+    rows = [
+        _row(nlos_mean_formation_error=float("nan"), nlos_mean_aoi=float("nan"), nlos_mean_slot_std=float("nan")),
+        _row(nlos_mean_formation_error=12.0, nlos_mean_aoi=3.0, nlos_mean_slot_std=5.0),
+    ]
+    summary = summarize_episodes(rows)
+    assert summary["n_episodes_with_nlos"] == 1.0
+    assert summary["nlos_mean_formation_error"] == 12.0
+    assert summary["nlos_mean_aoi"] == 3.0
+    assert summary["nlos_mean_slot_std"] == 5.0
+
+
+def test_open_field_summary_keeps_nlos_columns_nan():
+    import math
+
+    row = _row(
+        nlos_mean_formation_error=float("nan"),
+        nlos_mean_aoi=float("nan"),
+        nlos_mean_slot_std=float("nan"),
+    )
+    summary = summarize_episodes([row])
+    assert summary["n_episodes_with_nlos"] == 0.0
+    assert math.isnan(summary["nlos_mean_formation_error"])
+    assert math.isnan(summary["nlos_mean_slot_std"])
+    assert math.isnan(summary["nlos_mean_slot_std_std"])
+    assert summary["mean_formation_error"] == 10.0
 
 
 def test_episode_flags_sum_to_one_on_a_short_rollout():
