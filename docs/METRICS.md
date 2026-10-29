@@ -50,6 +50,16 @@
 | `los_mean_aoi` / `nlos_mean_aoi` | 同一分割下、抽完包之后的 AoI | 丢掉 NaN 后对回合平均 |
 | `los_mean_slot_std` / `nlos_mean_slot_std` | 同一分割下的槽位标准差（米） | 丢掉 NaN 后对回合平均 |
 | `los_mean_alt_error` / `nlos_mean_alt_error` | 同一分割下，跟随者到真实平槽位的垂直距离绝对值（米）。这是爬高付出的高度。视距段也很大，说明它离开了编队，不是在楼后买测量 | 丢掉 NaN 后对回合平均 |
+| `los_mean_z` | 几何视距的跟随者-步上，跟随者的绝对高度（米） | 丢掉 NaN 后对回合平均 |
+| `overfly_mean_alt_error` / `overfly_mean_z` | 线段切到的屋顶都不高于升限时的高度误差，以及跟随者绝对高度。这是买得回来的那一跳 | 丢掉 NaN 后对回合平均 |
+| `impassable_mean_alt_error` / `impassable_mean_z` | 线段切到至少一栋高于升限的楼时的同样两个量。这里爬高买不回视线。一条线段同时切到矮屋顶和高楼时，算进这一列，不算进 overfly | 丢掉 NaN 后对回合平均 |
+| `overfly_mean_leader_z` / `impassable_mean_leader_z` | 上面两类里，领队高度。按步计一次，不按跟随者重复计。领队自己爬高时，平槽位跟着抬，高度误差会变小，绝对高度还在 | 丢掉 NaN 后对回合平均 |
+| `overfly_clear_rate` | 跟随者水平落在可飞越屋顶脚印里的步里，已经高于屋顶加机身半径的比例。没进过这种脚印的回合是 NaN | 丢掉 NaN 后对回合平均 |
+| `overfly_link_steps` / `impassable_link_steps` / `overfly_inside_steps` | 上面几列的样本数。没有样本时均值是 NaN，样本数是 0，不会被当成误差 0 | 回合平均 |
+
+非视距全程平均把“该爬的矮屋顶”和“不该爬的超限高楼”加在一起。航路上的三栋楼另记：领队进入脚印外 70 m 以内时，`near_roof_*` 是 50 m 的屋顶，`tall_*` 是 160 m 的楼，`far_roof_*` 是 70 m 的屋顶。这里记的是飞过这一栋的时候，不是“线段还切在楼里”的时候，所以爬过屋顶、视线已经恢复的那一段也算。要看的是 `near_roof_mean_alt_error` 和 `far_roof_mean_alt_error` 是否小于只给均值的策略，同时 `tall_mean_leader_z` 停在巡航高度附近。
+
+`leader_mode: route` 时领队由航路跟踪飞完这三栋，僚机仍由策略学习。`end_on_collision: false` 时碰撞照样记、照样罚，但回合继续，否则队形碰一下就结束，三栋楼没有样本。
 
 编队保持率不是“平均每架飞机有多接近”，而是“这一步是不是**全队**都在槽位里”。失败的回合也算进去，不会只在成功回合上报一个好看的数。
 

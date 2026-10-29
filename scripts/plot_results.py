@@ -230,7 +230,9 @@ def plot_trajectory(npz_path: Path, out: Path) -> None:
     radii = data["obstacle_r"]
     goal = data["goal"]
     map_size = data["map_size"]
-    fig, ax = plt.subplots(figsize=(8, 6.4))
+    has_z = "uav_z" in data.files
+    fig, axes = plt.subplots(2 if has_z else 1, 1, figsize=(8, 10.2 if has_z else 6.4), squeeze=False)
+    ax = axes[0, 0]
     ax.set_xlim(0, float(map_size[0]))
     ax.set_ylim(0, float(map_size[1]))
     ax.set_aspect("equal")
@@ -264,6 +266,37 @@ def plot_trajectory(npz_path: Path, out: Path) -> None:
     ax.scatter([goal[0]], [goal[1]], marker="*", s=160, color="#e6b800", zorder=6)
     ax.legend(loc="upper left", fontsize=9)
     ax.set_title("One evaluation trajectory")
+    if has_z:
+        side = axes[1, 0]
+        z = data["uav_z"]
+        zmax = float(data["z_max"]) if "z_max" in data.files else 120.0
+        if "obstacle_height" in data.files:
+            heights = data["obstacle_height"]
+            frame = obstacles[0]
+            for m in range(len(heights)):
+                height = float(heights[m])
+                if height <= 0.0:
+                    continue
+                color = "#c0392b" if height > zmax else "#95a5a6"
+                side.add_patch(
+                    plt.Rectangle(
+                        (float(frame[m, 0]) - float(radii[m]), 0.0),
+                        2.0 * float(radii[m]),
+                        height,
+                        color=color,
+                        alpha=0.35,
+                        linewidth=0,
+                    )
+                )
+        side.axhline(zmax, color="#c0392b", linestyle="--", linewidth=0.8, label="ceiling")
+        for i in range(n_agents):
+            side.plot(uav[:, i, 0], z[:, i], color=colors[i % len(colors)], linewidth=1.4)
+        side.set_xlim(0, float(map_size[0]))
+        side.set_ylim(0, 180)
+        side.set_xlabel("x (m)")
+        side.set_ylabel("altitude (m)")
+        side.set_title("Side view. Red roofs are above the ceiling.")
+        side.legend(fontsize=8)
     _save(fig, out, "trajectory")
 
 

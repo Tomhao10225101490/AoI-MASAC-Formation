@@ -34,6 +34,10 @@ EXPECTED_OBS_MODE = {
     "masac_extrapolate": "extrapolate",
     "maddpg": "hold",
     "matd3": "hold",
+    # Same observation as the proposed method, different solver. These exist
+    # so a win for Belief-MASAC is not confused with "SAC instead of TD3".
+    "belief_maddpg": "belief",
+    "belief_matd3": "belief",
 }
 
 
@@ -62,11 +66,17 @@ def build_algorithm(
         algo = MASAC(**kwargs)
         algo.algo_name = key
         return algo
-    if key == "maddpg":
-        return MADDPG(**kwargs)
-    if key == "matd3":
-        return MATD3(**kwargs)
+    if key in ("maddpg", "belief_maddpg"):
+        algo = MADDPG(**kwargs)
+        algo.algo_name = key
+        return algo
+    if key in ("matd3", "belief_matd3"):
+        algo = MATD3(**kwargs)
+        algo.algo_name = key
+        return algo
     if key == "mappo":
         return MAPPO(**kwargs)
-    known = ", ".join(sorted(set(MASAC_NAMES) | {"maddpg", "matd3", "mappo"}))
+    known = ", ".join(
+        sorted(set(MASAC_NAMES) | {"maddpg", "matd3", "mappo", "belief_maddpg", "belief_matd3"})
+    )
     raise ValueError(f"Unknown algorithm {name!r}. Known names: {known}")

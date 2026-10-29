@@ -29,7 +29,7 @@ import torch
 import torch.nn.functional as F
 
 from algos.buffer import ReplayBuffer
-from algos.common import OUNoise, clone_module, obs_to_tensor, soft_update
+from algos.common import OUNoise, clone_module, obs_to_tensor, soft_update, stack_to_numpy
 from algos.networks import SquashedGaussianActor, TwinQCritic
 
 
@@ -58,11 +58,13 @@ class MASAC:
         lr_alpha = float(train_cfg.get("lr_alpha", 3e-4))
         self.grad_clip = float(train_cfg.get("grad_clip", 1.0))
         self.ou_episodes = int(train_cfg.get("ou_episodes", 0))
-        self.target_entropy = -float(self.action_dim)
+        self.target_entropy = float(train_cfg.get("target_entropy", -float(self.action_dim)))
+        self.action_l2 = float(train_cfg.get("action_l2", 0.0))
         critic_in = self.global_dim + self.n_agents * self.action_dim
 
+        init_log_std = float(train_cfg.get("init_log_std", -0.5))
         self.actors = [
-            SquashedGaussianActor(obs_dims[i], action_dim, hidden).to(device)
+            SquashedGaussianActor(obs_dims[i], action_dim, hidden, init_log_std=init_log_std).to(device)
             for i in range(self.n_agents)
         ]
         self.critics = [TwinQCritic(critic_in, hidden).to(device) for _ in range(self.n_agents)]
@@ -102,17 +104,19 @@ class MASAC:
 
     @torch.no_grad()
     def act(self, obs_list: list[np.ndarray], explore: bool, episode: int = 0) -> np.ndarray:
-        actions = np.zeros((self.n_agents, self.action_dim), dtype=np.float32)
+        chosen: list[torch.Tensor] = []
         for i, actor in enumerate(self.actors):
             obs = obs_to_tensor(obs_list[i], self.device)
             if explore:
                 action, _ = actor.sample(obs)
             else:
                 action = actor.deterministic(obs)
-            a = action.squeeze(0).cpu().numpy()
-            if explore and episode < self.ou_episodes:
-                a = a + self._ou[i].sample()
-            actions[i] = np.clip(a, -1.0, 1.0).astype(np.float32)
+            chosen.append(action)
+        actions = stack_to_numpy(chosen)
+        if explore and episode < self.ou_episodes:
+            for i in range(self.n_agents):
+                actions[i] = actions[i] + self._ou[i].sample().astype(np.float32)
+        np.clip(actions, -1.0, 1.0, out=actions)
         return actions
 
     def push(
@@ -161,7 +165,15 @@ class MASAC:
             q1_pi, q2_pi = self.critics[i](batch.global_state, mixed)
             q_pi = torch.min(q1_pi, q2_pi)
             alpha = self.log_alpha[i].exp().detach()
-            actor_loss = (alpha * logp - q_pi).mean()
+            if self.action_l2 > 0.0:
+                # Returns here are thousands. An unnormalized -Q term drowns any
+                # penalty that is supposed to keep a residual near the tracker.
+                centered = q_pi - q_pi.mean()
+                scale = centered.std(unbiased=False).clamp_min(1e-3)
+                advantage = centered / scale
+                actor_loss = (alpha * logp - advantage).mean() + self.action_l2 * new_action.square().mean()
+            else:
+                actor_loss = (alpha * logp - q_pi).mean()
             self.actor_opts[i].zero_grad(set_to_none=True)
             actor_loss.backward()
             torch.nn.utils.clip_grad_norm_(self.actors[i].parameters(), self.grad_clip)

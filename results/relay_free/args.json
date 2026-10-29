@@ -1,0 +1,16 @@
+{
+  "config": "configs/paper_belief_masac.yaml",
+  "out": "results/relay_free",
+  "episodes": 48,
+  "seed": 7000,
+  "workers": 9,
+  "lift": 50.0,
+  "p0_values": "0.6,0.3",
+  "jinks": "0,1",
+  "nlos_factors": "0.2,0.01",
+  "relay_mode": "free",
+  "relay_period": 2,
+  "canyon_random": true,
+  "triggers": "oracle,none,mesh+none,relay:fixed,relay:coveraoi:10",
+  "no_blockage_control": true
+}

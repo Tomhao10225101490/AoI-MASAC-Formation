@@ -61,12 +61,19 @@ from envs.geometry import (
     segment_hits_vertical_cylinder,
     wrap_angle,
 )
-from envs.scenario import default_obstacles, default_waypoints
+from envs.scenario import (
+    CANYON_MAX_OBSTACLES,
+    canyon_scenario,
+    default_obstacles,
+    default_waypoints,
+    sample_canyon,
+)
 
 # Static disks in old configs have no height. Treat them as columns taller
 # than the altitude ceiling so a test that parks an aircraft inside the
 # footprint still collides and still loses line of sight.
 _LEGACY_COLUMN_HEIGHT = 200.0
+_ACT_ROLES = ("near_roof", "tall", "far_roof")
 
 OBS_MODES = ("aoi", "perfect", "hold", "extrapolate", "belief", "belief_point")
 
@@ -98,6 +105,10 @@ class ObsIndex:
     # Kept so the rest of the vector does not shift. Always written as 0.
     # Predicted blockage used to live here and was visible to every baseline.
     PRED_NLOS = 18
+    # Freshest leader packet in the team, divided by aoi_cap. Written for
+    # belief modes only; every other mode stores 0. This is the trigger a
+    # relay policy needs, and it does not reveal the leader's true pose.
+    TEAM_AOI = 34
     SLOT_X = 19
     SLOT_Y = 20
     SLOT_Z = 21
@@ -113,7 +124,7 @@ class ObsIndex:
     TEAMMATE_DIST = 31
     TEAMMATE_PRESENT = 32
     IS_LEADER = 33
-    OBS_START = 34
+    OBS_START = 35
     # rel_x, rel_y, rel_z, vx, vy, vz, radius, height, present
     OBS_FEATS = 9
 
@@ -224,8 +235,90 @@ class EnvConfig:
     wp_bonus: float = 8.0
     oob_penalty: float = 1.0
     obstacle_speed_norm: float = 10.0
+    # "learned": the policy is the whole command. "slot": track the true slot
+    # (oracle). "residual": a tracker follows the slot this aircraft is
+    # allowed to believe, and the policy gates that tracker. A zero command
+    # leaves the tracker alone. A command near ±1 replaces the tracker on
+    # that axis, which is how a follower pays altitude when the slot is
+    # not credible.
+    leader_mode: str = "learned"
+    follower_mode: str = "learned"
+    # The story measurement has to reach all three roofs. Ending the episode
+    # on the first brush never gets there. When this is false, a collision is
+    # still recorded and still penalized, but the route continues.
+    end_on_collision: bool = True
+    collision_step_penalty: float = 2.0
+    # Penalty on the learned correction in residual mode, per follower per step.
+    w_residual: float = 0.05
+    # When false the route leader goes around every roof at cruise altitude,
+    # so only the followers can decide whether a climb is worth a packet.
+    route_overfly: bool = True
+    # Unannounced leader manoeuvres: a piecewise-constant yaw-rate and speed
+    # command added to the route tracker, redrawn every ``leader_jink_hold``
+    # steps. Zero keeps the leader as predictable as a constant-velocity
+    # filter assumes, and then a stale packet costs almost nothing.
+    leader_jink: float = 0.0
+    leader_jink_hold: int = 15
+    # Share of the manoeuvre that goes into yaw. Zero in a street canyon,
+    # where the leader can only brake and accelerate.
+    leader_jink_yaw: float = 1.0
+    # "transit": the default three-roof route. "canyon": parallel streets
+    # (envs/scenario.py) that replace obstacles, waypoints, offsets, start.
+    scenario: str = "transit"
+    # "off": no relay. "free": every follower rebroadcasts every step. That
+    # is an upper bound, four extra transmissions and no collisions.
+    # "beacon": the leader still speaks every step. On a separate neighbour
+    # channel, exactly one follower beacons every ``relay_period`` steps,
+    # the one chosen by ``beacon_select``. Formation flying already sends
+    # that beacon. "tdma": the beacon takes the leader's slot instead.
+    follower_relay: bool = False
+    relay_mode: str = "off"
+    relay_period: int = 2
+    beacon_select: str = "freshest"
+    # On a TDMA relay slot, hand the slot back to the leader when the freshest
+    # follower packet is younger than this many steps. Negative means the
+    # scheduled relay slot is always used.
+    relay_aoi_gate: int = -1
+    # Draw a new street canyon at every reset. max_obstacles stays fixed.
+    canyon_random: bool = False
+    # Per-episode ranges. Used when the matching *_random flag is set and the
+    # reset options did not pin the value.
+    leader_jink_random: bool = False
+    leader_jink_low: float = 0.0
+    leader_jink_high: float = 1.0
+    nlos_random: bool = False
+    nlos_low: float = 0.01
+    nlos_high: float = 0.2
+    # Followers share the mean formation error, so the aircraft that spends
+    # altitude is paid when the rest of the team gets a better slot.
+    shared_formation_reward: bool = False
+    # Residual policy commands altitude only. Lateral axes stay with the tracker.
+    residual_vertical_only: bool = False
 
     def __post_init__(self) -> None:
+        if self.scenario == "canyon":
+            layout = canyon_scenario()
+            self.obstacles = layout["obstacles"]
+            self.waypoints = layout["waypoints"]
+            self.formation_offsets = layout["formation_offsets"]
+            self.start_xy = layout["start_xy"]
+            self.start_noise = 0.0
+            cap = CANYON_MAX_OBSTACLES if self.canyon_random else len(self.obstacles) + len(self.extra_obstacles)
+            self.max_obstacles = max(self.max_obstacles, cap)
+        elif self.scenario != "transit":
+            raise ValueError(f"unknown scenario {self.scenario!r}")
+        if self.follower_relay and self.relay_mode == "off":
+            self.relay_mode = "free"
+        if self.relay_mode not in ("off", "free", "tdma", "beacon"):
+            raise ValueError(f"unknown relay_mode {self.relay_mode!r}")
+        if self.beacon_select not in ("freshest", "random", "round"):
+            raise ValueError(f"unknown beacon_select {self.beacon_select!r}")
+        if self.relay_mode == "tdma" and self.relay_period < 2:
+            raise ValueError("relay_period must be >= 2 in tdma mode")
+        if self.relay_period < 1:
+            raise ValueError("relay_period must be >= 1")
+        if not 0.0 <= self.nlos_low <= self.nlos_high <= 1.0:
+            raise ValueError("nlos range must sit inside [0, 1] and be ordered")
         self.start_xy = (float(self.start_xy[0]), float(self.start_xy[1]))
         self.waypoints = [_as_waypoint(p, self.start_z) for p in self.waypoints]
         if self.n_followers < 1:
@@ -277,6 +370,12 @@ class EnvConfig:
             raise ValueError("formation_error_cap must be positive")
         if self.belief_meas_var_heading < 0.0:
             raise ValueError("belief_meas_var_heading must be non-negative")
+        if self.leader_mode not in ("learned", "route"):
+            raise ValueError("leader_mode must be 'learned' or 'route'")
+        if self.follower_mode not in ("learned", "slot", "residual"):
+            raise ValueError("follower_mode must be 'learned', 'slot', or 'residual'")
+        if self.collision_step_penalty < 0.0:
+            raise ValueError("collision_step_penalty must be non-negative")
 
 
 def env_config_from_dict(data: dict) -> EnvConfig:
@@ -316,6 +415,7 @@ class _Obstacle:
     vy: float
     vz: float
     blocks_radio: bool
+    role: str = ""
 
     @property
     def moving(self) -> bool:
@@ -348,6 +448,7 @@ class _Obstacle:
             vy=vy,
             vz=vz,
             blocks_radio=blocks and height > 0.0,
+            role=str(raw.get("role", "")),
         )
 
 
@@ -365,6 +466,9 @@ class _Link:
     blocked: int
     pred_blocked: int
     belief: LeaderBelief
+    # "los", "overfly" (roof at or below the ceiling), or "impassable"
+    # (roof above the ceiling). Impassable wins if one segment hits both.
+    block_class: str = "los"
 
 
 class UAVFormationEnv:
@@ -414,6 +518,8 @@ class UAVFormationEnv:
         self.ep_obs_mode = self.cfg.obs_mode
         self.ep_use_aoi = bool(self.cfg.use_aoi)
         self.ep_use_blockage = bool(self.cfg.use_blockage)
+        self.ep_nlos_factor = float(self.cfg.nlos_factor)
+        self.ep_leader_jink = float(self.cfg.leader_jink)
         self._reset_stat_counters()
 
     def reset(
@@ -427,7 +533,15 @@ class UAVFormationEnv:
         """
         if seed is not None:
             self._rng = np.random.default_rng(int(seed))
+        # Own stream, so the leader flies the same manoeuvres whatever the
+        # followers do with the shared generator.
+        self._jink_rng = np.random.default_rng(int(self._rng.integers(2**31)))
+        self._relay_rng = np.random.default_rng(int(self._rng.integers(2**31)))
+        self._relay_ok = 0
+        self._relay_attempts = 0
+        self._jink = np.zeros(2, dtype=np.float64)
         self._apply_options(options or {})
+        self._maybe_resample_canyon()
         self._sample_wind()
         self._spawn()
         self._wp_index = 0
@@ -450,7 +564,9 @@ class UAVFormationEnv:
             )
         if not np.isfinite(actions).all():
             raise ValueError("actions contain NaN or Inf")
-        actions = np.clip(actions, -1.0, 1.0)
+        actions = np.array(np.clip(actions, -1.0, 1.0), dtype=np.float64, copy=True)
+        policy_actions = actions.copy()
+        actions = self._realized_actions(actions)
 
         self._sample_wind_obs()
         self._integrate(actions)
@@ -473,17 +589,36 @@ class UAVFormationEnv:
             hit_obstacle=hit_obstacle,
             hit_uav=hit_uav,
             oob=oob,
+            policy_actions=policy_actions,
         )
 
         self._step_count += 1
+        if hit_obstacle:
+            self._hit_obstacle_ever = True
+        if hit_uav:
+            self._hit_uav_ever = True
         collided = bool(hit_obstacle or hit_uav)
+        ever = bool(self._hit_obstacle_ever or self._hit_uav_ever)
         in_formation = bool(np.all(errors <= self.cfg.formation_tol))
         route_done = self._wp_done >= len(self.waypoints)
-        success = bool(route_done and in_formation and not collided)
-        timeout = bool(
-            self._step_count >= self.cfg.max_steps and not success and not collided
-        )
-        terminated = bool(success or collided)
+        success = bool(route_done and in_formation and not ever)
+        if route_done:
+            self._route_hold += 1
+        else:
+            self._route_hold = 0
+        if self.cfg.end_on_collision:
+            timeout = bool(
+                self._step_count >= self.cfg.max_steps and not success and not collided
+            )
+            terminated = bool(success or collided)
+        else:
+            # Once the route has been finished, keep a short tail for the last
+            # roof and then stop. Hovering until max_steps does not add a new act.
+            route_settled = self._route_hold >= 30
+            timeout = bool(
+                not success and (self._step_count >= self.cfg.max_steps or route_settled)
+            )
+            terminated = bool(success)
         truncated = bool(timeout)
         self._accumulate(errors, in_formation)
         self._accumulate_visibility(errors)
@@ -496,9 +631,15 @@ class UAVFormationEnv:
         info["packet_success"] = packet_ok.copy()
         info["formation_errors"] = errors.copy()
         info["waypoints_done"] = int(self._wp_done)
+        info["executed_actions"] = actions.astype(np.float32, copy=True)
+        info["policy_actions"] = policy_actions.astype(np.float32, copy=True)
         if terminated or truncated:
             info["episode"] = self._episode_dict(
-                success, collided, timeout, hit_obstacle, hit_uav
+                success,
+                ever,
+                timeout,
+                self._hit_obstacle_ever,
+                self._hit_uav_ever,
             )
         return self._observations(), rewards, terminated, truncated, info
 
@@ -640,6 +781,32 @@ class UAVFormationEnv:
             self.ep_use_blockage = bool(options["use_blockage"])
         else:
             self.ep_use_blockage = bool(cfg.use_blockage)
+        if "nlos_factor" in options and options["nlos_factor"] is not None:
+            self.ep_nlos_factor = float(options["nlos_factor"])
+        elif cfg.nlos_random:
+            self.ep_nlos_factor = float(self._rng.uniform(cfg.nlos_low, cfg.nlos_high))
+        else:
+            self.ep_nlos_factor = float(cfg.nlos_factor)
+        if "leader_jink" in options and options["leader_jink"] is not None:
+            self.ep_leader_jink = float(options["leader_jink"])
+        elif cfg.leader_jink_random:
+            self.ep_leader_jink = float(self._rng.uniform(cfg.leader_jink_low, cfg.leader_jink_high))
+        else:
+            self.ep_leader_jink = float(cfg.leader_jink)
+        if not 0.0 <= self.ep_nlos_factor <= 1.0:
+            raise ValueError(f"nlos_factor must be in [0, 1], got {self.ep_nlos_factor}")
+
+    def _maybe_resample_canyon(self) -> None:
+        cfg = self.cfg
+        if cfg.scenario != "canyon" or not cfg.canyon_random:
+            return
+        layout = sample_canyon(self._rng)
+        self._obstacle_init = [_Obstacle.from_dict(o, cfg.start_z) for o in layout["obstacles"]]
+        self.offsets = [tuple(float(v) for v in p) for p in layout["formation_offsets"]]
+        self.waypoints = [_as_waypoint(p, cfg.start_z) for p in layout["waypoints"]]
+        cfg.start_xy = (float(layout["start_xy"][0]), float(layout["start_xy"][1]))
+        if len(self._obstacle_init) + len(cfg.extra_obstacles) > cfg.max_obstacles:
+            raise RuntimeError("random canyon exceeded max_obstacles")
 
     def _sample_wind(self) -> None:
         cfg = self.cfg
@@ -685,7 +852,7 @@ class UAVFormationEnv:
                 self.uavs.append(_UAV(x, y, float(slot[2]), cfg.start_speed, leader.heading, 0.0))
         self.obstacles = [
             _Obstacle(
-                o.x, o.y, o.z, o.radius, o.height, o.vx, o.vy, o.vz, o.blocks_radio
+                o.x, o.y, o.z, o.radius, o.height, o.vx, o.vy, o.vz, o.blocks_radio, o.role
             )
             for o in self._obstacle_init
         ]
@@ -874,18 +1041,272 @@ class UAVFormationEnv:
                 break
         return captured
 
-    def _radio_blocked(
-        self, ax: float, ay: float, az: float, bx: float, by: float, bz: float
-    ) -> bool:
+    def _realized_actions(self, actions: np.ndarray) -> np.ndarray:
+        """Replace scripted agents. The buffer must store these, not the raw policy."""
+        if self.cfg.leader_mode == "route":
+            x, y, z, brake = self._avoid(self.uavs[0], *self._route_aim())
+            actions[0] = self._track_action(self.uavs[0], x, y, z, brake=brake)
+            if self.ep_leader_jink > 0.0:
+                if self._step_count % max(1, self.cfg.leader_jink_hold) == 0:
+                    self._jink = self._jink_rng.uniform(-1.0, 1.0, size=2) * self.ep_leader_jink
+                # The tracker regulates speed with gain 1/(max_accel*dt), so a
+                # raw offset of j shifts cruise speed by j*max_accel*dt. Scale
+                # it so leader_jink=1 means a +-6 m/s speed swing.
+                speed_gain = 6.0 / (self.cfg.max_accel * self.cfg.dt)
+                actions[0, 0] = np.clip(actions[0, 0] + speed_gain * self._jink[0], -1.0, 1.0)
+                actions[0, 1] = np.clip(
+                    actions[0, 1] + self.cfg.leader_jink_yaw * self._jink[1], -1.0, 1.0
+                )
+        if self.cfg.follower_mode == "slot":
+            slots = self._true_slots()
+            leader = self.uavs[0]
+            for i in range(self.n_followers):
+                ground = math.hypot(
+                    leader.v * math.cos(leader.heading) + self.wind_x,
+                    leader.v * math.sin(leader.heading) + self.wind_y,
+                )
+                actions[i + 1] = self._slot_track_action(
+                    self.uavs[i + 1], slots[i], leader.heading, ground
+                )
+        elif self.cfg.follower_mode == "residual":
+            for i in range(self.n_followers):
+                slot = self._believed_slot(i)
+                ref = self._reference_pose(i)
+                nominal = self._slot_track_action(
+                    self.uavs[i + 1], slot, float(ref[4]), float(ref[3])
+                )
+                # Zero policy = follow the believed slot. A large command
+                # replaces the tracker on that axis instead of being added
+                # to an already-saturated command.
+                command = np.array(actions[i + 1], copy=True)
+                if self.cfg.residual_vertical_only:
+                    command[0] = 0.0
+                    command[1] = 0.0
+                gate = np.abs(command)
+                actions[i + 1] = np.clip(nominal * (1.0 - gate) + command, -1.0, 1.0)
+        return actions
+
+    def _believed_slot(self, follower_index: int) -> tuple[float, float, float]:
+        """Slot written from the leader pose this follower is allowed to know."""
+        ref_x, ref_y, ref_z, _ref_v, ref_h, _ref_vz = (
+            float(v) for v in self._reference_pose(follower_index)
+        )
+        des = self._slot_from((ref_x, ref_y, ref_z), ref_h, self._offset_xyz(follower_index))
+        return float(des[0]), float(des[1]), float(des[2])
+
+    def _route_aim(self) -> tuple[float, float, float]:
+        """Where the route leader should point this step.
+
+        A roof at or below the ceiling is cleared by climbing. A building
+        above the ceiling is passed on the tangent that stays closer to the
+        waypoint. Clutter off the route is avoided only when it is actually
+        on the segment.
+        """
+        leader = self.uavs[0]
+        wx, wy, wz = self.waypoints[min(self._wp_index, len(self.waypoints) - 1)]
+        if not self.cfg.route_overfly:
+            wz = min(wz, self.cfg.start_z)
+        hits = []
         margin = float(self.cfg.blockage_margin)
         for o in self.obstacles:
             if not o.blocks_radio:
                 continue
             if segment_hits_vertical_cylinder(
+                leader.x, leader.y, leader.z, wx, wy, wz, o.x, o.y, o.radius + margin, o.height
+            ):
+                hits.append(o)
+        impassable = [
+            o for o in hits if o.height > self.cfg.z_max or not self.cfg.route_overfly
+        ]
+        if impassable:
+            building = min(impassable, key=lambda o: math.hypot(o.x - leader.x, o.y - leader.y))
+            return (*self._tangent_point(leader, building, wx, wy), min(wz, 70.0))
+        if hits:
+            roof = min(hits, key=lambda o: math.hypot(o.x - leader.x, o.y - leader.y))
+            clearance = roof.height + self.cfg.uav_radius + 8.0
+            return wx, wy, max(wz, min(clearance, self.cfg.z_max - 2.0))
+        return wx, wy, wz
+
+    def _tangent_point(
+        self, leader: _UAV, building: _Obstacle, wx: float, wy: float, radius: float | None = None
+    ) -> tuple[float, float]:
+        if radius is None:
+            radius = building.radius + self.cfg.uav_radius + 24.0
+        dx = leader.x - building.x
+        dy = leader.y - building.y
+        dist = math.hypot(dx, dy)
+        if dist < 1e-6:
+            return building.x + radius, building.y
+        ang = math.atan2(dy, dx)
+        if dist <= radius:
+            # Already inside the keep-out. Step straight back out.
+            return building.x + dx / dist * (radius + 8.0), building.y + dy / dist * (radius + 8.0)
+        phi = math.acos(max(-1.0, min(1.0, radius / dist)))
+        candidates = []
+        for sign in (1.0, -1.0):
+            a = ang + sign * phi
+            candidates.append((building.x + radius * math.cos(a), building.y + radius * math.sin(a)))
+        return min(candidates, key=lambda p: math.hypot(p[0] - wx, p[1] - wy))
+
+    def _track_action(self, uav: _UAV, x: float, y: float, z: float, brake: bool = False) -> np.ndarray:
+        cfg = self.cfg
+        dist = math.hypot(x - uav.x, y - uav.y)
+        ground = min(12.0, max(4.0, dist * 0.15))
+        if dist < cfg.wp_radius:
+            ground = min(ground, 6.0)
+        if brake:
+            ground = min(ground, 6.0)
+        a_v, a_w = self._horizontal_command(uav, x, y, ground)
+        vz_target = float(np.clip((z - uav.z) / 1.5, -cfg.vz_max, cfg.vz_max))
+        a_z = float(np.clip((vz_target - uav.vz) / (cfg.max_climb_accel * cfg.dt), -1.0, 1.0))
+        return np.array([a_v, a_w, a_z], dtype=np.float64)
+
+    def _horizontal_command(
+        self, uav: _UAV, x: float, y: float, ground_speed: float
+    ) -> tuple[float, float]:
+        """Speed and yaw commands for a ground track toward (x, y), crabbing into the measured wind."""
+        cfg = self.cfg
+        bearing = math.atan2(y - uav.y, x - uav.x)
+        air_x = ground_speed * math.cos(bearing) - self.wind_obs_x
+        air_y = ground_speed * math.sin(bearing) - self.wind_obs_y
+        err = wrap_angle(math.atan2(air_y, air_x) - uav.heading)
+        a_w = float(np.clip(err / max(cfg.max_yaw_rate * cfg.dt, 1e-6), -1.0, 1.0))
+        v_target = math.hypot(air_x, air_y) * max(0.0, math.cos(err))
+        a_v = float(np.clip((v_target - uav.v) / (cfg.max_accel * cfg.dt), -1.0, 1.0))
+        return a_v, a_w
+
+    def _slot_track_action(
+        self, uav: _UAV, slot, ref_heading: float, ref_speed: float
+    ) -> np.ndarray:
+        """Hold a moving slot: leader speed feed-forward plus along-track catch-up.
+
+        A waypoint tracker capped at the leader's cruise speed can never close
+        a gap behind a moving slot, so the formation error it leaves is lag,
+        not communication.
+        """
+        cfg = self.cfg
+        fx, fy = math.cos(ref_heading), math.sin(ref_heading)
+        ex, ey = float(slot[0]) - uav.x, float(slot[1]) - uav.y
+        along = ex * fx + ey * fy
+        aim_x, aim_y = float(slot[0]) + 25.0 * fx, float(slot[1]) + 25.0 * fy
+        aim_x, aim_y, aim_z, brake = self._avoid(uav, aim_x, aim_y, float(slot[2]))
+        ground = float(np.clip(ref_speed + 0.4 * along, 0.0, cfg.v_max))
+        if brake:
+            ground = min(ground, 6.0)
+        a_v, a_w = self._horizontal_command(uav, aim_x, aim_y, ground)
+        vz_target = float(np.clip((aim_z - uav.z) / 1.5, -cfg.vz_max, cfg.vz_max))
+        a_z = float(np.clip((vz_target - uav.vz) / (cfg.max_climb_accel * cfg.dt), -1.0, 1.0))
+        return np.array([a_v, a_w, a_z], dtype=np.float64)
+
+    def _avoid(self, uav: _UAV, x: float, y: float, z: float) -> tuple[float, float, float, bool]:
+        """Local safety layer. Returns the aim and whether to slow down.
+
+        A short roof on the path is climbed. A building above the ceiling is
+        flown around. If the climb cannot finish before the wall, the aim is
+        pushed off the footprint and the caller brakes. Braking starts at the
+        stopping distance, so a building merely nearby does not stall the route.
+        """
+        cfg = self.cfg
+        brake = False
+        gx = uav.v * math.cos(uav.heading) + self.wind_obs_x
+        gy = uav.v * math.sin(uav.heading) + self.wind_obs_y
+        stop_dist = uav.v * uav.v / (2.0 * max(cfg.max_accel, 1e-6)) + 8.0
+        for o in self.obstacles:
+            if o.height <= 0.0:
+                continue
+            keep = o.radius + cfg.uav_radius + 6.0
+            near = min(
+                math.hypot(uav.x + gx * t - o.x, uav.y + gy * t - o.y)
+                for t in (0.0, 1.0, 2.0, 3.0)
+            )
+            if near >= keep:
+                continue
+            roof = o.height + cfg.uav_radius + 8.0
+            if roof > cfg.z_max - 2.0:
+                x, y = self._tangent_point(uav, o, x, y, radius=keep + 10.0)
+                continue
+            z = max(z, roof)
+            dist_body = math.hypot(uav.x - o.x, uav.y - o.y) - o.radius - cfg.uav_radius
+            if uav.z < roof and dist_body < stop_dist:
+                brake = True
+                dx, dy = uav.x - o.x, uav.y - o.y
+                d = max(math.hypot(dx, dy), 1e-6)
+                push = max(0.0, keep - min(d, keep)) + 8.0
+                x += dx / d * push
+                y += dy / d * push
+        return x, y, z, brake
+
+    def _roles_near_leader(self) -> list[str]:
+        """Route buildings the leader is passing, whether or not the link is already clear.
+
+        Radio blockage stops once the formation has climbed over a short roof,
+        so a blockage-only average would throw away the cleared part of the act.
+        """
+        leader = self.uavs[0]
+        found = []
+        for obstacle in self.obstacles:
+            if obstacle.role not in _ACT_ROLES:
+                continue
+            if math.hypot(leader.x - obstacle.x, leader.y - obstacle.y) <= obstacle.radius + 70.0:
+                found.append(obstacle.role)
+        return found
+
+    def _block_class(
+        self, ax: float, ay: float, az: float, bx: float, by: float, bz: float
+    ) -> str:
+        """Classify the segment by the roofs it actually cuts.
+
+        ``impassable`` means at least one cut roof is taller than the
+        altitude ceiling, so climbing cannot buy the link. ``overfly`` means
+        every cut roof is at or below the ceiling. ``los`` means no roof is cut.
+        A segment that cuts both kinds is impassable: one tall roof is enough
+        to make the climb worthless.
+        """
+        margin = float(self.cfg.blockage_margin)
+        ceiling = float(self.cfg.z_max)
+        saw_overfly = False
+        for o in self.obstacles:
+            if not o.blocks_radio:
+                continue
+            if not segment_hits_vertical_cylinder(
                 ax, ay, az, bx, by, bz, o.x, o.y, o.radius + margin, o.height
             ):
-                return True
-        return False
+                continue
+            if o.height > ceiling:
+                return "impassable"
+            saw_overfly = True
+        return "overfly" if saw_overfly else "los"
+
+    def _radio_blocked(
+        self, ax: float, ay: float, az: float, bx: float, by: float, bz: float
+    ) -> bool:
+        return self._block_class(ax, ay, az, bx, by, bz) != "los"
+
+    def _note_overfly_clearance(self, follower: _UAV) -> None:
+        """Count a follower standing in a roof that climbing can clear.
+
+        The footprint test matches the collision cylinder: horizontal overlap
+        includes the fuselage. Cleared means the vertical gap used by
+        collision is non-negative, so the aircraft is above that roof.
+        """
+        cfg = self.cfg
+        ceiling = float(cfg.z_max)
+        inside = False
+        cleared = True
+        for o in self.obstacles:
+            if not o.blocks_radio or o.height <= 0.0 or o.height > ceiling:
+                continue
+            horiz = math.hypot(follower.x - o.x, follower.y - o.y) - o.radius - cfg.uav_radius
+            if horiz >= 0.0:
+                continue
+            inside = True
+            if follower.z < o.height + cfg.uav_radius:
+                cleared = False
+        if not inside:
+            return
+        self._overfly_inside_steps += 1
+        if cleared:
+            self._overfly_cleared_steps += 1
 
     def _update_channel(self) -> np.ndarray:
         leader = self.uavs[0]
@@ -895,9 +1316,11 @@ class UAVFormationEnv:
             dist = math.dist(
                 (follower.x, follower.y, follower.z), (leader.x, leader.y, leader.z)
             )
-            blocked = self._radio_blocked(
+            block_class = self._block_class(
                 leader.x, leader.y, leader.z, follower.x, follower.y, follower.z
             )
+            link.block_class = block_class
+            blocked = block_class != "los"
             link.blocked = int(blocked)
             if blocked:
                 self._nlos_count += 1
@@ -910,9 +1333,12 @@ class UAVFormationEnv:
                 self.ep_d0,
                 self.ep_channel_mode,
                 blocked=apply_block,
-                nlos_factor=float(self.cfg.nlos_factor),
+                nlos_factor=float(self.ep_nlos_factor),
             )
-            success = bool(self._rng.random() < p)
+            # A TDMA relay slot is taken from the leader: time passes and the
+            # belief coasts, but no leader packet is offered.
+            leader_slot = self._leader_slot()
+            success = bool(leader_slot and self._rng.random() < p)
             if success:
                 if self._outage_streak[i] > 0:
                     self._outage_lengths.append(int(self._outage_streak[i]))
@@ -936,13 +1362,97 @@ class UAVFormationEnv:
                 link.aoi = int(min(link.aoi + 1, self.cfg.aoi_cap))
                 self._outage_streak[i] += 1
                 ok[i] = 0.0
-            std = self._slot_std(i)
-            self._belief_std_sum += float(np.mean(std))
+        if self._relay_slot():
+            self._relay_beliefs(single=self.cfg.relay_mode != "free")
+        for i, link in enumerate(self.links):
+            self._belief_std_sum += float(np.mean(self._slot_std(i)))
             self._aoi_sum += link.aoi
             self._aoi_max = max(self._aoi_max, link.aoi)
-        self._packets_ok += int(ok.sum())
-        self._packets_attempted += self.n_followers
+        if self._leader_slot():
+            self._packets_ok += int(ok.sum())
+            self._packets_attempted += self.n_followers
         return ok
+
+    def _leader_slot(self) -> bool:
+        # A neighbour beacon never takes the leader's transmission.
+        if self.cfg.relay_mode != "tdma":
+            return True
+        scheduled_leader = self._step_count % self.cfg.relay_period != self.cfg.relay_period - 1
+        if scheduled_leader or self.cfg.relay_aoi_gate < 0:
+            return scheduled_leader
+        # The relay slot is only worth it once every follower is stale.
+        freshest = min(link.aoi for link in self.links)
+        return freshest < self.cfg.relay_aoi_gate
+
+    def _relay_slot(self) -> bool:
+        if self.cfg.relay_mode == "free":
+            return True
+        if self.cfg.relay_mode == "tdma":
+            return not self._leader_slot()
+        if self.cfg.relay_mode == "beacon":
+            return self._step_count % self.cfg.relay_period == 0
+        return False
+
+    def _relay_beliefs(self, single: bool) -> None:
+        """One hop of follower-to-follower forwarding of the leader belief.
+
+        Every follower rebroadcasts in ``free`` mode. In ``tdma`` mode only
+        the freshest follower transmits, which is the one airtime slot the
+        leader gave up. A receiver adopts a neighbour's belief when it is
+        fresher than its own and the hop gets through the same distance- and
+        roof-dependent channel as the leader link. Senders transmit what they
+        hold now, and the hop costs one step of age.
+        """
+        cfg = self.cfg
+        held = [
+            (
+                link.aoi,
+                link.belief.mean.copy(),
+                link.belief.P.copy(),
+                (link.meas_x, link.meas_y, link.meas_z, link.meas_v, link.meas_heading, link.meas_vz),
+            )
+            for link in self.links
+        ]
+        if self.cfg.relay_mode == "beacon" or single:
+            if self.cfg.beacon_select == "random":
+                freshest_first = [int(self._relay_rng.integers(0, self.n_followers))]
+            elif self.cfg.beacon_select == "round":
+                freshest_first = [self._step_count % self.n_followers]
+            else:
+                freshest_first = [min(range(self.n_followers), key=lambda k: (held[k][0], k))]
+        else:
+            freshest_first = sorted(range(self.n_followers), key=lambda k: (held[k][0], k))
+        for j, link in enumerate(self.links):
+            rx = self.uavs[j + 1]
+            for k in freshest_first:
+                if k == j:
+                    continue
+                if held[k][0] + 1 >= link.aoi:
+                    break
+                tx = self.uavs[k + 1]
+                self._relay_attempts += 1
+                blocked = bool(
+                    self.ep_use_blockage
+                    and self.ep_channel_mode == "distance"
+                    and self._radio_blocked(tx.x, tx.y, tx.z, rx.x, rx.y, rx.z)
+                )
+                p = packet_success_probability(
+                    self._uav_distance(tx, rx),
+                    self.ep_p0,
+                    self.ep_d0,
+                    self.ep_channel_mode,
+                    blocked=blocked,
+                    nlos_factor=float(self.ep_nlos_factor),
+                )
+                if self._relay_rng.random() >= p:
+                    continue
+                aoi, mean, cov, meas = held[k]
+                link.belief.mean[:] = mean
+                link.belief.P[:] = cov
+                (link.meas_x, link.meas_y, link.meas_z, link.meas_v, link.meas_heading, link.meas_vz) = meas
+                link.aoi = int(min(aoi + 1, cfg.aoi_cap))
+                self._relay_ok += 1
+                break
 
     def _heading_process_variance(self) -> float:
         """Variance of one coast step of heading when yaw is unknown.
@@ -1025,6 +1535,7 @@ class UAVFormationEnv:
                 ref_h = math.atan2(ref_y - u.y, ref_x - u.x)
                 ref_vz = 0.0
                 aoi_norm = 0.0
+                team_aoi = 0.0
                 std = (0.0, 0.0, 0.0)
                 pred_nlos = 0.0
                 slot = (0.0, 0.0, 0.0)
@@ -1037,6 +1548,7 @@ class UAVFormationEnv:
                 link = self.links[i - 1]
                 show_aoi = self.ep_obs_mode in ("aoi", "belief", "belief_point") and self.ep_use_aoi
                 aoi_norm = (link.aoi / cfg.aoi_cap) if show_aoi else 0.0
+                team_aoi = (min(item.aoi for item in self.links) / cfg.aoi_cap) if show_aoi else 0.0
                 if self.ep_obs_mode == "belief":
                     raw_std = self._slot_std(i - 1)
                     std = tuple(float(s / cfg.std_scale) for s in raw_std)
@@ -1057,6 +1569,7 @@ class UAVFormationEnv:
             obs[ObsIndex.REF_COS] = math.cos(ref_h)
             obs[ObsIndex.REF_VZ] = ref_vz / cfg.vz_max
             obs[ObsIndex.AOI] = aoi_norm
+            obs[ObsIndex.TEAM_AOI] = team_aoi
             obs[ObsIndex.STD_X] = std[0]
             obs[ObsIndex.STD_Y] = std[1]
             obs[ObsIndex.STD_Z] = std[2]
@@ -1172,6 +1685,7 @@ class UAVFormationEnv:
         hit_obstacle: bool,
         hit_uav: bool,
         oob: np.ndarray,
+        policy_actions: np.ndarray | None = None,
     ) -> np.ndarray:
         """Per-agent dense reward. Formulas are in the README and docs/MODEL.md."""
         cfg = self.cfg
@@ -1195,15 +1709,23 @@ class UAVFormationEnv:
             known_heading = float(self._reference_pose(i)[4])
             align = math.cos(wrap_angle(known_heading - self.uavs[i + 1].heading))
             bonus = cfg.formation_bonus if errors[i] <= cfg.formation_tol else 0.0
-            held_error = min(float(errors[i]), cfg.formation_error_cap)
+            if cfg.shared_formation_reward:
+                held_error = min(float(np.mean(errors)), cfg.formation_error_cap)
+                form_progress = float(np.mean(self._prev_form_err - errors))
+            else:
+                held_error = min(float(errors[i]), cfg.formation_error_cap)
+                form_progress = float(self._prev_form_err[i] - errors[i])
             rewards[i + 1] = (
-                cfg.w_form_progress * (self._prev_form_err[i] - errors[i])
+                cfg.w_form_progress * form_progress
                 - cfg.w_formation * held_error
                 + cfg.w_heading * align
                 + bonus
                 - cfg.w_smooth * smooth
                 - cfg.w_step
             )
+            if cfg.follower_mode == "residual" and policy_actions is not None:
+                # A correction has to earn its keep. Zero keeps the slot tracker.
+                rewards[i + 1] -= np.float32(cfg.w_residual * float(np.sum(np.square(policy_actions[i + 1]))))
         for i, u in enumerate(self.uavs):
             gap = self._nearest_gap(u)
             if gap < cfg.clearance_margin:
@@ -1213,7 +1735,8 @@ class UAVFormationEnv:
         if captured:
             rewards += np.float32(cfg.wp_bonus * captured)
         if hit_obstacle or hit_uav:
-            rewards -= np.float32(cfg.collision_penalty)
+            penalty = cfg.collision_penalty if cfg.end_on_collision else cfg.collision_step_penalty
+            rewards -= np.float32(penalty)
         route_done = self._wp_done >= len(self.waypoints)
         if route_done and np.all(errors <= cfg.formation_tol) and not (hit_obstacle or hit_uav):
             rewards += np.float32(cfg.success_bonus)
@@ -1239,6 +1762,27 @@ class UAVFormationEnv:
         self._los_alt_sum = 0.0
         self._nlos_link_steps = 0
         self._los_link_steps = 0
+        self._los_z_sum = 0.0
+        self._overfly_alt_sum = 0.0
+        self._overfly_z_sum = 0.0
+        self._overfly_link_steps = 0
+        self._overfly_leader_z_sum = 0.0
+        self._overfly_leader_steps = 0
+        self._impassable_alt_sum = 0.0
+        self._impassable_z_sum = 0.0
+        self._impassable_link_steps = 0
+        self._impassable_leader_z_sum = 0.0
+        self._impassable_leader_steps = 0
+        self._overfly_inside_steps = 0
+        self._overfly_cleared_steps = 0
+        self._hit_obstacle_ever = False
+        self._hit_uav_ever = False
+        self._route_hold = 0
+        self._act_alt = {role: 0.0 for role in _ACT_ROLES}
+        self._act_z = {role: 0.0 for role in _ACT_ROLES}
+        self._act_n = {role: 0 for role in _ACT_ROLES}
+        self._act_leader_z = {role: 0.0 for role in _ACT_ROLES}
+        self._act_leader_n = {role: 0 for role in _ACT_ROLES}
         self._outage_streak = np.zeros(self.n_followers, dtype=np.int32)
         self._outage_lengths: list[int] = []
         self._stat_steps = 0
@@ -1262,11 +1806,35 @@ class UAVFormationEnv:
         slot. That is the price the reward charges for climbing. The story
         the paper wants is a larger price behind a roof than in the open,
         and only for the policy that can see slot doubt.
+
+        A single non-line-of-sight average mixes two opposite roofs. A roof
+        at or below the altitude ceiling can be bought by climbing. A roof
+        above the ceiling cannot, and climbing there is the failure mode.
+        Those two classes are accumulated separately. Absolute altitude is
+        stored as well as the error: if the leader climbs, the flat slot
+        climbs with it and the error stays small.
         """
         slots = self._true_slots()
+        leader = self.uavs[0]
+        leader_z = float(leader.z)
+        saw_overfly = False
+        saw_impassable = False
         for i, link in enumerate(self.links):
             slot_std = float(np.mean(self._slot_std(i)))
-            alt_err = abs(float(self.uavs[i + 1].z) - float(slots[i, 2]))
+            follower = self.uavs[i + 1]
+            follower_z = float(follower.z)
+            alt_err = abs(follower_z - float(slots[i, 2]))
+            kind = link.block_class
+            if kind == "impassable":
+                saw_impassable = True
+                self._impassable_alt_sum += alt_err
+                self._impassable_z_sum += follower_z
+                self._impassable_link_steps += 1
+            elif kind == "overfly":
+                saw_overfly = True
+                self._overfly_alt_sum += alt_err
+                self._overfly_z_sum += follower_z
+                self._overfly_link_steps += 1
             if link.blocked:
                 self._nlos_err_sum += float(errors[i])
                 self._nlos_aoi_sum += float(link.aoi)
@@ -1278,7 +1846,25 @@ class UAVFormationEnv:
                 self._los_aoi_sum += float(link.aoi)
                 self._los_std_sum += slot_std
                 self._los_alt_sum += alt_err
+                self._los_z_sum += follower_z
                 self._los_link_steps += 1
+            self._note_overfly_clearance(follower)
+        roles = self._roles_near_leader()
+        for role in roles:
+            for i in range(self.n_followers):
+                follower_z = float(self.uavs[i + 1].z)
+                alt_err = abs(follower_z - float(slots[i, 2]))
+                self._act_alt[role] += alt_err
+                self._act_z[role] += follower_z
+                self._act_n[role] += 1
+            self._act_leader_z[role] += leader_z
+            self._act_leader_n[role] += 1
+        if saw_overfly:
+            self._overfly_leader_z_sum += leader_z
+            self._overfly_leader_steps += 1
+        if saw_impassable:
+            self._impassable_leader_z_sum += leader_z
+            self._impassable_leader_steps += 1
 
     @staticmethod
     def _mean_or_nan(total: float, count: int) -> float:
@@ -1302,7 +1888,7 @@ class UAVFormationEnv:
         clearance = self._min_clearance
         if clearance == float("inf"):
             clearance = 0.0
-        return {
+        row = {
             "success": float(success),
             "collision": float(collided),
             "obstacle_collision": float(hit_obstacle),
@@ -1338,9 +1924,40 @@ class UAVFormationEnv:
             "nlos_mean_slot_std": self._mean_or_nan(self._nlos_std_sum, self._nlos_link_steps),
             "los_mean_alt_error": self._mean_or_nan(self._los_alt_sum, self._los_link_steps),
             "nlos_mean_alt_error": self._mean_or_nan(self._nlos_alt_sum, self._nlos_link_steps),
+            "los_mean_z": self._mean_or_nan(self._los_z_sum, self._los_link_steps),
+            "overfly_mean_alt_error": self._mean_or_nan(
+                self._overfly_alt_sum, self._overfly_link_steps
+            ),
+            "impassable_mean_alt_error": self._mean_or_nan(
+                self._impassable_alt_sum, self._impassable_link_steps
+            ),
+            "overfly_mean_z": self._mean_or_nan(self._overfly_z_sum, self._overfly_link_steps),
+            "impassable_mean_z": self._mean_or_nan(
+                self._impassable_z_sum, self._impassable_link_steps
+            ),
+            "overfly_mean_leader_z": self._mean_or_nan(
+                self._overfly_leader_z_sum, self._overfly_leader_steps
+            ),
+            "impassable_mean_leader_z": self._mean_or_nan(
+                self._impassable_leader_z_sum, self._impassable_leader_steps
+            ),
+            "overfly_clear_rate": self._mean_or_nan(
+                self._overfly_cleared_steps, self._overfly_inside_steps
+            ),
+            "overfly_link_steps": float(self._overfly_link_steps),
+            "impassable_link_steps": float(self._impassable_link_steps),
+            "overfly_inside_steps": float(self._overfly_inside_steps),
             "steps": int(self._step_count),
             "p0": float(self.ep_p0),
         }
+        for role in _ACT_ROLES:
+            row[f"{role}_mean_alt_error"] = self._mean_or_nan(self._act_alt[role], self._act_n[role])
+            row[f"{role}_mean_z"] = self._mean_or_nan(self._act_z[role], self._act_n[role])
+            row[f"{role}_mean_leader_z"] = self._mean_or_nan(
+                self._act_leader_z[role], self._act_leader_n[role]
+            )
+            row[f"{role}_link_steps"] = float(self._act_n[role])
+        return row
 
     def _info_skeleton(self) -> dict:
         return {

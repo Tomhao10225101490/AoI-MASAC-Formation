@@ -1,0 +1,129 @@
+# One-day study on this Mac. Aligned with DI-MATD3's information ladder
+# (no prediction, coasting, Kalman+AoI) and extended by slot standard
+# deviation, roof-resolved altitude, and a blockage control.
+#
+# Budget: 7 learned arms x 3 seeds. At about 12 s/episode and 2 CPU workers
+# this is roughly 20 hours, plus the fixed-p0 evaluation.
+name: day_frontier
+out: results/day
+device: cpu
+workers: 2
+seeds: [0, 1, 2]
+env:
+  leader_mode: route
+  follower_mode: residual
+  end_on_collision: false
+  max_steps: 700
+  w_residual: 0.02
+train:
+  episodes: 600
+  curriculum_perfect_frac: 0.2
+  warmup_steps: 800
+  start_steps: 0
+  batch_size: 256
+  hidden: 256
+  buffer_size: 150000
+  lr_actor: 0.0001
+  eval_every: 50
+  eval_episodes: 4
+  save_every: 100
+  log_update_every: 500
+  ou_episodes: 0
+  target_entropy: -12.0
+  init_log_std: -2.5
+  residual_noise: 0.08
+  action_l2: 1.0
+  expl_noise: 0.05
+eval:
+  episodes: 10
+  p0_values: [1.0, 0.8, 0.6, 0.45, 0.3]
+  seed: 3000
+  trajectory_p0: 0.6
+hypotheses:
+  - id: H1
+    claim: At p0=0.6, Belief has lower mean formation error than Kalman+AoI without slot std.
+    better: belief
+    worse: belief_point
+    metric: mean_formation_error
+    p0: 0.6
+  - id: H2
+    claim: At p0=0.6, Belief has lower altitude error while passing the 50 m roof.
+    better: belief
+    worse: belief_point
+    metric: near_roof_mean_alt_error
+    p0: 0.6
+  - id: H3
+    claim: At p0=0.6, Belief has lower altitude error while passing the 70 m roof.
+    better: belief
+    worse: belief_point
+    metric: far_roof_mean_alt_error
+    p0: 0.6
+  - id: H4
+    claim: At p0=0.6, Belief's leader altitude beside the 160 m building stays within 10 m of the no-std run.
+    better: belief
+    worse: belief_point
+    metric: tall_mean_leader_z
+    p0: 0.6
+    max_gap: 10
+  - id: H5
+    claim: At p0=0.6, Belief has lower non-line-of-sight formation error than hold-last.
+    better: belief
+    worse: hold
+    metric: nlos_mean_formation_error
+    p0: 0.6
+claim: >
+  Same tracker and solver. The only added channel is the slot standard
+  deviation. It should lower formation error behind roofs that can be
+  overflown, without a climb beside the building above the ceiling.
+arms:
+  - id: route_oracle
+    enabled: true
+    train: false
+    role: reference
+    config: configs/paper_belief_masac.yaml
+    label: Oracle
+    env:
+      follower_mode: slot
+    question: True-slot tracker. Geometry reference, not a learned method.
+  - id: belief
+    enabled: true
+    role: method
+    config: configs/paper_belief_masac.yaml
+    label: Belief
+    question: Kalman mean, AoI, and slot standard deviation.
+  - id: belief_point
+    enabled: true
+    role: ablation
+    config: configs/paper_belief_point_masac.yaml
+    label: Kalman+AoI
+    question: DI-MATD3's Kalman+AoI rung. Slot standard deviation removed.
+  - id: aoi
+    enabled: true
+    role: ladder
+    config: configs/paper_aoi_masac.yaml
+    label: AoI only
+    question: Age without a coast. Their no-prediction rung.
+  - id: extrapolate
+    enabled: true
+    role: ladder
+    config: configs/paper_masac_extrapolate.yaml
+    label: Coast
+    question: Constant-velocity coast without age or standard deviation.
+  - id: hold
+    enabled: true
+    role: ladder
+    config: configs/paper_masac_hold.yaml
+    label: Hold
+    question: Last packet only.
+  - id: no_blockage
+    enabled: true
+    role: control
+    config: configs/paper_no_blockage.yaml
+    label: No blockage
+    question: Belief observation, roofs do not cut the radio or inflate doubt.
+  - id: belief_matd3
+    enabled: true
+    role: solver
+    config: configs/paper_belief_matd3.yaml
+    label: MATD3
+    question: Same belief observation, MATD3 instead of MASAC.

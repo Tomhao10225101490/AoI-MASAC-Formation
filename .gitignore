@@ -4,13 +4,21 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 runs/
-results/
+# Local runs stay out. The beacon and airtime tables are tracked:
+# results/relay_beacon, relay_free, relay_tdma, relay_tdma4, relay_yield.
+results/*
+!results/relay_beacon/
+!results/relay_free/
+!results/relay_tdma/
+!results/relay_tdma4/
+!results/relay_yield/
 checkpoints/
 *.pt
 *.pth
 tb/
 .venv/
 venv/
+.mplconfig/
 *.egg-info/
 .idea/
 .vscode/

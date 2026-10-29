@@ -17,7 +17,7 @@ import torch
 import torch.nn.functional as F
 
 from algos.buffer import ReplayBuffer
-from algos.common import clone_module, obs_to_tensor, soft_update
+from algos.common import clone_module, obs_to_tensor, soft_update, stack_to_numpy
 from algos.networks import DeterministicActor, SingleQCritic, TwinQCritic
 
 
@@ -86,14 +86,17 @@ class _DeterministicCTDE:
     @torch.no_grad()
     def act(self, obs_list: list[np.ndarray], explore: bool, episode: int = 0) -> np.ndarray:
         del episode
-        actions = np.zeros((self.n_agents, self.action_dim), dtype=np.float32)
-        for i, actor in enumerate(self.actors):
-            obs = obs_to_tensor(obs_list[i], self.device)
-            a = actor(obs).squeeze(0).cpu().numpy()
-            if explore and self.expl_noise > 0.0:
-                a = a + self._rng.standard_normal(self.action_dim) * self.expl_noise
-            actions[i] = np.clip(a, -1.0, 1.0).astype(np.float32)
-        return actions
+        chosen = [actor(obs_to_tensor(obs_list[i], self.device)) for i, actor in enumerate(self.actors)]
+        actions = stack_to_numpy(chosen)
+        if explore and self.expl_noise > 0.0:
+            # One normal draw per agent, same stream as the previous loop.
+            noise = np.stack(
+                [self._rng.standard_normal(self.action_dim) for _ in range(self.n_agents)],
+                axis=0,
+            ).astype(np.float32)
+            actions = actions + noise * np.float32(self.expl_noise)
+        np.clip(actions, -1.0, 1.0, out=actions)
+        return actions.astype(np.float32, copy=False)
 
     def push(self, obs, global_state, actions, rewards, next_obs, next_global, terminated) -> None:
         self.buffer.add(obs, global_state, actions, rewards, next_obs, next_global, terminated)

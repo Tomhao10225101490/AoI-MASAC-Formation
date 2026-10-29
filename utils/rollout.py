@@ -48,9 +48,12 @@ def collect_episode(
 def _stack_frames(frames: list[dict], env: UAVFormationEnv) -> dict:
     return {
         "uav_xy": np.stack([f["uav_xy"] for f in frames], axis=0),
+        "uav_z": np.stack([f["uav_z"] for f in frames], axis=0),
         "heading": np.stack([f["heading"] for f in frames], axis=0),
         "obstacle_xy": np.stack([f["obstacle_xy"] for f in frames], axis=0),
         "obstacle_r": frames[0]["obstacle_r"],
+        "obstacle_height": frames[0]["obstacle_height"],
+        "z_max": np.float32(env.cfg.z_max),
         "aoi": np.stack([f["aoi"] for f in frames], axis=0),
         "goal": frames[0]["goal"],
         "waypoints": frames[0]["waypoints"],

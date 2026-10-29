@@ -16,10 +16,14 @@ DEVICE=${DEVICE:-cpu}
 
 CONFIGS=(
   configs/paper_belief_masac.yaml
+  configs/paper_belief_point_masac.yaml
+  configs/paper_no_blockage.yaml
   configs/paper_aoi_masac.yaml
   configs/paper_vanilla_masac.yaml
   configs/paper_masac_hold.yaml
   configs/paper_masac_extrapolate.yaml
+  configs/paper_belief_maddpg.yaml
+  configs/paper_belief_matd3.yaml
   configs/paper_maddpg.yaml
   configs/paper_matd3.yaml
 )

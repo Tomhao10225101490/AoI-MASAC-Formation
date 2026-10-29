@@ -42,6 +42,29 @@ EPISODE_METRIC_KEYS = (
     "nlos_mean_slot_std",
     "los_mean_alt_error",
     "nlos_mean_alt_error",
+    "los_mean_z",
+    "overfly_mean_alt_error",
+    "impassable_mean_alt_error",
+    "overfly_mean_z",
+    "impassable_mean_z",
+    "overfly_mean_leader_z",
+    "impassable_mean_leader_z",
+    "overfly_clear_rate",
+    "overfly_link_steps",
+    "impassable_link_steps",
+    "overfly_inside_steps",
+    "near_roof_mean_z",
+    "near_roof_mean_alt_error",
+    "near_roof_mean_leader_z",
+    "near_roof_link_steps",
+    "tall_mean_z",
+    "tall_mean_alt_error",
+    "tall_mean_leader_z",
+    "tall_link_steps",
+    "far_roof_mean_z",
+    "far_roof_mean_alt_error",
+    "far_roof_mean_leader_z",
+    "far_roof_link_steps",
 )
 
 # Keys that become "<name>" and "<name>_std" after summarize_episodes.
@@ -71,6 +94,29 @@ SUMMARY_KEYS = (
     "nlos_mean_slot_std",
     "los_mean_alt_error",
     "nlos_mean_alt_error",
+    "los_mean_z",
+    "overfly_mean_alt_error",
+    "impassable_mean_alt_error",
+    "overfly_mean_z",
+    "impassable_mean_z",
+    "overfly_mean_leader_z",
+    "impassable_mean_leader_z",
+    "overfly_clear_rate",
+    "overfly_link_steps",
+    "impassable_link_steps",
+    "overfly_inside_steps",
+    "near_roof_mean_z",
+    "near_roof_mean_alt_error",
+    "near_roof_mean_leader_z",
+    "near_roof_link_steps",
+    "tall_mean_z",
+    "tall_mean_alt_error",
+    "tall_mean_leader_z",
+    "tall_link_steps",
+    "far_roof_mean_z",
+    "far_roof_mean_alt_error",
+    "far_roof_mean_leader_z",
+    "far_roof_link_steps",
 )
 
 
@@ -179,6 +225,16 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         vertical miss of the true flat slot, in meters. Climbing to clear a
         roof shows up here. A policy that climbs in the open as well is not
         buying a measurement; it is just leaving the formation.
+
+        The non-line-of-sight average mixes roofs the aircraft can fly over
+        with the building that is taller than the ceiling. ``overfly_*`` is
+        the first kind. ``impassable_*`` is the second. Altitude error is the
+        price against the flat slot. ``*_mean_z`` is absolute altitude,
+        because a leader that climbs lifts the slot and hides the climb
+        inside the error. ``overfly_clear_rate`` is the fraction of
+        follower-steps spent inside an overflyable footprint on which the
+        aircraft is above that roof. Episodes that never enter that
+        footprint store NaN, same as the other split columns.
     """
     if not rows:
         raise ValueError("summarize_episodes received no episodes")
@@ -212,6 +268,29 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "nlos_mean_slot_std": col("nlos_mean_slot_std"),
         "los_mean_alt_error": col("los_mean_alt_error"),
         "nlos_mean_alt_error": col("nlos_mean_alt_error"),
+        "los_mean_z": col("los_mean_z"),
+        "overfly_mean_alt_error": col("overfly_mean_alt_error"),
+        "impassable_mean_alt_error": col("impassable_mean_alt_error"),
+        "overfly_mean_z": col("overfly_mean_z"),
+        "impassable_mean_z": col("impassable_mean_z"),
+        "overfly_mean_leader_z": col("overfly_mean_leader_z"),
+        "impassable_mean_leader_z": col("impassable_mean_leader_z"),
+        "overfly_clear_rate": col("overfly_clear_rate"),
+        "overfly_link_steps": col("overfly_link_steps"),
+        "impassable_link_steps": col("impassable_link_steps"),
+        "overfly_inside_steps": col("overfly_inside_steps"),
+        "near_roof_mean_z": col("near_roof_mean_z"),
+        "near_roof_mean_alt_error": col("near_roof_mean_alt_error"),
+        "near_roof_mean_leader_z": col("near_roof_mean_leader_z"),
+        "near_roof_link_steps": col("near_roof_link_steps"),
+        "tall_mean_z": col("tall_mean_z"),
+        "tall_mean_alt_error": col("tall_mean_alt_error"),
+        "tall_mean_leader_z": col("tall_mean_leader_z"),
+        "tall_link_steps": col("tall_link_steps"),
+        "far_roof_mean_z": col("far_roof_mean_z"),
+        "far_roof_mean_alt_error": col("far_roof_mean_alt_error"),
+        "far_roof_mean_leader_z": col("far_roof_mean_leader_z"),
+        "far_roof_link_steps": col("far_roof_link_steps"),
     }
     skip_nan = {
         "los_mean_formation_error",
@@ -222,10 +301,36 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "nlos_mean_slot_std",
         "los_mean_alt_error",
         "nlos_mean_alt_error",
+        "los_mean_z",
+        "overfly_mean_alt_error",
+        "impassable_mean_alt_error",
+        "overfly_mean_z",
+        "impassable_mean_z",
+        "overfly_mean_leader_z",
+        "impassable_mean_leader_z",
+        "overfly_clear_rate",
+        "near_roof_mean_z",
+        "near_roof_mean_alt_error",
+        "near_roof_mean_leader_z",
+        "tall_mean_z",
+        "tall_mean_alt_error",
+        "tall_mean_leader_z",
+        "far_roof_mean_z",
+        "far_roof_mean_alt_error",
+        "far_roof_mean_leader_z",
     }
     out: dict[str, float] = {"n_episodes": float(len(rows))}
     nlos_values = mapping["nlos_mean_formation_error"]
     out["n_episodes_with_nlos"] = float(sum(math.isfinite(v) for v in nlos_values))
+    out["n_episodes_with_overfly"] = float(
+        sum(math.isfinite(v) for v in mapping["overfly_mean_alt_error"])
+    )
+    out["n_episodes_with_impassable"] = float(
+        sum(math.isfinite(v) for v in mapping["impassable_mean_alt_error"])
+    )
+    out["n_episodes_with_overfly_inside"] = float(
+        sum(math.isfinite(v) for v in mapping["overfly_clear_rate"])
+    )
     for key, values in mapping.items():
         mean, std = _mean_std(values, skip_nonfinite=key in skip_nan)
         out[key] = mean

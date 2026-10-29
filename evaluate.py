@@ -95,7 +95,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--obs-mode",
         default="auto",
-        choices=["auto", "aoi", "perfect", "hold", "extrapolate"],
+        choices=["auto", "aoi", "perfect", "hold", "extrapolate", "belief", "belief_point"],
     )
     parser.add_argument("--use-aoi", type=int, default=None, choices=[0, 1])
     parser.add_argument("--randomize-channel", type=int, default=0, choices=[0, 1])
@@ -222,6 +222,14 @@ def _print_summary(summary: dict) -> None:
         ("nlos_mean_slot_std", "非视距段槽位标准差(米)"),
         ("los_mean_alt_error", "视距段高度误差(米)"),
         ("nlos_mean_alt_error", "非视距段高度误差(米)"),
+        ("los_mean_z", "视距段高度(米)"),
+        ("overfly_mean_alt_error", "可飞越屋顶高度误差(米)"),
+        ("impassable_mean_alt_error", "超限高楼高度误差(米)"),
+        ("overfly_mean_z", "可飞越屋顶时僚机高度(米)"),
+        ("impassable_mean_z", "超限高楼时僚机高度(米)"),
+        ("overfly_mean_leader_z", "可飞越屋顶时领队高度(米)"),
+        ("impassable_mean_leader_z", "超限高楼时领队高度(米)"),
+        ("overfly_clear_rate", "可飞越屋顶清空率"),
     ]
     print(f"共 {int(summary['n_episodes'])} 个回合（下面是平均值 ± 样本标准差）")
     for key, label in labels:
@@ -233,35 +241,9 @@ def _print_summary(summary: dict) -> None:
 def _write_episodes(path: Path, rows: list[dict]) -> None:
     import csv
 
-    keys = [
-        "success",
-        "collision",
-        "obstacle_collision",
-        "inter_uav_collision",
-        "timeout",
-        "formation_keeping_rate",
-        "mean_formation_error",
-        "mean_aoi",
-        "max_aoi",
-        "packet_success_rate",
-        "mean_outage_length",
-        "steps",
-        "p0",
-        "return_sum",
-        "return_mean",
-        "waypoint_fraction",
-        "nlos_fraction",
-        "min_clearance",
-        "mean_belief_std",
-        "los_mean_formation_error",
-        "nlos_mean_formation_error",
-        "los_mean_aoi",
-        "nlos_mean_aoi",
-        "los_mean_slot_std",
-        "nlos_mean_slot_std",
-        "los_mean_alt_error",
-        "nlos_mean_alt_error",
-    ]
+    from metrics import EPISODE_METRIC_KEYS
+
+    keys = list(EPISODE_METRIC_KEYS)
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=keys, extrasaction="ignore")
         writer.writeheader()

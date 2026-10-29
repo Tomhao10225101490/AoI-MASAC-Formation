@@ -61,8 +61,21 @@ def _find_root(path: Path) -> Path:
 
 
 def resolve_device(name: str | None) -> str:
+    """Pick a torch device.
+
+    ``auto`` prefers CUDA, then Apple Metal (MPS), then CPU. An explicit
+    ``mps`` request fails if Metal is not available, so a config cannot
+    silently train on CPU after asking for the GPU.
+    """
     import torch
 
+    mps_ok = bool(getattr(torch.backends, "mps", None) and torch.backends.mps.is_available())
     if name in (None, "", "auto"):
-        return "cuda" if torch.cuda.is_available() else "cpu"
+        if torch.cuda.is_available():
+            return "cuda"
+        if mps_ok:
+            return "mps"
+        return "cpu"
+    if str(name) == "mps" and not mps_ok:
+        raise RuntimeError("device 'mps' was requested but MPS is not available")
     return str(name)

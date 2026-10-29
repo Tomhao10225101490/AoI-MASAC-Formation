@@ -1,10 +1,14 @@
-# 用高度把视线买回来
+# 街道里谁先看见领队，就把这一包转出去
 
-论文工作题目：
+当前结果和复现命令在 [`docs/RESULTS.md`](docs/RESULTS.md)。数据在 `results/relay_beacon/`。
+
+领队每一步照常广播。邻机信道上每一步再发**一次**信标，由手里领队信息最新的那架僚机发，不占用领队的时隙。随机街道、领队在加减速、楼几乎不透、基础送达率 0.3 时，三维槽位误差从 48.1 米降到 26.0 米（80 个配对回合，−22.1±3.6 米）。四架每步都转发的上界是 23.0 米。领队匀速时，同样的信标只少大约 1 米。这组实验没有侧风，碰撞率是 0。
+
+把领队自己的时隙拿去转发，这个收益就不在了。用高度去买一包测量，按三维槽位误差也不划算。下面第 1 节起是当初那个假设的场景和公式，实验没有支持它，不要写成结论。
+
+论文工作题目曾是：
 
 **Paying Altitude for a Measurement: Slot-Belief UAV Formation under Roof Blockage**
-
-中文：屋顶把下行链路挡住以后，常速度槽位会沿着编队力臂偏掉。僚机看见的是这个槽位有多不可信。爬高可以买回一包测量，但编队是平的，高度误差要自己付。
 
 两个会只能投一个。这篇的读者在无线链路和飞行动作互相决定的那一边，所以正文按 **WoWMoM 2027** 来写。CCGrid 的房间是分布式系统和资源调度，这里没有调度器、任务放置或集群，投过去会被问系统贡献在哪。两个会的全文截稿按计划都是 2026-12-01（AoE），CCGrid 的摘要是 2026-11-24。日期照旧准备，房间只留一个。
 
@@ -56,9 +60,9 @@ python3 scripts/plot_results.py motivation \
 
 ### 什么情况说明故事是假的
 
-- `belief` 和 `belief_point` 的非视距高度误差一样。标准差通道没有被用上。
+- `belief` 和 `belief_point` 在可飞越屋顶上的高度一样。标准差通道没有被用上。
 - 视距段也在猛爬。策略离开了编队，不是在买测量。
-- 160 m 那栋楼后面还贴着屋顶往上爬。它没看懂这条视线买不回来。
+- 160 m 那栋楼后面，绝对高度还往升限贴。非视距平均会把这件事和矮屋顶上该付的高度加在一起，所以要看 `impassable_mean_z`，不能只看 `nlos_mean_alt_error`。领队自己爬高时平槽位跟着抬，高度误差会显得很小。
 - 把预测遮挡位重新塞进演员观测。那一位是过程噪声的开关，消融就不再干净。
 
 ### 贡献写成一句，算法放在后面
@@ -265,7 +269,21 @@ bash scripts/run_key_experiment.sh runs/<某次>/ckpt_final.pt 30 results/belief
 
 `results/belief/geometry` 是主图：横轴是 `p0`，遮挡开着，图上把视距和非视距的编队误差和高度误差分开。`results/belief/sweep_independent` 把丢包率从 0% 扫到 70%，横轴是一个与距离无关的数，用来检查压力，不代替主图。
 
-论文规模（先用第 9 节的秒数乘一遍再决定）：
+这台 Mac（Apple M4，10 核 CPU，10 核 GPU，16 GB）上的完整对照用同一预算跑每一条臂。`device: auto` 会先做一次短计时，在「一个 Metal 进程」和「两个 CPU 进程」里选每秒能走更多步的那个。16 GB 内存放不下两个大回放再加两份 Metal。
+
+对齐近期编队论文的信息阶梯，并在这台 Mac 上跑大约一天：
+
+```bash
+.venv/bin/python -u scripts/run_study.py experiments/day_study.yaml
+```
+
+进度和每种方法最近一回合的编队误差写在终端，同时覆盖 `results/day/board.txt`。结束后 `results/day/analysis.md` 按预先登记的比较给结论。
+
+```bash
+.venv/bin/python -u scripts/run_study.py experiments/story_mac.yaml
+```
+
+当前这一屏写在终端里，同一段文字也覆盖 `results/story_residual/board.txt`。上一轮没有槽位跟踪器、僚机从随机动作学飞的结果在 `results/story/`，编队误差几百米，不能当论文结果。
 
 ```bash
 DEVICE=cpu SEEDS=0 bash scripts/train_paper.sh
@@ -298,6 +316,8 @@ python3 scripts/plot_results.py geometry --csv results/belief/geometry/geometry.
 | Belief-MASAC，隐藏层 256，批大小 256 | 166 次更新，平均 **0.040 秒/次**。走满的 60 步回合大约 2.3–2.5 秒 |
 
 前一两回合还在热身，几乎没有更新，“平均每回合”会被拉低。估算用“每次更新”。
+
+2026-10-20，同一套 Belief-MASAC（5 架，隐藏层 256，批大小 256）在这台 Apple M4、16 GB 上又测了一次。有梯度更新的步，CPU 每次更新 **0.020 秒**，Metal 每次更新 **0.058 秒**。网络很小，Metal 的同步比计算贵，所以一个 GPU 进程比一个 CPU 进程慢。4 个性能核上开两个 CPU 进程，每秒能走的步数更多。`scripts/bench_device.py` 把这个选择写进 `results/study/bench.json`。这次计时的成功率是 0，只能用来选设备。
 
 论文配置是每回合最多 500 步、800 回合、每步更新一次。用 0.040 秒/次来乘：一回合约 20 秒，800 回合约 **4.4 小时/种子**。这是乘法，不是把 800 回合跑完。未训练时经常撞、回合更短；学会少撞之后会靠近这个上限。`scripts/train_paper.sh` 里有 7 个已实现算法，三个种子，按满步数是几十个 CPU 小时。GPU 没有测。
 
@@ -337,7 +357,7 @@ python3 scripts/plot_results.py geometry --csv results/belief/geometry/geometry.
 - 建筑底图对滤波器是已知的。障碍感知本身仍有距离限制。
 - 奖励没调完。短跑成功率是 0。
 - 压力扫描的横轴是与距离无关的丢包，和训练用的距离×遮挡不是同一个分布。主图必须用几何扫描。
-- MAPPO 没有实现。没有 GPU 计时。没有多种子的论文图。
+- MAPPO 没有实现。M4 的 Metal 计时写在第 9 节，小网络上比 CPU 慢，所以这次研究用两个 CPU 进程。多种子的图在 `results/study/figs`。
 
 ---
 

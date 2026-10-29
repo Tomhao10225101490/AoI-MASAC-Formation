@@ -31,7 +31,7 @@ def _mlp(in_dim: int, hidden: int, out_dim: int) -> nn.Sequential:
 class SquashedGaussianActor(nn.Module):
     """SAC actor. Actions are tanh-squashed into [-1, 1]."""
 
-    def __init__(self, obs_dim: int, act_dim: int, hidden: int = 128):
+    def __init__(self, obs_dim: int, act_dim: int, hidden: int = 128, init_log_std: float = -0.5):
         super().__init__()
         self.body = nn.Sequential(
             nn.Linear(obs_dim, hidden),
@@ -43,7 +43,7 @@ class SquashedGaussianActor(nn.Module):
         self.log_std = nn.Linear(hidden, act_dim)
         nn.init.uniform_(self.mean.weight, -1e-3, 1e-3)
         nn.init.uniform_(self.mean.bias, -1e-3, 1e-3)
-        nn.init.constant_(self.log_std.bias, -0.5)
+        nn.init.constant_(self.log_std.bias, init_log_std)
 
     def forward(self, obs: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
         h = self.body(obs)

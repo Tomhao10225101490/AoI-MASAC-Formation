@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -29,6 +30,7 @@ if str(ROOT) not in sys.path:
 
 from algos.factory import EXPECTED_OBS_MODE, build_algorithm
 from envs.formation_env import UAVFormationEnv, env_config_from_dict
+from metrics import EPISODE_METRIC_KEYS
 from utils.config import load_config, resolve_device
 from utils.logger import CsvLogger, TrainLogger
 from utils.rollout import evaluate_agent
@@ -47,8 +49,17 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--batch-size", type=int, default=None)
     parser.add_argument("--device", default=None)
     parser.add_argument("--log-dir", default=None)
+    parser.add_argument(
+        "--run-dir",
+        default=None,
+        help="Exact directory for this run. Skips the timestamped subdirectory.",
+    )
     parser.add_argument("--max-steps", type=int, default=None)
-    parser.add_argument("--obs-mode", default=None, choices=["aoi", "perfect", "hold", "extrapolate"])
+    parser.add_argument(
+        "--obs-mode",
+        default=None,
+        choices=["aoi", "perfect", "hold", "extrapolate", "belief", "belief_point"],
+    )
     parser.add_argument("--channel-mode", default=None, choices=["distance", "independent", "perfect"])
     parser.add_argument("--p0", type=float, default=None)
     parser.add_argument("--randomize-channel", type=int, default=None, choices=[0, 1])
@@ -75,6 +86,8 @@ def apply_cli(cfg: dict, args: argparse.Namespace) -> dict:
         cfg["device"] = args.device
     if args.log_dir:
         cfg["train"]["log_dir"] = args.log_dir
+    if args.run_dir:
+        cfg["train"]["run_dir"] = args.run_dir
     if args.max_steps is not None:
         cfg["env"]["max_steps"] = int(args.max_steps)
     if args.obs_mode:
@@ -105,7 +118,7 @@ def _probe_options(env_cfg: dict) -> dict:
         p0 = 0.5 * (float(env_cfg["p0_low"]) + float(env_cfg["p0_high"]))
     else:
         p0 = float(env_cfg["p0"])
-    return {
+    options = {
         "channel_mode": mode,
         "p0": p0,
         "randomize_channel": False,
@@ -113,6 +126,13 @@ def _probe_options(env_cfg: dict) -> dict:
         "use_aoi": env_cfg["use_aoi"],
         "d0": env_cfg.get("d0", 250.0),
     }
+    # When training randomizes the regime, the probe is the hard corner:
+    # roofs that barely pass a packet, and a leader that keeps changing speed.
+    if env_cfg.get("nlos_random"):
+        options["nlos_factor"] = float(env_cfg.get("nlos_low", 0.01))
+    if env_cfg.get("leader_jink_random"):
+        options["leader_jink"] = float(env_cfg.get("leader_jink_high", 1.0))
+    return options
 
 
 def _warn_if_mismatch(algo_name: str, env_cfg: dict) -> None:
@@ -127,9 +147,23 @@ def _warn_if_mismatch(algo_name: str, env_cfg: dict) -> None:
         print("[info] use_aoi is false: the AoI feature is zeroed (no-AoI ablation).")
 
 
+def _configure_threads() -> None:
+    """Honor AOI_TORCH_THREADS so parallel runs do not oversubscribe the P-cores."""
+    raw = os.environ.get("AOI_TORCH_THREADS", "").strip()
+    if not raw:
+        return
+    n = int(raw)
+    torch.set_num_threads(n)
+    try:
+        torch.set_num_interop_threads(1)
+    except RuntimeError:
+        pass
+
+
 def run_training(cfg: dict) -> Path:
     """Train and return the run directory."""
     cfg = copy.deepcopy(cfg)
+    _configure_threads()
     seed = int(cfg.get("seed", 0))
     set_seed(seed)
     device_name = resolve_device(cfg.get("device", "auto"))
@@ -155,9 +189,16 @@ def run_training(cfg: dict) -> Path:
     log_root = Path(train_cfg.get("log_dir", "runs"))
     if not log_root.is_absolute():
         log_root = root / log_root
-    stamp = time.strftime("%Y%m%d-%H%M%S")
-    run_dir = log_root / f"{algo_name}_seed{seed}_{stamp}"
-    run_dir.mkdir(parents=True, exist_ok=False)
+    explicit = train_cfg.get("run_dir")
+    if explicit:
+        run_dir = Path(explicit)
+        if not run_dir.is_absolute():
+            run_dir = root / run_dir
+        run_dir.mkdir(parents=True, exist_ok=False)
+    else:
+        stamp = time.strftime("%Y%m%d-%H%M%S")
+        run_dir = log_root / f"{algo_name}_seed{seed}_{stamp}"
+        run_dir.mkdir(parents=True, exist_ok=False)
     cfg["device"] = device_name
     cfg["seed"] = seed
     with (run_dir / "config.yaml").open("w", encoding="utf-8") as handle:
@@ -176,6 +217,26 @@ def run_training(cfg: dict) -> Path:
             "mean_aoi",
             "packet_success_rate",
             "mean_return",
+            "waypoint_fraction",
+            "los_mean_formation_error",
+            "nlos_mean_formation_error",
+            "los_mean_alt_error",
+            "nlos_mean_alt_error",
+            "los_mean_z",
+            "overfly_mean_alt_error",
+            "impassable_mean_alt_error",
+            "overfly_mean_z",
+            "impassable_mean_z",
+            "overfly_mean_leader_z",
+            "impassable_mean_leader_z",
+            "overfly_clear_rate",
+            "near_roof_mean_z",
+            "near_roof_mean_alt_error",
+            "tall_mean_z",
+            "tall_mean_alt_error",
+            "far_roof_mean_z",
+            "far_roof_mean_alt_error",
+            "nlos_mean_formation_error",
         ],
     )
     episodes = int(train_cfg["episodes"])
@@ -195,6 +256,7 @@ def run_training(cfg: dict) -> Path:
         f"obs_mode={cfg['env']['obs_mode']} channel={cfg['env']['channel_mode']}"
     )
     print(f"日志目录: {run_dir}")
+    live_path = run_dir / "live.json"
 
     total_steps = 0
     total_updates = 0
@@ -202,12 +264,22 @@ def run_training(cfg: dict) -> Path:
     total_wall = 0.0
     episode_walls: list[float] = []
 
+    perfect_eps = int(episodes * float(train_cfg.get("curriculum_perfect_frac", 0.0)))
     for ep in range(episodes):
         ep_t0 = time.perf_counter()
         update_time = 0.0
         n_updates = 0
         loss_acc: list[dict] = []
-        obs, _info = env.reset(seed=seed * 100_000 + ep)
+        # Xie-style curriculum, used by the day study: lock the tracker on a
+        # perfect link before packet loss can reward a wild correction.
+        options = None
+        noise_std = float(train_cfg.get("residual_noise", 0.0))
+        phase = "loss"
+        if ep < perfect_eps:
+            options = {"channel_mode": "perfect", "p0": 1.0, "randomize_channel": False}
+            noise_std = 0.0
+            phase = "perfect"
+        obs, _info = env.reset(seed=seed * 100_000 + ep, options=options)
         algo.reset_noise()
         global_state = env.global_state()
         reward_sum = np.zeros(env.n_agents, dtype=np.float64)
@@ -219,14 +291,26 @@ def run_training(cfg: dict) -> Path:
                 actions = rng.uniform(-1.0, 1.0, size=(env.n_agents, env.action_dim)).astype(np.float32)
             else:
                 actions = algo.act(obs, explore=True, episode=ep)
+                if noise_std > 0.0 and str(cfg["env"].get("follower_mode")) == "residual":
+                    # Explore the correction, not the tracker. The leader command is replaced.
+                    actions = actions + rng.normal(0.0, noise_std, size=actions.shape).astype(np.float32)
+                    actions[0] = 0.0
+                    np.clip(actions, -1.0, 1.0, out=actions)
             next_obs, rewards, terminated, truncated, info = env.step(actions)
+            executed = info.get("executed_actions", actions)
             next_global = env.global_state()
             # Bootstrap on timeout (truncated) but not on success/collision.
-            algo.push(obs, global_state, actions, rewards, next_obs, next_global, bool(terminated))
+            stored = info.get("policy_actions", executed)
+            algo.push(obs, global_state, stored, rewards, next_obs, next_global, bool(terminated))
             reward_sum += rewards
             obs = next_obs
             global_state = next_global
             total_steps += 1
+            if env._step_count == 1 or env._step_count % 25 == 0 or terminated or truncated:
+                _write_live(
+                    live_path,
+                    _live_payload(cfg, env, algo_name, seed, ep + 1, episodes, reward_sum, phase),
+                )
             if total_steps >= warmup and algo.buffer.size >= algo.batch_size:
                 for _ in range(updates_per_step):
                     u0 = time.perf_counter()
@@ -282,17 +366,25 @@ def run_training(cfg: dict) -> Path:
             "los_mean_alt_error": episode["los_mean_alt_error"],
             "nlos_mean_alt_error": episode["nlos_mean_alt_error"],
             "p0": episode["p0"],
+            **{key: episode[key] for key in EPISODE_METRIC_KEYS if key in episode},
             "critic_loss": mean_stats.get("critic_loss", ""),
             "actor_loss": mean_stats.get("actor_loss", ""),
             "alpha": mean_stats.get("alpha", ""),
             "q": mean_stats.get("q", ""),
         }
         logger.log_episode(row)
+        az = 0.0
+        policy = info.get("policy_actions")
+        if policy is not None and len(policy) > 1:
+            az = float(np.mean(np.abs(np.asarray(policy)[1:, 2])))
         print(
-            f"[回合 {ep + 1}/{episodes}] 步数={episode['steps']} 回报={row['return_sum']:.2f} "
-            f"成功={episode['success']:.0f} 碰撞={episode['collision']:.0f} "
-            f"编队保持={episode['formation_keeping_rate']:.2f} 平均AoI={episode['mean_aoi']:.2f} "
-            f"p0={episode['p0']:.2f} 用时={wall:.2f}s"
+            f"[{cfg.get('study_arm', algo_name)} s{seed}] "
+            f"{phase} 回合 {ep + 1}/{episodes}  步 {episode['steps']}  "
+            f"回报 {row['return_sum']:.0f}  编队 {episode['mean_formation_error']:.1f}  "
+            f"碰撞 {episode['collision']:.0f}  爬升|{az:.2f}  "
+            f"航路 {episode['waypoint_fraction']:.2f}  "
+            f"用时 {wall:.1f}s",
+            flush=True,
         )
         if eval_every > 0 and (ep + 1) % eval_every == 0:
             rows = evaluate_agent(
@@ -316,6 +408,26 @@ def run_training(cfg: dict) -> Path:
                     "mean_aoi": summary["mean_aoi"],
                     "packet_success_rate": summary["packet_success_rate"],
                     "mean_return": summary["mean_return"],
+                    "waypoint_fraction": summary["waypoint_fraction"],
+                    "los_mean_formation_error": summary["los_mean_formation_error"],
+                    "nlos_mean_formation_error": summary["nlos_mean_formation_error"],
+                    "los_mean_alt_error": summary["los_mean_alt_error"],
+                    "nlos_mean_alt_error": summary["nlos_mean_alt_error"],
+                    "los_mean_z": summary["los_mean_z"],
+                    "overfly_mean_alt_error": summary["overfly_mean_alt_error"],
+                    "impassable_mean_alt_error": summary["impassable_mean_alt_error"],
+                    "overfly_mean_z": summary["overfly_mean_z"],
+                    "impassable_mean_z": summary["impassable_mean_z"],
+                    "overfly_mean_leader_z": summary["overfly_mean_leader_z"],
+                    "impassable_mean_leader_z": summary["impassable_mean_leader_z"],
+                    "overfly_clear_rate": summary["overfly_clear_rate"],
+                    "near_roof_mean_z": summary["near_roof_mean_z"],
+                    "near_roof_mean_alt_error": summary["near_roof_mean_alt_error"],
+                    "tall_mean_z": summary["tall_mean_z"],
+                    "tall_mean_alt_error": summary["tall_mean_alt_error"],
+                    "far_roof_mean_z": summary["far_roof_mean_z"],
+                    "far_roof_mean_alt_error": summary["far_roof_mean_alt_error"],
+                    "nlos_mean_formation_error": summary["nlos_mean_formation_error"],
                 }
             )
             print(
@@ -355,6 +467,49 @@ def run_training(cfg: dict) -> Path:
     logger.close()
     eval_logger.close()
     return run_dir
+
+
+def _write_live(path: Path, payload: dict) -> None:
+    """Atomic status file so a parent process can draw a progress board."""
+    temporary = path.with_suffix(".tmp")
+    temporary.write_text(json.dumps(payload), encoding="utf-8")
+    temporary.replace(path)
+
+
+def _act_value(env, role: str, kind: str) -> float | None:
+    if kind == "z":
+        total, count = env._act_z[role], env._act_n[role]
+    elif kind == "alt":
+        total, count = env._act_alt[role], env._act_n[role]
+    else:
+        total, count = env._act_leader_z[role], env._act_leader_n[role]
+    if count <= 0:
+        return None
+    return float(total) / float(count)
+
+
+def _live_payload(cfg, env, algo_name, seed, episode, episodes, reward_sum, phase: str) -> dict:
+    return {
+        "arm": str(cfg.get("study_arm", algo_name)),
+        "seed": int(seed),
+        "episode": int(episode),
+        "episodes": int(episodes),
+        "step": int(env._step_count),
+        "max_steps": int(env.cfg.max_steps),
+        "waypoints_done": int(env._wp_done),
+        "n_waypoints": len(env.waypoints),
+        "return": float(np.sum(reward_sum)),
+        "phase": phase,
+        "near_roof_alt_error": _act_value(env, "near_roof", "alt"),
+        "tall_alt_error": _act_value(env, "tall", "alt"),
+        "far_roof_alt_error": _act_value(env, "far_roof", "alt"),
+        "near_roof_z": _act_value(env, "near_roof", "leader"),
+        "tall_z": _act_value(env, "tall", "leader"),
+        "far_roof_z": _act_value(env, "far_roof", "leader"),
+        "nlos_form": None
+        if env._nlos_link_steps <= 0
+        else float(env._nlos_err_sum) / float(env._nlos_link_steps),
+    }
 
 
 def _save_checkpoint(path: Path, algo, cfg: dict, algo_name: str, episode: int, total_steps: int, env) -> None:

@@ -1,0 +1,80 @@
+# Equal-budget study for the 16 GB Apple M4.
+# The 800-episode settings stay in configs/paper_*.yaml. This file is the
+# budget that is actually run here. Every enabled arm gets the same seeds,
+# the same episodes, and the same evaluation draws.
+name: mac_m4_roof_split
+out: results/study
+device: auto
+workers: 0
+seeds: [0, 1, 2]
+train:
+  episodes: 100
+  warmup_steps: 2000
+  start_steps: 800
+  batch_size: 256
+  hidden: 256
+  buffer_size: 120000
+  eval_every: 10
+  eval_episodes: 2
+  save_every: 30
+  log_update_every: 200
+  ou_episodes: 0
+eval:
+  episodes: 8
+  p0_values: [1.0, 0.6, 0.3]
+  seed: 3000
+  trajectory_p0: 0.6
+claim: >
+  After a roof blocks the downlink, the follower that sees slot standard
+  deviation spends altitude on roofs it can fly over, and does not spend it
+  on the building above the ceiling. Taking the standard deviation away,
+  or taking the radio blockage away, removes that split.
+arms:
+  - id: belief
+    enabled: true
+    role: method
+    config: configs/paper_belief_masac.yaml
+    label: Belief
+    question: Sees the slot standard deviation. Should climb over the short roofs and not at the building above the ceiling.
+  - id: belief_point
+    enabled: true
+    role: ablation
+    config: configs/paper_belief_point_masac.yaml
+    label: No std
+    question: Same coast and AoI, standard deviation removed. If this matches Belief on the short roofs, the std channels are unused.
+  - id: no_blockage
+    enabled: true
+    role: control
+    config: configs/paper_no_blockage.yaml
+    label: No blockage
+    question: Buildings remain obstacles, but they do not cut the radio or inflate process noise. A climb that remains is not buying a measurement.
+  - id: aoi
+    enabled: true
+    role: ladder
+    config: configs/paper_aoi_masac.yaml
+    label: AoI only
+    question: Age, no coast, no standard deviation.
+  - id: extrapolate
+    enabled: true
+    role: ladder
+    config: configs/paper_masac_extrapolate.yaml
+    label: Coast
+    question: Constant-velocity coast with age and standard deviation forced off.
+  - id: hold
+    enabled: true
+    role: ladder
+    config: configs/paper_masac_hold.yaml
+    label: Hold
+    question: Last packet, no age and no standard deviation.
+  - id: belief_matd3
+    enabled: true
+    role: solver
+    config: configs/paper_belief_matd3.yaml
+    label: MATD3
+    question: Same belief observation, MATD3 instead of MASAC.
+  - id: belief_maddpg
+    enabled: true
+    role: solver
+    config: configs/paper_belief_maddpg.yaml
+    label: MADDPG
+    question: Same belief observation, MADDPG instead of MASAC.

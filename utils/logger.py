@@ -9,6 +9,8 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
+from metrics import EPISODE_METRIC_KEYS
+
 
 class CsvLogger:
     def __init__(self, path: Path, fieldnames: list[str]):
@@ -76,6 +78,40 @@ class TrainLogger:
                 "los_mean_alt_error",
                 "nlos_mean_alt_error",
                 "p0",
+                *[
+                    key
+                    for key in EPISODE_METRIC_KEYS
+                    if key
+                    not in {
+                        "success",
+                        "collision",
+                        "obstacle_collision",
+                        "inter_uav_collision",
+                        "timeout",
+                        "formation_keeping_rate",
+                        "mean_formation_error",
+                        "mean_aoi",
+                        "max_aoi",
+                        "packet_success_rate",
+                        "mean_outage_length",
+                        "steps",
+                        "p0",
+                        "return_sum",
+                        "return_mean",
+                        "waypoint_fraction",
+                        "nlos_fraction",
+                        "min_clearance",
+                        "mean_belief_std",
+                        "los_mean_formation_error",
+                        "nlos_mean_formation_error",
+                        "los_mean_aoi",
+                        "nlos_mean_aoi",
+                        "los_mean_slot_std",
+                        "nlos_mean_slot_std",
+                        "los_mean_alt_error",
+                        "nlos_mean_alt_error",
+                    }
+                ],
                 "critic_loss",
                 "actor_loss",
                 "alpha",

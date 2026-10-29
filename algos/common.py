@@ -51,3 +51,13 @@ def obs_to_tensor(obs: np.ndarray, device: torch.device) -> torch.Tensor:
     if tensor.ndim == 1:
         tensor = tensor.unsqueeze(0)
     return tensor
+
+
+def stack_to_numpy(rows: list[torch.Tensor]) -> np.ndarray:
+    """Move one action per agent to NumPy with a single host sync.
+
+    Calling ``.cpu()`` inside the agent loop pays the sync once per aircraft.
+    On MPS that sync is often slower than the forward itself.
+    """
+    stacked = torch.stack([row.reshape(-1) for row in rows], dim=0)
+    return stacked.detach().to("cpu").numpy().astype(np.float32, copy=False)
