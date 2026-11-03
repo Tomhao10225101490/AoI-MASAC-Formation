@@ -1,0 +1,11 @@
+{
+  "project": "MASAC-3D-UAV-Path-Planning",
+  "RESEARCH_DIRECTION": "FROZEN",
+  "core": "Learning-Based Multi-UAV 3D Path Planning with Multi-Agent Soft Actor-Critic",
+  "candidate": "Maneuverability-Aware MASAC",
+  "candidate_status": "unverified",
+  "agents": [3, 4, 6],
+  "direction_changes_require": "explicit user approval",
+  "prohibited_topics": ["AoI", "communication scheduling", "formation control", "traditional-search novelty"],
+  "large_modules_require_evidence": ["GNN", "Diffusion", "Transformer"]
+}

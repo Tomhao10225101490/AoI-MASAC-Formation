@@ -1,0 +1,24 @@
+{
+  "version": "structured-v3-paired-budget-300k-20261103",
+  "phase": "fixed-budget continuation; exploratory development, not confirmation",
+  "arms": ["curriculum", "original"],
+  "parents": {
+    "curriculum": "results/masac_v3_goal_curriculum_20261102",
+    "original": "results/masac_v3_budget_20261102"
+  },
+  "seeds": [411, 422, 433],
+  "start_step": 100000,
+  "steps": 300000,
+  "warmup": 1000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "full_resume_interval": 50000,
+  "validation_map_seeds": [800001, 800002, 800003, 800004, 800005, 800006],
+  "training_map_seed_offset": 100000,
+  "layouts": ["urban", "warehouse", "courtyard"],
+  "n_agents": 3,
+  "batch_size": 128,
+  "replay_capacity": 100000,
+  "run_order": "curriculum seeds 411/422/433, then original seeds 411/422/433; sequential one CPU thread",
+  "notes": "Standard MASAC only; fixed equal environment-step budgets, 200000 additional steps per run, no new warmup; original six maps are repeated development evaluations, not an independent test set."
+}

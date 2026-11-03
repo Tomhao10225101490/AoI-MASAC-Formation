@@ -1,8 +1,0 @@
-# Default map already has three crossing intruders. This adds a faster one
-# that cuts the middle of the field, and raises the critic's obstacle slots
-# by one. Observation length is unchanged (still the nearest 3 in range).
-algo: belief_masac
-env:
-  max_obstacles: 12
-  extra_obstacles:
-    - {x: 700.0, y: 420.0, radius: 18.0, vx: 0.0, vy: 12.0}

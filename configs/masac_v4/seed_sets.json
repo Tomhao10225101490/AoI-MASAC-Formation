@@ -1,0 +1,104 @@
+{
+  "version": "masac-v4-seed-namespaces-v1",
+  "training_seeds": {
+    "l0": [
+      511,
+      522,
+      533
+    ],
+    "critic_sampling": [
+      411,
+      422,
+      433
+    ]
+  },
+  "training_map_rule": {
+    "l0_offset": 2000000,
+    "training_seed_multiplier": 10000,
+    "formula": "2000000 + training_seed*10000 + episode"
+  },
+  "development": {
+    "l0": [
+      {
+        "seed": 830001,
+        "family": "urban_canyon",
+        "level": "L0"
+      },
+      {
+        "seed": 830002,
+        "family": "warehouse",
+        "level": "L0"
+      },
+      {
+        "seed": 830003,
+        "family": "courtyard",
+        "level": "L0"
+      },
+      {
+        "seed": 830004,
+        "family": "overpass",
+        "level": "L0"
+      },
+      {
+        "seed": 830005,
+        "family": "narrow_crossing",
+        "level": "L0"
+      },
+      {
+        "seed": 830006,
+        "family": "dynamic_crossing",
+        "level": "L0"
+      },
+      {
+        "seed": 830007,
+        "family": "urban_canyon",
+        "level": "L0"
+      },
+      {
+        "seed": 830008,
+        "family": "warehouse",
+        "level": "L0"
+      },
+      {
+        "seed": 830009,
+        "family": "courtyard",
+        "level": "L0"
+      },
+      {
+        "seed": 830010,
+        "family": "overpass",
+        "level": "L0"
+      },
+      {
+        "seed": 830011,
+        "family": "narrow_crossing",
+        "level": "L0"
+      },
+      {
+        "seed": 830012,
+        "family": "dynamic_crossing",
+        "level": "L0"
+      }
+    ],
+    "critic_sampling": [
+      820001,
+      820002,
+      820003,
+      820004,
+      820005,
+      820006
+    ]
+  },
+  "final_test": {
+    "status": "sealed-reserved; do not generate or evaluate during development",
+    "l0_seed_range": [
+      930001,
+      930060
+    ],
+    "complex_seed_range": [
+      940001,
+      940120
+    ]
+  },
+  "limits": "Map seeds and episodes from the same training policy are not independent training repetitions."
+}

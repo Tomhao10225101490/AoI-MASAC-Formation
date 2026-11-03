@@ -1,0 +1,73 @@
+{
+  "version": "structured-v3-goal-curriculum-20261102",
+  "phase": "predefined exploratory development; not confirmation",
+  "world": [
+    240,
+    240,
+    90
+  ],
+  "n_agents": 3,
+  "dt": 0.2,
+  "horizon": 350,
+  "vmax": 10.0,
+  "amax": 4.0,
+  "body_radius": 1.0,
+  "layouts": [
+    "urban",
+    "warehouse",
+    "courtyard"
+  ],
+  "building_counts": [
+    25,
+    20,
+    24
+  ],
+  "dynamic_obstacles": 4,
+  "actor": "shared set encoder + 128x128 Gaussian heads",
+  "critic": "centralized twin permutation-invariant team Q",
+  "hidden": 128,
+  "batch_size": 128,
+  "warmup": 1000,
+  "replay_capacity": 100000,
+  "lr": 0.0003,
+  "gamma": 0.99,
+  "tau": 0.005,
+  "initial_alpha": 0.1,
+  "seeds": [
+    411,
+    422,
+    433
+  ],
+  "training_map_seed_offset": 100000,
+  "validation_map_seeds": [
+    800001,
+    800002,
+    800003,
+    800004,
+    800005,
+    800006
+  ],
+  "arms": [
+    "standard"
+  ],
+  "preview_seconds": 2.0,
+  "preview_dt": 0.2,
+  "acceleration_candidates": 19,
+  "selection": "Same original six development maps for all checkpoints; compare final checkpoints only; preserve all seeds and outcomes. Curriculum training changes goal distribution and does not isolate short tasks from obstacle interaction.",
+  "terminal_definition": "all agents simultaneously within 4m of goal below 2m/s; any collision terminates",
+  "notes": "Exploratory comparison with original 100k-step Standard MASAC; no candidate arm; no conclusion about novelty, safety, convergence or final generalization.",
+  "steps": 100000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "stages": [
+    {
+      "name": "short_edge",
+      "start_step": 0
+    },
+    {
+      "name": "full",
+      "start_step": 30000
+    }
+  ],
+  "curriculum_rule": "On reset: short_edge keeps original starts and sets each goal to its start, then goal_y += 40 when start_y <= 120, else goal_y -= 40; full uses original reset goals. Stage chosen by completed environment steps at episode reset; episodes crossing a stage threshold finish before switching."
+}

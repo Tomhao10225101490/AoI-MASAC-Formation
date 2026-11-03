@@ -1,0 +1,122 @@
+{
+  "version": "masac-v4-l0-legacy-v1",
+  "experiment_id": "v4_l0_legacy_20261103",
+  "phase": "predefined development qualification",
+  "arms": [
+    "standard"
+  ],
+  "seeds": [
+    511,
+    522,
+    533
+  ],
+  "level": "L0",
+  "families": [
+    "urban_canyon",
+    "warehouse",
+    "courtyard",
+    "overpass",
+    "narrow_crossing",
+    "dynamic_crossing"
+  ],
+  "steps": 50000,
+  "warmup": 1000,
+  "batch_size": 128,
+  "replay_capacity": 100000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "log_interval": 200,
+  "device": "cpu",
+  "training_map_seed_offset": 2000000,
+  "training_seed_multiplier": 10000,
+  "seed_sets": "configs/masac_v4/seed_sets.json",
+  "development_maps": [
+    {
+      "seed": 830001,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830002,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830003,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830004,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830005,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830006,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830007,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830008,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830009,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830010,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830011,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830012,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    }
+  ],
+  "learning_rate": 0.0003,
+  "gamma": 0.99,
+  "tau": 0.005,
+  "initial_alpha": 0.1,
+  "gradient_clip": 5,
+  "actor": "legacy V3 shared Pooling; instrumentation algebra and RNG verified",
+  "critic": "legacy V3 independent twin centralized team Q",
+  "n_agents": 3,
+  "world": [
+    240,
+    240,
+    90
+  ],
+  "dt": 0.2,
+  "horizon": 350,
+  "vmax": 10,
+  "amax": 4,
+  "body_radius": 1,
+  "safety_margin": 0,
+  "sensor_range": 400,
+  "gate": {
+    "per_seed_joint_success_fraction": 0.6,
+    "finite_losses_required": true,
+    "evaluation": "last checkpoint all fixed L0 development maps",
+    "failure_action": "save and diagnose; do not silently increase budget or queue architecture/candidate arms"
+  },
+  "notes": "Fresh learner seeds; same legacy reward/update/terminal semantics as V3. L0 task distribution is a separate experiment from the isolated V3 Critic sampler study. Final test seeds are reserved and not evaluated."
+}
