@@ -13,13 +13,13 @@
     ],
     "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
     "do_not_auto_launch_further": true,
-    "note": "Path C L0 return RUNNING healthy; seed 911 7800/50000; eval@2k 0/12 but ever_ball 8/12; frozen 4/2; do_not_auto_launch_further"
+    "note": "seed 911 COMPLETE gate PASSED 11/12; now seed 922 running; do_not_auto_launch_further"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793688786.292213,
-  "updated_at_asia_shanghai": "2026-11-03 14:53 Asia/Shanghai",
+  "updated_at": 1793689940.752449,
+  "updated_at_asia_shanghai": "2026-11-03 15:12 Asia/Shanghai",
   "load_after": {
-    "note": "monitor 2026-11-03 14:53 Asia/Shanghai; train CPU-bound ~125%"
+    "note": "monitor 2026-11-03 15:12 Asia/Shanghai; train CPU-bound ~124%; seed911 PASSED 11/12"
   },
   "load_before": {
     "loadavg": [
@@ -268,19 +268,36 @@
       "do_not_auto_launch_further": true,
       "caffeinate_pid": 38605,
       "status_snapshot": {
-        "seed": 911,
-        "seed_index": 0,
+        "seed": 922,
+        "seed_index": 1,
         "seeds_total": 3,
-        "step": 7800,
+        "step": 14600,
         "total_steps": 50000,
-        "last_eval": 0.0,
-        "last_eval_step": 6000,
-        "steps_per_s": 55.332772146045606,
-        "eta_s": 762.658337243923,
-        "first_eval_note": "step 2000 success 0/12 ever_ball_maps 8/12"
+        "last_eval": 0.16666666666666666,
+        "last_eval_step": 14000,
+        "steps_per_s": 51.51340030144471,
+        "eta_s": 687.199831361301,
+        "seed911_final": "11/12 gate PASSED",
+        "seed922_note": "running; early evals sparse successes"
       },
-      "note": "RUNNING seed 911 7800/50000; eval@2k 0/12 ever_ball 8/12; caffeinate on",
-      "updated_at_asia_shanghai": "2026-11-03 14:53 Asia/Shanghai"
+      "note": "seed 911 COMPLETE gate PASSED 11/12; now seed 922 running; do_not_auto_launch_further",
+      "updated_at_asia_shanghai": "2026-11-03 15:12 Asia/Shanghai",
+      "seed_results": {
+        "911": {
+          "final": "11/12",
+          "gate_met": true,
+          "completion": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/reshape_l0_911/completion.json",
+          "diagnosis": "results/masac_v4_c_reshape_l0_frozen42_seed911_gate_20261103"
+        },
+        "922": {
+          "phase": "running",
+          "step": 14600,
+          "last_eval": 0.16666666666666666
+        },
+        "933": {
+          "phase": "pending"
+        }
+      }
     }
   ],
   "aborted_rethread_arms": [
@@ -301,7 +318,7 @@
     "latch_off": "complete_failed_0_12",
     "finished_latch_off_at_asia_shanghai": "2026-11-03 13:30 Asia/Shanghai"
   },
-  "monitor_note": "Path C L0 frozen42 RUNNING pid 38603+caffeinate; seeds 911/922/933 \u00d750k; seed911 step 7800; first eval 0/12 ever_ball 8/12; no auto further; Attention/L1/silent restack forbidden",
+  "monitor_note": "seed 911 COMPLETE gate PASSED 11/12; now seed 922 running; do_not_auto_launch_further",
   "continue_batch_gate": "results/masac_v4_l0_continue_batch_gate_20261103.json",
   "continue_batch_summary": {
     "511": "1/12 FAILED (peak 8/12@98k)",
@@ -351,17 +368,34 @@
     "capture": "4.0m/2.0mps latch=False",
     "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
     "status_snapshot": {
-      "seed": 911,
-      "seed_index": 0,
+      "seed": 922,
+      "seed_index": 1,
       "seeds_total": 3,
-      "step": 7800,
+      "step": 14600,
       "total_steps": 50000,
-      "last_eval": 0.0,
-      "last_eval_step": 6000,
-      "steps_per_s": 55.332772146045606,
-      "eta_s": 762.658337243923,
-      "first_eval_note": "step 2000 success 0/12 ever_ball_maps 8/12"
+      "last_eval": 0.16666666666666666,
+      "last_eval_step": 14000,
+      "steps_per_s": 51.51340030144471,
+      "eta_s": 687.199831361301,
+      "seed911_final": "11/12 gate PASSED",
+      "seed922_note": "running; early evals sparse successes"
     },
-    "do_not_auto_launch_further": true
+    "do_not_auto_launch_further": true,
+    "seed_results": {
+      "911": {
+        "final": "11/12",
+        "gate_met": true,
+        "completion": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/reshape_l0_911/completion.json",
+        "diagnosis": "results/masac_v4_c_reshape_l0_frozen42_seed911_gate_20261103"
+      },
+      "922": {
+        "phase": "running",
+        "step": 14600,
+        "last_eval": 0.16666666666666666
+      },
+      "933": {
+        "phase": "pending"
+      }
+    }
   }
 }
