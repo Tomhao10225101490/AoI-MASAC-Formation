@@ -1,0 +1,41 @@
+{
+  "run": "results/masac_v4_l0_continue_533_plus50k_20261103_121717",
+  "seed": 533,
+  "step": 100000,
+  "final_development_success": 0.4166666666666667,
+  "gate_threshold": 0.6,
+  "gate_met": false,
+  "legacy_50k_final": "6/12",
+  "eval_curve_nonzero_peaks": [
+    {
+      "step": 56000,
+      "success": "10/12"
+    },
+    {
+      "step": 82000,
+      "success": "8/12"
+    },
+    {
+      "step": 86000,
+      "success": "6/12"
+    },
+    {
+      "step": 94000,
+      "success": "6/12"
+    },
+    {
+      "step": 98000,
+      "success": "8/12"
+    },
+    {
+      "step": 100000,
+      "success": "5/12"
+    }
+  ],
+  "final_failure_buckets": {
+    "success": 5,
+    "entered_or_near_but_not_simultaneous_capture": 7
+  },
+  "note": "Volatile eval; mid-run peaks above gate then regress. Do NOT silent stack more budget on same continue protocol. Await 511/522 finish for three-seed summary. Forbidden: Attention / Predictive Maneuverability / L1.",
+  "asia_shanghai": "2026-11-03 ~12:47"
+}

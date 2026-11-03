@@ -41,3 +41,9 @@ Smoke (safe anytime; tiny replay):
 ```
 
 Per-arm locks: `results/locks/masac_v4_sanity_*.lock`, `results/locks/masac_v4_capture_*.lock`.
+
+## Monitor update 2026-11-03 ~12:48 Asia/Shanghai
+
+- 533 continue **COMPLETE / gate FAILED** (5/12). Critic uniform:411 **COMPLETE**.
+- 511/522 continues still running (~63k/100k). MPS probe workers still ~2.7 GB RSS.
+- Free pages still ~tens of MB → **keep deferred**. Launch sanity+latch when 511/522 finish or free pages clearly recover; do not kill healthy arms.
