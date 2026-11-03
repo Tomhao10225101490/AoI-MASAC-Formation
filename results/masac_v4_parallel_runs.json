@@ -1,7 +1,7 @@
 {
   "primary_active_run_file": "results/masac_v4_active_run.json",
   "primary": {
-    "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "out": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
     "pid": 38603,
     "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
     "phase": "running",
@@ -12,13 +12,14 @@
       933
     ],
     "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
-    "do_not_auto_launch_further": true
+    "do_not_auto_launch_further": true,
+    "note": "Path C L0 return RUNNING healthy; seed 911 5800/50000; eval@2k 0/12 but ever_ball 8/12; frozen 4/2; do_not_auto_launch_further"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793688643.5180202,
-  "updated_at_asia_shanghai": "2026-11-03 14:50 Asia/Shanghai",
+  "updated_at": 1793688744.943808,
+  "updated_at_asia_shanghai": "2026-11-03 14:52 Asia/Shanghai",
   "load_after": {
-    "note": "post Path-C complete ~14:41 Asia/Shanghai; no train procs"
+    "note": "monitor 2026-11-03 14:52 Asia/Shanghai; train CPU-bound ~125%; load from uptime separate"
   },
   "load_before": {
     "loadavg": [
@@ -264,7 +265,22 @@
       "lock_path": "/Users/a1/Desktop/research/MASAC/results/locks/masac_v4_c_reshape_l0_masac_v4_c_reshape_l0_frozen42_20261103_145043.lock",
       "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/train.log",
       "authorization": "user widget t4s11 path C L0 return 2026-11-03",
-      "do_not_auto_launch_further": true
+      "do_not_auto_launch_further": true,
+      "caffeinate_pid": 38605,
+      "status_snapshot": {
+        "seed": 911,
+        "seed_index": 0,
+        "seeds_total": 3,
+        "step": 5800,
+        "total_steps": 50000,
+        "last_eval": 0.0,
+        "last_eval_step": 4000,
+        "steps_per_s": 58.416080239254896,
+        "eta_s": 756.6409765764828,
+        "first_eval_note": "step 2000 success 0/12 ever_ball_maps 8/12"
+      },
+      "note": "RUNNING seed 911 5800/50000; eval@2k 0/12 ever_ball 8/12; caffeinate on",
+      "updated_at_asia_shanghai": "2026-11-03 14:52 Asia/Shanghai"
     }
   ],
   "aborted_rethread_arms": [
@@ -285,7 +301,7 @@
     "latch_off": "complete_failed_0_12",
     "finished_latch_off_at_asia_shanghai": "2026-11-03 13:30 Asia/Shanghai"
   },
-  "monitor_note": "Path C empty PASSED 4/4; continues+sanity+latch all prior FAILED; machine idle; do_not_auto_launch_l0; awaiting user L0 return auth",
+  "monitor_note": "Path C L0 frozen42 RUNNING pid 38603+caffeinate; seeds 911/922/933 \u00d750k; seed911 step 5800; first eval 0/12 ever_ball 8/12; no auto further; Attention/L1/silent restack forbidden",
   "continue_batch_gate": "results/masac_v4_l0_continue_batch_gate_20261103.json",
   "continue_batch_summary": {
     "511": "1/12 FAILED (peak 8/12@98k)",
@@ -324,5 +340,28 @@
     "diagnosis": "results/masac_v4_c_reshape_empty_gate_diagnosis_20261103",
     "soft_capture": "6.0m/3.5mps+latch",
     "frozen_l0_still": "4.0m/2.0mps"
+  },
+  "path_c_l0_return": {
+    "out": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "pid": 38603,
+    "caffeinate_pid": 38605,
+    "phase": "running",
+    "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+    "authorization": "t4s11",
+    "capture": "4.0m/2.0mps latch=False",
+    "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+    "status_snapshot": {
+      "seed": 911,
+      "seed_index": 0,
+      "seeds_total": 3,
+      "step": 5800,
+      "total_steps": 50000,
+      "last_eval": 0.0,
+      "last_eval_step": 4000,
+      "steps_per_s": 58.416080239254896,
+      "eta_s": 756.6409765764828,
+      "first_eval_note": "step 2000 success 0/12 ever_ball_maps 8/12"
+    },
+    "do_not_auto_launch_further": true
   }
 }

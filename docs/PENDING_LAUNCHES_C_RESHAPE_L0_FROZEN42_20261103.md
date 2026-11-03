@@ -2,7 +2,7 @@
 
 **Authorization:** user widget **t4s11**. Local TomMac-mini only. No cloud agents.
 
-**Status:** LAUNCHING / RUNNING L0 12-map reshape with frozen capture (do **not** auto-launch further stages).
+**Status:** RUNNING L0 12-map reshape with frozen capture (do **not** auto-launch further stages). First mid-eval seed 911 @2k: 0/12 success, ever_ball 8/12.
 
 ## Arm
 
