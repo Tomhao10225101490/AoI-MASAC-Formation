@@ -1,0 +1,131 @@
+{
+  "title": "V4 capture latch-OFF baseline twin gate diagnosis",
+  "asia_shanghai": "2026-11-03 ~13:30 Asia/Shanghai (finished); note written ~13:41",
+  "run": "results/masac_v4_capture_latch_off_20261103_132438",
+  "seed": 712,
+  "steps": 20000,
+  "capture_latch": false,
+  "gate_threshold": 0.6,
+  "final": "0/12",
+  "gate_met": false,
+  "elapsed_s": 337.15168729199996,
+  "mid_evals": {
+    "2000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "collision": 12
+      },
+      "remaining_distance_mean": 64.33821153480527,
+      "closest_goal_min_mean": 22.958991297008073,
+      "episodes_with_any_ever_arrived": 0
+    },
+    "4000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "collision": 12
+      },
+      "remaining_distance_mean": 36.37409824803108,
+      "closest_goal_min_mean": 20.176714785313546,
+      "episodes_with_any_ever_arrived": 0
+    },
+    "6000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 12
+      },
+      "remaining_distance_mean": 64.40118503641867,
+      "closest_goal_min_mean": 8.526397519232667,
+      "episodes_with_any_ever_arrived": 0
+    },
+    "8000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 12
+      },
+      "remaining_distance_mean": 53.83274766414427,
+      "closest_goal_min_mean": 10.544243800339729,
+      "episodes_with_any_ever_arrived": 0
+    },
+    "10000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 4,
+        "near_goal_or_entered_not_simultaneous": 8
+      },
+      "remaining_distance_mean": 36.216954226445104,
+      "closest_goal_min_mean": 4.2413085669780095,
+      "episodes_with_any_ever_arrived": 8
+    },
+    "12000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 11,
+        "near_goal_or_entered_not_simultaneous": 1
+      },
+      "remaining_distance_mean": 17.120218916216388,
+      "closest_goal_min_mean": 7.351764484641998,
+      "episodes_with_any_ever_arrived": 1
+    },
+    "14000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "near_goal_or_entered_not_simultaneous": 11,
+        "timeout_far": 1
+      },
+      "remaining_distance_mean": 18.827086694956947,
+      "closest_goal_min_mean": 2.9277253939901406,
+      "episodes_with_any_ever_arrived": 9
+    },
+    "16000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 10,
+        "near_goal_or_entered_not_simultaneous": 2
+      },
+      "remaining_distance_mean": 28.66474521552353,
+      "closest_goal_min_mean": 6.864660924397757,
+      "episodes_with_any_ever_arrived": 1
+    },
+    "18000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 11,
+        "near_goal_or_entered_not_simultaneous": 1
+      },
+      "remaining_distance_mean": 25.67187961129926,
+      "closest_goal_min_mean": 8.369549017880152,
+      "episodes_with_any_ever_arrived": 0
+    },
+    "20000": {
+      "success": "0/12",
+      "rate": 0.0,
+      "buckets": {
+        "timeout_far": 10,
+        "near_goal_or_entered_not_simultaneous": 2
+      },
+      "remaining_distance_mean": 16.903094709662824,
+      "closest_goal_min_mean": 6.134108840679309,
+      "episodes_with_any_ever_arrived": 1
+    }
+  },
+  "readout": "All mid-evals and final 0/12. Same learnability-floor miss as latch-on at 20k; capture_latch=False does not rescue. Failures mostly timeout/near-goal without simultaneous capture; no collision-dominated wipeout.",
+  "stance": {
+    "no_silent_budget_stack": true,
+    "awaiting_user": "C capture/reward reshape vs new audited longer-sanity protocol",
+    "forbidden": [
+      "Attention",
+      "Predictive Maneuverability",
+      "L1",
+      "silent continue restack"
+    ]
+  }
+}
