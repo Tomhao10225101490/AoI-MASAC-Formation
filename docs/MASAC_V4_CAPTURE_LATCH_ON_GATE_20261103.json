@@ -1,0 +1,708 @@
+{
+  "created_at_asia_shanghai": "2026-11-03T13:21+08:00",
+  "run_dir": "results/masac_v4_capture_latch_on_20261103_131315",
+  "protocol": "configs/masac_v4/l0_capture_latch_on_20261103.json",
+  "gate_criteria": {
+    "per_seed_joint_success_fraction": 0.6,
+    "maps": 12,
+    "budget_steps": 20000,
+    "seed": 711,
+    "capture_latch": true
+  },
+  "gate_verdict": {
+    "final_development_success": 0.0,
+    "final_frac": "0/12",
+    "gate_met": false,
+    "reason": "Need >=0.6 (8/12); observed 0/12 at every eval 2k..20k"
+  },
+  "capture_trajectory_audit": {
+    "goal_capture_rule": {
+      "distance_m_lt": 4.0,
+      "speed_mps_lt": 2.0,
+      "must_be_simultaneous_all_agents": true,
+      "note_latch": "Latch trains sticky capture; audit still reports simultaneous ball+speed for comparability"
+    },
+    "n_maps": 12,
+    "subtype_counts": {
+      "near_goal_never_stable_capture": 11,
+      "entered_ball_but_speed_gate_blocked_some": 1
+    },
+    "fail_subtype_counts": {
+      "near_goal_never_stable_capture": 11,
+      "entered_ball_but_speed_gate_blocked_some": 1
+    },
+    "n_success": 0,
+    "maps": [
+      {
+        "map_seed": 830001,
+        "kind": null,
+        "family": "urban_canyon",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 18.302093664143836,
+        "mean_final_dist": 19.07396821235177,
+        "per_uav": [
+          {
+            "min_dist": 18.302093664143836,
+            "final_dist": 36.93861398053146,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 11.191331789909098,
+            "final_dist": 13.019897218011392,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 5.567949961058332,
+            "final_dist": 7.263393438512456,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830001.npz"
+      },
+      {
+        "map_seed": 830002,
+        "kind": null,
+        "family": "warehouse",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 17.803473877136362,
+        "mean_final_dist": 19.092505746919482,
+        "per_uav": [
+          {
+            "min_dist": 17.803473877136362,
+            "final_dist": 33.760389470616026,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 8.59885911683144,
+            "final_dist": 10.035862318338864,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 8.172477964789818,
+            "final_dist": 13.48126545180355,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830002.npz"
+      },
+      {
+        "map_seed": 830003,
+        "kind": null,
+        "family": "courtyard",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 18.136481984923556,
+        "mean_final_dist": 21.82384456273442,
+        "per_uav": [
+          {
+            "min_dist": 18.136481984923556,
+            "final_dist": 37.530472876322555,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 11.567580343913113,
+            "final_dist": 12.677984738370775,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 8.795564603330135,
+            "final_dist": 15.26307607350992,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830003.npz"
+      },
+      {
+        "map_seed": 830004,
+        "kind": null,
+        "family": "overpass",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 14.887910004803171,
+        "mean_final_dist": 19.64522272021681,
+        "per_uav": [
+          {
+            "min_dist": 14.887910004803171,
+            "final_dist": 33.95349646959593,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 9.132432139440295,
+            "final_dist": 10.565302804060922,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 4.377427927130455,
+            "final_dist": 14.416868886993582,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830004.npz"
+      },
+      {
+        "map_seed": 830005,
+        "kind": null,
+        "family": "narrow_crossing",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 17.291668415902997,
+        "mean_final_dist": 19.918166773075814,
+        "per_uav": [
+          {
+            "min_dist": 17.291668415902997,
+            "final_dist": 35.30184552218889,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 11.709429216902326,
+            "final_dist": 12.748641676539595,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 6.966887257747509,
+            "final_dist": 11.704013120498951,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830005.npz"
+      },
+      {
+        "map_seed": 830006,
+        "kind": null,
+        "family": "dynamic_crossing",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 18.549349902020918,
+        "mean_final_dist": 19.551813118477813,
+        "per_uav": [
+          {
+            "min_dist": 18.549349902020918,
+            "final_dist": 36.584084417514774,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 11.026891037632351,
+            "final_dist": 12.890123757490816,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 6.420674736511615,
+            "final_dist": 9.181231180427861,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830006.npz"
+      },
+      {
+        "map_seed": 830007,
+        "kind": null,
+        "family": "urban_canyon",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 19.297314288151178,
+        "mean_final_dist": 19.43456981787946,
+        "per_uav": [
+          {
+            "min_dist": 19.297314288151178,
+            "final_dist": 37.087003339634705,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 11.11133641268496,
+            "final_dist": 13.067214950929035,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 6.5776267923474805,
+            "final_dist": 8.149491163074645,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830007.npz"
+      },
+      {
+        "map_seed": 830008,
+        "kind": null,
+        "family": "warehouse",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 18.631176175114494,
+        "mean_final_dist": 17.848018617158278,
+        "per_uav": [
+          {
+            "min_dist": 18.631176175114494,
+            "final_dist": 33.27238225179457,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 10.041223983216977,
+            "final_dist": 10.379734178576333,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 7.479494293328462,
+            "final_dist": 9.891939421103928,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830008.npz"
+      },
+      {
+        "map_seed": 830009,
+        "kind": null,
+        "family": "courtyard",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 17.444980345149624,
+        "mean_final_dist": 20.229649774983635,
+        "per_uav": [
+          {
+            "min_dist": 17.444980345149624,
+            "final_dist": 36.92038624556394,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 9.94013477334121,
+            "final_dist": 10.681122436073041,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 5.820088082185373,
+            "final_dist": 13.087440643313926,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830009.npz"
+      },
+      {
+        "map_seed": 830010,
+        "kind": null,
+        "family": "overpass",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 16.32921751261236,
+        "mean_final_dist": 20.038005190393918,
+        "per_uav": [
+          {
+            "min_dist": 16.32921751261236,
+            "final_dist": 35.16351348721467,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 10.00233723693373,
+            "final_dist": 11.335929261467287,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 6.673053021175965,
+            "final_dist": 13.614572822499797,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830010.npz"
+      },
+      {
+        "map_seed": 830011,
+        "kind": null,
+        "family": "narrow_crossing",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "near_goal_never_stable_capture",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 0,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 17.8526078035085,
+        "mean_final_dist": 18.111804463698462,
+        "per_uav": [
+          {
+            "min_dist": 17.8526078035085,
+            "final_dist": 34.64266534537399,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 9.246992859404468,
+            "final_dist": 9.290527633270008,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 5.894529386150054,
+            "final_dist": 10.402220412451385,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          }
+        ],
+        "file": "eval_20000_830011.npz"
+      },
+      {
+        "map_seed": 830012,
+        "kind": null,
+        "family": "dynamic_crossing",
+        "success": false,
+        "timeout": true,
+        "T": 351,
+        "subtype": "entered_ball_but_speed_gate_blocked_some",
+        "joint_capture_steps": 0,
+        "first_joint_t": null,
+        "n_ever_in_ball": 1,
+        "n_ever_captured": 0,
+        "all_ever_captured": false,
+        "lagging_uav_min_dist": 16.833925125125223,
+        "mean_final_dist": 18.99051449680513,
+        "per_uav": [
+          {
+            "min_dist": 16.833925125125223,
+            "final_dist": 36.34869603790866,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 11.427869740563121,
+            "final_dist": 13.656354172404262,
+            "min_speed_when_in_ball": null,
+            "steps_in_ball": 0,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 0,
+            "first_in_ball_t": null,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": false
+          },
+          {
+            "min_dist": 3.9822124713049423,
+            "final_dist": 6.96649328010247,
+            "min_speed_when_in_ball": 2.466692294184857,
+            "steps_in_ball": 2,
+            "steps_captured": 0,
+            "steps_in_ball_but_fast": 2,
+            "first_in_ball_t": 37,
+            "first_captured_t": null,
+            "ever_captured": false,
+            "ever_in_ball": true
+          }
+        ],
+        "file": "eval_20000_830012.npz"
+      }
+    ]
+  },
+  "interpretation": "Capture-latch ON at 20k on frozen L0 maps also FAILED 0/12. Latch alone does not unlock joint success at this budget. A/B incomplete until latch-off twin finishes. Prior continue arms needed ~50k\u2013100k for nonzero rates; 20k may be too short to isolate latch, but zero throughout still argues capture/credit assignment needs reshape (C), not only sticky latch. No Attention/L1; no silent restack.",
+  "stance": {
+    "no_silent_budget_stack": true,
+    "forbidden": [
+      "Attention",
+      "Predictive Maneuverability",
+      "L1"
+    ],
+    "next": "launch latch-off twin for A/B completeness; user decides C reshape"
+  }
+}
