@@ -1,0 +1,138 @@
+{
+  "version": "masac-v4-capture-latch-off-v1",
+  "experiment_id": "l0_capture_latch_off_20261103",
+  "title": "Capture-latch OFF baseline twin (frozen simultaneous capture)",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "intensity_widget": "t1u",
+    "local_wiring": [
+      "t2u",
+      "t3u"
+    ],
+    "date": "2026-11-03",
+    "provenance": "Gate diagnosis: entered_ball_but_speed_gate_blocked_some dominant; isolate sticky capture vs frozen simultaneous rule.",
+    "allowed_scope": "Standard-obs SharedMASAC with capture_latch=True on frozen L0 family schedule.",
+    "forbidden": [
+      "Attention",
+      "19-probe maneuverability",
+      "Changing frozen v4_environment.py default semantics",
+      "Novelty claims before A/B readout"
+    ]
+  },
+  "mode": "capture_latch_ab",
+  "capture_latch": false,
+  "capture_rule_documented": {
+    "baseline_frozen": "dist < 4 m AND speed < 2 m/s, simultaneous, not sticky; leave \u2192 delta -1 \u2192 -5 reward",
+    "latch_variant": "once ball+speed satisfied, captured stays True; leave does not emit -5; team success when all latched"
+  },
+  "observation": "Standard (Pooling); no attention; no maneuverability",
+  "level": "L0",
+  "families": [
+    "urban_canyon",
+    "warehouse",
+    "courtyard",
+    "overpass",
+    "narrow_crossing",
+    "dynamic_crossing"
+  ],
+  "seeds": [
+    712
+  ],
+  "steps": 20000,
+  "warmup": 1000,
+  "batch_size": 128,
+  "replay_capacity": 50000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "log_interval": 200,
+  "device": "cpu",
+  "training_map_seed_offset": 2000000,
+  "training_seed_multiplier": 10000,
+  "n_agents": 3,
+  "sensor_range": 400,
+  "development_maps": [
+    {
+      "seed": 830001,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830002,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830003,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830004,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830005,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830006,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830007,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830008,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830009,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830010,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830011,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830012,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    }
+  ],
+  "gate": {
+    "per_seed_joint_success_fraction": 0.6,
+    "metric": "joint team success on the 12 L0 development maps",
+    "pass_condition": "seed 712 final development success >= 0.6 (at least 8/12)",
+    "compare_to": "configs/masac_v4/l0_capture_latch_on_20261103.json",
+    "failure_action": "save_and_diagnose"
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze A/B evidence; do not auto-start Attention/maneuver",
+  "links": {
+    "entrypoint": "scripts/train_masac_v4_capture_latch.py",
+    "module": "uav_planning/v4_capture_latch.py",
+    "baseline_twin": "configs/masac_v4/l0_capture_latch_on_20261103.json",
+    "prior_diagnosis": "results/masac_v4_l0_legacy_50k_gate_diagnosis_20261103",
+    "paper_note": "docs/LEARNABILITY_SANITY_CAPTURE_LATCH_20261103.md"
+  },
+  "machine_target": {
+    "preferred": "TomMac-mini.local",
+    "machineId": "c70e463e-5629-4769-84af-f0ba33183f85",
+    "project_path": "/Users/a1/Desktop/research/MASAC",
+    "branch": "research/wowmom2027-upgrade"
+  }
+}

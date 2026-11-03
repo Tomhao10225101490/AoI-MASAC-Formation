@@ -1,0 +1,23 @@
+{
+  "experiment_id": "l0_sanity_empty_single_20261103",
+  "authorization": {
+    "user": "Tom Zhong",
+    "intensity_widget": "t1u",
+    "local_wiring": [
+      "t2u",
+      "t3u"
+    ],
+    "date": "2026-11-03",
+    "provenance": "User intensity demand + explicit local implement (no cloud). Isolate whether SharedMASAC can learn navigate+capture on the simplest feasible maps before claiming L0 urban failure is algorithmic.",
+    "allowed_scope": "Empty and single-obstacle SharedMASAC Standard-obs training only.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent novelty claims"
+    ]
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze evidence that SharedMASAC learnability floor holds; use to interpret L0 urban failures",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai"
+}

@@ -1,0 +1,117 @@
+{
+  "version": "masac-v4-sanity-empty-single-v1",
+  "experiment_id": "l0_sanity_empty_single_20261103",
+  "title": "SharedMASAC empty / single-obstacle sanity (learnability floor)",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "intensity_widget": "t1u",
+    "local_wiring": [
+      "t2u",
+      "t3u"
+    ],
+    "date": "2026-11-03",
+    "provenance": "User intensity demand + explicit local implement (no cloud). Isolate whether SharedMASAC can learn navigate+capture on the simplest feasible maps before claiming L0 urban failure is algorithmic.",
+    "allowed_scope": "Empty and single-obstacle SharedMASAC Standard-obs training only.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent novelty claims"
+    ]
+  },
+  "mode": "shared_masac_sanity",
+  "observation": "Standard (Pooling / legacy observation); no attention; no maneuverability features",
+  "level": "L0",
+  "kinds": [
+    "empty",
+    "single_obstacle"
+  ],
+  "seeds": [
+    611
+  ],
+  "steps": 20000,
+  "warmup": 1000,
+  "batch_size": 128,
+  "replay_capacity": 50000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "log_interval": 200,
+  "device": "cpu",
+  "training_map_seed_offset": 870000,
+  "training_seed_multiplier": 1000,
+  "n_agents": 3,
+  "sensor_range": 400,
+  "world": [
+    240,
+    240,
+    90
+  ],
+  "dt": 0.2,
+  "horizon": 350,
+  "vmax": 10,
+  "amax": 4,
+  "development_maps": [
+    {
+      "seed": 870001,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870002,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870003,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870004,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870101,
+      "kind": "single_obstacle",
+      "level": "L0"
+    },
+    {
+      "seed": 870102,
+      "kind": "single_obstacle",
+      "level": "L0"
+    },
+    {
+      "seed": 870103,
+      "kind": "single_obstacle",
+      "level": "L0"
+    },
+    {
+      "seed": 870104,
+      "kind": "single_obstacle",
+      "level": "L0"
+    }
+  ],
+  "gate": {
+    "per_seed_joint_success_fraction": 0.75,
+    "metric": "joint team success on the 8 sanity development maps (4 empty + 4 single-obstacle)",
+    "pass_condition": "seed 611 final success >= 0.75 (at least 6/8)",
+    "finite_losses_required": true,
+    "failure_action": "save_and_diagnose; do not auto-queue Attention/maneuver"
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze evidence that SharedMASAC learnability floor holds; use to interpret L0 urban failures",
+  "links": {
+    "entrypoint": "scripts/train_masac_v4_sanity_empty.py",
+    "maps_module": "uav_planning/v4_sanity_maps.py",
+    "fixtures": "data/masac_v4_sanity/catalog.json",
+    "paper_note": "docs/LEARNABILITY_SANITY_CAPTURE_LATCH_20261103.md"
+  },
+  "machine_target": {
+    "preferred": "TomMac-mini.local",
+    "machineId": "c70e463e-5629-4769-84af-f0ba33183f85",
+    "project_path": "/Users/a1/Desktop/research/MASAC",
+    "branch": "research/wowmom2027-upgrade"
+  }
+}

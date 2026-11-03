@@ -1,0 +1,23 @@
+{
+  "experiment_id": "l0_capture_latch_on_20261103",
+  "authorization": {
+    "user": "Tom Zhong",
+    "intensity_widget": "t1u",
+    "local_wiring": [
+      "t2u",
+      "t3u"
+    ],
+    "date": "2026-11-03",
+    "provenance": "Gate diagnosis: entered_ball_but_speed_gate_blocked_some dominant; isolate sticky capture vs frozen simultaneous rule.",
+    "allowed_scope": "Standard-obs SharedMASAC with capture_latch=True on frozen L0 family schedule.",
+    "forbidden": [
+      "Attention",
+      "19-probe maneuverability",
+      "Changing frozen v4_environment.py default semantics",
+      "Novelty claims before A/B readout"
+    ]
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze A/B evidence; do not auto-start Attention/maneuver",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai"
+}
