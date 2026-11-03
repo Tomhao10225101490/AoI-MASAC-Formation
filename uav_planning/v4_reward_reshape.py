@@ -26,8 +26,9 @@ C reshape defaults (this module; experiment-local):
   capture_latch      = True         # sticky; no -5 on leave
   horizon            = 350          # unchanged (40 m goals; travel budget ample)
 
-Eval for THIS experiment uses the soft train thresholds (documented).
-Frozen L0 return gate remains dist<4 AND speed<2 simultaneous (not used here).
+Protocols may set train_ball_m / train_speed_mps / capture_latch via ReshapeConfig.
+Empty-floor Path C used soft 6/3.5+latch. L0-return Path C keeps reward reshape but
+uses frozen capture 4/2 with L0-default latch=False for train+gate.
 Standard observation only; no Attention / maneuverability / L1.
 """
 from __future__ import annotations
@@ -244,6 +245,19 @@ def make_reshape_env(kind, seed, sensor_range=400., reshape: ReshapeConfig | Non
     return env, obs
 
 
+
+def make_reshape_l0_env(family, seed, sensor_range=400., reshape: ReshapeConfig | None = None, **overrides):
+    """Build a frozen L0 family scene with path-C reward reshape (capture knobs from reshape)."""
+    from uav_planning.v4_maps import FAMILIES, default_config
+    if family not in FAMILIES:
+        raise ValueError(f'Unknown L0 family {family!r}; expected one of {FAMILIES}')
+    rs = reshape or DEFAULT_RESHAPE
+    cfg = default_config(family, 'L0', sensor_range=sensor_range, horizon=rs.horizon, **overrides)
+    env = V4MissionRewardReshape(cfg, reshape=rs)
+    obs = env.reset(int(seed))
+    return env, obs
+
+
 __all__ = [
     'FROZEN_GOAL_BALL_M',
     'FROZEN_CAPTURE_SPEED_MPS',
@@ -254,4 +268,5 @@ __all__ = [
     'V4MissionRewardReshape',
     'reshape_from_protocol',
     'make_reshape_env',
+    'make_reshape_l0_env',
 ]

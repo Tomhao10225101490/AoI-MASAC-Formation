@@ -1,18 +1,22 @@
 {
   "primary_active_run_file": "results/masac_v4_active_run.json",
   "primary": {
-    "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623",
-    "pid": 33473,
-    "experiment_id": "masac_v4_c_reshape_empty_20261103",
-    "phase": "complete",
-    "kind": "v4_c_reshape_empty",
-    "gate_met": true,
-    "final_development_success": 1.0,
-    "note": "Path C empty gate PASSED 4/4 @40k; awaiting user L0 authorization"
+    "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "pid": 38603,
+    "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+    "phase": "running",
+    "kind": "v4_c_reshape_l0_frozen42",
+    "seeds": [
+      911,
+      922,
+      933
+    ],
+    "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+    "do_not_auto_launch_further": true
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793688091.4270048,
-  "updated_at_asia_shanghai": "2026-11-03 14:41 Asia/Shanghai",
+  "updated_at": 1793688643.5180202,
+  "updated_at_asia_shanghai": "2026-11-03 14:50 Asia/Shanghai",
   "load_after": {
     "note": "post Path-C complete ~14:41 Asia/Shanghai; no train procs"
   },
@@ -227,6 +231,40 @@
       },
       "note": "COMPLETE gate PASSED 4/4 (need \u22650.75); soft capture 6/3.5+latch; diagnosis results/masac_v4_c_reshape_empty_gate_diagnosis_20261103",
       "diagnosis": "results/masac_v4_c_reshape_empty_gate_diagnosis_20261103"
+    },
+    {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+      "pid": 38603,
+      "started_at": 1793688643.5180008,
+      "kind": "v4_c_reshape_l0_frozen42",
+      "phase": "running",
+      "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+      "seeds": [
+        911,
+        922,
+        933
+      ],
+      "steps": 50000,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+      "lock_path": "/Users/a1/Desktop/research/MASAC/results/locks/masac_v4_c_reshape_l0_masac_v4_c_reshape_l0_frozen42_20261103_145043.lock",
+      "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/train.log",
+      "authorization": "user widget t4s11 path C L0 return 2026-11-03",
+      "do_not_auto_launch_further": true
     }
   ],
   "aborted_rethread_arms": [

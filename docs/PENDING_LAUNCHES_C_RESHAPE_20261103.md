@@ -1,3 +1,7 @@
+# SUPERSEDED by docs/PENDING_LAUNCHES_C_RESHAPE_L0_FROZEN42_20261103.md
+
+Empty Path C completed PASS 4/4; user t4s11 authorized L0 return.
+
 # Pending / active — Path C reshape empty floor (2026-11-03 Asia/Shanghai)
 
 **Authorization:** user widget **t4s5** → C. Local TomMac-mini only. No cloud agents.

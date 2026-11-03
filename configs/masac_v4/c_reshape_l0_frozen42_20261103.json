@@ -1,0 +1,169 @@
+{
+  "version": "masac-v4-c-reshape-l0-frozen42-v1",
+  "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+  "title": "Path C L0 return: keep C reward reshape; frozen capture 4m/2mps (latch off)",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s11",
+    "choice": "Authorize L0 12-map gate; keep C reward reshape; capture frozen 4/2",
+    "date": "2026-11-03",
+    "provenance": "Path C empty floor PASSED 4/4 @40k soft 6/3.5+latch (results/masac_v4_c_reshape_empty_20261103_142623). User authorized return to L0 with frozen capture while keeping C rewards.",
+    "allowed_scope": "L0 12-map SharedMASAC Standard-obs with Path-C reward reshape and frozen capture 4/2 latch=False; optional warm-start from empty C checkpoint weights.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent +50k continue restack of old L0 continue arms",
+      "Auto-launch further stages without gates",
+      "Cursor cloud agents"
+    ]
+  },
+  "mode": "shared_masac_c_reshape_l0",
+  "path": "C",
+  "observation": "Standard (Pooling / legacy observation); no attention; no maneuverability features",
+  "level": "L0",
+  "families": [
+    "urban_canyon",
+    "warehouse",
+    "courtyard",
+    "overpass",
+    "narrow_crossing",
+    "dynamic_crossing"
+  ],
+  "seeds": [
+    911,
+    922,
+    933
+  ],
+  "seed_namespace_note": "New seeds 911/922/933 \u2014 not a silent continue of 511/522/533. Warm-start weights from empty C seed 811 ckpt when provided.",
+  "steps": 50000,
+  "warmup": 1000,
+  "batch_size": 128,
+  "replay_capacity": 100000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "log_interval": 200,
+  "device": "cpu",
+  "training_map_seed_offset": 2000000,
+  "training_seed_multiplier": 10000,
+  "n_agents": 3,
+  "sensor_range": 400,
+  "world": [
+    240,
+    240,
+    90
+  ],
+  "dt": 0.2,
+  "horizon": 350,
+  "vmax": 10,
+  "amax": 4,
+  "warm_start": {
+    "enabled_by_default": true,
+    "checkpoint": "results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+    "mode": "weights_and_optimizers_only",
+    "discard_replay": true,
+    "discard_env_rng_step": true,
+    "rationale": "Empty C learned approach under soft 6/3.5; soft replay incompatible with frozen 4/2 \u2014 transfer policy/opt state, fresh replay on L0 maps."
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "capture_note": "TRAIN and GATE both use frozen L0 capture: dist<4 AND speed<2, latch=False (project L0 default). Path-C reward magnitudes retained.",
+  "development_maps": [
+    {
+      "seed": 830001,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830002,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830003,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830004,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830005,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830006,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830007,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830008,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830009,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830010,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830011,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830012,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    }
+  ],
+  "gate": {
+    "per_seed_joint_success_fraction": 0.6,
+    "metric": "joint team success on the 12 frozen L0 development maps under frozen capture 4m/2mps latch=False",
+    "pass_condition": "each of seeds 911/922/933 final success >= 0.6 (at least 8/12 maps)",
+    "finite_losses_required": true,
+    "failure_action": "save_and_diagnose; do not auto-queue Attention/maneuver/L1 or silent budget restack",
+    "success_action": "declare L0 12-map gate under Path-C reshape+frozen capture; do not auto-launch further stages"
+  },
+  "budget_note": "50k is the audited L0-return budget for Path C+frozen capture (new experiment id), not a silent restack of failed L0 continue +50k arms.",
+  "links": {
+    "entrypoint": "scripts/train_masac_v4_c_reshape_l0.py",
+    "reshape_module": "uav_planning/v4_reward_reshape.py",
+    "prior_empty_pass": "docs/MASAC_V4_C_RESHAPE_EMPTY_GATE_20261103.md",
+    "protocol_doc": "docs/MASAC_V4_C_RESHAPE_L0_FROZEN42_PROTOCOL_20261103.md"
+  },
+  "machine_target": {
+    "preferred": "TomMac-mini.local",
+    "machineId": "c70e463e-5629-4769-84af-f0ba33183f85",
+    "project_path": "/Users/a1/Desktop/research/MASAC",
+    "branch": "research/wowmom2027-upgrade"
+  },
+  "do_not_auto_launch_further": true
+}

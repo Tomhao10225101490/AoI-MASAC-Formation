@@ -1,11 +1,15 @@
 {
-  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623",
-  "pid": 33473,
-  "kind": "v4_c_reshape_empty",
-  "phase": "complete",
-  "experiment_id": "masac_v4_c_reshape_empty_20261103",
-  "seed": 811,
-  "target_total_steps": 40000,
+  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+  "pid": 38603,
+  "kind": "v4_c_reshape_l0_frozen42",
+  "phase": "running",
+  "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+  "seeds": [
+    911,
+    922,
+    933
+  ],
+  "target_total_steps": 50000,
   "reshape": {
     "progress_scale": 1.0,
     "living_cost": 0.005,
@@ -16,21 +20,21 @@
     "capture_bonus": 8.0,
     "team_success_bonus": 50.0,
     "collision_penalty": 20.0,
-    "train_ball_m": 6.0,
-    "train_speed_mps": 3.5,
-    "capture_latch": true,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
     "horizon": 350
   },
-  "authorization": "user widget t4s5 path C 2026-11-03",
-  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/train.log",
-  "do_not_auto_launch_l0": true,
-  "completed_at": 1793687993.286719,
-  "gate_met": true,
-  "final_development_success": 1.0,
-  "final_success_fraction": "4/4",
-  "all_seeds_gate_met": true,
-  "diagnosis": "results/masac_v4_c_reshape_empty_gate_diagnosis_20261103",
-  "gate_doc": "docs/MASAC_V4_C_RESHAPE_EMPTY_GATE_20261103.md",
-  "updated_at_asia_shanghai": "2026-11-03 14:41 Asia/Shanghai",
-  "monitor_note": "Path C empty gate PASSED 4/4; machine idle; awaiting user authorize L0 return; no auto-launch"
+  "capture": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+  "authorization": "user widget t4s11 path C L0 return 2026-11-03",
+  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/train.log",
+  "do_not_auto_launch_further": true,
+  "started_at_asia_shanghai": "2026-11-03 14:50 Asia/Shanghai",
+  "updated_at_asia_shanghai": "2026-11-03 14:50 Asia/Shanghai",
+  "monitor_note": "Path C L0 return running; gate \u22650.6 on 12 maps frozen 4/2; no auto further stages"
 }
