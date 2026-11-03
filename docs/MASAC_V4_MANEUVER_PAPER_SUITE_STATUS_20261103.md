@@ -1,39 +1,37 @@
-# Maneuver paper suite — mid-run status (2026-11-03 21:05 Asia/Shanghai)
+# Maneuver paper suite — status (2026-11-04 07:45 Asia/Shanghai)
 
-Standing order **t8u**: keep TomMac-mini experiments running; iterate after results.
-**Do not kill** PIDs 45262 / 45327 / 45356 (+ caffeinates).
+Standing order: keep TomMac-mini experiments running; iterate after results.
+**Do not kill** PIDs 45262 / 45327 / 45356 (+ caffeinates 45265/45330/45359).
 
-Machine snapshot JSON: `results/masac_v4_maneuver_paper_suite_20261103_status_20261103_2105.json`
+Machine snapshot JSON: `results/masac_v4_maneuver_paper_suite_20261103_status_20261104_0745.json`
 
-## Health
+## Health (~15h22m wall)
 
-| Arm | PID | Seed | Step | step/s | Last eval | Best success | Best ever_ball | Alive |
-|-----|-----|------|------|--------|-----------|--------------|----------------|-------|
-| full | 45262 | 1211/3 | 41600/80000 | 2.47 | 0/12 @40k | 1/12 @32k | 11/12 | yes |
-| zero | 45327 | 1211/3 | 49400/80000 | 2.93 | 0/12 @48k | 0/12 | 12/12 | yes |
-| static | 45356 | 1211/3 | 41600/80000 | 2.47 | 0/12 @40k | 1/12 @32k | 12/12 | yes |
+| Arm | PID | Seed | Step | step/s | Last eval | Seed finals so far | Alive |
+|-----|-----|------|------|--------|-----------|--------------------|-------|
+| full | 45262 | 1222/3 | ~58800/80000 | ~2.60 | 1/12 @58k | 1211 FAIL 3/12 (best 4/12@78k) | yes |
+| zero | 45327 | **1233**/3 | ~3400/80000 | ~4.4→~3 | 0/12 @2k | 1211 FAIL 1/12; **1222 FAIL 0/12 (best 2/12@68k)** | yes |
+| static | 45356 | 1222/3 | ~56800/80000 | ~2.51 | **11/12 @56k** | 1211 PASS 11/12 | yes |
 
 - Suite stamp: `20261103_162345`
-- Contract: C reshape + frozen capture 4/2 latch=False; cold start; gate ≥0.60/12
-- RAM: ~16 GB, free ≈0.08 GB, compressor busy → **no fourth heavy arm**
+- Contract: C reshape + frozen capture 4/2 latch=False; cold start; gate ≥0.60
+- `do_not_auto_launch_further=true` (no Attention / L1 / silent restack)
 
-## Failure mode (latest eval)
+## Seed 1222 — zero arm FINAL (this tick)
 
-All three arms: almost exclusively **timeout_after_ball**.
-Collisions ≈0. `simultaneously_arrived=false`. High `near_goal_low_speed_uncaptured_steps`.
-Remaining distance often ~3–13 m with 0–2 UAVs in-ball at timeout.
+- `completion.json`: final_development_success=0.0, gate_met=false @80k
+- Best mid-eval: **2/12 @68k** (also 2/12 @60/64/66k); final EVAL 0/12 ever_ball 12/12
+- Pattern matches seed 1211 zero: strong ever_ball, weak joint success
+- Arm auto-rolled to seed **1233** (healthy; no crash)
 
-Read: **navigation / ball-entry is learning; joint capture coordination is the bottleneck** (same qualitative lag Path-C showed before the 11/12 floor).
+## Contrast (same budget window)
 
-## Curves (seed 1211, ever_ball / success)
-
-- **full**: ever_ball rises from 0 → 6–11 after 12k; success flicker 1/12 @32k then 0.
-- **zero**: ever_ball to 12/12 by 42–48k; success still 0 (capacity control still finds goal vicinity).
-- **static**: ever_ball to 12/12 @40k; success flicker 1/12 @32k.
+- **static** seed 1222 already hit **11/12 @56k** mid-eval (ever_ball 12/12) — on track to match seed-1211 PASS if it holds
+- **full** seed 1222 best still only **2/12 @48k**; latest 1/12 @58k — predictive full probe not beating static on this seed so far
+- Ablation read (preliminary): static probe ≫ full ≳ zero on success; ever_ball saturates on all arms
 
 ## Stance
 
-- Suite continues undisturbed.
-- Perf opts already in tree (`cache_risk`, vectorized probes, threads=1 guidance) apply to **next** launches only — live processes keep imported modules.
-- Next experiment plan is **PENDING** (not launched): `docs/PENDING_LAUNCHES_MANEUVER_NEXT_ITER_20261103.md`.
-- No Attention / L1 / silent restack without explicit user auth.
+- Suite continues undisturbed through remaining seeds (full/static finish 1222 + 1233; zero finish 1233).
+- Next-iter plan stays **PENDING**: `docs/PENDING_LAUNCHES_MANEUVER_NEXT_ITER_20261103.md` (RAM still shared by 3 arms; no fourth heavy launch).
+- After suite gate: prefer documented A/B candidates (throughput optpack / sync-capture curriculum) — ask user if claim-changing.
