@@ -1,49 +1,37 @@
 # Pending launches — sanity + capture-latch (2026-11-03 Asia/Shanghai)
 
-**Status at write:** DEFERRED for RAM. TomMac-mini had ~16 GB unified memory with
-~4.5 GB Python RSS across 3 L0 continues + critic + multiple MPS/CPU bench workers,
-load ~16–17, free pages ~tens of MB. Adding two more full replay arms risked OOM-killing continues.
+**Status:** LAUNCHED 2026-11-03 13:15 Asia/Shanghai
 
-**Do not kill:** 533 continue ~98782; 511/522 parallel continues; critic; mps workers.
+Continues 511/522/533 +50k all finished gate FAILED (see `docs/MASAC_V4_L0_CONTINUE_BATCH_GATE_20261103.md`).
+Free pages recovered after continues exited; launched one sanity + one latch-on arm.
 
-When headroom returns (continues finish or benches exit), launch **one** sanity and **one** latch arm:
+## Active arms
+
+```text
+# sanity empty/single — seed 611, 20k — pid 9337
+results/masac_v4_sanity_empty_single_20261103_131315
+
+# capture latch ON — seed 711, 20k — pid 9338
+results/masac_v4_capture_latch_on_20261103_131315
+```
+
+Optional later — baseline twin OFF (still deferred; start when RAM allows after these finish or in parallel if headroom):
 
 ```bash
 cd /Users/a1/Desktop/research/MASAC
 TS=$(date +%Y%m%d_%H%M%S)
-
-# Arm 1 — sanity (empty + single-obstacle), 20k, seed 611
-caffeinate -dims ./.venv/bin/python scripts/train_masac_v4_sanity_empty.py \
-  --out results/masac_v4_sanity_empty_single_${TS} \
-  --protocol configs/masac_v4/l0_sanity_empty_single_20261103.json \
-  --authorization-protocol configs/masac_v4/l0_sanity_empty_single_20261103.auth.json \
-  --torch-threads 1
-
-# Arm 2 — capture latch ON (prefer latch over baseline twin while RAM tight)
 caffeinate -dims ./.venv/bin/python scripts/train_masac_v4_capture_latch.py \
-  --out results/masac_v4_capture_latch_on_${TS} \
-  --protocol configs/masac_v4/l0_capture_latch_on_20261103.json \
-  --authorization-protocol configs/masac_v4/l0_capture_latch_on_20261103.auth.json \
+  --out results/masac_v4_capture_latch_off_${TS} \
+  --protocol configs/masac_v4/l0_capture_latch_off_20261103.json \
   --torch-threads 1
-
-# Optional later — baseline twin OFF
-# caffeinate -dims ./.venv/bin/python scripts/train_masac_v4_capture_latch.py \
-#   --out results/masac_v4_capture_latch_off_${TS} \
-#   --protocol configs/masac_v4/l0_capture_latch_off_20261103.json \
-#   --torch-threads 1
 ```
 
-Smoke (safe anytime; tiny replay):
+## Script fix applied
 
-```bash
-./.venv/bin/python scripts/train_masac_v4_sanity_empty.py --out results/masac_v4_sanity_smoke_${TS} --smoke
-./.venv/bin/python scripts/train_masac_v4_capture_latch.py --out results/masac_v4_latch_smoke_${TS} --smoke
-```
+`train_masac_v4_sanity_empty.py` and `train_masac_v4_capture_latch.py` now `mkdir` `source_snapshot/configs/masac_v4` before copying the protocol (was FileNotFoundError on first launch attempts).
 
-Per-arm locks: `results/locks/masac_v4_sanity_*.lock`, `results/locks/masac_v4_capture_*.lock`.
+## Stance
 
-## Monitor update 2026-11-03 ~12:48 Asia/Shanghai
-
-- 533 continue **COMPLETE / gate FAILED** (5/12). Critic uniform:411 **COMPLETE**.
-- 511/522 continues still running (~63k/100k). MPS probe workers still ~2.7 GB RSS.
-- Free pages still ~tens of MB → **keep deferred**. Launch sanity+latch when 511/522 finish or free pages clearly recover; do not kill healthy arms.
+- No silent further +50k continue budget stack on the failed continue protocol.
+- Forbidden: Attention / Predictive Maneuverability / L1 from this monitor.
+- User still chooses next Standard-nav protocol change (e.g. capture/reward reshape C).

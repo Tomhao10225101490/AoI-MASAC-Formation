@@ -324,6 +324,7 @@ def run(args):
         target = root / 'source_snapshot' / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(ROOT / name, target)
+    (root / 'source_snapshot' / 'configs' / 'masac_v4').mkdir(parents=True, exist_ok=True)
     shutil.copy2(args.protocol, root / 'source_snapshot' / 'configs' / 'masac_v4' / args.protocol.name)
 
     if not args.smoke:

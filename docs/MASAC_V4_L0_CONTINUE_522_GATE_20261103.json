@@ -1,0 +1,45 @@
+{
+  "run": "results/masac_v4_l0_continue_522_plus50k_20261103_122256",
+  "seed": 522,
+  "step": 100000,
+  "final_development_success": 0.4166666666666667,
+  "gate_threshold": 0.6,
+  "gate_met": false,
+  "legacy_50k_final": "1/12",
+  "eval_curve_nonzero_peaks": [
+    {
+      "step": 58000,
+      "success": "1/12"
+    },
+    {
+      "step": 60000,
+      "success": "1/12"
+    },
+    {
+      "step": 72000,
+      "success": "1/12"
+    },
+    {
+      "step": 74000,
+      "success": "3/12"
+    },
+    {
+      "step": 84000,
+      "success": "1/12"
+    },
+    {
+      "step": 100000,
+      "success": "5/12"
+    }
+  ],
+  "peak": {
+    "step": 100000,
+    "success": "5/12"
+  },
+  "final_failure_buckets": {
+    "success": 5,
+    "entered_or_near_but_not_simultaneous_capture": 7
+  },
+  "note": "Volatile or weak Standard L0 continue; do NOT silent stack more budget on same continue protocol. Forbidden: Attention / Predictive Maneuverability / L1.",
+  "asia_shanghai": "2026-11-03 ~13:12 Asia/Shanghai"
+}

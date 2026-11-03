@@ -1,0 +1,63 @@
+{
+  "title": "V4 L0 continue three-seed +50k batch gate summary",
+  "asia_shanghai": "2026-11-03 ~13:12 Asia/Shanghai",
+  "gate_threshold": 0.6,
+  "seeds": {
+    "511": {
+      "final_development_success": 0.08333333333333333,
+      "final_frac": "1/12",
+      "gate_met": false,
+      "run": "results/masac_v4_l0_continue_511_plus50k_20261103_122254",
+      "legacy_50k_final": "1/12",
+      "peak": {
+        "step": 98000,
+        "success": "8/12"
+      },
+      "final_failure_buckets": {
+        "entered_or_near_but_not_simultaneous_capture": 11,
+        "success": 1
+      }
+    },
+    "522": {
+      "final_development_success": 0.4166666666666667,
+      "final_frac": "5/12",
+      "gate_met": false,
+      "run": "results/masac_v4_l0_continue_522_plus50k_20261103_122256",
+      "legacy_50k_final": "1/12",
+      "peak": {
+        "step": 100000,
+        "success": "5/12"
+      },
+      "final_failure_buckets": {
+        "success": 5,
+        "entered_or_near_but_not_simultaneous_capture": 7
+      }
+    },
+    "533": {
+      "final_development_success": 0.4166666666666667,
+      "final_frac": "5/12",
+      "gate_met": false,
+      "run": "results/masac_v4_l0_continue_533_plus50k_20261103_121717",
+      "legacy_50k_final": "6/12",
+      "peak": {
+        "step": 100000,
+        "success": "5/12"
+      },
+      "final_failure_buckets": {
+        "success": 5,
+        "entered_or_near_but_not_simultaneous_capture": 7
+      }
+    }
+  },
+  "all_gate_met": false,
+  "stance": {
+    "no_silent_budget_stack": true,
+    "forbidden": [
+      "Attention comparison",
+      "Predictive Maneuverability-Aware",
+      "L1 escalation"
+    ],
+    "next_machine_work": "sanity empty/single + capture-latch-on (pending launches)",
+    "awaiting_user": "Choose next Standard-nav protocol change (e.g. capture/reward reshape C) — do not auto-restack continue budget"
+  }
+}
