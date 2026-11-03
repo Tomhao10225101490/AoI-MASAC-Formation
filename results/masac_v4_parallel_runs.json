@@ -1,24 +1,29 @@
 {
   "primary_active_run_file": "results/masac_v4_active_run.json",
   "primary": {
-    "out": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
-    "pid": 38603,
-    "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
-    "phase": "complete",
-    "kind": "v4_c_reshape_l0_frozen42",
+    "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+    "pid": 45262,
+    "experiment_id": "masac_v4_maneuver_paper_suite_20261103_full",
+    "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+    "phase": "running",
+    "kind": "v4_maneuver_full",
+    "probe_mode": "full",
     "seeds": [
-      911,
-      922,
-      933
+      1211,
+      1222,
+      1233
     ],
-    "all_seeds_gate_met": true,
-    "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+    "parallel_arms": [
+      "full",
+      "zero",
+      "static"
+    ],
     "do_not_auto_launch_further": true,
-    "note": "COMPLETE gate PASSED 3/3: 911=11/12 922=11/12 933=10/12; finished 15:41 Asia/Shanghai; do_not_auto_launch_further"
+    "note": "Predictive Maneuverability paper suite RUNNING 3 parallel arms; cold start; C reshape + frozen 4/2; no Attention/L1 auto"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793691843.2042181,
-  "updated_at_asia_shanghai": "2026-11-03 15:43 Asia/Shanghai",
+  "updated_at": 1793694417.87984,
+  "updated_at_asia_shanghai": "2026-11-03 16:26 Asia/Shanghai",
   "load_after": {
     "note": "monitor 2026-11-03 15:43 Asia/Shanghai; Path C L0 FULL PASS 3/3; train pids gone; machine idle"
   },
@@ -303,6 +308,150 @@
       },
       "completed_at": 1793691694.472506,
       "all_seeds_gate_met": true
+    },
+    {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+      "pid": 45262,
+      "caffeinate_pid": 45265,
+      "started_at": 1793694417.8792121,
+      "kind": "v4_maneuver_full",
+      "phase": "running",
+      "experiment_id": "masac_v4_maneuver_paper_suite_20261103_full",
+      "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+      "probe_mode": "full",
+      "set_mode": "pool",
+      "seeds": [
+        1211,
+        1222,
+        1233
+      ],
+      "steps": 80000,
+      "torch_threads": 2,
+      "status_snapshot": {
+        "seed": 1211,
+        "step": 1400,
+        "steps_per_s": 8.63268553984768,
+        "eta_s": 9104.930283535714,
+        "updates": 400,
+        "last_eval": null
+      },
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "warm_start_note": "cold \u2014 Legacy Path-C L0 incompatible with V4 pool+RiskEncoder",
+      "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345/train.log",
+      "authorization": "user t4s17 + phone comprehensive maneuver suite 2026-11-03",
+      "do_not_auto_launch_further": true,
+      "protocol": "configs/masac_v4/maneuver_paper_suite_20261103.json"
+    },
+    {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
+      "pid": 45327,
+      "caffeinate_pid": 45330,
+      "started_at": 1793694417.879421,
+      "kind": "v4_maneuver_zero",
+      "phase": "running",
+      "experiment_id": "masac_v4_maneuver_paper_suite_20261103_zero",
+      "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+      "probe_mode": "zero",
+      "set_mode": "pool",
+      "seeds": [
+        1211,
+        1222,
+        1233
+      ],
+      "steps": 80000,
+      "torch_threads": 2,
+      "status_snapshot": {
+        "seed": 1211,
+        "step": 1400,
+        "steps_per_s": 10.183842096969755,
+        "eta_s": 7718.108671715144,
+        "updates": 400,
+        "last_eval": null
+      },
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "warm_start_note": "cold \u2014 Legacy Path-C L0 incompatible with V4 pool+RiskEncoder",
+      "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345/train.log",
+      "authorization": "user t4s17 + phone comprehensive maneuver suite 2026-11-03",
+      "do_not_auto_launch_further": true,
+      "protocol": "configs/masac_v4/maneuver_paper_suite_20261103.json"
+    },
+    {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
+      "pid": 45356,
+      "caffeinate_pid": 45359,
+      "started_at": 1793694417.879589,
+      "kind": "v4_maneuver_static",
+      "phase": "running",
+      "experiment_id": "masac_v4_maneuver_paper_suite_20261103_static",
+      "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+      "probe_mode": "static",
+      "set_mode": "pool",
+      "seeds": [
+        1211,
+        1222,
+        1233
+      ],
+      "steps": 80000,
+      "torch_threads": 2,
+      "status_snapshot": {
+        "seed": 1211,
+        "step": 1400,
+        "steps_per_s": 8.682448376514603,
+        "eta_s": 9052.746021802714,
+        "updates": 400,
+        "last_eval": null
+      },
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "warm_start_note": "cold \u2014 Legacy Path-C L0 incompatible with V4 pool+RiskEncoder",
+      "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345/train.log",
+      "authorization": "user t4s17 + phone comprehensive maneuver suite 2026-11-03",
+      "do_not_auto_launch_further": true,
+      "protocol": "configs/masac_v4/maneuver_paper_suite_20261103.json"
     }
   ],
   "aborted_rethread_arms": [
@@ -323,7 +472,7 @@
     "latch_off": "complete_failed_0_12",
     "finished_latch_off_at_asia_shanghai": "2026-11-03 13:30 Asia/Shanghai"
   },
-  "monitor_note": "seed 911 COMPLETE gate PASSED 11/12; seed 922 ~37k/50k last_eval 8/12@36k; 933 pending; do_not_auto_launch_further",
+  "monitor_note": "maneuver paper suite 3-arm parallel running; do_not_auto_launch_further",
   "continue_batch_gate": "results/masac_v4_l0_continue_batch_gate_20261103.json",
   "continue_batch_summary": {
     "511": "1/12 FAILED (peak 8/12@98k)",
@@ -398,5 +547,41 @@
       }
     },
     "note": "FULL L0 12-map Path C gate PASSED 3/3 seeds; machine idle; await user"
+  },
+  "maneuver_suite": {
+    "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+    "timestamp": "20261103_162345",
+    "arms": {
+      "full": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+      "zero": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
+      "static": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345"
+    },
+    "pids": {
+      "full": 45262,
+      "zero": 45327,
+      "static": 45356
+    },
+    "caffeinate_pids": {
+      "full": 45265,
+      "zero": 45330,
+      "static": 45359
+    },
+    "seeds": [
+      1211,
+      1222,
+      1233
+    ],
+    "steps_per_seed": 80000,
+    "set_mode": "pool",
+    "capture": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false
+    },
+    "warm_start": "cold",
+    "baseline": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "do_not_auto_launch_further": true,
+    "authorization": "t4s17 + phone comprehensive paper suite",
+    "updated_at_asia_shanghai": "2026-11-03 16:26 Asia/Shanghai"
   }
 }

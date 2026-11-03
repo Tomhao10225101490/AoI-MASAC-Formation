@@ -1,0 +1,23 @@
+{
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s17",
+    "phone_steering": "make training more comprehensive/powerful for paper",
+    "choice": "Authorize Predictive Maneuverability-Aware on passed Standard L0; paper suite with ablations",
+    "date": "2026-11-03",
+    "provenance": "t4s17 after Path C L0 FULL PASS 3/3; phone ask for broader than thin smoke",
+    "allowed_scope": "Local Mac maneuver paper suite (full/zero/static); C reshape + frozen 4/2; multi-seed 80k; docs/status/commit",
+    "forbidden": [
+      "Attention arms in this launch",
+      "L1 escalation",
+      "Silent unrelated restack",
+      "Auto-launch further stages",
+      "Cursor cloud agents"
+    ]
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "declare maneuver suite evidence vs Standard-C; do not auto-launch further stages",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai"
+}

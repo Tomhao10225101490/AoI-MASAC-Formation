@@ -1,51 +1,44 @@
 {
-  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
-  "pid": 38603,
-  "caffeinate_pid": 38605,
-  "kind": "v4_c_reshape_l0_frozen42",
-  "phase": "complete",
-  "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+  "pid": 45262,
+  "caffeinate_pid": 45265,
+  "kind": "v4_maneuver_paper_suite",
+  "phase": "running",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_full",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "probe_mode": "full",
+  "parallel_arms": {
+    "full": {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+      "pid": 45262
+    },
+    "zero": {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
+      "pid": 45327
+    },
+    "static": {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
+      "pid": 45356
+    }
+  },
   "seeds": [
-    911,
-    922,
-    933
+    1211,
+    1222,
+    1233
   ],
-  "target_total_steps": 50000,
-  "all_seeds_gate_met": true,
-  "do_not_auto_launch_further": true,
-  "authorization": "user widget t4s11 path C L0 return 2026-11-03",
+  "target_total_steps": 80000,
   "capture": {
     "ball_m": 4.0,
     "speed_mps": 2.0,
     "latch": false
   },
-  "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
-  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/train.log",
-  "started_at_asia_shanghai": "2026-11-03 14:50 Asia/Shanghai",
-  "completed_at": 1793691694.4717052,
-  "finished_at_asia_shanghai": "2026-11-03 15:41 Asia/Shanghai",
-  "elapsed_s": 3050.936337667,
-  "updated_at_asia_shanghai": "2026-11-03 15:43 Asia/Shanghai",
-  "monitor_note": "COMPLETE all_seeds_gate_met; 911=11/12 922=11/12 933=10/12; machine idle; do_not_auto_launch_further",
-  "seed_results": {
-    "911": {
-      "final": "11/12",
-      "gate_met": true,
-      "completion": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/reshape_l0_911/completion.json",
-      "diagnosis": "results/masac_v4_c_reshape_l0_frozen42_seed911_gate_20261103"
-    },
-    "922": {
-      "final": "11/12",
-      "gate_met": true,
-      "completion": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/reshape_l0_922/completion.json",
-      "diagnosis": "results/masac_v4_c_reshape_l0_frozen42_seed922_gate_20261103"
-    },
-    "933": {
-      "final": "10/12",
-      "gate_met": true,
-      "completion": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043/reshape_l0_933/completion.json",
-      "diagnosis": "results/masac_v4_c_reshape_l0_frozen42_seed933_gate_20261103"
-    }
-  },
-  "batch_diagnosis": "results/masac_v4_c_reshape_l0_frozen42_gate_20261103"
+  "warm_start": null,
+  "warm_start_note": "cold \u2014 architecture incompatible with Legacy Path-C L0",
+  "authorization": "user t4s17 + phone comprehensive maneuver suite 2026-11-03",
+  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345/train.log",
+  "do_not_auto_launch_further": true,
+  "started_at_asia_shanghai": "2026-11-03 16:23 Asia/Shanghai",
+  "updated_at_asia_shanghai": "2026-11-03 16:26 Asia/Shanghai",
+  "monitor_note": "3-arm paper suite (full/zero/static) running ~9 step/s; gate \u22650.6; no auto further",
+  "baseline_comparison": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043"
 }
