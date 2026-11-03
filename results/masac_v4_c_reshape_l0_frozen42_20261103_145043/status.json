@@ -1,22 +1,185 @@
 {
-  "phase": "training",
-  "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
-  "arm": "c_reshape_l0_frozen42",
+  "phase": "complete",
+  "complete": true,
+  "scope": "c_reshape L0 frozen42 12-map gate",
   "path": "C",
-  "seed": 922,
-  "seed_index": 1,
-  "seeds_total": 3,
-  "step": 16000,
-  "total_steps": 50000,
-  "updates": 15000,
-  "episodes": 61,
-  "steps_per_s": 51.44650194238702,
-  "eta_s": 660.8806957968746,
-  "last_eval": 0.16666666666666666,
-  "last_eval_step": 14000,
-  "pid": 38603,
-  "updated_at": 1793689965.709994,
-  "updated_at_asia_shanghai": "2026-11-03 15:12 Asia/Shanghai",
+  "runs": [
+    {
+      "seed": 911,
+      "step": 50000,
+      "final_development_success": 0.9166666666666666,
+      "gate_met": true,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": {
+        "warm_start_from": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+        "parent_step": 40000,
+        "parent_seed": 811,
+        "parent_manifest": {
+          "version": 1,
+          "step": 40000,
+          "seed": 811,
+          "replay_size": 40000,
+          "replay_index": 40000,
+          "checkpoint_sha256": "0992cf47e8465abbaf2edf114f35fff4a55b03d88df9cb8a474ad411451555a9",
+          "replay_sha256": "baca01e081d465b473bf35b21e8235cc48ba8b78f880b50ee4662b14cd68397a",
+          "sources": {
+            "scripts/train_masac_v4_c_reshape.py": "6414d167e32667e6241b83090e8e8041d1879316feadf5422c778a8857882c3e",
+            "uav_planning/v4_reward_reshape.py": "d5d0a1d6f39550c0b44a11033f760e6d11eafca1eb6c653d92e29b9e9855d232",
+            "uav_planning/v4_sanity_maps.py": "bc7c81ab36dfa2aa88773e4775eeb23c9d7ee03ec1cf96f1e44b1136b2bd701c",
+            "uav_planning/v4_training.py": "673b9758eebe0de20c93a67f69a9564d68ab9871f2f88a321a6087e91aecdb6e",
+            "uav_planning/v4_environment.py": "2952864b51a778363291a185b42b410da2964a7131d77e4449af6af71b52cdc4",
+            "uav_planning/v4_maps.py": "42ccecd85fb2ffd287b202b706bbff86ab25a31266e0d4febe9d67e8737aa277",
+            "uav_planning/shared_masac.py": "498d819a627744eba049ff210917ae162b7905c8a5ac85dbdcd559a67ac66760",
+            "uav_planning/structured.py": "ceb1398277076450de2c692b4769811ead7abb3ad1c54634a467c8d8555ea276",
+            "uav_planning/environment.py": "06613e55925d2b2088ef3314f3aaad6ad72bceb5be509aa6973ce3d9467788a4"
+          },
+          "arm": "c_reshape",
+          "complete": true
+        },
+        "mode": "weights_and_optimizers_only",
+        "replay_discarded": true,
+        "env_rng_step_discarded": true
+      }
+    },
+    {
+      "seed": 922,
+      "step": 50000,
+      "final_development_success": 0.9166666666666666,
+      "gate_met": true,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": {
+        "warm_start_from": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+        "parent_step": 40000,
+        "parent_seed": 811,
+        "parent_manifest": {
+          "version": 1,
+          "step": 40000,
+          "seed": 811,
+          "replay_size": 40000,
+          "replay_index": 40000,
+          "checkpoint_sha256": "0992cf47e8465abbaf2edf114f35fff4a55b03d88df9cb8a474ad411451555a9",
+          "replay_sha256": "baca01e081d465b473bf35b21e8235cc48ba8b78f880b50ee4662b14cd68397a",
+          "sources": {
+            "scripts/train_masac_v4_c_reshape.py": "6414d167e32667e6241b83090e8e8041d1879316feadf5422c778a8857882c3e",
+            "uav_planning/v4_reward_reshape.py": "d5d0a1d6f39550c0b44a11033f760e6d11eafca1eb6c653d92e29b9e9855d232",
+            "uav_planning/v4_sanity_maps.py": "bc7c81ab36dfa2aa88773e4775eeb23c9d7ee03ec1cf96f1e44b1136b2bd701c",
+            "uav_planning/v4_training.py": "673b9758eebe0de20c93a67f69a9564d68ab9871f2f88a321a6087e91aecdb6e",
+            "uav_planning/v4_environment.py": "2952864b51a778363291a185b42b410da2964a7131d77e4449af6af71b52cdc4",
+            "uav_planning/v4_maps.py": "42ccecd85fb2ffd287b202b706bbff86ab25a31266e0d4febe9d67e8737aa277",
+            "uav_planning/shared_masac.py": "498d819a627744eba049ff210917ae162b7905c8a5ac85dbdcd559a67ac66760",
+            "uav_planning/structured.py": "ceb1398277076450de2c692b4769811ead7abb3ad1c54634a467c8d8555ea276",
+            "uav_planning/environment.py": "06613e55925d2b2088ef3314f3aaad6ad72bceb5be509aa6973ce3d9467788a4"
+          },
+          "arm": "c_reshape",
+          "complete": true
+        },
+        "mode": "weights_and_optimizers_only",
+        "replay_discarded": true,
+        "env_rng_step_discarded": true
+      }
+    },
+    {
+      "seed": 933,
+      "step": 50000,
+      "final_development_success": 0.8333333333333334,
+      "gate_met": true,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": {
+        "warm_start_from": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+        "parent_step": 40000,
+        "parent_seed": 811,
+        "parent_manifest": {
+          "version": 1,
+          "step": 40000,
+          "seed": 811,
+          "replay_size": 40000,
+          "replay_index": 40000,
+          "checkpoint_sha256": "0992cf47e8465abbaf2edf114f35fff4a55b03d88df9cb8a474ad411451555a9",
+          "replay_sha256": "baca01e081d465b473bf35b21e8235cc48ba8b78f880b50ee4662b14cd68397a",
+          "sources": {
+            "scripts/train_masac_v4_c_reshape.py": "6414d167e32667e6241b83090e8e8041d1879316feadf5422c778a8857882c3e",
+            "uav_planning/v4_reward_reshape.py": "d5d0a1d6f39550c0b44a11033f760e6d11eafca1eb6c653d92e29b9e9855d232",
+            "uav_planning/v4_sanity_maps.py": "bc7c81ab36dfa2aa88773e4775eeb23c9d7ee03ec1cf96f1e44b1136b2bd701c",
+            "uav_planning/v4_training.py": "673b9758eebe0de20c93a67f69a9564d68ab9871f2f88a321a6087e91aecdb6e",
+            "uav_planning/v4_environment.py": "2952864b51a778363291a185b42b410da2964a7131d77e4449af6af71b52cdc4",
+            "uav_planning/v4_maps.py": "42ccecd85fb2ffd287b202b706bbff86ab25a31266e0d4febe9d67e8737aa277",
+            "uav_planning/shared_masac.py": "498d819a627744eba049ff210917ae162b7905c8a5ac85dbdcd559a67ac66760",
+            "uav_planning/structured.py": "ceb1398277076450de2c692b4769811ead7abb3ad1c54634a467c8d8555ea276",
+            "uav_planning/environment.py": "06613e55925d2b2088ef3314f3aaad6ad72bceb5be509aa6973ce3d9467788a4"
+          },
+          "arm": "c_reshape",
+          "complete": true
+        },
+        "mode": "weights_and_optimizers_only",
+        "replay_discarded": true,
+        "env_rng_step_discarded": true
+      }
+    }
+  ],
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": true,
+  "smoke": false,
+  "finished_at": 1793691694.4717052,
+  "finished_at_asia_shanghai": "2026-11-03 15:41 Asia/Shanghai",
+  "elapsed_s": 3050.936337667,
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s11",
+    "choice": "Authorize L0 12-map gate; keep C reward reshape; capture frozen 4/2",
+    "date": "2026-11-03",
+    "provenance": "User answered t4s11 after Path C empty PASS 4/4. Local Mac only; no cloud agents.",
+    "allowed_scope": "Path-C reshape L0 12-map training with frozen capture 4/2 latch=False; warm-start from empty C ckpt allowed; docs/status updates.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent +50k continue restack",
+      "Auto-launch further stages without gates",
+      "Cursor cloud agents"
+    ]
+  },
   "reshape": {
     "progress_scale": 1.0,
     "living_cost": 0.005,
@@ -32,20 +195,13 @@
     "capture_latch": false,
     "horizon": 350
   },
-  "warm_start": true,
-  "recent_success": 0.13333333333333333,
-  "actor_loss": -25.58511734008789,
-  "critic_loss": 0.8871386051177979,
-  "alpha": 0.01156606338918209,
-  "actor_grad": 0.49202123284339905,
-  "critic_grad": 76.78067779541016,
-  "actor_grad_post": 0.492019921541214,
-  "critic_grad_post": 4.999957084655762,
-  "actor_clipped": 0,
-  "critic_clipped": 1,
-  "q_mean": 25.34831428527832,
-  "target_mean": 25.76966094970703,
-  "td_abs": 0.468009889125824,
-  "entropy": -3.032959222793579,
-  "terminal_sample_fraction": 0.0
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start_path": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+  "do_not_auto_launch_further": true,
+  "next_if_pass": "Declare L0 gate under Path-C reshape+frozen capture; await user before further stages.",
+  "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
 }

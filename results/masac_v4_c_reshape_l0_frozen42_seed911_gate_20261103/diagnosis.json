@@ -142,6 +142,6 @@
   "first_nonzero_team_success_step": 16000,
   "first_gate_cross_step": 32000,
   "peak": "12/12 @44k-46k",
-  "note": "First Path C L0 12-map seed to PASS >=0.6 under frozen capture 4/2 latch=False + C reward reshape; warm-start empty 811@40k",
-  "updated_at_asia_shanghai": "2026-11-03 15:12 Asia/Shanghai"
+  "note": "Path C L0 frozen42 seed 911 gate PASSED 11/12 under C reshape + frozen capture 4/2 latch=False; warm-start empty 811@40k",
+  "updated_at_asia_shanghai": "2026-11-03 15:43 Asia/Shanghai"
 }
