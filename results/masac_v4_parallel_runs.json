@@ -1,0 +1,275 @@
+{
+  "primary_active_run_file": "results/masac_v4_active_run.json",
+  "primary": {
+    "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623",
+    "pid": 33473,
+    "experiment_id": "masac_v4_c_reshape_empty_20261103",
+    "phase": "running",
+    "kind": "v4_c_reshape_empty",
+    "note": "Path C empty-map reshape; wait for gate before L0"
+  },
+  "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
+  "updated_at": 1793687184.037278,
+  "updated_at_asia_shanghai": "2026-11-03 13:41 Asia/Shanghai",
+  "load_after": {
+    "loadavg": [
+      1.94,
+      2.13,
+      2.64
+    ],
+    "cpu_idle_pct": 76.55,
+    "note": "post latch-off idle ~13:40 Asia/Shanghai"
+  },
+  "load_before": {
+    "loadavg": [
+      3.62,
+      2.61,
+      2.14
+    ],
+    "cpu_idle_pct": 71.6
+  },
+  "arms": [
+    {
+      "kind": "v4_l0_parallel_continue",
+      "seed": 511,
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_l0_continue_511_plus50k_20261103_122254",
+      "pid": 99930,
+      "experiment_id": "l0_continue_511_plus50k_20261103",
+      "torch_threads": 3,
+      "authorization": "t1u intensity + B continue pattern",
+      "protocol": "configs/masac_v4/l0_continue_511_plus50k_20261103.json",
+      "phase": "complete",
+      "status_snapshot": {
+        "step": 100000,
+        "gate_met": false,
+        "final_development_success": 0.08333333333333333
+      },
+      "completed_at": 1793682489.6520529,
+      "continuation_gate_met": false,
+      "note": "continue +50k COMPLETE gate FAILED 1/12 (peak 8/12@98k)"
+    },
+    {
+      "kind": "v4_l0_parallel_continue",
+      "seed": 522,
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_l0_continue_522_plus50k_20261103_122256",
+      "pid": 99948,
+      "experiment_id": "l0_continue_522_plus50k_20261103",
+      "torch_threads": 3,
+      "authorization": "t1u intensity + B continue pattern",
+      "protocol": "configs/masac_v4/l0_continue_522_plus50k_20261103.json",
+      "phase": "complete",
+      "status_snapshot": {
+        "step": 100000,
+        "gate_met": false,
+        "final_development_success": 0.4166666666666667
+      },
+      "completed_at": 1793682425.8157618,
+      "continuation_gate_met": false,
+      "note": "continue +50k COMPLETE gate FAILED 5/12"
+    },
+    {
+      "kind": "v4_critic_sampling_shard",
+      "seed": 411,
+      "arm": "uniform",
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_critic_sampling_uniform_411_20261103_122320",
+      "pid": 134,
+      "experiment_id": "v4_critic_sampling_parallel_intensity_20261103",
+      "lock": "results/masac_v3_training.lock",
+      "authorization": "t1u priority E",
+      "phase": "complete",
+      "note": "finished 320k; val 0/6 old and new"
+    },
+    {
+      "kind": "dc_rrt_path_planning_evaluation",
+      "out": "/Users/a1/Desktop/research/MASAC/results/dc_rrt_intensity_eval_20261103_122351",
+      "pid": 343,
+      "workers": 6,
+      "phase": "complete",
+      "note": "1560/1560 successes in ~12.5s wall"
+    },
+    {
+      "kind": "mps_worker_probe",
+      "outs": [
+        "results/masac_v4_mps_worker_uniform_411_20261103_122502.jsonl",
+        "results/masac_v4_mps_worker_uniform_422_20261103_122502.jsonl",
+        "results/masac_v4_mps_worker_stratified_411_20261103_122502.jsonl",
+        "results/masac_v4_mps_worker_stratified_422_20261103_122502.jsonl"
+      ],
+      "pids": [
+        2712,
+        2713,
+        2714,
+        2715
+      ],
+      "phase": "complete",
+      "note": "pids gone by ~13:06 Asia/Shanghai; engineering only"
+    },
+    {
+      "kind": "v4_sanity_empty_single",
+      "seed": 611,
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_sanity_empty_single_20261103_131315",
+      "pid": 9337,
+      "experiment_id": "l0_sanity_empty_single_20261103",
+      "torch_threads": 1,
+      "protocol": "configs/masac_v4/l0_sanity_empty_single_20261103.json",
+      "phase": "complete",
+      "status_snapshot": {
+        "step": 20000,
+        "final_development_success": 0.0,
+        "gate_met": false
+      },
+      "authorization": "PENDING_LAUNCHES after 511/522/533 continues finished",
+      "completed_at": 1793683148.193901,
+      "all_seeds_gate_met": false,
+      "note": "COMPLETE gate FAILED 0/8 (need \u22650.75); all mid-evals 0; diagnosis results/masac_v4_sanity_empty_single_gate_diagnosis_20261103",
+      "diagnosis": "results/masac_v4_sanity_empty_single_gate_diagnosis_20261103"
+    },
+    {
+      "kind": "v4_capture_latch_on",
+      "seed": 711,
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_capture_latch_on_20261103_131315",
+      "pid": 9338,
+      "experiment_id": "l0_capture_latch_on_20261103",
+      "torch_threads": 1,
+      "protocol": "configs/masac_v4/l0_capture_latch_on_20261103.json",
+      "phase": "complete",
+      "capture_latch": true,
+      "status_snapshot": {
+        "step": 20000,
+        "final_development_success": 0.0,
+        "gate_met": false
+      },
+      "authorization": "PENDING_LAUNCHES after 511/522/533 continues finished",
+      "completed_at": 1793683162.526098,
+      "all_seeds_gate_met": false,
+      "note": "COMPLETE gate FAILED 0/12 (need \u22650.6); all mid-evals 0; diagnosis results/masac_v4_capture_latch_on_gate_diagnosis_20261103",
+      "diagnosis": "results/masac_v4_capture_latch_on_gate_diagnosis_20261103"
+    },
+    {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_capture_latch_off_20261103_132438",
+      "pid": 13638,
+      "started_at": 1793683479.1176698,
+      "kind": "v4_capture_baseline",
+      "phase": "complete",
+      "experiment_id": "l0_capture_latch_off_20261103",
+      "capture_latch": false,
+      "seeds": [
+        712
+      ],
+      "steps": 20000,
+      "lock_path": "/Users/a1/Desktop/research/MASAC/results/locks/masac_v4_capture_baseline_masac_v4_capture_latch_off_20261103_132438.lock",
+      "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_capture_latch_off_20261103_132438/train.log",
+      "authorization": "user intensity t1u 2026-11-03",
+      "completed_at": 1793683816.2718232,
+      "all_seeds_gate_met": false,
+      "status_snapshot": {
+        "step": 20000,
+        "final_development_success": 0.0,
+        "gate_met": false
+      },
+      "note": "COMPLETE gate FAILED 0/12; diagnosis results/masac_v4_capture_latch_off_gate_diagnosis_20261103",
+      "diagnosis": "results/masac_v4_capture_latch_off_gate_diagnosis_20261103"
+    },
+    {
+      "kind": "v4_capture_latch_off",
+      "seed": 712,
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_capture_latch_off_20261103_132438",
+      "pid": 13638,
+      "experiment_id": "l0_capture_latch_off_20261103",
+      "torch_threads": 1,
+      "protocol": "configs/masac_v4/l0_capture_latch_off_20261103.json",
+      "phase": "complete",
+      "capture_latch": false,
+      "authorization": "PENDING_LAUNCHES optional twin after sanity+latch-on finished; keep machine busy",
+      "status_snapshot": {
+        "step": 20000,
+        "final_development_success": 0.0,
+        "gate_met": false
+      },
+      "completed_at": 1793683816.2718232,
+      "all_seeds_gate_met": false,
+      "note": "COMPLETE gate FAILED 0/12; diagnosis results/masac_v4_capture_latch_off_gate_diagnosis_20261103",
+      "diagnosis": "results/masac_v4_capture_latch_off_gate_diagnosis_20261103"
+    },
+    {
+      "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623",
+      "pid": 33473,
+      "started_at": 1793687184.037257,
+      "kind": "v4_c_reshape_empty",
+      "phase": "running",
+      "experiment_id": "masac_v4_c_reshape_empty_20261103",
+      "seeds": [
+        811
+      ],
+      "steps": 40000,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 6.0,
+        "train_speed_mps": 3.5,
+        "capture_latch": true,
+        "horizon": 350
+      },
+      "lock_path": "/Users/a1/Desktop/research/MASAC/results/locks/masac_v4_c_reshape_masac_v4_c_reshape_empty_20261103_142623.lock",
+      "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/train.log",
+      "authorization": "user widget t4s5 path C 2026-11-03",
+      "do_not_auto_launch_l0": true
+    }
+  ],
+  "aborted_rethread_arms": [
+    "results/masac_v4_l0_continue_511_plus50k_20261103_122151",
+    "results/masac_v4_l0_continue_522_plus50k_20261103_122153"
+  ],
+  "gaps": {
+    "A_empty_corridor_sanity": "COMPLETE FAILED 0/8 \u2014 results/masac_v4_sanity_empty_single_20261103_131315",
+    "B_capture_latch_isolation": "latch-on COMPLETE FAILED 0/12; latch-off COMPLETE FAILED 0/12 \u2014 results/masac_v4_capture_latch_off_20261103_132438",
+    "C_truncation_vs_bootstrap": "not wired as trainer"
+  },
+  "pending_launches": {
+    "doc": "docs/PENDING_LAUNCHES_SANITY_LATCH_20261103.md",
+    "status": "all_pending_launches_complete_all_gates_failed",
+    "sanity_out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_sanity_empty_single_20261103_131315",
+    "latch_on_out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_capture_latch_on_20261103_131315",
+    "latch_off_out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_capture_latch_off_20261103_132438",
+    "latch_off": "complete_failed_0_12",
+    "finished_latch_off_at_asia_shanghai": "2026-11-03 13:30 Asia/Shanghai"
+  },
+  "monitor_note": "Sanity 0/8 + latch-on 0/12 + latch-off 0/12 all FAILED at 20k; machine idle; no silent continue restack; awaiting user C reshape vs new audited protocol",
+  "continue_batch_gate": "results/masac_v4_l0_continue_batch_gate_20261103.json",
+  "continue_batch_summary": {
+    "511": "1/12 FAILED (peak 8/12@98k)",
+    "522": "5/12 FAILED",
+    "533": "5/12 FAILED",
+    "gate_threshold": 0.6,
+    "no_silent_budget_stack": true
+  },
+  "sanity_latch_gate": {
+    "sanity": {
+      "final": "0/8",
+      "gate": 0.75,
+      "met": false,
+      "diagnosis": "results/masac_v4_sanity_empty_single_gate_diagnosis_20261103"
+    },
+    "latch_on": {
+      "final": "0/12",
+      "gate": 0.6,
+      "met": false,
+      "diagnosis": "results/masac_v4_capture_latch_on_gate_diagnosis_20261103"
+    },
+    "latch_off": {
+      "final": "0/12",
+      "gate": 0.6,
+      "met": false,
+      "status": "complete_failed",
+      "out": "results/masac_v4_capture_latch_off_20261103_132438",
+      "diagnosis": "results/masac_v4_capture_latch_off_gate_diagnosis_20261103"
+    }
+  }
+}

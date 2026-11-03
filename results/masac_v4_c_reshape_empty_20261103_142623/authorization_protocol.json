@@ -1,0 +1,22 @@
+{
+  "experiment_id": "masac_v4_c_reshape_empty_20261103",
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s5",
+    "choice": "C",
+    "date": "2026-11-03",
+    "provenance": "User answered t4s5: reshape reward/horizon/capture; prove nonzero empty success before L0. Local Mac only; no cloud agents.",
+    "allowed_scope": "Path-C reshape empty-map SharedMASAC Standard-obs training and docs/status updates.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent +50k continue restack",
+      "Auto-launch L0 before empty gate PASSES",
+      "Cursor cloud agents"
+    ]
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze empty-map floor evidence under path-C reshape; do not auto-launch L0",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai"
+}

@@ -1,0 +1,107 @@
+{
+  "experiment_id": "masac_v4_c_reshape_empty_20261103",
+  "mode": "shared_masac_c_reshape_empty",
+  "path": "C",
+  "smoke": false,
+  "level": "L0",
+  "created_at": 1793687184.034125,
+  "pid": 33473,
+  "config_hashes": {
+    "protocol": "1e94114414389734ef1af3ca221e184c0b46f2e0adb82f2091279542e0d5199b",
+    "authorization": "0d4a0ac5b2398c1188167576db407b90a62416b806ba077d44f111c4aed19a3f"
+  },
+  "sources": {
+    "scripts/train_masac_v4_c_reshape.py": "6414d167e32667e6241b83090e8e8041d1879316feadf5422c778a8857882c3e",
+    "uav_planning/v4_reward_reshape.py": "d5d0a1d6f39550c0b44a11033f760e6d11eafca1eb6c653d92e29b9e9855d232",
+    "uav_planning/v4_sanity_maps.py": "bc7c81ab36dfa2aa88773e4775eeb23c9d7ee03ec1cf96f1e44b1136b2bd701c",
+    "uav_planning/v4_training.py": "673b9758eebe0de20c93a67f69a9564d68ab9871f2f88a321a6087e91aecdb6e",
+    "uav_planning/v4_environment.py": "2952864b51a778363291a185b42b410da2964a7131d77e4449af6af71b52cdc4",
+    "uav_planning/v4_maps.py": "42ccecd85fb2ffd287b202b706bbff86ab25a31266e0d4febe9d67e8737aa277",
+    "uav_planning/shared_masac.py": "498d819a627744eba049ff210917ae162b7905c8a5ac85dbdcd559a67ac66760",
+    "uav_planning/structured.py": "ceb1398277076450de2c692b4769811ead7abb3ad1c54634a467c8d8555ea276",
+    "uav_planning/environment.py": "06613e55925d2b2088ef3314f3aaad6ad72bceb5be509aa6973ce3d9467788a4"
+  },
+  "seed_list": [
+    811
+  ],
+  "steps_per_seed": 40000,
+  "warmup": 1000,
+  "replay_capacity": 80000,
+  "kinds": [
+    "empty"
+  ],
+  "development_maps_used": [
+    {
+      "seed": 870001,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870002,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870003,
+      "kind": "empty",
+      "level": "L0"
+    },
+    {
+      "seed": 870004,
+      "kind": "empty",
+      "level": "L0"
+    }
+  ],
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 6.0,
+    "train_speed_mps": 3.5,
+    "capture_latch": true,
+    "horizon": 350
+  },
+  "frozen_l0_capture": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "authorization_protocol": "/Users/a1/Desktop/research/MASAC/configs/masac_v4/c_reshape_empty_20261103.auth.json",
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s5",
+    "choice": "C",
+    "date": "2026-11-03",
+    "provenance": "User answered t4s5: reshape reward/horizon/capture; prove nonzero empty success before L0. Local Mac only; no cloud agents.",
+    "allowed_scope": "Path-C reshape empty-map SharedMASAC Standard-obs training and docs/status updates.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent +50k continue restack",
+      "Auto-launch L0 before empty gate PASSES",
+      "Cursor cloud agents"
+    ]
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze empty-map floor evidence under path-C reshape; do not auto-launch L0",
+  "do_not_auto_launch_l0": true,
+  "command": [
+    "scripts/train_masac_v4_c_reshape.py",
+    "--out",
+    "results/masac_v4_c_reshape_empty_20261103_142623",
+    "--protocol",
+    "configs/masac_v4/c_reshape_empty_20261103.json",
+    "--authorization-protocol",
+    "configs/masac_v4/c_reshape_empty_20261103.auth.json",
+    "--torch-threads",
+    "4"
+  ],
+  "note": "Path C: denser approach + soft capture + latch on empty maps. No Attention / maneuverability / L1. No silent continue restack."
+}

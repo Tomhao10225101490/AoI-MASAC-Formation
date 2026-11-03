@@ -1,0 +1,29 @@
+{
+  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623",
+  "pid": 33473,
+  "started_at": 1793687184.037645,
+  "kind": "v4_c_reshape_empty",
+  "phase": "running",
+  "experiment_id": "masac_v4_c_reshape_empty_20261103",
+  "seed": 811,
+  "target_total_steps": 40000,
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 6.0,
+    "train_speed_mps": 3.5,
+    "capture_latch": true,
+    "horizon": 350
+  },
+  "authorization": "user widget t4s5 path C 2026-11-03",
+  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/train.log",
+  "do_not_auto_launch_l0": true,
+  "updated_at_asia_shanghai": "2026-11-03 14:26 Asia/Shanghai"
+}

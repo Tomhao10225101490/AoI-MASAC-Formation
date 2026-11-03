@@ -1,0 +1,92 @@
+{
+  "version": "masac-v4-c-reshape-empty-v1",
+  "experiment_id": "masac_v4_c_reshape_empty_20261103",
+  "title": "Path C: capture/reward reshape — empty-map learnability floor",
+  "created_at_asia_shanghai": "2026-11-03 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s5",
+    "choice": "C — reshape reward/horizon/capture; prove nonzero on empty first, then L0",
+    "date": "2026-11-03",
+    "provenance": "Prior sanity 0/8 and latch on/off 0/12 at 20k; agents never enter capture ball on empty (lag min-dist ~12–13 m). Reward/capture shaping is the bottleneck.",
+    "allowed_scope": "Empty-map (optional single later) SharedMASAC Standard-obs with path-C reshape only.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent +50k continue restack of old L0 continue arms",
+      "Auto-launch L0 full stack before empty gate PASSES"
+    ]
+  },
+  "mode": "shared_masac_c_reshape",
+  "path": "C",
+  "observation": "Standard (Pooling / legacy observation); no attention; no maneuverability features",
+  "level": "L0",
+  "kinds": ["empty"],
+  "seeds": [811],
+  "steps": 40000,
+  "warmup": 1000,
+  "batch_size": 128,
+  "replay_capacity": 80000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 10000,
+  "log_interval": 200,
+  "device": "cpu",
+  "training_map_seed_offset": 880000,
+  "training_seed_multiplier": 1000,
+  "n_agents": 3,
+  "sensor_range": 400,
+  "world": [240, 240, 90],
+  "dt": 0.2,
+  "horizon": 350,
+  "vmax": 10,
+  "amax": 4,
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 6.0,
+    "train_speed_mps": 3.5,
+    "capture_latch": true,
+    "horizon": 350
+  },
+  "frozen_l0_capture_for_return": {
+    "distance_m_lt": 4.0,
+    "speed_mps_lt": 2.0,
+    "latch": false,
+    "note": "Do not change frozen L0 gate. This experiment evaluates with soft train thresholds only."
+  },
+  "development_maps": [
+    {"seed": 870001, "kind": "empty", "level": "L0"},
+    {"seed": 870002, "kind": "empty", "level": "L0"},
+    {"seed": 870003, "kind": "empty", "level": "L0"},
+    {"seed": 870004, "kind": "empty", "level": "L0"}
+  ],
+  "gate": {
+    "per_seed_joint_success_fraction": 0.75,
+    "metric": "joint team success on the 4 empty development maps under soft train capture (ball<6, speed<3.5, latch)",
+    "pass_condition": "seed 811 final success >= 0.75 (at least 3/4 empty maps)",
+    "finite_losses_required": true,
+    "failure_action": "save_and_diagnose; do not auto-queue Attention/maneuver/L0",
+    "success_action": "declare empty learnability floor under path-C reshape; await explicit authorization before L0 return"
+  },
+  "budget_note": "40k is a NEW audited empty-floor budget for path C, not a silent restack of failed L0 continue +50k arms.",
+  "links": {
+    "entrypoint": "scripts/train_masac_v4_c_reshape.py",
+    "reshape_module": "uav_planning/v4_reward_reshape.py",
+    "protocol_doc": "docs/MASAC_V4_C_RESHAPE_PROTOCOL_20261103.md",
+    "prior_sanity_fail": "docs/MASAC_V4_SANITY_EMPTY_SINGLE_GATE_20261103.md"
+  },
+  "machine_target": {
+    "preferred": "TomMac-mini.local",
+    "machineId": "c70e463e-5629-4769-84af-f0ba33183f85",
+    "project_path": "/Users/a1/Desktop/research/MASAC",
+    "branch": "research/wowmom2027-upgrade"
+  }
+}

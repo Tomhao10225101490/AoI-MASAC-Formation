@@ -1,0 +1,15 @@
+C-RESHAPE | PID=33473 | seeds=[811] | steps=40000 | kinds=['empty'] | ball=6.0 speed=3.5 latch=True | out=/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623
+START seed=811 kind=empty reshape={'progress_scale': 1.0, 'living_cost': 0.005, 'acc_penalty': 0.002, 'near_goal_radius_m': 15.0, 'near_goal_bonus': 0.4, 'ball_enter_bonus': 3.0, 'capture_bonus': 8.0, 'team_success_bonus': 50.0, 'collision_penalty': 20.0, 'train_ball_m': 6.0, 'train_speed_mps': 3.5, 'capture_latch': True, 'horizon': 350}
+[c-reshape seed=811] 200/40000 upd=0 5336.6step/s val=None
+[c-reshape seed=811] 400/40000 upd=0 5269.9step/s val=None
+[c-reshape seed=811] 600/40000 upd=0 5299.0step/s val=None
+[c-reshape seed=811] 800/40000 upd=0 5336.2step/s val=None
+[c-reshape seed=811] 1000/40000 upd=0 5339.0step/s val=None
+[c-reshape seed=811] 1200/40000 upd=200 271.0step/s val=None
+[c-reshape seed=811] 1400/40000 upd=400 162.6step/s val=None
+[c-reshape seed=811] 1600/40000 upd=600 124.9step/s val=None
+[c-reshape seed=811] 1800/40000 upd=800 105.5step/s val=None
+[c-reshape seed=811] 2000/40000 upd=1000 94.0step/s val=None
+EVAL seed=811 step=2000: success=0/4 ever_ball_maps=0/4
+[c-reshape seed=811] 2200/40000 upd=1200 86.1step/s val=0.0
+[c-reshape seed=811] 2400/40000 upd=1400 80.5step/s val=0.0
