@@ -1,0 +1,106 @@
+{
+  "snapshot_at_asia_shanghai": "2026-11-03 21:05 Asia/Shanghai",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "stamp": "20261103_162345",
+  "machine": "TomMac-mini.local",
+  "authorization": "t4s17 launch; t8u keep-running / iterate",
+  "do_not_kill": true,
+  "fourth_arm": "BLOCKED_BY_RAM",
+  "ram": {
+    "total_gb": 16,
+    "free_gb_approx": 0.08,
+    "note": "compressor heavily used; no disruptive fourth heavy arm"
+  },
+  "arms": {
+    "full": {
+      "pid": 45262,
+      "caffeinate_pid": 45265,
+      "out": "results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+      "seed": 1211,
+      "seed_index": 0,
+      "seeds_total": 3,
+      "step": 41600,
+      "total_steps": 80000,
+      "steps_per_s": 2.47,
+      "eta_seed_h": 4.32,
+      "last_eval_step": 40000,
+      "last_eval_success": "0/12",
+      "best_success_so_far": "1/12@32000",
+      "best_ever_ball_so_far": "11/12",
+      "latest_ever_ball": "11/12@40000",
+      "failure_mode_at_40000": {
+        "timeout_after_ball": 11,
+        "timeout_no_ball": 1,
+        "collision": 0
+      },
+      "alive": true
+    },
+    "zero": {
+      "pid": 45327,
+      "caffeinate_pid": 45330,
+      "out": "results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
+      "seed": 1211,
+      "seed_index": 0,
+      "seeds_total": 3,
+      "step": 49400,
+      "total_steps": 80000,
+      "steps_per_s": 2.93,
+      "eta_seed_h": 2.9,
+      "last_eval_step": 48000,
+      "last_eval_success": "0/12",
+      "best_success_so_far": "0/12",
+      "best_ever_ball_so_far": "12/12",
+      "latest_ever_ball": "12/12@48000",
+      "failure_mode_at_48000": {
+        "timeout_after_ball": 12,
+        "timeout_no_ball": 0,
+        "collision": 0
+      },
+      "alive": true
+    },
+    "static": {
+      "pid": 45356,
+      "caffeinate_pid": 45359,
+      "out": "results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
+      "seed": 1211,
+      "seed_index": 0,
+      "seeds_total": 3,
+      "step": 41600,
+      "total_steps": 80000,
+      "steps_per_s": 2.47,
+      "eta_seed_h": 4.33,
+      "last_eval_step": 40000,
+      "last_eval_success": "0/12",
+      "best_success_so_far": "1/12@32000",
+      "best_ever_ball_so_far": "12/12",
+      "latest_ever_ball": "12/12@40000",
+      "failure_mode_at_40000": {
+        "timeout_after_ball": 12,
+        "timeout_no_ball": 0,
+        "collision": 0
+      },
+      "alive": true
+    }
+  },
+  "mid_suite_read": {
+    "navigation_signal": "strong ever_ball (often 9\u201312/12 after ~26k)",
+    "gate_signal": "joint success still ~0\u20131/12; Path-C-like lag of simultaneous capture behind ball entry",
+    "dominant_fail": "timeout_after_ball with high near_goal_low_speed_uncaptured_steps; simultaneously_arrived=false",
+    "remaining_budget_seed1211": "full/static ~38k left; zero ~30k left; then seeds 1222 and 1233 serial per arm",
+    "rough_wall_remaining_h": "seed1211 finish ~3\u20135h; full 3-seed suite likely still multi-hour after that (~total original ETA 7\u20139h from launch, now ~halfway seed1)"
+  },
+  "baseline_standard_c": {
+    "out": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "final": [
+      "11/12",
+      "11/12",
+      "10/12"
+    ]
+  },
+  "next_iteration": "docs/PENDING_LAUNCHES_MANEUVER_NEXT_ITER_20261103.md",
+  "training_opts_landed_not_in_live_process": [
+    "vectorized probe clearances in v4_prediction.py",
+    "cache_risk=True replay cache in v4_maneuver_masac.py",
+    "prefer --torch-threads 1 for multi-arm on 16GB Mac"
+  ]
+}

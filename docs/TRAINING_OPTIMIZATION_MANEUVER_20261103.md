@@ -66,3 +66,10 @@ smaller but real fraction; eval every 2k × 12 maps adds wall-time spikes.
 ## Math companion
 
 Paper-facing formula hygiene: `docs/MATH_ARGUMENT_IMPROVEMENTS_20261103.md`.
+
+## Live suite pointer (updated)
+
+As of 2026-11-03 21:05 Asia/Shanghai, stamp `162345` still running (~41–49k seed 1211).
+See `docs/MASAC_V4_MANEUVER_PAPER_SUITE_STATUS_20261103.md`. Do not attach live processes to these opts;
+next launch uses them. Fourth arm still rejected on RAM.
+
