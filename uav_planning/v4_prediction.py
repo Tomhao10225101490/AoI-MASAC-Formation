@@ -3,6 +3,9 @@
 Dynamics extrapolate visible objects with constant velocity; no map, simulator
 state, future waypoint, or true acceleration is accepted. The trajectory is
 sampled discretely at dt, so clearance and TTC may miss between-step contacts.
+
+Clearance aggregation is vectorized over the preview horizon (bit-identical to
+the prior per-step loop) to cut CPU cost on multi-arm Mac training.
 """
 from dataclasses import dataclass
 import torch
@@ -56,33 +59,39 @@ def predict_probes(obs, config=ProbeConfig(), mode='full', *, generator=None):
     mp=p[:,None,:]+moving[...,:3]*scale; mv=v[:,None,:]+moving[...,3:6]*vmax[:,None,:]
     mr=moving[...,6]*10.
     dirs=obs.new_tensor(DIRECTIONS).unsqueeze(0).expand(batch,-1,-1)
-    pos=p[:,None,:].expand(-1,19,-1); vel=v[:,None,:].expand(-1,19,-1)
-    mins=obs.new_full((batch,19,4),config.clearance_scale); ttc=obs.new_full((batch,19),config.horizon)
-    hit=torch.zeros((batch,19),device=obs.device,dtype=torch.bool)
+    pos=p[:,None,:].expand(-1,19,-1).clone(); vel=v[:,None,:].expand(-1,19,-1).clone()
     inflate=config.body_radius+config.safety_margin
     actual_acc=amax*(config.mismatch_acceleration_factor if mode=='mismatch' else 1.)
+    # Sequential bounded dynamics (state-dependent); clearances vectorized over time.
+    traj=[]
     for step in range(steps+1):
-        time=step*config.dt
-        q=(pos[:,:,None,:]-bc[:,None,:,:]).abs()-(bh[:,None,:,:]+inflate)
-        box_sdf=torch.linalg.vector_norm(q.clamp_min(0),dim=-1)+q.amax(-1).clamp_max(0)
-        static=box_sdf.masked_fill(~bm[:,None,:],config.clearance_scale).amin(-1)
-        mc=torch.linalg.vector_norm(pos[:,:,None,:]-(mp[:,None,:,:]+mv[:,None,:,:]*time),dim=-1)-mr[:,None,:]-inflate
-        mov=mc.masked_fill(~mm[:,None,:],config.clearance_scale).amin(-1)
-        pc=torch.linalg.vector_norm(pos[:,:,None,:]-(pp[:,None,:,:]+pv[:,None,:,:]*time),dim=-1)-2*config.body_radius-config.safety_margin
-        peer=pc.masked_fill(~pm[:,None,:],config.clearance_scale).amin(-1)
-        boundary=torch.minimum(pos-inflate,world-inflate-pos).amin(-1)
-        if mode=='static': mov=torch.full_like(mov,config.clearance_scale); peer=torch.full_like(peer,config.clearance_scale)
-        c=torch.stack((static,mov,peer,boundary),-1)
-        if step == 0:
-            current_clearance=c.amin(-1)
-        mins=torch.minimum(mins,c)
-        new=(c.amin(-1)<=0)&~hit
-        ttc=torch.where(new,torch.full_like(ttc,time),ttc); hit=hit|new
+        traj.append(pos)
         if step<steps:
             vel=vel+actual_acc[:,None,:]*dirs*config.dt
             speed=torch.linalg.vector_norm(vel,dim=-1,keepdim=True)
             vel=vel*torch.minimum(torch.ones_like(speed),vmax[:,None,:]/speed.clamp_min(1e-12))
             pos=pos+config.dt*vel
+    pos_t=torch.stack(traj,0)  # (T+1,batch,19,3)
+    T=pos_t.shape[0]
+    times=pos_t.new_tensor([s*config.dt for s in range(T)]).view(T,1,1,1,1)
+    q=(pos_t[:,:,:,None,:]-bc[None,:,None,:,:]).abs()-(bh[None,:,None,:,:]+inflate)
+    box_sdf=torch.linalg.vector_norm(q.clamp_min(0),dim=-1)+q.amax(-1).clamp_max(0)
+    static=box_sdf.masked_fill(~bm[None,:,None,:],config.clearance_scale).amin(-1)
+    mc=torch.linalg.vector_norm(pos_t[:,:,:,None,:]-(mp[None,:,None,:,:]+mv[None,:,None,:,:]*times),dim=-1)-mr[None,:,None,:]-inflate
+    mov=mc.masked_fill(~mm[None,:,None,:],config.clearance_scale).amin(-1)
+    pc=torch.linalg.vector_norm(pos_t[:,:,:,None,:]-(pp[None,:,None,:,:]+pv[None,:,None,:,:]*times),dim=-1)-2*config.body_radius-config.safety_margin
+    peer=pc.masked_fill(~pm[None,:,None,:],config.clearance_scale).amin(-1)
+    boundary=torch.minimum(pos_t-inflate,world-inflate-pos_t).amin(-1)
+    if mode=='static':
+        mov=torch.full_like(mov,config.clearance_scale); peer=torch.full_like(peer,config.clearance_scale)
+    c=torch.stack((static,mov,peer,boundary),-1)  # (T+1,batch,19,4)
+    mins=c.amin(0)
+    current_clearance=c[0].amin(-1)
+    clearance_t=c.amin(-1)
+    hit=clearance_t<=0
+    idx=torch.arange(T,device=obs.device).view(T,1,1).expand_as(hit)
+    first=torch.where(hit,idx,torch.full_like(idx,T)).amin(0)
+    ttc=torch.where(first<T,first.to(obs.dtype)*config.dt,obs.new_full((batch,19),config.horizon))
     brake=(v.square().sum(-1)/(2*amax[:,0])).unsqueeze(-1).expand(-1,19)
     clearance=mins.amin(-1); reserve=current_clearance-brake
     features=torch.cat((dirs,(mins/config.clearance_scale).clamp(-1,1),

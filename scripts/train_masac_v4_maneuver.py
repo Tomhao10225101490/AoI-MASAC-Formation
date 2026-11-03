@@ -228,15 +228,18 @@ def save_snapshot(directory, model, env, explore, state):
     folder.mkdir(exist_ok=False)
     n = model.size
     replay = folder / 'replay.npz'
+    payload = dict(
+        obs=model.obs[:n],
+        next=model.next[:n],
+        actions=model.actions[:n],
+        rewards=model.rewards[:n],
+        done=model.done[:n],
+    )
+    if getattr(model, 'cache_risk', False) and model.risk_feat is not None:
+        payload['risk_feat'] = model.risk_feat[:n]
+        payload['next_risk_feat'] = model.next_risk_feat[:n]
     with replay.open('xb') as f:
-        np.savez(
-            f,
-            obs=model.obs[:n],
-            next=model.next[:n],
-            actions=model.actions[:n],
-            rewards=model.rewards[:n],
-            done=model.done[:n],
-        )
+        np.savez(f, **payload)
         f.flush()
         os.fsync(f.fileno())
     env_state = copy.deepcopy({k: v for k, v in env.__dict__.items() if k != 'reshape'})

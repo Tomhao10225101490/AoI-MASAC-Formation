@@ -1,8 +1,9 @@
 # MASAC multi-UAV 3D path planning
 
 Learning-based **independent-goal** multi-UAV navigation in 3D clutter with
-Multi-Agent Soft Actor-Critic (MASAC). Local folder may still be named
-`aoi-masac-formation`; the active line is **not** AoI / formation / relay.
+Multi-Agent Soft Actor-Critic (MASAC). GitHub repo: **`Tomhao10225101490/masac-maneuverability`** (renamed from
+`AoI-MASAC-Formation`). Local folder may still be named `MASAC` / legacy AoI;
+the active line is **not** AoI / formation / relay.
 
 **Status (2026-11-03, Asia/Shanghai):** Standard L0 is learnable under Path-C
 reward reshape. A paper-facing **Predictive Maneuverability-Aware** suite is
@@ -84,6 +85,8 @@ Standard-C L0 is the task-matched pre-innovation floor only.
 - Config: `configs/masac_v4/maneuver_paper_suite_20261103.json`
 - Train: `scripts/train_masac_v4_maneuver.py`
 - Agent / nets: `uav_planning/v4_maneuver_masac.py`, `v4_networks.py`, `v4_prediction.py`
+- Math argument upgrades: `docs/MATH_ARGUMENT_IMPROVEMENTS_20261103.md`
+- Training speed notes: `docs/TRAINING_OPTIMIZATION_MANEUVER_20261103.md`
 
 ### Do not silent-restack
 
@@ -145,8 +148,11 @@ direction.
 
 ## Branch / repo
 
-- GitHub: `tomhao10225101490/aoi-masac-formation`
-- Active development was on `research/wowmom2027-upgrade`; **`main`** carries the
-  current Path-C + maneuver line after merge.
-- Local Mac only for training; do not disturb a live maneuver suite PID writing
-  under its `results/..._162345` directories.
+- GitHub: [`Tomhao10225101490/masac-maneuverability`](https://github.com/Tomhao10225101490/masac-maneuverability)
+  (renamed 2026-11-03 Asia/Shanghai from `AoI-MASAC-Formation`; old URL redirects).
+- Clone: `git clone https://github.com/Tomhao10225101490/masac-maneuverability.git`
+- Active development on `research/wowmom2027-upgrade`; **`main`** carries Path-C + maneuver.
+- Local Mac only for training; do not disturb live suite PIDs under
+  `results/masac_v4_maneuver_paper_suite_20261103_*_162345`.
+- Theory / formula hygiene: `docs/MATH_ARGUMENT_IMPROVEMENTS_20261103.md`
+- Next-launch training opts: `docs/TRAINING_OPTIMIZATION_MANEUVER_20261103.md`

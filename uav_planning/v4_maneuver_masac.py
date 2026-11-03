@@ -14,6 +14,10 @@ Reward and executed actions are identical across probe modes. Probes are
 observation-only finite-horizon estimates, not safety certificates.
 Warm-start from Legacy SharedMASAC (Path-C L0) is architecture-incompatible;
 callers must cold-start or document a partial load.
+
+Training optimization (next launches): cache_risk=True stores 19×11 probe
+features in replay so updates do not recompute predict_probes on every batch.
+Live paper-suite PIDs keep their already-loaded modules; do not kill them.
 """
 from __future__ import annotations
 
@@ -50,6 +54,7 @@ class ManeuverMASAC:
         probe_mode='full',
         probe_config: ProbeConfig | None = None,
         lr=3e-4,
+        cache_risk=True,
     ):
         if set_mode != 'pool':
             raise ValueError('maneuver suite freezes set_mode=pool (no Attention in this arm)')
@@ -61,11 +66,13 @@ class ManeuverMASAC:
         self.set_mode = set_mode
         self.probe_mode = probe_mode
         self.probe_config = probe_config or ProbeConfig(world=(240.0, 240.0, 90.0))
+        self.cache_risk = bool(cache_risk)
         self.rng = np.random.default_rng(seed)
         self._probe_torch_gen = torch.Generator(device='cpu')
         self._probe_torch_gen.manual_seed(int(seed) + 17)
         self.size = 0
         self.index = 0
+        self._last_risk = None
         self.actor = Actor(set_mode).to(self.device)
         self.q = TwinCritics(set_mode).to(self.device)
         self.target = self.q.targets().to(self.device)
@@ -78,6 +85,9 @@ class ManeuverMASAC:
         self.actions = np.empty((capacity, n, 3), np.float32)
         self.rewards = np.empty(capacity, np.float32)
         self.done = np.empty(capacity, np.float32)
+        # Optional probe-feature replay cache (next-launch speed path; bit-identical Q inputs).
+        self.risk_feat = np.empty((capacity, n, 19, 11), np.float32) if self.cache_risk else None
+        self.next_risk_feat = np.empty((capacity, n, 19, 11), np.float32) if self.cache_risk else None
 
     def risk(self, obs_t: torch.Tensor) -> torch.Tensor:
         """Build (...,19,11) probe features; shuffle uses a dedicated CPU generator."""
@@ -95,15 +105,33 @@ class ManeuverMASAC:
             o = torch.as_tensor(obs, device=self.device).unsqueeze(0)
             risk = self.risk(o)
             action, _ = self.actor(o, deterministic=deterministic, risk=risk)
+            if self.cache_risk:
+                self._last_risk = risk[0].detach().cpu().numpy().astype(np.float32, copy=True)
         return action[0].cpu().numpy()
 
-    def push(self, o, a, r, no, done):
+    def _risk_numpy(self, obs_np):
+        with torch.no_grad():
+            o = torch.as_tensor(obs_np, device=self.device).unsqueeze(0)
+            return self.risk(o)[0].detach().cpu().numpy().astype(np.float32, copy=True)
+
+    def push(self, o, a, r, no, done, risk=None, next_risk=None):
         k = self.index
         self.obs[k] = o
         self.actions[k] = a
         self.rewards[k] = r
         self.next[k] = no
         self.done[k] = done
+        if self.cache_risk:
+            if risk is None:
+                if self._last_risk is not None and np.asarray(o).shape == self._last_risk.shape:
+                    risk = self._last_risk
+                else:
+                    risk = self._risk_numpy(o)
+            if next_risk is None:
+                next_risk = self._risk_numpy(no)
+            self.risk_feat[k] = risk
+            self.next_risk_feat[k] = next_risk
+            self._last_risk = None
         self.index = (k + 1) % self.capacity
         self.size = min(self.capacity, self.size + 1)
 
@@ -114,12 +142,18 @@ class ManeuverMASAC:
             for x in (self.obs, self.actions, self.rewards, self.next, self.done)
         ]
         with torch.no_grad():
-            risk_n = self.risk(no)
+            if self.cache_risk:
+                risk_n = torch.from_numpy(self.next_risk_feat[ids]).to(self.device)
+            else:
+                risk_n = self.risk(no)
             na, nlp = self.actor(no, risk=risk_n)
             tq1, tq2 = self.target(no, na, risk=risk_n)
             target_q = torch.minimum(tq1, tq2)
             target = r + 0.99 * (1 - d) * (target_q - self.logalpha.exp() * nlp.mean(-1))
-        risk_o = self.risk(o)
+        if self.cache_risk:
+            risk_o = torch.from_numpy(self.risk_feat[ids]).to(self.device)
+        else:
+            risk_o = self.risk(o)
         q1, q2 = self.q(o, a, risk=risk_o)
         qloss = F.mse_loss(q1, target) + F.mse_loss(q2, target)
         self.qo.zero_grad()
@@ -183,6 +217,7 @@ class ManeuverMASAC:
             probe_torch_gen=self._probe_torch_gen.get_state(),
             replay_size=self.size,
             replay_index=self.index,
+            cache_risk=self.cache_risk,
             set_mode=self.set_mode,
             probe_mode=self.probe_mode,
             probe_config=dict(
