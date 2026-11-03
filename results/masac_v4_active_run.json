@@ -1,9 +1,8 @@
 {
   "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623",
   "pid": 33473,
-  "started_at": 1793687184.037645,
   "kind": "v4_c_reshape_empty",
-  "phase": "running",
+  "phase": "complete",
   "experiment_id": "masac_v4_c_reshape_empty_20261103",
   "seed": 811,
   "target_total_steps": 40000,
@@ -25,5 +24,13 @@
   "authorization": "user widget t4s5 path C 2026-11-03",
   "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/train.log",
   "do_not_auto_launch_l0": true,
-  "updated_at_asia_shanghai": "2026-11-03 14:26 Asia/Shanghai"
+  "completed_at": 1793687993.286719,
+  "gate_met": true,
+  "final_development_success": 1.0,
+  "final_success_fraction": "4/4",
+  "all_seeds_gate_met": true,
+  "diagnosis": "results/masac_v4_c_reshape_empty_gate_diagnosis_20261103",
+  "gate_doc": "docs/MASAC_V4_C_RESHAPE_EMPTY_GATE_20261103.md",
+  "updated_at_asia_shanghai": "2026-11-03 14:41 Asia/Shanghai",
+  "monitor_note": "Path C empty gate PASSED 4/4; machine idle; awaiting user authorize L0 return; no auto-launch"
 }

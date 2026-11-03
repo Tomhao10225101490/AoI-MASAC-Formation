@@ -1,0 +1,259 @@
+{
+  "experiment_id": "masac_v4_c_reshape_empty_20261103",
+  "out": "results/masac_v4_c_reshape_empty_20261103_142623",
+  "path": "C",
+  "seed": 811,
+  "steps": 40000,
+  "finished_at_asia_shanghai": "2026-11-03 14:41 Asia/Shanghai",
+  "elapsed_s": 809.180605333,
+  "gate_threshold": 0.75,
+  "final_development_success": 1.0,
+  "final_success_fraction": "4/4",
+  "gate_met": true,
+  "all_seeds_gate_met": true,
+  "eval_curve": [
+    {
+      "step": 2000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "0/4"
+    },
+    {
+      "step": 4000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "0/4"
+    },
+    {
+      "step": 6000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "0/4"
+    },
+    {
+      "step": 8000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "0/4"
+    },
+    {
+      "step": 10000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 12000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 14000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 16000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "1/4"
+    },
+    {
+      "step": 18000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "2/4"
+    },
+    {
+      "step": 20000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "1/4"
+    },
+    {
+      "step": 22000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 24000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "0/4"
+    },
+    {
+      "step": 26000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "0/4"
+    },
+    {
+      "step": 28000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 30000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 32000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 34000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 36000,
+      "success": "0/4",
+      "rate": 0.0,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 38000,
+      "success": "2/4",
+      "rate": 0.5,
+      "ever_ball_maps": "4/4"
+    },
+    {
+      "step": 40000,
+      "success": "4/4",
+      "rate": 1.0,
+      "ever_ball_maps": "4/4"
+    }
+  ],
+  "first_nonzero_eval": {
+    "step": 38000,
+    "success": "2/4",
+    "rate": 0.5,
+    "ever_ball_maps": "4/4"
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 6.0,
+    "train_speed_mps": 3.5,
+    "capture_latch": true,
+    "horizon": 350
+  },
+  "capture_note": "Path-C experiment eval uses soft train thresholds ball<6.0 speed<3.5 latch=True. Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+  "final_eval_maps": [
+    {
+      "map_seed": 870001,
+      "kind": "empty",
+      "success": true,
+      "simultaneously_arrived": true,
+      "ever_arrived_by_uav": [
+        true,
+        true,
+        true
+      ],
+      "time_s": 16.2,
+      "remaining_distance": 8.77624994035354,
+      "closest_goal_m_by_uav": [
+        4.941863612846296,
+        5.906942719856819,
+        4.133946376513918
+      ],
+      "eval_capture_rule": {
+        "ball_m": 6.0,
+        "speed_mps": 3.5,
+        "latch": true,
+        "note": "Path-C experiment eval uses soft train thresholds; frozen L0 is 4m/2mps."
+      }
+    },
+    {
+      "map_seed": 870002,
+      "kind": "empty",
+      "success": true,
+      "simultaneously_arrived": true,
+      "ever_arrived_by_uav": [
+        true,
+        true,
+        true
+      ],
+      "time_s": 14.600000000000001,
+      "remaining_distance": 7.683710531635536,
+      "closest_goal_m_by_uav": [
+        4.883792791324379,
+        5.93935730746082,
+        3.7894706323290444
+      ],
+      "eval_capture_rule": {
+        "ball_m": 6.0,
+        "speed_mps": 3.5,
+        "latch": true,
+        "note": "Path-C experiment eval uses soft train thresholds; frozen L0 is 4m/2mps."
+      }
+    },
+    {
+      "map_seed": 870003,
+      "kind": "empty",
+      "success": true,
+      "simultaneously_arrived": true,
+      "ever_arrived_by_uav": [
+        true,
+        true,
+        true
+      ],
+      "time_s": 14.200000000000001,
+      "remaining_distance": 7.795358157208152,
+      "closest_goal_m_by_uav": [
+        5.13430725308996,
+        5.927081063792127,
+        4.167797776769524
+      ],
+      "eval_capture_rule": {
+        "ball_m": 6.0,
+        "speed_mps": 3.5,
+        "latch": true,
+        "note": "Path-C experiment eval uses soft train thresholds; frozen L0 is 4m/2mps."
+      }
+    },
+    {
+      "map_seed": 870004,
+      "kind": "empty",
+      "success": true,
+      "simultaneously_arrived": true,
+      "ever_arrived_by_uav": [
+        true,
+        true,
+        true
+      ],
+      "time_s": 13.4,
+      "remaining_distance": 6.799636862697444,
+      "closest_goal_m_by_uav": [
+        4.613139616383776,
+        5.875057074496518,
+        3.6545042613892424
+      ],
+      "eval_capture_rule": {
+        "ball_m": 6.0,
+        "speed_mps": 3.5,
+        "latch": true,
+        "note": "Path-C experiment eval uses soft train thresholds; frozen L0 is 4m/2mps."
+      }
+    }
+  ],
+  "do_not_auto_launch_l0": true,
+  "next": "Await user authorization to return to L0 12-map gate (frozen capture 4/2). No Attention/maneuver/L1. No silent continue restack.",
+  "contrast_prior_sanity": "Prior sanity empty/single 20k seed 611 was 0/8 with almost no capture-ball entry under frozen protocol."
+}

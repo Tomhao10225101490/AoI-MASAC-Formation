@@ -1,0 +1,67 @@
+{
+  "complete": true,
+  "scope": "c_reshape empty floor",
+  "path": "C",
+  "runs": [
+    {
+      "seed": 811,
+      "step": 40000,
+      "final_development_success": 1.0,
+      "gate_met": true,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 6.0,
+        "train_speed_mps": 3.5,
+        "capture_latch": true,
+        "horizon": 350
+      }
+    }
+  ],
+  "gate_threshold": 0.75,
+  "all_seeds_gate_met": true,
+  "smoke": false,
+  "finished_at": 1793687993.286719,
+  "elapsed_s": 809.180605333,
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s5",
+    "choice": "C",
+    "date": "2026-11-03",
+    "provenance": "User answered t4s5: reshape reward/horizon/capture; prove nonzero empty success before L0. Local Mac only; no cloud agents.",
+    "allowed_scope": "Path-C reshape empty-map SharedMASAC Standard-obs training and docs/status updates.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware / 19-probe arms",
+      "L1 escalation",
+      "Silent +50k continue restack",
+      "Auto-launch L0 before empty gate PASSES",
+      "Cursor cloud agents"
+    ]
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 6.0,
+    "train_speed_mps": 3.5,
+    "capture_latch": true,
+    "horizon": 350
+  },
+  "do_not_auto_launch_l0": true,
+  "next_if_pass": "User/monitor may authorize return to L0 12-map gate with frozen capture; do not auto-launch.",
+  "next_if_fail": "save_and_diagnose; further reshape or audited longer empty protocol \u2014 no Attention/L1."
+}
