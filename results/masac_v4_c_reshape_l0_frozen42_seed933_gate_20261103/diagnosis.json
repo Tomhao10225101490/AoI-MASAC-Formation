@@ -1,0 +1,147 @@
+{
+  "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+  "seed": 933,
+  "final_development_success": 0.8333333333333334,
+  "final_success_fraction": "10/12",
+  "gate_threshold": 0.6,
+  "gate_met": true,
+  "capture": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+  "eval_curve": [
+    {
+      "step": 2000,
+      "success": "0/12",
+      "ever_ball": "0/12"
+    },
+    {
+      "step": 4000,
+      "success": "0/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 6000,
+      "success": "0/12",
+      "ever_ball": "3/12"
+    },
+    {
+      "step": 8000,
+      "success": "0/12",
+      "ever_ball": "8/12"
+    },
+    {
+      "step": 10000,
+      "success": "0/12",
+      "ever_ball": "10/12"
+    },
+    {
+      "step": 12000,
+      "success": "0/12",
+      "ever_ball": "11/12"
+    },
+    {
+      "step": 14000,
+      "success": "0/12",
+      "ever_ball": "10/12"
+    },
+    {
+      "step": 16000,
+      "success": "2/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 18000,
+      "success": "3/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 20000,
+      "success": "0/12",
+      "ever_ball": "10/12"
+    },
+    {
+      "step": 22000,
+      "success": "0/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 24000,
+      "success": "2/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 26000,
+      "success": "0/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 28000,
+      "success": "6/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 30000,
+      "success": "12/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 32000,
+      "success": "4/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 34000,
+      "success": "6/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 36000,
+      "success": "10/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 38000,
+      "success": "5/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 40000,
+      "success": "11/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 42000,
+      "success": "12/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 44000,
+      "success": "11/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 46000,
+      "success": "12/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 48000,
+      "success": "12/12",
+      "ever_ball": "12/12"
+    },
+    {
+      "step": 50000,
+      "success": "10/12",
+      "ever_ball": "12/12"
+    }
+  ],
+  "first_nonzero_team_success_step": 16000,
+  "first_gate_cross_step": 30000,
+  "peak": "12/12 @30k-48k",
+  "note": "Path C L0 frozen42 seed 933 gate PASSED 10/12 under C reshape + frozen capture 4/2 latch=False; warm-start empty 811@40k",
+  "updated_at_asia_shanghai": "2026-11-03 15:43 Asia/Shanghai"
+}

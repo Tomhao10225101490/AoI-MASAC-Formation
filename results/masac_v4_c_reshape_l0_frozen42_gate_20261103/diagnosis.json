@@ -1,0 +1,36 @@
+{
+  "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+  "out": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+  "phase": "complete",
+  "all_seeds_gate_met": true,
+  "gate_threshold": 0.6,
+  "seeds": {
+    "911": {
+      "final": "11/12",
+      "gate_met": true,
+      "rate": 0.9166666666666666
+    },
+    "922": {
+      "final": "11/12",
+      "gate_met": true,
+      "rate": 0.9166666666666666
+    },
+    "933": {
+      "final": "10/12",
+      "gate_met": true,
+      "rate": 0.8333333333333334
+    }
+  },
+  "finished_at_asia_shanghai": "2026-11-03 15:41 Asia/Shanghai",
+  "elapsed_s": 3050.936337667,
+  "capture": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start": "/Users/a1/Desktop/research/MASAC/results/masac_v4_c_reshape_empty_20261103_142623/reshape_811/checkpoint_040000",
+  "authorization": "t4s11",
+  "do_not_auto_launch_further": true,
+  "note": "FULL Path C L0 12-map gate PASSED 3/3 seeds under C reshape + frozen capture 4/2 latch=False. First Standard L0 multi-seed win this line. Machine idle. Await user before further stages.",
+  "updated_at_asia_shanghai": "2026-11-03 15:43 Asia/Shanghai"
+}
