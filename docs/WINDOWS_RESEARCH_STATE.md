@@ -39,20 +39,24 @@ binaries. Meaningful stages must be committed and pushed to both active branches
 - Device benchmark completed: median CPU threads1/2/3=1.216/1.939/2.549 steps/s,
   CUDA1=22.318steps/s (~8.75x). Initial action/probe error <=1e-4. Includes full
   act/environment/replay/update, excludes eval/reference/checkpoint I/O. Old CPU
-  default unchanged; CPU smoke and CUDA trainer timing still required.
+  default unchanged. Complete CPU/CUDA trainer smoke also passed (see below).
 - B/source Windows lock tests + existing maneuver tests: **9 passed**.
   `results/masac_v4_windows_audit_20261105/tests_sync_console.log`.
+- After CUDA guard and RNG-save changes, targeted tests again **9 passed**.
+- Original CPU protocol static seed1211 smoke:256steps/128updates,54.075s;
+  explicit CUDA control same smoke seed/budget:8.219s (~6.58x faster), both
+  finite and0/2success (boundary collision), both saved checkpoints. CUDA RNG
+  stream presence verified. This is execution validation only.
 
 ## Current work / next ordered actions
 
-1. Finish source review and freeze B/CUDA pilot configs. New opt-in B uses bounded
+1. Source reviewed and B/CUDA pilot configs frozen. New opt-in B uses bounded
    worst-agent normalized distance/speed potential; true termination zeros next
    potential, time-limit truncation retains it to match existing bootstrap mask.
    Evaluation uses original unshaped env and frozen4/2 latchFalse.
-2. Run original-protocol **CPU static smoke** first (256 steps/128 updates), with
-   `--torch-threads 3`. Label execution reproduction, not a scientific gate.
-3. Run an explicitly named CUDA control smoke and compare complete trainer wall
-   time. Then paired small B/control (two seeds, equal budgets/configs), visible
+2. CPU static smoke and CUDA control smoke complete; no further smoke rerun.
+3. Next: paired small CUDA B/control (1411,1422;2000steps each;128warmup/batch;
+   replay4096;static probes), two visible processes with1Torch thread each. Equal budgets/configs, visible
    logs and all/any arrival, max simultaneous occupancy, failure counts.
 4. Summarize results, finite losses and compute use. Update paper/math/frontier
    docs. Push only intentional source/docs and compact new result evidence; do

@@ -1,0 +1,93 @@
+{
+  "scope": "engineering timing, not learning evidence",
+  "torch": "2.5.1+cu121",
+  "cuda_runtime": "12.1",
+  "cudnn": 90100,
+  "platform": "Windows-10-10.0.19045-SP0",
+  "workload": "full probes, act + numpy environment + cached replay + batch128 SAC update; 8 update warmup; no eval/reference audits/checkpoint IO",
+  "steps_per_repeat": 32,
+  "repeats": 3,
+  "results": [
+    {
+      "device": "cpu",
+      "threads": 1,
+      "seconds_per_step": [
+        0.8203900937500066,
+        0.8227035562500191,
+        0.8312651156250013
+      ],
+      "median_steps_per_s": 1.2155046521958883,
+      "action_max_abs_error": 0.0,
+      "risk_max_abs_error": 0.0,
+      "replay_bytes_capacity_2048": 18325504,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      }
+    },
+    {
+      "device": "cpu",
+      "threads": 2,
+      "seconds_per_step": [
+        0.5126722125000072,
+        0.5627022156250234,
+        0.5158014093750012
+      ],
+      "median_steps_per_s": 1.9387306467652043,
+      "action_max_abs_error": 0.0,
+      "risk_max_abs_error": 0.0,
+      "replay_bytes_capacity_2048": 18325504,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      }
+    },
+    {
+      "device": "cpu",
+      "threads": 3,
+      "seconds_per_step": [
+        0.39233408750001786,
+        0.3896374312500086,
+        0.3955689500000119
+      ],
+      "median_steps_per_s": 2.5488481165938826,
+      "action_max_abs_error": 1.280568540096283e-09,
+      "risk_max_abs_error": 0.0,
+      "replay_bytes_capacity_2048": 18325504,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      }
+    },
+    {
+      "device": "cuda",
+      "threads": 1,
+      "seconds_per_step": [
+        0.044807884374989726,
+        0.04499292187500714,
+        0.04444439062501715
+      ],
+      "median_steps_per_s": 22.317500902992126,
+      "action_max_abs_error": 1.1641532182693481e-09,
+      "risk_max_abs_error": 5.960464477539063e-08,
+      "replay_bytes_capacity_2048": 18325504,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      }
+    }
+  ],
+  "default_device_unchanged": "cpu"
+}

@@ -1,0 +1,4 @@
+{
+  "mode": "cold",
+  "note": "Cold start: Legacy SharedMASAC Path-C L0 checkpoints are architecture-incompatible with V4 pool+RiskEncoder; paper suite trains maneuver arms from scratch under matched C-reshape + frozen 4/2. Standard-C baseline comparison uses completed Path-C L0 results."
+}

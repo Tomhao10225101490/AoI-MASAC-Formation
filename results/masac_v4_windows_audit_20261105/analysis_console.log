@@ -1,0 +1,10 @@
+ASSEMBLED maneuver_paper_suite_20261103_metrics.tar.xz parts 7 sha256 1d78abe58a6dd925cc23e279c66270fa6d8bc409766641f83ca1bb60f19b79b1
+ASSEMBLED v4_aux_and_v3_core_20261103_metrics.tar.xz parts 21 sha256 877f004826bd2167c98a3e8463556576274883ea01d240b68708f77afdb8a462
+Traceback (most recent call last):
+  File "C:\research\masac-maneuverability\scripts\analyze_maneuver_windows.py", line 113, in <module>
+    if __name__=='__main__': main()
+  File "C:\research\masac-maneuverability\scripts\analyze_maneuver_windows.py", line 65, in main
+    manifest=restore() if args.restore else []
+  File "C:\research\masac-maneuverability\scripts\analyze_maneuver_windows.py", line 38, in restore
+    if target.read_bytes()!=payload: raise ValueError(f'Existing file differs: {target}')
+ValueError: Existing file differs: C:\research\masac-maneuverability\results\masac_v4_c_reshape_empty_20261103_142623\authorization_protocol.json

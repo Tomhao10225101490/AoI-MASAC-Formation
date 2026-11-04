@@ -14,7 +14,8 @@ from __future__ import annotations
 
 import argparse
 import copy
-import fcntl
+from collections import Counter
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 import os
@@ -32,6 +33,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from uav_planning.v4_maps import FAMILIES
+from uav_planning.run_lock import RunLock
+from uav_planning.v4_sync_capture import (
+    capture_potential, failure_reason, occupancy, shape_reward, sync_from_protocol,
+)
 from uav_planning.v4_maneuver_masac import ManeuverMASAC
 from uav_planning.v4_prediction import ProbeConfig, predict_probes
 from uav_planning.v4_reference import joint_reference
@@ -55,7 +60,13 @@ SOURCES = (
     'uav_planning/structured.py',
     'uav_planning/environment.py',
     'uav_planning/v4_reference.py',
+    'uav_planning/run_lock.py',
+    'uav_planning/v4_sync_capture.py',
 )
+
+
+def shanghai_time():
+    return datetime.now(timezone(timedelta(hours=8))).strftime('%Y-%m-%d %H:%M Asia/Shanghai')
 
 
 def digest(path):
@@ -68,8 +79,8 @@ def digest(path):
 
 def write(path, obj):
     path = Path(path)
-    tmp = path.with_name(path.name + '.tmp')
-    with tmp.open('w') as f:
+    tmp = path.with_name(path.name + f'.tmp.{os.getpid()}')
+    with tmp.open('w', encoding='utf-8') as f:
         json.dump(obj, f, indent=2, allow_nan=False)
         f.write('\n')
         f.flush()
@@ -78,14 +89,14 @@ def write(path, obj):
 
 
 def append(path, obj):
-    with Path(path).open('a') as f:
+    with Path(path).open('a', encoding='utf-8') as f:
         f.write(json.dumps(obj, allow_nan=False) + '\n')
         f.flush()
 
 
 def message(root, text):
     print(text, flush=True)
-    with (root / 'train.log').open('a') as f:
+    with (root / 'train.log').open('a', encoding='utf-8') as f:
         f.write(text + '\n')
         f.flush()
 
@@ -151,6 +162,7 @@ def evaluate(model, maps, directory, step, cfg, reshape, probe_mode, probe_confi
         ever = np.zeros(env.n, dtype=bool)
         ever_ball = np.zeros(env.n, dtype=bool)
         probe_acc = []
+        max_capture_occupancy = occupancy(env)
         while True:
             probe_acc.append(probe_summary(obs, probe_mode, probe_config, generator=gen))
             action = model.act(obs, deterministic=True)
@@ -163,6 +175,7 @@ def evaluate(model, maps, directory, step, cfg, reshape, probe_mode, probe_confi
             closest = np.minimum(closest, distance)
             ever |= env.captured
             ever_ball |= np.asarray(info['ever_in_ball_by_uav'])
+            max_capture_occupancy = max(max_capture_occupancy, occupancy(env))
             near_stall += ((distance < 10) & (speed < 2) & ~env.captured)
             if done or truncated:
                 break
@@ -185,6 +198,10 @@ def evaluate(model, maps, directory, step, cfg, reshape, probe_mode, probe_confi
             'final_goal_m_by_uav': np.linalg.norm(env.goal - env.p, axis=-1).tolist(),
             'ever_arrived_by_uav': ever.tolist(),
             'ever_in_ball_by_uav': ever_ball.tolist(),
+            'ever_ball_any': bool(ever_ball.any()),
+            'ever_ball_all': bool(ever_ball.all()),
+            'max_simultaneous_capture_occupancy': max_capture_occupancy,
+            'evaluation_shaping_enabled': False,
             'simultaneously_arrived': bool(info['success']),
             'near_goal_low_speed_uncaptured_steps_by_uav': near_stall.tolist(),
             'success_efficiency_direct_over_path_by_uav': (
@@ -217,8 +234,27 @@ def evaluate(model, maps, directory, step, cfg, reshape, probe_mode, probe_confi
             )
         write(Path(str(prefix) + '_map.json'), env.metadata())
         records.append(row)
+        message(directory.parent, f'EVAL-MAP step={step} map_seed={seed} family={family} '
+                f'success={int(row["success"])} ever_ball_any={int(row["ever_ball_any"])} '
+                f'ever_ball_all={int(row["ever_ball_all"])} max_capture={max_capture_occupancy}/{env.n} '
+                f'failure={failure_reason(row)}')
     write(directory / f'evaluation_{step}.json', records)
     write(directory / 'evaluation.json', {'step': step, 'episodes': records})
+    summary = {
+        'step': step,
+        'maps': len(records),
+        'successes': sum(bool(x['success']) for x in records),
+        'ever_ball_any_maps': sum(x['ever_ball_any'] for x in records),
+        'ever_ball_all_maps': sum(x['ever_ball_all'] for x in records),
+        'max_simultaneous_capture_occupancy': [x['max_simultaneous_capture_occupancy'] for x in records],
+        'exclusive_failure_reasons': dict(Counter(failure_reason(x) for x in records if not x['success'])),
+        'collision_flags_nonexclusive': {
+            name: sum(bool(x.get(name)) for x in records)
+            for name in ('uav_collision', 'static_collision', 'dynamic_collision', 'boundary_collision')
+        },
+        'evaluation_shaping_enabled': False,
+    }
+    write(directory / f'evaluation_{step}_summary.json', summary)
     return records
 
 
@@ -250,6 +286,7 @@ def save_snapshot(directory, model, env, explore, state):
         'exploration_rng': copy.deepcopy(explore.bit_generator.state),
         'python_rng': random.getstate(),
         'numpy_rng': np.random.get_state(),
+        'torch_cuda_rng': torch.cuda.get_rng_state_all() if model.device.type == 'cuda' else None,
         'state': copy.deepcopy(state),
     }
     cp = folder / 'checkpoint.pt'
@@ -278,6 +315,36 @@ def save_snapshot(directory, model, env, explore, state):
     return folder
 
 
+def validate_cuda_evidence(cfg):
+    """New CUDA protocols require a measured faster workload and feature parity."""
+    evidence = cfg.get('compute_evidence')
+    if not isinstance(evidence, str) or not evidence:
+        raise ValueError('CUDA protocol requires compute_evidence report path')
+    path = ROOT / evidence
+    if not path.is_file():
+        raise ValueError(f'CUDA compute evidence does not exist: {path}')
+    report = json.loads(path.read_text(encoding='utf-8'))
+    rows = report.get('results', [])
+    cpu = [float(x['median_steps_per_s']) for x in rows if x.get('device') == 'cpu']
+    cuda = [x for x in rows if x.get('device') == 'cuda']
+    if not cpu or not cuda or not all(np.isfinite(x) and x > 0 for x in cpu):
+        raise ValueError('CUDA evidence requires finite positive CPU and CUDA measurements')
+    eligible = [x for x in cuda if
+                np.isfinite(float(x.get('median_steps_per_s', 0))) and
+                float(x.get('median_steps_per_s', 0)) > max(cpu) and
+                0 <= float(x.get('action_max_abs_error', float('inf'))) < 1e-4 and
+                0 <= float(x.get('risk_max_abs_error', float('inf'))) < 1e-4]
+    if not eligible:
+        raise ValueError('CUDA requires measured speedup>1 and action/risk error<1e-4')
+    if not torch.cuda.is_available():
+        raise ValueError('CUDA protocol requested but torch.cuda.is_available() is False')
+    fastest = max(eligible, key=lambda x: x['median_steps_per_s'])
+    return {'path': evidence, 'sha256': digest(path), 'best_cpu_steps_per_s': max(cpu),
+            'cuda_steps_per_s': fastest['median_steps_per_s'],
+            'measured_speedup': float(fastest['median_steps_per_s']) / max(cpu),
+            'workload': report.get('workload')}
+
+
 def validate_protocol(cfg, probe_mode):
     required = [
         'experiment_id', 'seeds', 'families', 'steps', 'warmup', 'batch_size',
@@ -288,8 +355,9 @@ def validate_protocol(cfg, probe_mode):
     for key in required:
         if key not in cfg:
             raise ValueError(f'protocol missing {key}')
-    if cfg['n_agents'] != 3 or cfg['device'] != 'cpu':
-        raise ValueError('maneuver protocol expects n_agents=3 device=cpu')
+    if cfg['n_agents'] != 3 or cfg['device'] not in ('cpu', 'cuda'):
+        raise ValueError('maneuver protocol expects n_agents=3 and cpu or evidence-guarded cuda')
+    compute_evidence = validate_cuda_evidence(cfg) if cfg['device'] == 'cuda' else None
     if cfg['set_mode'] != 'pool':
         raise ValueError('maneuver suite freezes set_mode=pool')
     if probe_mode not in cfg['probe_modes']:
@@ -312,6 +380,8 @@ def validate_protocol(cfg, probe_mode):
     gate = float(cfg['gate']['per_seed_joint_success_fraction'])
     if abs(gate - 0.6) > 1e-9:
         raise ValueError('L0 gate must be 0.6')
+    sync_from_protocol(cfg.get('sync_capture'))
+    return compute_evidence
 
 
 def update_registry(root, payload, primary=False):
@@ -326,7 +396,7 @@ def update_registry(root, payload, primary=False):
     arms.append(payload)
     registry['arms'] = arms
     registry['updated_at'] = time.time()
-    registry['updated_at_asia_shanghai'] = time.strftime('%Y-%m-%d %H:%M Asia/Shanghai')
+    registry['updated_at_asia_shanghai'] = shanghai_time()
     if primary:
         registry['primary'] = {
             'out': payload['out'],
@@ -348,11 +418,13 @@ def update_registry(root, payload, primary=False):
 
 
 def run(args):
-    cfg = json.loads(args.protocol.read_text())
-    auth = json.loads(args.authorization_protocol.read_text()) if args.authorization_protocol else {}
+    cfg = json.loads(args.protocol.read_text(encoding='utf-8'))
+    auth = (json.loads(args.authorization_protocol.read_text(encoding='utf-8'))
+            if args.authorization_protocol else {'authorization': cfg.get('authorization')})
     probe_mode = args.probe_mode or cfg.get('default_probe_mode', 'full')
-    validate_protocol(cfg, probe_mode)
+    compute_evidence = validate_protocol(cfg, probe_mode)
     reshape = reshape_from_protocol(cfg['reshape'])
+    sync = sync_from_protocol(cfg.get('sync_capture'))
     probe_config = ProbeConfig(
         world=tuple(cfg.get('world', [240.0, 240.0, 90.0])),
         body_radius=float(cfg.get('body_radius', 1.0)),
@@ -394,13 +466,7 @@ def run(args):
     else:
         lockpath = args.lock_path if args.lock_path.is_absolute() else ROOT / args.lock_path
     lockpath.parent.mkdir(parents=True, exist_ok=True)
-    lock = lockpath.open('a+')
-    try:
-        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    except BlockingIOError as exc:
-        raise RuntimeError(f'Another runner holds maneuver lock {lockpath}') from exc
-    lock.write(f'pid={os.getpid()} out={args.out} probe_mode={probe_mode}\n')
-    lock.flush()
+    lock = RunLock(lockpath, f'pid={os.getpid()} out={args.out} probe_mode={probe_mode}\n')
 
     args.out.mkdir(parents=True, exist_ok=False)
     root = args.out.resolve()
@@ -423,7 +489,9 @@ def run(args):
         'set_mode': cfg['set_mode'],
         'probe_mode': probe_mode,
         'created_at': time.time(),
-        'created_at_asia_shanghai': time.strftime('%Y-%m-%d %H:%M Asia/Shanghai'),
+        'device': cfg['device'],
+        'compute_evidence': compute_evidence,
+        'created_at_asia_shanghai': shanghai_time(),
         'pid': os.getpid(),
         'config_hashes': confhash,
         'sources': source_hashes(),
@@ -434,6 +502,7 @@ def run(args):
         'families': families,
         'development_maps_used': eval_maps,
         'reshape': reshape.to_dict(),
+        'sync_capture': sync.to_dict(),
         'capture_train_and_gate': {
             'ball_m': reshape.train_ball_m,
             'speed_mps': reshape.train_speed_mps,
@@ -493,7 +562,7 @@ def run(args):
             'warm_start': None,
             'lock_path': str(lockpath),
             'log': str(root / 'train.log'),
-            'authorization': 'user t4s17 + phone comprehensive maneuver suite 2026-11-03',
+            'authorization': auth.get('authorization'),
             'do_not_auto_launch_further': True,
             'caffeinate_pid': args.caffeinate_pid,
         }
@@ -512,11 +581,11 @@ def run(args):
             'capture': {'ball_m': 4.0, 'speed_mps': 2.0, 'latch': False},
             'warm_start': None,
             'warm_start_note': warm_note,
-            'authorization': 'user t4s17 + phone comprehensive maneuver suite 2026-11-03',
+            'authorization': auth.get('authorization'),
             'log': str(root / 'train.log'),
             'do_not_auto_launch_further': True,
-            'started_at_asia_shanghai': time.strftime('%Y-%m-%d %H:%M Asia/Shanghai'),
-            'updated_at_asia_shanghai': time.strftime('%Y-%m-%d %H:%M Asia/Shanghai'),
+            'started_at_asia_shanghai': shanghai_time(),
+            'updated_at_asia_shanghai': shanghai_time(),
             'monitor_note': (
                 f'Maneuver {probe_mode} running; gate ≥0.6 on 12 maps frozen 4/2; '
                 'paper suite; no auto further stages'
@@ -573,8 +642,13 @@ def run(args):
                 near_stall=[0] * 3,
                 warm_start={'mode': 'cold'},
                 probe_mode=probe_mode,
+                max_capture_occupancy=occupancy(env),
+                episode_base_return=0.0,
+                episode_shaping_return=0.0,
             )
-            message(root, f'START probe={probe_mode} seed={seed} family={family0} reshape={reshape.to_dict()}')
+            message(root, f'START probe={probe_mode} seed={seed} device={cfg["device"]} '
+                    f'torch_threads={torch.get_num_threads()} steps={steps} warmup={warmup} batch={batch} '
+                    f'family={family0} reshape={reshape.to_dict()} sync_capture={sync.to_dict()}')
             start_step = 0
             tick = time.perf_counter()
             for step in range(1, steps + 1):
@@ -585,10 +659,19 @@ def run(args):
                     if step <= warmup
                     else model.act(obs)
                 )
-                next_obs, reward, done, truncated, info = env.step(action)
+                previous_potential = capture_potential(env.p, env.goal, env.v, sync) if sync.enabled else None
+                next_obs, base_reward, done, truncated, info = env.step(action)
+                following_potential = capture_potential(env.p, env.goal, env.v, sync) if sync.enabled else None
+                reward, shaping = shape_reward(
+                    base_reward, previous_potential, following_potential,
+                    terminated=done, truncated=truncated, gamma=0.99, config=sync,
+                )
                 model.push(obs, action, reward, next_obs, done)
                 obs = next_obs
                 state['episode_return'] += reward
+                state['episode_base_return'] += base_reward
+                state['episode_shaping_return'] += shaping
+                state['max_capture_occupancy'] = max(state['max_capture_occupancy'], occupancy(env))
                 distance = np.linalg.norm(env.goal - env.p, axis=-1)
                 speed = np.linalg.norm(env.v, axis=-1)
                 state['closest'] = np.minimum(state['closest'], distance).tolist()
@@ -612,6 +695,12 @@ def run(args):
                         'map_seed': env.seed,
                         'map_family': families[state['episode'] % len(families)],
                         'return_': state['episode_return'],
+                        'base_return': state['episode_base_return'],
+                        'shaping_return': state['episode_shaping_return'],
+                        'sync_capture': sync.to_dict(),
+                        'max_simultaneous_capture_occupancy': state['max_capture_occupancy'],
+                        'ever_ball_any': bool(any(info['ever_in_ball_by_uav'])),
+                        'ever_ball_all': bool(all(info['ever_in_ball_by_uav'])),
                         'terminated': bool(done),
                         'truncated': bool(truncated),
                         'timeout': bool(truncated and not done),
@@ -621,10 +710,17 @@ def run(args):
                         'reshape': reshape.to_dict(),
                     }
                     append(directory / 'metrics.jsonl', row)
+                    message(root, f'EPISODE probe={probe_mode} seed={seed} step={step} episode={state["episode"]} '
+                            f'return={row["return_"]:.6f} base_return={row["base_return"]:.6f} '
+                            f'shaping_return={row["shaping_return"]:.6f} '
+                            f'ever_ball_any={row["ever_ball_any"]} ever_ball_all={row["ever_ball_all"]} '
+                            f'max_capture={state["max_capture_occupancy"]}/3 failure={failure_reason(row)}')
                     state['recent'] = (state['recent'] + [row])[-30:]
                     state['episode'] += 1
                     state['episode_start'] = step
                     state['episode_return'] = 0.0
+                    state['episode_base_return'] = 0.0
+                    state['episode_shaping_return'] = 0.0
                     next_family = families[state['episode'] % len(families)]
                     map_seed = (
                         cfg.get('training_map_seed_offset', 2000000)
@@ -636,6 +732,7 @@ def run(args):
                     )
                     state['closest'] = np.linalg.norm(env.goal - env.p, axis=-1).tolist()
                     state['near_stall'] = [0] * 3
+                    state['max_capture_occupancy'] = occupancy(env)
                 if step % cfg['log_interval'] == 0 or step == steps:
                     recent = state['recent']
                     elapsed = time.perf_counter() - tick
@@ -660,7 +757,7 @@ def run(args):
                         'last_eval_step': state['last_eval_step'],
                         'pid': os.getpid(),
                         'updated_at': time.time(),
-                        'updated_at_asia_shanghai': time.strftime('%Y-%m-%d %H:%M Asia/Shanghai'),
+                        'updated_at_asia_shanghai': shanghai_time(),
                         'reshape': reshape.to_dict(),
                         'warm_start': False,
                         'recent_success': sum(x['success'] for x in recent) / len(recent) if recent else None,
@@ -671,7 +768,9 @@ def run(args):
                     message(
                         root,
                         f'[maneuver-{probe_mode} seed={seed}] {step}/{steps} upd={state["updates"]} '
-                        f'{rate:.1f}step/s val={state["last_eval"]}',
+                        f'{rate:.1f}step/s return={state["episode_return"]:.6f} '
+                        f'shaping_return={state["episode_shaping_return"]:.6f} '
+                        f'val={state["last_eval"]} losses={state["losses"]}',
                     )
                 if step % eval_every == 0 or step == steps:
                     phase = 'evaluating'
@@ -681,6 +780,8 @@ def run(args):
                     state['last_eval'] = sum(x['success'] for x in records) / len(records)
                     state['last_eval_step'] = step
                     n_ball = sum(1 for x in records if any(x.get('ever_in_ball_by_uav') or []))
+                    n_ball_all = sum(1 for x in records if x['ever_ball_all'])
+                    failures = dict(Counter(failure_reason(x) for x in records if not x['success']))
                     eff = [
                         x['mean_path_efficiency_direct_over_path']
                         for x in records
@@ -690,12 +791,14 @@ def run(args):
                         root,
                         f'EVAL probe={probe_mode} seed={seed} step={step}: '
                         f'success={sum(x["success"] for x in records)}/{len(records)} '
-                        f'ever_ball_maps={n_ball}/{len(records)} '
+                        f'ever_ball_any={n_ball}/{len(records)} ever_ball_all={n_ball_all}/{len(records)} '
+                        f'failures={failures} '
                         f'mean_eff={float(np.mean(eff)) if eff else None}',
                     )
                 if step % save_every == 0 or step == steps:
                     phase = 'saving'
-                    save_snapshot(directory, model, env, explore, state)
+                    checkpoint = save_snapshot(directory, model, env, explore, state)
+                    message(root, f'CHECKPOINT probe={probe_mode} seed={seed} step={step} path={checkpoint}')
             gate = float(cfg['gate']['per_seed_joint_success_fraction'])
             completed.append({
                 'seed': seed,
@@ -719,7 +822,7 @@ def run(args):
             'all_seeds_gate_met': bool(completed) and all(x['gate_met'] for x in completed),
             'smoke': args.smoke,
             'finished_at': time.time(),
-            'finished_at_asia_shanghai': time.strftime('%Y-%m-%d %H:%M Asia/Shanghai'),
+            'finished_at_asia_shanghai': shanghai_time(),
             'elapsed_s': time.perf_counter() - begin,
             'authorization': auth.get('authorization'),
             'reshape': reshape.to_dict(),
@@ -749,7 +852,7 @@ def run(args):
                     registry['primary']['phase'] = 'complete'
                     registry['primary']['all_seeds_gate_met'] = complete['all_seeds_gate_met']
                 registry['updated_at'] = time.time()
-                registry['updated_at_asia_shanghai'] = time.strftime('%Y-%m-%d %H:%M Asia/Shanghai')
+                registry['updated_at_asia_shanghai'] = shanghai_time()
                 write(registry_path, registry)
             if probe_mode == 'full' or args.primary:
                 write(
@@ -765,7 +868,7 @@ def run(args):
                         'all_seeds_gate_met': complete['all_seeds_gate_met'],
                         'do_not_auto_launch_further': True,
                         'completed_at': time.time(),
-                        'updated_at_asia_shanghai': time.strftime('%Y-%m-%d %H:%M Asia/Shanghai'),
+                        'updated_at_asia_shanghai': shanghai_time(),
                     },
                 )
         message(root, f'COMPLETE maneuver-{probe_mode} gate_met={complete["all_seeds_gate_met"]}')

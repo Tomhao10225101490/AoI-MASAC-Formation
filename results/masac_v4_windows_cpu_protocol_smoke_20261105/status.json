@@ -1,0 +1,102 @@
+{
+  "phase": "complete",
+  "complete": true,
+  "scope": "smoke",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_static",
+  "probe_mode": "static",
+  "set_mode": "pool",
+  "runs": [
+    {
+      "seed": 1211,
+      "step": 256,
+      "final_development_success": 0.0,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    }
+  ],
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": false,
+  "smoke": true,
+  "finished_at": 1793811308.4074543,
+  "finished_at_asia_shanghai": "2026-11-05 00:55 Asia/Shanghai",
+  "elapsed_s": 54.074844900000244,
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s17",
+    "phone_steering": "comprehensive/powerful paper-facing multi-arm suite",
+    "choice": "Authorize Predictive Maneuverability-Aware on passed Standard L0; expand for paper (ablations, multi-seed, metrics)",
+    "date": "2026-11-03",
+    "provenance": "Standard L0 Path C COMPLETE PASS results/masac_v4_c_reshape_l0_frozen42_20261103_145043 seeds 911/922/933 = 11/12,11/12,10/12. User authorized Predictive Maneuverability-Aware; phone follow-up asked for comprehensive paper scope.",
+    "allowed_scope": "V4 pool + RiskEncoder maneuver arms (full/static/zero[/shuffle]) on L0 12-map with Path-C reshape + frozen capture 4/2; multi-seed; docs/status; local Mac only.",
+    "forbidden": [
+      "Attention comparison arms in this suite (architecture frozen to pool)",
+      "L1 escalation",
+      "Silent +50k continue restack of unrelated arms",
+      "Auto-launch further stages without gates",
+      "Cursor cloud agents",
+      "Claiming probes as safety certificates"
+    ]
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start_path": null,
+  "do_not_auto_launch_further": true,
+  "baseline_comparison": {
+    "name": "Standard-C Path-C L0 frozen42",
+    "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+    "results_dir": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "architecture": "Legacy SharedMASAC SetEncoder (no RiskEncoder / no V4 pool)",
+    "seeds": [
+      911,
+      922,
+      933
+    ],
+    "final_success": [
+      "11/12",
+      "11/12",
+      "10/12"
+    ],
+    "capture": "4.0m/2.0mps latch=False",
+    "reshape": "Path-C identical magnitudes",
+    "comparison_note": "Primary paper contrast is within-suite full vs zero vs static (matched V4 pool+RiskEncoder capacity). Standard-C is the pre-innovation navigation floor on the same maps/rewards/capture; architecture differs, so claim task-matched baseline not parameter-matched."
+  },
+  "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+  "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+}

@@ -1,0 +1,16 @@
+ASSEMBLED maneuver_paper_suite_20261103_metrics.tar.xz parts 7 sha256 1d78abe58a6dd925cc23e279c66270fa6d8bc409766641f83ca1bb60f19b79b1
+ASSEMBLED v4_aux_and_v3_core_20261103_metrics.tar.xz parts 21 sha256 877f004826bd2167c98a3e8463556576274883ea01d240b68708f77afdb8a462
+RESTORED {"archive": "c_reshape_and_l0_20261103_metrics.tar.xz", "files": 1177, "sha256": "6eed5d89caf991a886904e3c21127b10a7eb18a3e4c52a3f0e162472b252798a"}
+RESTORED {"archive": "l0_continue_and_legacy_20261103_metrics.tar.xz", "files": 2091, "sha256": "0d5133e7b1e49465a3bef9603c27c41b39ef79f30aa77c4fd55842c37a61d7c5"}
+RESTORED {"archive": "maneuver_paper_suite_20261103_metrics.tar.xz", "files": 4885, "sha256": "1d78abe58a6dd925cc23e279c66270fa6d8bc409766641f83ca1bb60f19b79b1"}
+RESTORED {"archive": "v4_aux_and_v3_core_20261103_metrics.tar.xz", "files": 7788, "sha256": "877f004826bd2167c98a3e8463556576274883ea01d240b68708f77afdb8a462"}
+FINAL {"arm": "static", "seed": 1211, "success": 11, "n": 12, "gate_met": true, "ever_ball_any": 12, "ever_ball_all": 11, "failures": {"success": 11, "timeout_after_any_ball": 1}}
+FINAL {"arm": "static", "seed": 1222, "success": 10, "n": 12, "gate_met": true, "ever_ball_any": 12, "ever_ball_all": 10, "failures": {"success": 10, "timeout_after_any_ball": 2}}
+FINAL {"arm": "static", "seed": 1233, "success": 5, "n": 12, "gate_met": false, "ever_ball_any": 12, "ever_ball_all": 5, "failures": {"timeout_after_any_ball": 7, "success": 5}}
+FINAL {"arm": "full", "seed": 1211, "success": 3, "n": 12, "gate_met": false, "ever_ball_any": 12, "ever_ball_all": 5, "failures": {"timeout_after_any_ball": 7, "timeout_after_all_ball": 2, "success": 3}}
+FINAL {"arm": "full", "seed": 1222, "success": 4, "n": 12, "gate_met": false, "ever_ball_any": 12, "ever_ball_all": 4, "failures": {"success": 4, "timeout_after_any_ball": 8}}
+FINAL {"arm": "full", "seed": 1233, "success": 8, "n": 12, "gate_met": true, "ever_ball_any": 12, "ever_ball_all": 8, "failures": {"success": 8, "timeout_after_any_ball": 4}}
+FINAL {"arm": "zero", "seed": 1211, "success": 1, "n": 12, "gate_met": false, "ever_ball_any": 12, "ever_ball_all": 1, "failures": {"timeout_after_any_ball": 11, "success": 1}}
+FINAL {"arm": "zero", "seed": 1222, "success": 0, "n": 12, "gate_met": false, "ever_ball_any": 12, "ever_ball_all": 1, "failures": {"timeout_after_any_ball": 11, "timeout_after_all_ball": 1}}
+FINAL {"arm": "zero", "seed": 1233, "success": 1, "n": 12, "gate_met": false, "ever_ball_any": 12, "ever_ball_all": 2, "failures": {"timeout_after_any_ball": 10, "timeout_after_all_ball": 1, "success": 1}}
+ANALYSIS SAVED C:\research\masac-maneuverability\results\masac_v4_windows_audit_20261105

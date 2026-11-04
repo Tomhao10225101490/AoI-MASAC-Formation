@@ -1,0 +1,17 @@
+BENCH START device=cpu threads=1 batch=128 cache_risk=True full seed=1711 warmup_updates=8
+BENCH device=cpu threads=1 repeat=1 steps=32 seconds=26.2525 steps_per_s=1.219
+BENCH device=cpu threads=1 repeat=2 steps=32 seconds=26.3265 steps_per_s=1.216
+BENCH device=cpu threads=1 repeat=3 steps=32 seconds=26.6005 steps_per_s=1.203
+BENCH START device=cpu threads=2 batch=128 cache_risk=True full seed=1711 warmup_updates=8
+BENCH device=cpu threads=2 repeat=1 steps=32 seconds=16.4055 steps_per_s=1.951
+BENCH device=cpu threads=2 repeat=2 steps=32 seconds=18.0065 steps_per_s=1.777
+BENCH device=cpu threads=2 repeat=3 steps=32 seconds=16.5056 steps_per_s=1.939
+BENCH START device=cpu threads=3 batch=128 cache_risk=True full seed=1711 warmup_updates=8
+BENCH device=cpu threads=3 repeat=1 steps=32 seconds=12.5547 steps_per_s=2.549
+BENCH device=cpu threads=3 repeat=2 steps=32 seconds=12.4684 steps_per_s=2.566
+BENCH device=cpu threads=3 repeat=3 steps=32 seconds=12.6582 steps_per_s=2.528
+BENCH START device=cuda threads=1 batch=128 cache_risk=True full seed=1711 warmup_updates=8
+BENCH device=cuda threads=1 repeat=1 steps=32 seconds=1.4339 steps_per_s=22.318
+BENCH device=cuda threads=1 repeat=2 steps=32 seconds=1.4398 steps_per_s=22.226
+BENCH device=cuda threads=1 repeat=3 steps=32 seconds=1.4222 steps_per_s=22.500
+BENCH SAVED C:\research\masac-maneuverability\results\masac_v4_windows_audit_20261105\device_benchmark.json

@@ -47,6 +47,7 @@ venv/
 .env
 .env.*
 !.env.example
+local_metrics_restore/
 
 # Compact research metric bundles (preferred over raw results trees on flaky links)
 !results_archives/

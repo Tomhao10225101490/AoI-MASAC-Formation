@@ -1,7 +1,7 @@
 # RELATED_WORK_FRONTIER_20261104 — Predictive Maneuverability MASAC
 
-**Last primary-source verification:** 2026-11-05 Asia/Shanghai.  
-**Scope:** selected 2022–2026 methods, with SAC/CTDE foundations kept separately.  
+**Last primary-source verification:** 2026-11-05 Asia/Shanghai.
+**Scope:** selected 2022–2026 methods, with SAC/CTDE foundations kept separately.
 **Evidence boundary:** this is a focused positioning audit, not a systematic review or proof of novelty. A verified title/abstract does not imply independent reproduction of a paper's results or verification of all theorem assumptions.
 
 ## Defensible positioning after the completed suite

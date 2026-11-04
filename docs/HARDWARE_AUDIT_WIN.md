@@ -102,6 +102,25 @@ checkpoint/replay I/O. A complete trainer smoke must follow before a CUDA B pilo
 The historical CPU protocol/default remains unchanged. New explicitly named CUDA
 pilot protocols may cite this evidence; that is not a rerun of the old suite.
 
+### Complete trainer smoke
+
+The unchanged CPU protocol, static probes, seed1211, 3 threads, `--smoke`
+completed 256 environment steps and128 updates in **54.075 s**. An explicitly
+named CUDA control protocol with B disabled, same seed, same smoke budget/batch/
+replay/maps and1 thread completed in **8.219 s** (~**6.58x** faster). These runner
+elapsed times include training, reference audits, two-map eval and checkpoint
+I/O after setup; they exclude interpreter/import/model-preflight startup and are
+one run per device. Both had finite diagnostics and0/2 smoke success (boundary
+collisions). CUDA checkpoint contains its GPU RNG stream as well as the existing
+CPU/exploration/replay states. Stochastic trajectories differ across devices.
+
+Reports live in `results/masac_v4_windows_{cpu_protocol,cuda_control}_smoke_20261105/`.
+Together with repeated workload timing, this supports explicit CUDA B pilots;
+it does not establish learning or a method benefit. New B CUDA pilots use one
+Torch thread per process, initially two visible processes to measure aggregate
+throughput/memory before increasing concurrency. Historical protocol CPU defaults
+remain unchanged.
+
 ## Artifact boundary
 
 Historical metrics are in Git (`results_key/` and split archives). Historical
