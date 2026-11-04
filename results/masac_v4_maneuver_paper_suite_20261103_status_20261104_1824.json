@@ -1,0 +1,40 @@
+{
+  "written_at_asia_shanghai": "2026-11-04 18:24 Asia/Shanghai",
+  "suite": "masac_v4_maneuver_paper_suite_20261103",
+  "stamp": "20261103_162345",
+  "arms": {
+    "full": {
+      "phase": "complete",
+      "gate": "FAIL 1/3",
+      "finals": [
+        "3/12",
+        "4/12",
+        "8/12"
+      ],
+      "finished": "2026-11-04 18:21 Asia/Shanghai"
+    },
+    "zero": {
+      "phase": "complete",
+      "gate": "FAIL 0/3",
+      "finals": [
+        "1/12",
+        "0/12",
+        "1/12"
+      ],
+      "finished": "2026-11-04 14:52 Asia/Shanghai"
+    },
+    "static": {
+      "phase": "training",
+      "pid": 45356,
+      "seed": 1233,
+      "step": 77000,
+      "total": 80000,
+      "last_eval": "7/12@76k",
+      "prior_pass": [
+        "1211 11/12",
+        "1222 10/12"
+      ]
+    }
+  },
+  "do_not_auto_launch_further": true
+}

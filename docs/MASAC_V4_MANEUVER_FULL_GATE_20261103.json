@@ -1,0 +1,48 @@
+{
+  "arm": "maneuver_full",
+  "probe_mode": "full",
+  "result": "FAIL",
+  "seeds_gate_pass": 1,
+  "seeds_total": 3,
+  "all_seeds_gate_met": false,
+  "gate_threshold": 0.6,
+  "finished_at_asia_shanghai": "2026-11-04 18:21 Asia/Shanghai",
+  "elapsed_s": 93448.71237654099,
+  "out": "results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_full",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "finals": {
+    "1211": {
+      "final": "3/12",
+      "gate_met": false,
+      "best": "4/12@76k"
+    },
+    "1222": {
+      "final": "4/12",
+      "gate_met": false,
+      "best": "4/12@80k"
+    },
+    "1233": {
+      "final": "8/12",
+      "gate_met": true,
+      "best": "9/12@72k"
+    }
+  },
+  "capture": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "do_not_auto_launch_further": true,
+  "sibling_at_doc_write": {
+    "zero": "COMPLETE FAIL 0/3 @2026-11-04 14:52",
+    "static": {
+      "pid": 45356,
+      "seed": 1233,
+      "step": "~77000/80000",
+      "last_eval": "7/12@76k",
+      "prior": "1211 PASS 11/12, 1222 PASS 10/12"
+    }
+  },
+  "written_at_asia_shanghai": "2026-11-04 18:24 Asia/Shanghai"
+}

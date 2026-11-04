@@ -1,20 +1,24 @@
 {
-  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
-  "pid": 45262,
-  "caffeinate_pid": 45265,
+  "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
+  "pid": 45356,
+  "caffeinate_pid": 45359,
   "kind": "v4_maneuver_paper_suite",
   "phase": "running",
-  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_full",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_static",
   "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
-  "probe_mode": "full",
+  "probe_mode": "static",
   "parallel_arms": {
     "full": {
       "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
-      "pid": 45262
+      "phase": "complete",
+      "all_seeds_gate_met": false,
+      "finished_at_asia_shanghai": "2026-11-04 18:21 Asia/Shanghai"
     },
     "zero": {
       "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
-      "pid": 45327
+      "phase": "complete",
+      "all_seeds_gate_met": false,
+      "finished_at_asia_shanghai": "2026-11-04 14:52 Asia/Shanghai"
     },
     "static": {
       "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
@@ -33,12 +37,11 @@
     "latch": false
   },
   "warm_start": null,
-  "warm_start_note": "cold \u2014 architecture incompatible with Legacy Path-C L0",
   "authorization": "user t4s17 + phone comprehensive maneuver suite 2026-11-03",
-  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345/train.log",
+  "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345/train.log",
   "do_not_auto_launch_further": true,
   "started_at_asia_shanghai": "2026-11-03 16:23 Asia/Shanghai",
-  "updated_at_asia_shanghai": "2026-11-03 16:26 Asia/Shanghai",
-  "monitor_note": "3-arm paper suite (full/zero/static) running ~9 step/s; gate \u22650.6; no auto further",
+  "updated_at_asia_shanghai": "2026-11-04 18:24 Asia/Shanghai",
+  "monitor_note": "full COMPLETE FAIL 1/3 @18:21; zero COMPLETE FAIL 0/3 @14:52; static seed 1233 still running; no auto further",
   "baseline_comparison": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043"
 }
