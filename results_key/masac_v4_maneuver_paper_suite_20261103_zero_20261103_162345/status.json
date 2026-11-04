@@ -1,0 +1,151 @@
+{
+  "phase": "complete",
+  "complete": true,
+  "scope": "maneuver_zero L0 12-map gate",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_zero",
+  "probe_mode": "zero",
+  "set_mode": "pool",
+  "runs": [
+    {
+      "seed": 1211,
+      "step": 80000,
+      "final_development_success": 0.08333333333333333,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "zero",
+      "warm_start": {
+        "mode": "cold"
+      }
+    },
+    {
+      "seed": 1222,
+      "step": 80000,
+      "final_development_success": 0.0,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "zero",
+      "warm_start": {
+        "mode": "cold"
+      }
+    },
+    {
+      "seed": 1233,
+      "step": 80000,
+      "final_development_success": 0.08333333333333333,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "zero",
+      "warm_start": {
+        "mode": "cold"
+      }
+    }
+  ],
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": false,
+  "smoke": false,
+  "finished_at": 1793775167.6793668,
+  "finished_at_asia_shanghai": "2026-11-04 14:52 Asia/Shanghai",
+  "elapsed_s": 80939.691881167,
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget": "t4s17",
+    "phone_steering": "make training more comprehensive/powerful for paper",
+    "choice": "Authorize Predictive Maneuverability-Aware on passed Standard L0; paper suite with ablations",
+    "date": "2026-11-03",
+    "provenance": "t4s17 after Path C L0 FULL PASS 3/3; phone ask for broader than thin smoke",
+    "allowed_scope": "Local Mac maneuver paper suite (full/zero/static); C reshape + frozen 4/2; multi-seed 80k; docs/status/commit",
+    "forbidden": [
+      "Attention arms in this launch",
+      "L1 escalation",
+      "Silent unrelated restack",
+      "Auto-launch further stages",
+      "Cursor cloud agents"
+    ]
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start_path": null,
+  "do_not_auto_launch_further": true,
+  "baseline_comparison": {
+    "name": "Standard-C Path-C L0 frozen42",
+    "experiment_id": "masac_v4_c_reshape_l0_frozen42_20261103",
+    "results_dir": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
+    "architecture": "Legacy SharedMASAC SetEncoder (no RiskEncoder / no V4 pool)",
+    "seeds": [
+      911,
+      922,
+      933
+    ],
+    "final_success": [
+      "11/12",
+      "11/12",
+      "10/12"
+    ],
+    "capture": "4.0m/2.0mps latch=False",
+    "reshape": "Path-C identical magnitudes",
+    "comparison_note": "Primary paper contrast is within-suite full vs zero vs static (matched V4 pool+RiskEncoder capacity). Standard-C is the pre-innovation navigation floor on the same maps/rewards/capture; architecture differs, so claim task-matched baseline not parameter-matched."
+  },
+  "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+  "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+}

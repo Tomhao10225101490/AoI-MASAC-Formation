@@ -75,3 +75,7 @@ Total `results/` on disk ≈ **43 GB**. GitHub upload keeps **research metrics/t
 - Files staged: **15904** (~133.5 MB)
 - Trees: `results/masac_v3*`, `results/masac_v4*`, `results/v4_*`, plus matching root sidecars.
 - Includes: `completion.json`, `status.json`, eval `*_map.json`, train logs, launcher.out, configs snapshots, gate diagnosis folders.
+
+## Uploaded via archives
+
+See `results_archives/*_metrics.tar.xz` and `docs/RESULTS_ARCHIVES_README_20261104.md`. Plaintext gate tips also in `results_key/`.
