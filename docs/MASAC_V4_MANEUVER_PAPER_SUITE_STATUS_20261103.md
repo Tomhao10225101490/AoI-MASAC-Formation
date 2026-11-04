@@ -35,3 +35,13 @@ Zero-arm gate note: `docs/MASAC_V4_MANEUVER_ZERO_GATE_20261103.md` (+ `.json`)
 - Suite continues undisturbed through remaining **full** + **static** seed 1233.
 - Next-iter plan stays **PENDING**: `docs/PENDING_LAUNCHES_MANEUVER_NEXT_ITER_20261103.md`.
 - After suite gate: prefer documented A/B candidates — ask user if claim-changing; no auto further.
+
+
+## Paper narrative implications (2026-11-04 Asia/Shanghai)
+
+Provisional only — **not** a final contribution claim:
+
+1. **zero FAIL** shows RiskEncoder *capacity* without probe content cannot pass the joint-capture gate (pattern: balls reachable, sync capture fails).
+2. **static** strong on 1211/1222 (11/12, 10/12) suggests static maneuverability margins are currently the best within-suite signal.
+3. **full** weak on 1211/1222 (3/12, 4/12) warns that naive full CV peer/moving channels may not help yet; seed 1233 + next-iter opts still open.
+4. Paper docs: `docs/PAPER_PLAN_WOWMOM2027.md`, `docs/RELATED_WORK_FRONTIER_20261104.md`, `docs/PAPER_OUTLINE_DRAFT.md`.
