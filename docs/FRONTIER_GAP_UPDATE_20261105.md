@@ -1,0 +1,48 @@
+# Frontier gap update — 2026-11-05
+
+**Purpose:** narrow the paper's claims against primary literature before B sync-capture experiments. This update authorizes no Attention, L1, complete paper-suite rerun, or new external-baseline training.
+
+## What changed in the positioning
+
+Three close lines of prior work constrain the narrative. [SCOPE (IJCAI 2026)](https://ijcai.org/proceedings/2026/7) already joins learned future previews, cooperative encirclement, and execution-time correction. [CC-HGCBF (October 2026 preprint)](https://arxiv.org/abs/2610.41214) represents state-dependent motion capability for heterogeneous teams. [CPA risk-guided flight (2026)](https://arxiv.org/abs/2607.23565) learns a directional anticipation signal for visual navigation. The reviewed [2026 multi-agent racing work](https://arxiv.org/abs/2605.22748) also means agile flight must include multi-agent interactions in our discussion.
+
+The defensible question is therefore: **under a specified capture contract, training budget, and representation capacity, which probe content and capture curriculum improve joint completion, and which fail?** This is a falsifiable experimental question. A fixed bank of geometric rollouts may be useful without being a new safety formalism.
+
+## Gap-to-evidence matrix for this iteration
+
+| Issue | Present evidence / limit | Minimal next evidence |
+|---|---|---|
+| Dynamic probes versus static margins | Three seeds yield static 26/36, full 15/36, zero 2/36 on reused development maps. Full does not dominate static. | Preserve the completed results. Diagnose peer/moving-channel scale, counterfactual validity, and capture timing before adding representation capacity. |
+| Team-wide arrival versus joint capture | Across 108 final evaluations there are 43 successes and 65 failures. Of those failures, 61 have only a subset of agents ever enter goal balls; 4 have every agent enter at some time but still fail capture. Historical `ever_ball` means any-agent entry. | Treat incomplete team-wide arrival as the dominant observed symptom. For B, log per-agent first entry, how many agents ever enter, joint occupancy, speeds, and failure counts with explicit denominators. Test worst-agent distance/speed guidance without attributing its effect to synchronization alone. |
+| Curriculum explanation | Formation and swarm-navigation curricula already exist; [Xie et al.](https://arxiv.org/abs/2410.18495v2) and [Huang et al.](https://arxiv.org/abs/2309.13285v2) are relevant precedents. | State the exact reset/reward schedule, the population of states it changes, and a matched-budget control. General “curriculum helps” is not a sufficient contribution. |
+| Guarantee versus heuristic | [Filtered RL (2022)](https://www.merl.com/publications/TR2022-053), [limited-actuation control](https://arxiv.org/abs/2409.09573), and [Def-MARL](https://arxiv.org/abs/2504.15425) have different constraint formulations. Our bank is an observation augmentation. | State kinematic/modeling assumptions, clipping and sampling error, and empirical collisions. No forward-invariance or zero-violation claim without its own proof and implementation. |
+| Capability and counterfactual interpretation | Probing a finite collection of fixed accelerations is not a complete reachable-set representation. | Document acceleration limits, horizon, dynamics, sampled times, velocity treatment, and which moving entities are assumed CV. Keep the exact model distinct from physical quadrotor dynamics. |
+| Set/attention scalability | Pooling is fixed in the existing suite; external attention/graph systems address different tasks. | Report current encoder's permutation behavior and dimensions. No claim about superiority to attention or transfer to unseen fleet sizes without separate experiments. |
+| Generalization and statistics | Twelve maps are a development gate reused across training decisions; three seeds are the training replicates. | Keep seed-level counts and all failure modes. Reserve final holdout seeds/maps before further tuning; never treat the 36 cells as independent Bernoulli trials for a broad significance claim. |
+
+## B sync-capture: research controls required
+
+The [episode-level Windows analysis](../results/masac_v4_windows_audit_20261105/analysis.json) covers the three probe variants, three training seeds, and 12 development maps per checkpoint. It distinguishes **any-agent entry** (there exist an agent and a time at which that agent enters its ball) from **all-agent eventual entry** (each agent enters at some time, possibly different times). Joint capture additionally requires the implemented simultaneous position/speed predicate. High any-agent entry rates cannot establish all-agent eventual entry. In this audit, 61/65 failures lack all-agent eventual entry; only 4/65 reach that milestone and still fail joint capture. Therefore, the earlier interpretation that individual arrival is largely solved and synchronization is the principal cause is unsupported.
+
+B now proposes a curriculum guided by worst-agent distance and speed potentials. This is intended to expose and guide unfinished team progress; its benefits and causal mechanism remain unproven. The method name does not imply that timing alone has been isolated as the bottleneck. Preserve separate arrival-coverage and simultaneous-capture diagnostics so the experiment can reveal which mechanism, if any, changes.
+
+Before a larger run, freeze a short experiment card with hypothesis, method equations, target-distribution reset rule, reward changes, evaluation cadence, paired seeds, step budget, runtime budget, and stop/accept criteria. Keep the original terminal success predicate and final evaluation distribution explicit. A relaxed training state distribution must not silently relax evaluation success.
+
+Use small tests to establish that the curriculum reaches intended synchronized states, rewards remain finite, and logging matches the terminal condition. Then compare B and its matched control from the same initialization convention. A fresh run is not continuation from a missing Mac checkpoint. If a curriculum is combined with reward changes, the first comparison measures the combined intervention; isolate its components before attributing an effect to one formula.
+
+Useful hypotheses remain **unproven**: worst-agent distance/speed guidance may improve team-wide arrival, and a curriculum may increase the frequency of near-success joint states. The existing ablation and terminal classifications alone cannot identify why full is weaker, establish a synchronization-specific cause, or predict whether B improves it.
+
+## WoWMoM 2027 venue check
+
+The [official CFP](https://wowmom2027.dii.unipi.it/call-for-papers.html) and [conference home page](https://wowmom2027.dii.unipi.it/) were checked on 2026-11-05. The published submission deadline is **2026-12-01 23:59 AoE**, equal to **2026-12-02 19:59 Asia/Shanghai**. Regular submissions allow **10 pages including figures and references**, IEEE two-column format with font size at least 10 pt. Review is double blind. The event is in person in Irvine, 21–24 June 2027. Recheck the official pages before submission because rules and dates may change.
+
+The CFP includes navigation, mobility, networked intelligence, and reproducible system artifacts. A capture-control simulation needs a concrete explanation of its relevance to mobile/networked systems; citing AoI papers does not supply an evaluated networking contribution. The paper should describe the information available to each actor and the training/runtime information model faithfully.
+
+Verification note: the official site's search-rendered content exposes the numerical dates and format rules; direct text extraction of its unrendered HTML left dynamic fields blank. The extracted blank fields are not evidence that the requirements are unspecified.
+
+## Citation repairs and remaining work
+
+- Corrected OPEN's current RA-L title and DATT's authors/CoRL source; distinguished preprint years from venue years.
+- Kept DTPPO as an arXiv citation; its prior “Drones 2024” attribution remains unverified.
+- Quarantined the AAAC hierarchical-MASAC DOI/title because no authoritative record was found in exact searches. This is a verification gap, not proof the paper does not exist.
+- The focused table in [RELATED_WORK_FRONTIER_20261104.md](RELATED_WORK_FRONTIER_20261104.md) records sources and reading limits. Full-method comparisons, interoperable baselines, and physical validation remain separate work; none is claimed as completed here.

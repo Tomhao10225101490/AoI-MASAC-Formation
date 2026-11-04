@@ -1,73 +1,58 @@
 # RELATED_WORK_FRONTIER_20261104 — Predictive Maneuverability MASAC
 
-**Survey date:** 2026-11-04 Asia/Shanghai  
-**Scope:** 2022–2026 (plus foundational SAC/CTDE). Prefer arXiv / IEEE / conference pages opened this turn.  
-**Use:** WoWMoM / IEEE-style Related Work backbone. Gaps are **relative to our claim**, not absolute novelty proofs.
+**Last primary-source verification:** 2026-11-05 Asia/Shanghai.  
+**Scope:** selected 2022–2026 methods, with SAC/CTDE foundations kept separately.  
+**Evidence boundary:** this is a focused positioning audit, not a systematic review or proof of novelty. A verified title/abstract does not imply independent reproduction of a paper's results or verification of all theorem assumptions.
 
----
+## Defensible positioning after the completed suite
 
-## How we differentiate (one paragraph)
+We test the usefulness of a fixed acceleration-probe representation inside an otherwise frozen MASAC joint-capture protocol. The completed development suite gives **static 26/36, full 15/36, zero 2/36**, with three training seeds and the same 12 development maps. This is a descriptive ordering; maps reused for development are not independent held-out evidence. The current result supports studying **when dynamic probe channels fail to help**, rather than claiming that prediction improves capture or that the method outperforms frontier systems.
 
-Frontier multi-UAV RL mostly optimizes **formation + obstacle avoidance**, **pursuit-evasion**, or **AoI harvesting**, often with attention encoders, curriculum rewards, or CTBR actions. Agile single-UAV work emphasizes **flatness / MPC / adaptive tracking**. Our paper targets a narrower, measurable gap: under a **frozen joint-capture MASAC contract**, does an **observation-only predictive maneuverability probe set** (19 accel directions × short-horizon CV clearances/TTC/brake) improve learning versus **static-only** and **zero** probes? We do **not** claim hard safety certificates, flatness planning, or radio/AoI scheduling.
+The episode-level audit further limits the failure narrative. Across these **108 final evaluations, 43 succeed and 65 fail**. Of the failures, **61 have only a subset of agents ever enter their goal balls**; only **4 have every agent enter at some time without completing joint capture**. Historical `ever_ball` counts test whether **any** agent enters a ball, so `ever_ball = 12/12` does not establish that all agents individually arrived. The evidence points mainly to incomplete team-wide arrival, while pure arrival-time/speed synchronization remains a possible issue in a smaller subset. B's curriculum based on worst-agent distance and speed is a hypothesis to test, not an identified causal remedy. Source: [Windows episode analysis](../results/masac_v4_windows_audit_20261105/analysis.json).
 
----
+Prediction, multi-UAV coordination, capability representations, safety enforcement, and attention already have substantial prior art. Our narrow comparison is the content of a deterministic, observation-only probe tensor under matched network capacity and a fixed capture definition. The tensor is a short-horizon kinematic heuristic. It is not an MPC controller, reachable-set certificate, collision-probability estimate, or CBF safety guarantee. See [the 2026-11-05 gap update](FRONTIER_GAP_UPDATE_20261105.md) for implications for B sync-capture.
 
-## Frontier table (curated)
+## Focused frontier table
 
-| # | Citation | Gap vs our claim | URL |
-|---|----------|------------------|-----|
-| 1 | Xie, Yu, Zang, Gao, Tang, Huang, Chen, Xu, Wu, Wang. *Multi-UAV Formation Control with Static and Dynamic Obstacle Avoidance via Reinforcement Learning.* arXiv:2410.18495, 2024 (rev. 2025). | Formation + static/dynamic obstacles with reward search, curriculum, attention encoder, CTBR, sim-to-real. **Not** joint independent-goal capture; **no** fixed accel-probe RiskEncoder ablation (`full`/`static`/`zero`). | https://arxiv.org/abs/2410.18495 |
-| 2 | Chen, Yu, Li, Tang, Yang, Xu, Yang, Wang. *Multi-UAV Pursuit-Evasion with Online Planning in Unknown Environments by Deep Reinforcement Learning* (OPEN). arXiv:2409.15866, 2024/2025. | Evader **prediction** + adaptive env generator + CTBR pursuit-evasion; strong dynamics. Prediction is **target-centric**, not ego maneuverability probe bank for cooperative capture on static maps. | https://arxiv.org/abs/2409.15866 |
-| 3 | Dual-Transformer PPO for multi-UAV navigation in unseen environments (DTPPO). arXiv:2410.15205, 2024; Drones 2024. | Spatial/temporal transformers for navigation transfer. Architecture ≠ our RiskEncoder; no predictive clearance/TTC probe features or capture gate. | https://doi.org/10.48550/arxiv.2410.15205 |
-| 4 | Huang, Yang, Krupani, Şenbaşlar, Batra, Sukhatme. *Collision Avoidance and Navigation for a Quadrotor Swarm Using End-to-end Deep Reinforcement Learning.* arXiv:2309.13285, 2023. | Attention over neighbors/obstacles; real swarm CA. Focus collision-free navigation, not joint goal capture; no maneuverability probe ablations. | https://arxiv.org/abs/2309.13285 |
-| 5 | Yan, Wang, Zhou, Xiang, Wang, Shen. *MARL With Spatial–Temporal Attention for Flocking With Collision Avoidance of a Scalable Fixed-Wing UAV Fleet.* IEEE T-ITS, 2025. | STAAC population-invariant attention for flocking + intruders. Different airframe/task; no CV probe RiskEncoder. | https://doi.org/10.1109/TITS.2024.3505929 |
-| 6 | AttentionSwarm: RL + Attention CBF for Crazyflie swarms. arXiv:2503.07376, 2025. | Attention-weighted CBF safety for racing/landing. **Hard safety filter** vs our soft representation probes; different metrics. | https://arxiv.org/html/2503.07376 |
-| 7 | Romero, Aljalbout, Song, Scaramuzza. *Actor-Critic Model Predictive Control* for agile flight. arXiv:2306.09852. | Differentiable MPC inside actor-critic; single-agent agility. Not multi-agent capture; not set-of-probes observation design. | https://arxiv.org/abs/2306.09852 |
-| 8 | DATT: Deep Adaptive Trajectory Tracking for Quadrotor Control. CoRL 2023 (Oral). arXiv:2310.09053. | RL adaptive tracking under disturbances vs flatness/MPC. Single-UAV tracking, not cooperative MASAC capture. | https://arxiv.org/abs/2310.09053 |
-| 9 | Zhao et al. *Towards Robust Multi-UAV Collaboration: MARL with Noise-Resilient Communication and Attention.* arXiv:2503.02913, 2025. | COMA + attention under noisy comms for information-collection paths. Comm-robust sensing ≠ maneuverability probes for joint capture. | https://arxiv.org/html/2503.02913 |
-| 10 | Su, Pu, Yu. *A collaborative siege method of multiple unmanned vehicles based on RL* (attention-SAC capture). Intell. Robot. 2024. | Attention-SAC for **UGV** encirclement with individual+cooperative rewards. Ground kinematics; no 3D accel probes / TTC bank. | https://doi.org/10.20517/ir.2024.03 |
-| 11 | *Multi-UAV roundup algorithm based on hierarchical MASAC with incremental learning.* AAAC 2025. | Hierarchical MASAC + trajectory prediction for dynamic-target roundup. Closest MASAC+prediction neighbor; still pursuit-roundup, not our frozen L0 capture ablation of probe **content**. | https://doi.org/10.1109/aaac66612.2025.11427681 |
-| 12 | Haarnoja et al. *Soft Actor-Critic.* ICML 2018 / arXiv:1801.01290. | Foundational off-policy max-ent continuous control. Baseline algorithm; not a contribution. | https://arxiv.org/abs/1801.01290 |
-| 13 | Lowe et al. *MADDPG* (CTDE). NeurIPS 2017 / arXiv:1706.02275. | Centralized critic / decentralized actors precedent. We inherit CTDE-style team Q; not novelty. | https://arxiv.org/abs/1706.02275 |
-| 14 | Iqbal & Sha. *Actor-Attention-Critic.* ICML 2019 / arXiv:1810.02912. | Attention in centralized critic. Explains why Attention is a **future** A/B, not this suite’s claim. | https://arxiv.org/abs/1810.02912 |
-| 15 | Emami et al. *AoI Minimization using Multi-agent UAVs…* arXiv:2405.00056, 2024. | Mean-field AoI harvesting. **Adjacent only** — different objective; cite if WoWMoM reviewers expect freshness angle, else one sentence. | https://arxiv.org/abs/2405.00056 |
-| 16 | Bai et al. *AoI Minimization in UAV-Enabled ISAC.* arXiv:2507.14299, 2025. | Single-UAV AoI + sensing/comms. Not swarm formation/capture. | https://arxiv.org/abs/2507.14299 |
-| 17 | *Variations in Multi-Agent Actor-Critic for UAV Swarm Networks* (survey-style). arXiv:2410.06627, 2024. | Broad MAAC taxonomy for UAV networks. Use for positioning continuous MARL; not a method baseline. | https://arxiv.org/abs/2410.06627 |
-| 18 | Anticipatory Risk-Guided RL for Safe Flight Through Dynamic Clutter (CPA risk maps). arXiv HTML listing 2607.23565. | Privileged future CPA risk distillation to vision policy — **closest “predictive risk” cousin**. Single-UAV clutter; asymmetric privileged training; not multi-agent joint capture or fixed accel probe bank. | https://arxiv.org/html/2607.23565 |
+The final column states the comparison needed for our paper. It does **not** assert that a source contains no related component merely because its abstract does not mention it. External performance figures use different tasks and must not be placed beside our capture rates as a shared benchmark.
 
----
+| Year / primary source | Verified methodological connection | Consequence for our claim / evaluation |
+|---|---|---|
+| 2022 — Vinod et al., *Safe multi-agent motion planning via filtered reinforcement learning*, ICRA. [MERL publication and paper](https://www.merl.com/publications/TR2022-053) | RL goal regulation followed by an optimization filter; addresses state/input limits and inter-agent/obstacle collision constraints. | Predictive or geometric features alone do not establish collective safety. A filter changes executed actions; our probes currently change observations. |
+| 2022 — Yu et al., *The Surprising Effectiveness of PPO in Cooperative Multi-Agent Games*, NeurIPS Datasets and Benchmarks. [Proceedings](https://proceedings.neurips.cc/paper_files/paper/2022/hash/9c1535a02f0ce079433344e14d910597-Abstract-Datasets_and_Benchmarks.html) | MAPPO is a strong cooperative MARL reference; implementation choices and ablations matter. | Standard-C is the immediate internal control. Broader algorithm superiority would require a separately justified and budget-matched external baseline. No MAPPO run is authorized by this literature update. |
+| 2023 — Huang et al., *DATT: Deep Adaptive Trajectory Tracking for Quadrotor Control*, CoRL. [PMLR](https://proceedings.mlr.press/v229/huang23a.html) | RL-based tracking combined with adaptive disturbance estimation under trajectory and actuation difficulties. | Our bounded-acceleration navigation model does not demonstrate low-level quadrotor tracking or disturbance rejection. The source's L1 adaptive controller is unrelated to our deferred L1 environment stage. |
+| 2023 — Song et al., *Reaching the Limit in Autonomous Racing: Optimal Control versus Reinforcement Learning*, Science Robotics. [Author preprint](https://arxiv.org/abs/2310.10943) | Examines how task objectives and model uncertainty affect agile racing control. | A carefully aligned objective is a legitimate motivation for capture curriculum design; our results establish no comparable physical agility. |
+| 2024/2025 — Xie et al., *Multi-UAV Formation Control with Static and Dynamic Obstacle Avoidance via Reinforcement Learning*. [arXiv v2](https://arxiv.org/abs/2410.18495v2) | Formation/avoidance pipeline combines reward search, progressive training, attention, and physical experiments. | Curriculum and attention are established design tools. We must identify exactly which capture-state distribution B changes and ablate that change. |
+| 2024 — Huang et al., *Collision Avoidance and Navigation for a Quadrotor Swarm Using End-to-end Deep Reinforcement Learning*, ICRA (2023 preprint). [arXiv v2](https://arxiv.org/abs/2309.13285v2) | Swarm navigation uses curriculum, difficult collision-episode replay, and attention over surrounding entities; reports hardware transfer. | Pool/set aggregation is a representation choice, not evidence that attention is unnecessary. This suite freezes pooling; Attention remains deferred. |
+| 2024 — Wei et al., *DTPPO: Dual-Transformer Encoder-based Proximal Policy Optimization for Multi-UAV Navigation in Unseen Complex Environments*. [arXiv](https://arxiv.org/abs/2410.15205) | Separate spatial and temporal transformer processing for navigation transfer in simulation. | Current pooling plus RiskEncoder does not establish temporal reasoning or out-of-distribution transfer. **Drones venue from the previous table is unverified and is omitted.** |
+| 2025 — Chen et al., *Online Planning for Multi-UAV Pursuit-Evasion in Unknown Environments Using Deep Reinforcement Learning*, IEEE RA-L. [arXiv v4 / journal DOI](https://arxiv.org/abs/2409.15866v4) | OPEN combines evader prediction with adaptive scenario generation and physical quadrotor pursuit. | Corrects the older title in this file. A fixed CV ego-probe bank and target prediction answer different questions; prediction plus capture is already established prior art. |
+| 2025 — Yan et al., *Multi-Agent Reinforcement Learning With Spatial–Temporal Attention for Flocking With Collision Avoidance of a Scalable Fixed-Wing UAV Fleet*, IEEE T-ITS 26(2), 1769–1782. [IEEE record](https://ieeexplore.ieee.org/document/10779446/) | Publisher-indexed abstract describes population-invariant spatial/temporal attention, simulation, and hardware-in-the-loop evaluation. | Fixed-wing flocking differs from our bounded-acceleration capture contract. Metadata/abstract were available through the publisher search record; full IEEE text was blocked by its browser check. |
+| 2024 preprint / 2025 author release — Zinage et al., *Decentralized Safe and Scalable Multi-Agent Control under Limited Actuation*. [arXiv](https://arxiv.org/abs/2409.09573), [author implementation](https://github.com/abj247/maicbf) | Neural integral barrier learning and MPC-ICBF control explicitly incorporate limited actuation and deadlock handling. Author code labels the work ICRA 2025. | Braking-distance features do not inherit those feasibility or safety properties. Separate certified control, empirical collision outcomes, and learning progress. |
+| 2025 — Zhang et al., *GCBF+: A Neural Graph Control Barrier Function Framework for Distributed Safe Multi-Agent Control*, IEEE T-RO. [arXiv / journal DOI](https://arxiv.org/abs/2401.14554) | Graph-based barrier and distributed policy learning, with a formal safety framework and drone experiments. | Permutation-compatible encoding and scalable safety have strong precedent. We currently test neither a graph barrier nor arbitrary swarm-size transfer. |
+| 2025 — Zhang et al., *Solving Multi-Agent Safe Optimal Control with Distributed Epigraph Form MARL*, RSS. [arXiv](https://arxiv.org/abs/2504.15425), [author project](https://mit-realm.github.io/def-marl/) | Def-MARL targets pointwise constraint satisfaction through epigraph optimization; its stated setting includes partial observations, unknown dynamics, and input constraints. | A soft capture/avoidance reward is a different optimization problem. Do not describe MASAC probes as a solution to zero-violation safe MARL. |
+| 2026 — Chen et al., *SCOPE: Safety-Constrained Online Preview Enforcement for Efficient Encirclement in Multi-UAV Pursuit-Evasion*, IJCAI, pp. 54–62. [Official proceedings](https://ijcai.org/proceedings/2026/7) | An online learned model supplies short-horizon previews; actor/critic fusion is paired with CBF-based coupled action correction and a safety learning term. Full method HTML was checked. | This is a close multi-UAV preview/encirclement precedent. Our contribution cannot be “first predictive safe capture.” Compare information supplied, intervention at execution, capture definition, and actual safety assumptions. |
+| 2026 — Mei et al., *Anticipatory Risk-Guided Reinforcement Learning for Safe Flight Through Dynamic Clutter*, IROS acceptance stated on arXiv. [arXiv](https://arxiv.org/abs/2607.23565) | A privileged CPA-derived directional risk signal supervises a visual single-quadrotor policy; reports simulation and flight tests. | Strong predictive-risk representation precedent. Our directly computed feature bank uses a different observation channel and has no visual distillation or hardware validation. |
+| 2026 — Geles et al., *Superhuman Safe and Agile Racing through Multi-Agent Reinforcement Learning*. [arXiv v2](https://arxiv.org/abs/2605.22748v2), [author project](https://rpg.ifi.uzh.ch/marl/) | League training and diverse racing opponents produce anticipatory behaviors under multi-quadrotor interaction, including aerodynamic effects. | Agile RL is no longer accurately summarized as exclusively single-UAV. Our cooperative goal-capture study has different dynamics and purpose; no racing or physical-control superiority follows. |
+| 2026-10-30 preprint — Kim et al., *Capability-Conditioned Graph Control Barrier Functions for Zero-Shot Safe Navigation of Heterogeneous Mobile Robot Teams*. [arXiv](https://arxiv.org/abs/2610.41214) | CC-HGCBF conditions shared barriers/policies on a radial encoding of state-dependent, finite-horizon reachable velocities. Abstract and method HTML were checked; no peer-reviewed venue was verified. | Particularly close to a broad “maneuverability representation” claim. Our finite kinematic probe samples are not that reachable-set construction. Describe the exact representation and its ablation rather than claiming an unexplored concept. |
 
-## Thematic clusters (for Related Work subsections)
+## Additional verified but secondary material
 
-### A. Multi-UAV cooperative navigation / formation under dynamics
-Primary: Xie et al. 2024/25; DTPPO 2024; Huang swarm CA 2023; Yan STAAC T-ITS 2025.  
-**Our angle:** Independent goals + joint capture predicate + frozen Path-C floor; probes as representation, not formation Laplacian rewards.
+- [AttentionSwarm, arXiv:2503.07376](https://arxiv.org/abs/2503.07376): attention with barrier-based Crazyflie racing control, revised October 2025. The abstract reports a safety framework; this audit has not checked the assumptions needed for its formal guarantee. Avoid an unconditional “hard safety” label.
+- [Su et al., Intelligence & Robotics 2024](https://www.oaepublish.com/articles/ir.2024.03): attention-SAC cooperative **ground-vehicle** capture with individual/team reward terms. The full author list is **Su, Pu, Wang, Yu**; the previous table omitted Wang. Relevant to reward design, with different kinematics.
+- [Zhao et al., arXiv:2503.02913](https://arxiv.org/abs/2503.02913): communication/attention for multi-UAV information gathering under noise. Relevant if observation noise or communication becomes an explicit experiment.
+- [Xu et al., Applied Mathematical Modelling 2026](https://www.sciencedirect.com/science/article/abs/pii/S0307904X25008017): hierarchical roundup with an instructor/student structure and stage-progress reward machine. This is an existing precedent for structured task-stage rewards; it does not validate B's proposed schedule.
+- [Emami et al., arXiv:2405.00056](https://arxiv.org/abs/2405.00056) and [Bai et al., arXiv:2507.14299](https://arxiv.org/abs/2507.14299): AoI trajectory/scheduling and UAV-ISAC, respectively. These are adjacent networking objectives. Our current capture experiment does not optimize AoI, radio resources, or beamforming.
 
-### B. Maneuverability / agility / flatness / MPC+RL
-Primary: Actor-Critic MPC; DATT; fixed-wing flatness planners (cite lightly).  
-**Our angle:** Discrete ego accel probes approximating short-horizon maneuver margins — **not** flat outputs or online MPC.
+## Quarantined or incomplete citations
 
-### C. Predictive / risk-aware collision features in RL
-Primary: OPEN evader prediction; CPA anticipatory risk; AttentionSwarm CBF.  
-**Our angle:** Explicit, ablatable probe tensor (static vs moving/peer vs zero) under matched capacity.
+| Previous item | Audit result / allowed use |
+|---|---|
+| *Multi-UAV roundup algorithm based on hierarchical MASAC with incremental learning*, claimed AAAC 2025, DOI `10.1109/aaac66612.2025.11427681` | **UNVERIFIED.** DOI opening failed and exact-title/DOI searches did not locate an authoritative publication record. This does not prove nonexistence. Exclude from manuscript citations and novelty comparisons until a primary record/PDF is obtained. Do not silently substitute another hierarchical roundup paper. |
+| DTPPO “Drones 2024” attribution | The arXiv title/authors are verified. The venue attribution is **unverified** in this audit; use the preprint citation. |
+| Broad claims that papers lack our exact feature bank | Absence of a detail from an abstract is not a verified negative claim. Restrict comparison to inspected content and state what still needs full-method checking. |
 
-### D. Set encoders / attention over teammates & obstacles
-Primary: Xie attention encoder; Huang multi-head attention; STAAC; AAC 2019.  
-**Our angle:** This suite freezes **pool** SetEncoder + RiskEncoder; Attention deferred to PENDING.
+## Foundations and citation policy
 
-### E. Continuous MARL / MASAC for UAV capture
-Primary: Haarnoja SAC; hierarchical MASAC roundup 2025; attention-SAC UGV siege 2024.  
-**Our angle:** Shared Soft Actor-Critic team objective with Path-C reshape; contribution is probe representation, not inventing MASAC.
+[SAC](https://arxiv.org/abs/1801.01290), [MADDPG/CTDE](https://arxiv.org/abs/1706.02275), and [Actor-Attention-Critic](https://arxiv.org/abs/1810.02912) are inherited foundations, not our contributions. Their inclusion is bibliographic context; this round focused verification on the 2022–2026 methods above.
 
-### F. AoI / formation+AoI (adjacent only)
-Emami 2024; Bai 2025.  
-**Our angle:** Out of scope for main claims; optional one-paragraph “wireless freshness is orthogonal.”
-
----
-
-## Citation hygiene
-
-- Prefer arXiv abs links + year; add venue when verified (do not invent conference DOI).
-- Mark unread full PDFs carefully in camera-ready notes.
-- Reuse deeper notes in `docs/design/MASAC_V4_LITERATURE_REVIEW.md` and `research/PAPER_MATRIX.md`.
-- Update this file when suite results change the “gap” sentence for full vs static.
+For the manuscript, cite the official venue where confirmed and distinguish first preprint year from venue year. Report each source's claims as the authors' results under their settings. Do not transfer external safety theorems to our code or infer significance from our 36 correlated development evaluations. Revisit this table after every method-changing round, especially changes to curriculum, dynamic observations, or action filtering.

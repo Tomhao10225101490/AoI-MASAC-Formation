@@ -76,6 +76,32 @@ matrix multiplication. An initial nested-string CUDA print failed with NameError
 it was rerun with a PowerShell here-string and passed. No training preceded this
 audit. Throughput results will be appended after their measurements.
 
+## Measured device/thread benchmark (2026-11-05)
+
+Report: `results/masac_v4_windows_audit_20261105/device_benchmark.json`;
+command: `.venv\Scripts\python.exe -u scripts/benchmark_maneuver_windows.py
+--out results/masac_v4_windows_audit_20261105/device_benchmark.json --steps 32 --repeats 3`.
+Each case used full probes, batch128, cached replay, action + NumPy environment +
+probe/replay transfer + SAC update, eight warm-up updates, then three timed blocks.
+Cases ran sequentially. No other training ran concurrently. Archive extraction
+and lightweight document/analysis work ran concurrently; timings describe this
+desktop workload, not isolated hardware maximum.
+
+| Device | Torch threads | Median environment steps/s |
+|---|---:|---:|
+| CPU | 1 | 1.216 |
+| CPU | 2 | 1.939 |
+| CPU | 3 | 2.549 |
+| CUDA | 1 | 22.318 |
+
+CUDA was approximately **8.75×** the best measured CPU configuration. Initial
+deterministic actor and probe outputs passed maximum absolute error tolerance
+`1e-4`; this is inference parity, not stochastic training trajectory equivalence.
+The benchmark excludes periodic multi-map evaluation, joint-reference audits and
+checkpoint/replay I/O. A complete trainer smoke must follow before a CUDA B pilot.
+The historical CPU protocol/default remains unchanged. New explicitly named CUDA
+pilot protocols may cite this evidence; that is not a rerun of the old suite.
+
 ## Artifact boundary
 
 Historical metrics are in Git (`results_key/` and split archives). Historical

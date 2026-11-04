@@ -1,299 +1,295 @@
-# Mathematical / theoretical argument improvements — Predictive Maneuverability MASAC
+# Mathematical argument and code contract — Predictive Maneuverability MASAC
 
-Asia/Shanghai, 2026-11-03. Paper-facing audit of formulas already implemented in
-`uav_planning/shared_masac.py`, `v4_maneuver_masac.py`, `v4_networks.py`,
-`v4_prediction.py`, `v4_reward_reshape.py`. Goal: tighten WowMoM-style claims,
-separate **definition / lemma / experiment**, and list concrete equation upgrades.
+**Original audit:** 2026-11-03. **Corrected:** 2026-11-05, Asia/Shanghai.
+These equations describe the saved suite implementation, not an untested replacement.
+Read the companion [code/evidence audit](METHOD_MATH_AUDIT_20261105.md).
+The suite stamp 20261103_162345 is COMPLETE: static **11/12, 10/12, 5/12**;
+full **3/12, 4/12, 8/12**; zero **1/12, 0/12, 1/12**.
+No arm passes the all-three-seed gate. These results do not establish predictive
+superiority, safety, convergence or novelty.
 
-**Status of evidence:** Path-C Standard L0 passed (seeds 911/922/933 → 11/12,
-11/12, 10/12). Maneuver paper suite (`full`/`zero`/`static`) is mid-training and
-**unverified**. Do not claim novelty until suite gates and ablations finish.
+## 1. Canonical equations and assumptions
 
----
+### (E1) Partially observed team control and the implemented critic
 
-## 1. Recommended paper equation set (canonical numbering)
+Let \(S_t\) denote the simulator state, augmented with time and reward memory
+(e.g. first-ball-entry flags). Agent \(i\in\{1,2,3\}\) receives
+\(o_{i,t}=h_i(S_t)\in\mathbb R^{162}\). Write \(O_t=(o_{1,t},\ldots,o_{N,t})\)
+and \(A_t=(a_{1,t},\ldots,a_{N,t})\). The shared actor is a decentralized,
+memoryless policy; its deterministic probe features are functions of its current
+observation and public configuration only. The joint policy factorizes given \(O_t\).
 
-Use these as the spine of the Method section. Symbols match the code unless noted.
+The two centralized networks approximate \(Q_{\psi_k}(O_t,A_t)\), \(k=1,2\),
+with per-agent trunks and joint mean/max pooling (v4_networks.TeamQ).
+The environment returns the mean of the per-agent rewards, \(r_t=N^{-1}\sum_i r_{i,t}\).
+For fixed temperature, the entropy term uses the **mean per-agent entropy**,
+not the sum. Discount \(\gamma=0.99\).
 
-### (E1) Team MDP / centralized soft Q
+This is an observation-based critic approximation. The current observation omits
+at least the first-entry reward memory and episode time. Even broad L0 sensor
+coverage does not establish that \(O_t\) is a sufficient Markov state. Do not
+invoke an unconditional observation-space Bellman contraction or convergence
+theorem. A formal policy-value operator belongs on sufficient latent states,
+beliefs or histories, with its assumptions stated.
 
-Agents \(i=1\ldots N\) (\(N=3\)), observation \(o_i\in\mathbb{R}^{162}\),
-raw action \(a_i\in(-1,1)^3\) (tanh space). Joint reward is the **mean** of
-per-UAV shaped rewards (Path-C). Discount \(\gamma=0.99\).
+### (E2) Implemented bootstrapped target and critic update
 
-Centralized twin critics estimate
+Define \(\bar\ell_t=N^{-1}\sum_i\log\pi_\theta(a_{i,t}\mid o_{i,t})\),
+where the action-coordinate log density is summed over each UAV's three coordinates.
+The code uses the target
 \[
-Q_{\psi_k}(o_{1:N}, a_{1:N}), \quad k\in\{1,2\},
+y_t=r_t+\gamma(1-\delta_t)
+ \left[\min_{k=1,2}Q_{\bar\psi_k}(O_{t+1},A'_{t+1})
+             -\alpha\bar\ell'_{t+1}\right],
+\quad A'_{t+1}\sim\pi_\theta(\cdot\mid O_{t+1}),
 \]
-with team pooling mean/max over per-agent trunks (code: `TeamQ`).
-
-### (E2) Soft Bellman target (shared entropy)
-
-With next actions \(a'\sim\pi_\theta(\cdot\mid o')\) and mean team log-prob
-\(\bar{\ell}' = \frac{1}{N}\sum_i \log\pi_\theta(a'_i\mid o'_i)\):
 \[
-y = r + \gamma (1-d)\Big(\min_{k} Q_{\bar\psi_k}(o',a') - \alpha\,\bar{\ell}'\Big).
+L_Q=\mathbb E_{\mathcal D}\sum_{k=1}^2
+          (Q_{\psi_k}(O_t,A_t)-\operatorname{sg}(y_t))^2.
 \]
-Matches `ManeuverMASAC.update` / Legacy `SharedMASAC.update`.
+Here \(\operatorname{sg}\) means stop-gradient. Critic/actor gradient norms are
+clipped at 5; target parameters use
+\(\bar\psi\leftarrow(1-\tau)\bar\psi+\tau\psi\), \(\tau=0.005\).
 
-**Claimable as definition** of the learner. **Not** a new contribution.
+**Saved-suite terminal convention:** train_masac_v4_maneuver.py passes only
+the true-terminal flag to replay. Thus \(\delta_t=1\) on collision or success;
+a time-limit truncation resets the episode but keeps \(\delta_t=0\) and bootstraps.
+This is the historical continuing-value approximation at a timeout. It is not
+the exact terminal-value equation for a finite 350-step task. Any change to
+this convention requires a new matched control and experiment id.
 
-### (E3) Actor / entropy temperature
-
+On a sufficient state \(x\), a fixed-policy soft evaluation operator can be defined as
 \[
-J_\pi = \mathbb{E}\big[\alpha\,\bar{\ell} - \min_k Q_{\psi_k}(o,a_\theta)\big],
+(\mathcal T^\pi Q)(x,A)=
+ \mathbb E[r+\gamma(1-\delta)(Q(x',A')-\alpha\bar\ell')\mid x,A].
+\]
+This is **policy evaluation**, not a new soft optimality theorem; the implemented
+twin minimum and neural observation critic are algorithmic approximations.
+
+### (E3) Actor, temperature sign and executed controls
+
+With \(\beta=\log\alpha\) and the critics held fixed during the actor update,
+\[
+J_\pi=\mathbb E_{\mathcal D,A\sim\pi_\theta}
+ \left[\operatorname{sg}(e^\beta)\bar\ell-\min_k Q_{\psi_k}(O,A)\right],
 \qquad
-J_\alpha = -\mathbb{E}\big[\alpha(\bar{\ell} - \mathcal{H}_0)\big],
+J_\beta=-\mathbb E_{\mathcal D}
+ \left[\beta\,(\operatorname{sg}(\bar\ell)-3)\right].
 \]
-with target entropy \(\mathcal{H}_0 = \dim(a_i) = 3\) (code: `lp.mean(-1) - 3`).
-Log-prob includes the exact tanh Jacobian (SAC). Entropy is in **raw tanh
-action space**, not post-environment radial acceleration clipping — state this
-explicitly (already in `docs/design/MASAC_V4_ARCHITECTURE.md`).
+This is exactly the implemented actor/temperature loss in both
+ManeuverMASAC.update and SharedMASAC.update.
+The optimized variable in the temperature loss is **log temperature**, not
+\(e^\beta\). The fixed-point condition is \(\mathbb E[\bar\ell]=3\);
+equivalently the differential-entropy target is
+\(\mathcal H_\star=-3\), **not \(+3\)**. Indeed
+\(\partial J_\beta/\partial\beta=\mathcal H-\mathcal H_\star=\mathcal H+3\).
+This corrects the old document's entropy sign and \(\alpha\)-vs-\(\log\alpha\) mismatch.
 
-### (E4) Path-C reward reshape (learnability floor)
+The raw command and environment dynamics are
+\[
+z_i\sim\mathcal N(\mu_\theta(o_i),\operatorname{diag}\sigma_\theta^2(o_i)),
+\quad a_i=\tanh z_i,\quad
+u_i=\frac{a_i}{\max(1,\|a_i\|_2)},
+\]
+\[
+v_{i,t+1}=\Pi_{\|v\|\le v_{\max}}
+ (v_{i,t}+\Delta t\,a_{\max}u_i),\qquad
+p_{i,t+1}=p_{i,t}+\Delta t\,v_{i,t+1}.
+\]
+The structured.limited function implements the radial command projection and
+speed bound (up to its numerical epsilon). The acceleration penalty uses the
+realized \((v_{i,t+1}-v_{i,t})/\Delta t\). The exact tanh Jacobian defines
+\(\log\pi\) on \(a_i\in(-1,1)^3\); it is not a density for the radially projected,
+speed-limited physical control.
 
-Per UAV, with distances \(d_t=\|g_i-p_{i,t}\|\):
+### (E4) Path-C reward and the frozen capture event
+
+Index a transition from \(t\) to \(t+1\), let
+\(d_{i,t}=\|g_i-p_{i,t}\|_2\), and define
+\[
+b_{i,t}=\mathbf1[d_{i,t}<4],\quad
+c_{i,t}=\mathbf1[d_{i,t}<4\ \land\ \|v_{i,t}\|_2<2].
+\]
+The capture flag is non-sticky; \(\Delta c_{i,t}=c_{i,t+1}-c_{i,t}\) can be negative.
+Let \(e_{i,t}\) track whether agent \(i\) has previously entered its ball,
+\(K_t\) denote any collision on this transition, and
+\(G_t=\mathbf1[\forall i:c_{i,t+1}=1\ \land\ \neg K_t]\).
+Then the frozen L0 Path-C reward is
 \[
 \begin{aligned}
-r^{\mathrm{prog}}_t &= \lambda_p (d_{t-1}-d_t), \quad \lambda_p=1,\\
-r^{\mathrm{live}} &= -c_\ell, \quad c_\ell=0.005,\\
-r^{\mathrm{acc}}_t &= -\beta\|\mathrm{acc}_t\|_2^2, \quad \beta=0.002,\\
-r^{\mathrm{near}}_t &= \eta\,\mathrm{clip}(1-d_t/R,0,1), \quad \eta=0.4,\ R=15,\\
-r^{\mathrm{ball}}_t &= B_b\,\mathbf{1}[\text{first }d_t<b], \quad B_b=3,\\
-r^{\mathrm{cap}}_t &= B_c\,\Delta c_{i,t}, \quad B_c=8,\\
-r^{\mathrm{team}} &= B_T\,\mathbf{1}[\text{joint success}], \quad B_T=50,\\
-r^{\mathrm{col}} &= -P\,\mathbf{1}[\text{collision}], \quad P=20.
+r_{i,t}={}&(d_{i,t}-d_{i,t+1})-0.005
+ -0.002\left\|\frac{v_{i,t+1}-v_{i,t}}{\Delta t}\right\|_2^2\\
+&+0.4\,\operatorname{clip}(1-d_{i,t+1}/15,0,1)
+ +3\,b_{i,t+1}(1-e_{i,t})\\
+&+8(c_{i,t+1}-c_{i,t})+50G_t-20\mathbf1[K_t].
 \end{aligned}
 \]
-Capture indicator \(c_{i,t}\): for L0-return / maneuver suite,
-\(d_t < 4\) and \(\|v_{i,t}\| < 2\), **non-sticky** (`capture_latch=False`).
-Empty-floor Path-C used soft \(b=6\), speed \(3.5\), latch on — report as a
-**curriculum diagnostic**, not the evaluation predicate.
+The first-entry reward is once per UAV per episode; capture loss emits \(-8\)
+when the unlatched predicate becomes false. Team bonuses/penalties are added
+to every UAV before taking the mean, so they remain \(+50/-20\) in team reward.
 
-**Paper claim:** Path-C is an **engineering reward curriculum** that established
-a reproducible Standard L0 floor. Do **not** claim it as the scientific novelty.
+The empty-floor diagnostic used a different capture contract: 6 m / 3.5 m/s,
+latched. Under a latch, different agents may capture at different times:
+\(\bigwedge_i\exists t:c^{\rm soft}_{i,t}=1\) is not simultaneous capture.
+The L0 event is \(\exists t:\bigwedge_i c_{i,t}=1\), with no collision;
+all maneuver-suite finals use the latter.
 
-### (E5) Predictive probes (candidate contribution)
-
-Fixed direction set \(U=\{u_j\}_{j=1}^{19}\subset S^2\) (axes + face diagonals).
-From ego state \((p,v)\) and observation-reconstructed objects, integrate
+**No policy-invariance claim for Path-C.** For its progress reward,
 \[
-v_{\tau+\Delta} = \Pi_{v_{\max}}\big(v_\tau + a_{\max} u_j \Delta\big),\quad
-p_{\tau+\Delta}=p_\tau+\Delta v_{\tau+\Delta},
+\sum_{t=0}^{T-1}\gamma^t(d_t-d_{t+1})
+=d_0-(1-\gamma)\sum_{t=1}^{T-1}\gamma^{t-1}d_t-\gamma^{T-1}d_T.
 \]
-for \(\tau=0,\Delta,\ldots,H\) with \(\Delta=0.2\,\mathrm{s}\), \(H=2.0\,\mathrm{s}\)
-(\(T=H/\Delta=10\) interior steps + \(t=0\)).
+It telescopes to a pure boundary difference only when \(\gamma=1\).
+The undifferenced near-goal bonus also changes the objective. Path-C is an
+engineering reward design that empirically established the Standard-C L0 floor,
+not a theorem preserving a sparse success objective.
 
-Moving objects / peers: **constant-velocity** extrapolation from the current
-observation only (no simulator futures).
+### (E5) Observation-only sampled maneuverability features
 
-Per probe feature \(f_j\in\mathbb{R}^{11}\):
+The 19-element bank is
 \[
-f_j=\big[u_j;\; \hat{c}^{\mathrm{st}},\hat{c}^{\mathrm{mv}},\hat{c}^{\mathrm{peer}},\hat{c}^{\mathrm{bd}};\;
-\widehat{\mathrm{TTC}}_j;\; \hat{s}_{\mathrm{brake}};\; \hat{\rho};\; \mathbf{1}[\underline{c}_j>0]\big],
+U=\{0\}\ \cup\ \{\pm e_k:k=1,2,3\}\
+ \cup\ \{(\sigma e_k+\rho e_l)/\sqrt2:
+                  k<l,\ \sigma,\rho\in\{-1,1\}\}.
 \]
-where clearances are minima over the discrete samples, clipped/normalized by
-\(L=40\,\mathrm{m}\); TTC normalized by \(H\); braking surrogate
-\(\hat{s}_{\mathrm{brake}}=\|v\|^2/(2a_{\max})\); reserve
-\(\hat{\rho}=c_0-\hat{s}_{\mathrm{brake}}\).
-
-### (E6) RiskEncoder + fusion
-
+There are **18 unit directions plus zero**; \(U\not\subset S^2\).
+The zero command holds velocity in the probe model; it is not a braking action.
+Starting at the reconstructed ego state, each command integrates
 \[
-h_j = \phi(f_j)\in\mathbb{R}^{64},\quad
-r = [\mathrm{mean}_j h_j;\, \mathrm{max}_j h_j]\in\mathbb{R}^{128}.
+\hat v_{j,l+1}=\Pi_{\|v\|\le v_{\max}}
+ (\hat v_{j,l}+a_{\max}u_j\Delta),\quad
+\hat p_{j,l+1}=\hat p_{j,l}+\Delta\hat v_{j,l+1},
 \]
-SetEncoder pool yields \(s\in\mathbb{R}^{384}\); actor/critic trunk input
-\([s;r]\in\mathbb{R}^{512}\). Ablations keep \(\phi\) and dims fixed:
-`full` / `static` (mv+peer channels zeroed) / `zero` (\(f_j=0\)) / optional `shuffle`.
+with \(\Delta=0.2\) s, \(H=2\) s, \(l=0,\ldots,9\).
+Clearances include **11 samples**, at \(l=0,\ldots,10\).
 
-### (E7) What probes are **not**
-
-State in the paper (and code docstring): discrete CV margins are **not**
-continuous-time clearance certificates, not joint multi-agent certificates, and
-not a hard safety filter. Contribution, if any, is **representation for learning**.
-
----
-
-## 2. Top improvements (numbered) — tighten math without changing the live suite
-
-### Improvement 1 — Explicit soft optimality statement (lemma-ready)
-
-**Gap:** Code implements SAC twin-Q + entropy, but docs never write the soft
-Bellman optimality operator \(\mathcal{T}^\pi\).
-
-**Upgrade:** Add one lemma-style display:
+Assumption (A1): each visible moving object or peer follows
+\(\hat p_q(l\Delta)=p_{q,0}+v_{q,0}l\Delta\), reconstructed from current masked
+observations. There is no simulator future, peer policy or joint closed-loop rollout.
+Let \(c^q_{j,l}\) be the implemented signed clearance for
+\(q\in\{\mathrm{static},\mathrm{moving},\mathrm{peer},\mathrm{boundary}\}\):
+inflated AABB signed distance, moving-sphere distance, peer-sphere distance,
+or inward distance from world bounds. Masked slots receive clearance \(L=40\) m.
+Write
 \[
-(\mathcal{T}^\pi Q)(o,a)= \mathbb{E}\big[r+\gamma\big(Q(o',a')-\alpha\log\pi(a'|o')\big)\big],
-\]
-and state that twin min and target Polyak \(\tau=0.005\) are **bias-reduction
-engineering**, not part of the novelty claim.
-
-**Claim vs proof:** Claim “we train soft Q with twin targets” (definition).
-Do not claim new convergence rates.
-
-### Improvement 2 — Entropy domain footnote → main text equation
-
-**Gap:** Entropy is optimized in tanh coordinates; environment then applies
-radial `amax` clipping. Reviewers will ask whether \(\mathcal{H}_0=3\) is
-calibrated to executed controls.
-
-**Upgrade:** Write
-\[
-a^{\mathrm{cmd}}=\tanh(z),\qquad
-a^{\mathrm{env}}=\mathrm{RadialClip}_{a_{\max}}(a^{\mathrm{cmd}}),
-\]
-and define \(\log\pi\) on \(a^{\mathrm{cmd}}\) only. Optional experiment (future
-id): retarget \(\mathcal{H}_0\) after measuring empirical entropy of \(a^{\mathrm{env}}\).
-
-**Claim vs proof/experiment:** Clarification now; retarget needs a **new**
-experiment id (do not mid-flight change suite).
-
-### Improvement 3 — Path-C as a potential-based / staged return decomposition
-
-**Gap:** Near-goal term \(r^{\mathrm{near}}=\eta\mathrm{clip}(1-d/R,0,1)\) is a
-**state potential**, not shown as shaping relative to sparse success.
-
-**Upgrade:** Write sparse team return \(R^{\mathrm{sparse}}\) vs Path-C return
-\(R^{\mathrm{C}}\) and note:
-- progress term is telescoping in distance (bounded path credit);
-- near-goal is a bounded potential \(\Phi(d)=\eta\mathrm{clip}(1-d/R,0,1)\) added
-  **undifferenced** (not classical Ng shaping \(\gamma\Phi(s')-\Phi(s)\)) — so it
-  **can** change optimal policy. Be honest: Path-C is **not** policy-invariant
-  potential shaping; it is a deliberate dense curriculum.
-
-**Claim vs proof:** Claim “dense curriculum that empirically unlocked L0” with
-table of empty→L0 gates. Do **not** claim Ng-invariant shaping.
-
-### Improvement 4 — Capture predicate as a formal success measure
-
-**Gap:** Soft empty capture (6/3.5+latch) vs frozen gate (4/2, no latch) are easy
-to conflate in prose.
-
-**Upgrade:** Define two predicates:
-\[
-\mathrm{Succ}_{\mathrm{soft}} = \bigwedge_i (d_i<6\land\|v_i\|<3.5)\ \text{(latched)},
+m_j^q=\min_{0\le l\le10}c^q_{j,l},\quad
+c_{j,0}=\min_q c^q_{j,0},\quad
+D_{\rm brake}=\|v\|_2^2/(2a_{\max}),
 \]
 \[
-\mathrm{Succ}_{\mathrm{L0}} = \bigwedge_i (d_i<4\land\|v_i\|<2)\ \text{(simultaneous, unlatched)}.
+T_j=\begin{cases}
+\min\{l\Delta:\min_q c^q_{j,l}\le0\},&\text{if a sampled hit exists},\\
+H,&\text{otherwise}.
+\end{cases}
 \]
-All maneuver-suite and L0-return numbers use \(\mathrm{Succ}_{\mathrm{L0}}\).
-
-**Claim vs proof:** Definitional hygiene; already enforced in protocol validators.
-
-### Improvement 5 — Probe geometry: sampled clearance vs continuous swept clearance
-
-**Gap:** Training collisions use continuous segment/swept tests; probes use
-**point samples** every \(\Delta\). Between-sample penetration can be missed
-(docstring admits this).
-
-**Upgrade:** Add inequality / remark:
+The value \(T_j/H=1\) conflates a hit exactly at \(H\) with no sampled hit.
+It is a grid-based first-hit feature, not the true continuous TTC.
+With \(C(x)=\operatorname{clip}(x,-1,1)\), the 11-vector is
 \[
-c^{\mathrm{sample}}_{j} \ge c^{\mathrm{true}}_{j}
-\quad\text{(can be strictly greater when contact is inter-sample)},
+f_j=\left[u_j;\
+ C(m_j^{\mathrm{static}}/L),C(m_j^{\mathrm{moving}}/L),
+ C(m_j^{\mathrm{peer}}/L),C(m_j^{\mathrm{boundary}}/L);\
+ T_j/H;\
+ \operatorname{clip}(D_{\rm brake}/L,0,1);\
+ C((c_{j,0}-D_{\rm brake})/L);\
+ \mathbf1[\min_q m_j^q>0]\right].
 \]
-so \(\mathbf{1}[c^{\mathrm{sample}}>0]\) is **optimistic**. Optionally define a
-conservative surrogate using capsule swept volume along each probe segment
-(future work; new experiment if trained on).
+The stopping-distance term is a scalar surrogate under ideal opposing
+acceleration; it does not solve coupled 3D avoidance or guarantee a feasible stop.
 
-**Claim vs proof:** Remark now. Conservative probes = future method paper item.
+### (E6) Risk pooling, fusion and precisely scoped ablations
 
-### Improvement 6 — Constant-velocity peer/obstacle model as an explicit assumption
+\[
+h_j=\phi(f_j)\in\mathbb R^{64},\qquad
+r_{\rm risk}=[\operatorname{mean}_j h_j;\operatorname{max}_j h_j]
+ \in\mathbb R^{128}.
+\]
+The pool SetEncoder supplies \(s_{\rm set}\in\mathbb R^{384}\);
+\([s_{\rm set};r_{\rm risk}]\in\mathbb R^{512}\) feeds actor/critic trunks.
+The actor and each critic have their own encoders. All three suite arms have
+the same architecture and trainable dimensions.
 
-**Gap:** “Predictive” can be read as learned dynamics or planner foresight.
+| Mode | Exact change in predict_probes |
+|---|---|
+| full | All visible static/moving/peer/boundary clearance families under (A1). |
+| static | Replace moving/peer clearances by \(L\) **before** first-hit/reserve/flag calculation; set the two corresponding output channels to zero. Retain ego forward integration and static/boundary preview. |
+| zero | Set **all 19×11 values**, including direction coordinates, to zero. Encoder biases can still learn a constant embedding. |
+| shuffle (unrun) | Keep the canonical direction coordinates fixed; permute the eight scalar features across directions. |
 
-**Upgrade:** Label assumption (A1): exogenous objects evolve as
-\(p(t)=p_0+vt\) with \((p_0,v)\) from the current observation mask. Peers use the
-same CV model (no joint closed-loop prediction).
+Static is a **static-geometry preview**, not a prediction-free input.
+Full-vs-static isolates inclusion of CV moving/peer information and its derived
+aggregates in this implementation; it does not isolate all prediction.
+Zero is a matched-parameter constant-risk-input control, not a proof that
+network capacity is useless or that the policy causally uses the risk encoder.
+Mean/max pooling is invariant to permutation of complete tokens; shuffling
+complete tokens would therefore be a vacuous direction-alignment control.
 
-**Claim vs proof:** Assumption. Ablation `static` tests value of dynamic/peer
-channels under (A1). `mismatch` (wrong \(a_{\max}\)) is a sensitivity probe, not a
-learned dynamics model.
+### (E7) Model-relative clearance and feasibility limits
 
-### Improvement 7 — Risk pooling permutation symmetry
+For the **same** surrogate trajectory, obstacle model, inflation and visible
+objects, the sample times are a subset of the continuous interval, hence
+\[
+c_j^{\rm sample}=\min_l c_j(l\Delta)
+ \ \ge\ \inf_{\tau\in[0,H]}c_j(\tau)=c_j^{\rm continuous,\ surrogate}.
+\]
+This only compares two minima within the same model. CV error, occlusion and
+other agents' control invalidate a direct inequality to the realized future
+clearance. Positive sampled clearance is not a continuous-time or joint safety
+certificate; no hard filter is applied.
 
-**Gap:** Mean/max pool over 19 probes is permutation-invariant; `shuffle`
-ablation remaps scalars across **fixed** direction columns — the correct
-control for “directions must align with risk”.
+For the saved horizon, a speed-bound **upper bound** on path length is
+\[
+\sum_{t=0}^{349}\Delta t\,\|v_{i,t+1}\|_2
+ \le350(0.2)(10)=700\ {\rm m}.
+\]
+This does not prove capture feasibility or exclude geometric, braking or timing
+infeasibility. Feasibility evidence must come from the actual per-map reference
+audits or constructive trajectories, separately from learned-policy results.
 
-**Upgrade:** State that if one shuffled **entire** tokens before invariant
-pooling, the ablation would be vacuous. Keep the current shuffle definition in
-the paper (already in architecture doc).
+## 2. Evidence and contributions that remain defensible
 
-### Improvement 8 — Capacity-matched identification
+| Statement tied to equations | Evidence / limit |
+|---|---|
+| E1–E3 define the shared soft actor–critic and exact temperature convention | Source correspondence; standard learner, no new convergence theorem. |
+| E4 established a Standard-C L0 learnability floor | 11/12, 11/12, 10/12, seeds 911/922/933. Warm-started 50k L0 runs, not a fair cold-start V4 performance comparison. |
+| E5–E6 define an executable observation-only feature bank | Implementation/geometry checks; effectiveness and novelty are separate questions. |
+| Matched-capacity content ablation | static 26/36, full 15/36, zero 2/36 final successes across three training seeds and the same fixed development maps. Descriptive totals, not 36 independent training trials. |
+| Full predictive channels outperform static | **Unsupported by this suite**; mean final ordering is static > full > zero, and static loses to full on seed 1233. |
+| Prediction superiority, safety, generalization, novelty | **Not established**. Independent sealed-map tests and mechanism/related-work comparisons remain necessary. |
 
-**Gap:** Standard-C L0 (Legacy SetEncoder ~65k-scale actor path) is **not**
-parameter-matched to V4 pool+RiskEncoder (~506k actor params in suite notes).
+The final-record audit separates any-agent ball entry from all-agent eventual
+entry. All-agent eventual-entry counts are static 11/12, 10/12, 5/12; full
+5/12, 4/12, 8/12; zero 1/12, 1/12, 2/12. Of 65 final failures, 61 involve only
+some agents ever entering and four involve all agents entering without joint
+capture; none collide. The historical ever_ball_maps count uses any-agent
+entry. Thus a purely synchronization-caused failure is not established; the
+next hypothesis targets worst-agent approach and joint capture together.
 
-**Upgrade:** In equations/tables:
-- **Task-matched baseline:** Standard-C L0 Path-C (same maps/reward/capture).
-- **Parameter-matched contrast:** `full` vs `zero` vs `static` inside the suite.
+The Standard-C seeds all load the same empty-floor seed-811 checkpoint at
+40k with weights and optimizer states; replay and RNG are reset. Its legacy
+architecture, initialization history, seeds and 50k L0 budget differ from the
+80k cold-start V4 suite. Treat it as a learnability floor only.
 
-Never write “ours beats Standard-C with the same capacity” unless a true
-capacity-matched Standard rebuild exists (future id).
+## 3. Next hypothesis and theorem boundaries
 
-### Improvement 9 — Soft Q scale under Path-C bonuses
+The current user authorization (2026-11-05) permits Windows hardware/CPU
+replication, B sync-capture design/implementation and a small validation after
+audit. Large launches require a plan summary first; Attention, L1 and a complete
+paper-suite rerun remain outside this authorization.
 
-**Gap:** Team success +50 and capture +8 inflate Q magnitude; live suite shows
-`critic_grad` often clipped at 5 while `q_mean` can be \(O(1)`–`O(5)`.
+See [B design](design/MASAC_V4_SYNC_CAPTURE_20261105.md) for the new experiment's
+potential, terminal handling, unchanged evaluation predicate and controls.
+Do not conflate a new \(\gamma\Phi_{t+1}-\Phi_t\) term with the existing Path-C reward.
 
-**Upgrade:** Report reward scale and clipping rate. Optional future: reward
-normalization or smaller \(B_T\) with a **new** id. Do not change live suite
-mid-seed.
-
-### Improvement 10 — Horizon / travel-budget lemma (short)
-
-With \(H_{\mathrm{ep}}=350\) steps, \(\Delta t=0.2\,\mathrm{s}\), wall time
-\(70\,\mathrm{s}\). At \(v_{\max}=10\,\mathrm{m/s}\), straight-line budget
-\(700\,\mathrm{m}\) ≫ typical L0 goal range (~40 m). So timeout failures are
-**behavioral / capture**, not pure travel insufficiency — consistent with
-ever_ball ≫ joint success early in training.
-
----
-
-## 3. What to claim vs what needs proof / experiment
-
-| Statement | Status |
-|-----------|--------|
-| Soft team MASAC with twin Q + entropy (E1–E3) | Definition / standard method |
-| Path-C unlocked Standard L0 multi-seed gate | **Empirical** (done) |
-| Path-C is Ng-invariant shaping | **False** — do not claim |
-| Probes are safety certificates | **False** — forbid |
-| Full probes improve joint success vs zero/static | **Needs suite result** |
-| Attention helps | Out of scope this suite |
-| Conservative continuous probes | Future work |
-
----
-
-## 4. Suggested Method subsection outline (WowMoM-style)
-
-1. Problem & \(\mathrm{Succ}_{\mathrm{L0}}\) (E4 capture predicate).
-2. Shared soft actor–critic (E1–E3) — short, cite SAC/MASAC.
-3. Path-C dense curriculum (E4) — empirical unlock, honesty about non-invariance.
-4. Predictive maneuverability features (E5–E7) + assumptions (A1).
-5. Ablations: full / static / zero (/ shuffle).
-6. Limitations: sampled clearance optimism, CV peers, cold start after encoder change.
-
----
-
-## 5. Concrete next writing/code hygiene (safe; no live hyperparam edits)
-
-1. Keep this file linked from README Method pointers.
-2. When suite finishes, add a one-page `docs/MATH_SUITE_RESULTS_*.md` mapping
-   (E5)–(E6) claims to full/zero/static tables.
-3. Training-speed edits for **next** launches live in
-   `docs/TRAINING_OPTIMIZATION_MANEUVER_20261103.md` (risk cache, thread policy);
-   they must not interrupt PIDs on stamp `162345`.
-
----
-
-## 6. Top 5 formula improvements (executive)
-
-1. **(E2)+(soft operator)** — write \(\mathcal{T}^\pi\) explicitly; confine novelty away from SAC.
-2. **Entropy domain (E3 footnote→equation)** — tanh vs env radial clip.
-3. **Path-C honesty** — dense curriculum, **not** Ng-invariant potential shaping.
-4. **Succ predicates** — soft vs frozen L0 success measures, never conflated.
-5. **Probe optimism remark** — sampled clearance ≥ true continuous clearance; not a certificate.
-
-Repo rename note: GitHub repository is `Tomhao10225101490/masac-maneuverability`
-(formerly `AoI-MASAC-Formation`). Local folder name may still be `MASAC` / legacy AoI.
+For fixed shaping coefficient \(\lambda\), the pathwise identity is
+\[
+\sum_{t=0}^{T-1}\gamma^t\lambda(\gamma\Phi_{t+1}-\Phi_t)
+ =-\lambda\Phi_0+\gamma^T\lambda\Phi_T.
+\]
+A policy-ordering statement requires the same initial-state distribution and
+a policy-independent terminal boundary (e.g. absorbing terminal potential zero),
+or a properly transformed continuing bootstrap. Partial observability alone
+does not invalidate the algebra for history-dependent policies. It does prevent
+unqualified claims of exact learning equivalence for a memoryless observation
+critic. Timeout bootstrapping, function approximation and finite replay must
+be stated; the algebra does not imply faster learning, convergence or capture gains.
