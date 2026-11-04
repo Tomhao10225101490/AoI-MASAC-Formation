@@ -2,12 +2,12 @@
   "primary_active_run_file": "results/masac_v4_active_run.json",
   "primary": {
     "out": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
-    "pid": 45356,
-    "experiment_id": "masac_v4_maneuver_paper_suite_20261103_static",
+    "pid": null,
+    "experiment_id": "masac_v4_maneuver_paper_suite_20261103",
     "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
-    "phase": "running",
-    "kind": "v4_maneuver_static",
-    "probe_mode": "static",
+    "phase": "complete",
+    "kind": "v4_maneuver_paper_suite",
+    "probe_mode": "suite",
     "seeds": [
       1211,
       1222,
@@ -19,11 +19,13 @@
       "static"
     ],
     "do_not_auto_launch_further": true,
-    "note": "Predictive Maneuverability suite: full FAIL 1/3 @18:21, zero FAIL 0/3 @14:52; static seed 1233 still running; no Attention/L1 auto"
+    "note": "SUITE COMPLETE @18:34 Asia/Shanghai: zero 0/3, full 1/3, static 2/3; static>>full>>zero; machine idle; PENDING next-iter; no Attention/L1 auto",
+    "all_seeds_gate_met": false,
+    "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793787897.856701,
-  "updated_at_asia_shanghai": "2026-11-04 18:24 Asia/Shanghai",
+  "updated_at": 1793788906.454365,
+  "updated_at_asia_shanghai": "2026-11-04 18:40 Asia/Shanghai",
   "load_after": {
     "note": "monitor 2026-11-03 15:43 Asia/Shanghai; Path C L0 FULL PASS 3/3; train pids gone; machine idle"
   },
@@ -415,7 +417,7 @@
       "caffeinate_pid": 45359,
       "started_at": 1793694417.879589,
       "kind": "v4_maneuver_static",
-      "phase": "running",
+      "phase": "complete",
       "experiment_id": "masac_v4_maneuver_paper_suite_20261103_static",
       "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
       "probe_mode": "static",
@@ -428,12 +430,17 @@
       "steps": 80000,
       "torch_threads": 2,
       "status_snapshot": {
-        "seed": 1211,
-        "step": 1400,
-        "steps_per_s": 8.682448376514603,
-        "eta_s": 9052.746021802714,
-        "updates": 400,
-        "last_eval": null
+        "finals": {
+          "1211": "11/12",
+          "1222": "10/12",
+          "1233": "5/12"
+        },
+        "gate_met_per_seed": {
+          "1211": true,
+          "1222": true,
+          "1233": false
+        },
+        "all_seeds_gate_met": false
       },
       "reshape": {
         "progress_scale": 1.0,
@@ -455,7 +462,11 @@
       "log": "/Users/a1/Desktop/research/MASAC/results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345/train.log",
       "authorization": "user t4s17 + phone comprehensive maneuver suite 2026-11-03",
       "do_not_auto_launch_further": true,
-      "protocol": "configs/masac_v4/maneuver_paper_suite_20261103.json"
+      "protocol": "configs/masac_v4/maneuver_paper_suite_20261103.json",
+      "completed_at": 1793788468.2080698,
+      "all_seeds_gate_met": false,
+      "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai",
+      "note": "COMPLETE gate FAIL 2/3 finals 11/12,10/12,5/12 bests 11@80k,11@58k,9@70k"
     }
   ],
   "aborted_rethread_arms": [
@@ -476,7 +487,7 @@
     "latch_off": "complete_failed_0_12",
     "finished_latch_off_at_asia_shanghai": "2026-11-03 13:30 Asia/Shanghai"
   },
-  "monitor_note": "maneuver paper suite 3-arm parallel running; do_not_auto_launch_further",
+  "monitor_note": "maneuver paper suite COMPLETE; machine idle; do_not_auto_launch_further; PENDING A/B",
   "continue_batch_gate": "results/masac_v4_l0_continue_batch_gate_20261103.json",
   "continue_batch_summary": {
     "511": "1/12 FAILED (peak 8/12@98k)",
@@ -586,6 +597,14 @@
     "baseline": "results/masac_v4_c_reshape_l0_frozen42_20261103_145043",
     "do_not_auto_launch_further": true,
     "authorization": "t4s17 + phone comprehensive paper suite",
-    "updated_at_asia_shanghai": "2026-11-03 16:26 Asia/Shanghai"
+    "updated_at_asia_shanghai": "2026-11-04 18:40 Asia/Shanghai",
+    "phase": "complete",
+    "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai",
+    "gates": {
+      "zero": "FAIL 0/3",
+      "full": "FAIL 1/3",
+      "static": "FAIL 2/3"
+    },
+    "ablation_rank": "static >> full >> zero"
   }
 }
