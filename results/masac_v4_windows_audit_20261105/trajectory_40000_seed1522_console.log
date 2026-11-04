@@ -1,0 +1,3 @@
+DIAGNOSIS arm=control seed=1522 step=40000 agent_classes={'never_ball': 20, 'ball_without_capture': 1, 'ever_capture': 15} any_ball_maps=9/12 all_ball_maps=1/12 all_ever_capture_maps=1/12 occupancy_hist={'0': 3, '1': 4, '2': 4, '3': 1}
+DIAGNOSIS arm=treatment seed=1522 step=40000 agent_classes={'never_ball': 17, 'ball_without_capture': 0, 'ever_capture': 19} any_ball_maps=11/12 all_ball_maps=2/12 all_ever_capture_maps=2/12 occupancy_hist={'0': 1, '1': 8, '2': 3}
+ARTIFACTS C:\research\masac-maneuverability\results\masac_v4_sync_40k_progress_20261105\trajectory_40000_seed1522\summary.json C:\research\masac-maneuverability\results\masac_v4_sync_40k_progress_20261105\trajectory_40000_seed1522\summary.md

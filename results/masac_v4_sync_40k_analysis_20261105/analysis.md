@@ -11,11 +11,11 @@ No advancement decision is calculated. All six final completions, finite diagnos
 | Arm | Seed | Step | Success /12 | Any ball /12 | All ball /12 | Mean max occupancy |
 |---|---:|---:|---:|---:|---:|---:|
 | control | 1511 | 40000 | 2 | 12 | 5 | 2.0 |
-| control | 1522 | 2000 | 0 | 0 | 0 | 0.0 |
-| control | 1533 | None | None | None | None | None |
+| control | 1522 | 40000 | 1 | 9 | 1 | 1.25 |
+| control | 1533 | 6000 | 0 | 0 | 0 | 0.0 |
 | treatment | 1511 | 40000 | 6 | 12 | 8 | 2.25 |
-| treatment | 1522 | 2000 | 0 | 0 | 0 | 0.0 |
-| treatment | 1533 | None | None | None | None | None |
+| treatment | 1522 | 40000 | 0 | 11 | 2 | 1.1666666666666667 |
+| treatment | 1533 | 6000 | 0 | 0 | 0 | 0.0 |
 
 ## Sampled learning diagnostics and completed-episode reward scale
 
@@ -24,11 +24,11 @@ Clip fractions and entropy/alpha below are sampled progress logs, not all update
 | Arm | Seed | Final 40k finite evidence | Critic clip fraction | Latest entropy | Latest alpha | Completed episodes | Base total | Shaping total |
 |---|---:|---|---:|---:|---:|---:|---:|---:|
 | control | 1511 | verified | 1.0 | -3.030709743499756 | 0.019608404487371445 | 233 | -5216.075309475593 | 0.0 |
-| control | 1522 | pending final40k | 1.0 | -0.5639123916625977 | 0.05926528573036194 | 45 | -2314.0903247941433 | 0.0 |
-| control | 1533 | pending final40k | None | None | None | 0 | 0 | 0 |
+| control | 1522 | verified | 1.0 | -3.036823034286499 | 0.01660999469459057 | 219 | 1052.1226143696529 | 0.0 |
+| control | 1533 | pending final40k | 1.0 | -2.5313851833343506 | 0.028101546689867973 | 118 | -4720.671082291988 | 0.0 |
 | treatment | 1511 | verified | 1.0 | -3.268517017364502 | 0.017173416912555695 | 235 | 499.4065907900791 | -40.826149674592294 |
-| treatment | 1522 | pending final40k | 1.0 | 0.6511070728302002 | 0.06787844747304916 | 35 | -1729.6171949623802 | -2.6304203385418528 |
-| treatment | 1533 | pending final40k | None | None | None | 0 | 0 | 0 |
+| treatment | 1522 | verified | 1.0 | -2.972724676132202 | 0.017590995877981186 | 235 | -507.85500732188564 | -34.683415081988805 |
+| treatment | 1533 | pending final40k | 1.0 | -2.541816234588623 | 0.024868259206414223 | 100 | -5505.913782796434 | -8.127840599574682 |
 
 Per-map exclusive failures, nonexclusive collision flags, occupancy, final distance/speed availability, common-grid AUC and peak-to-last drops are retained in analysis.json. Missing trajectory velocity is null.
 

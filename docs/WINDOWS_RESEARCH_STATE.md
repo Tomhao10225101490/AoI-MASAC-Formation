@@ -61,7 +61,7 @@ binaries. Meaningful stages must be committed and pushed to both active branches
    moving clearance is constant1 for full versus0 static; peer7204/7296 values
    equal1. Other channels match in this sample. Not an audit of old final-policy
    trajectories. See `docs/L0_CONTENT_IDENTIFIABILITY_AUDIT_20261105.md`.
-3. Next registered study **40k ×3seeds ×2arms**, static control/B with fixed
+3. Active registered study **40k ×3seeds ×2arms**, static control/B with fixed
    lambda.5/tau.1, cold seeds1511/1522/1533, warmup1000, batch128, capacity100000,
    eval2k, checkpoint10k, CUDA1Torch thread per process,2processes. Plan was
    summarized visibly before launch. Protocol:
@@ -85,22 +85,32 @@ binaries. Meaningful stages must be committed and pushed to both active branches
    passed; see `docs/MATH_DISCRETE_PROBE_ERROR_20261105.md` (8.8m ideal discrete
    peer-CV bound, not a safety certificate). Both running source hash sets were
    independently rechecked unchanged.
-   **Latest completed pair:** both1511 histories finished their registered40k,
-   then the same original workers cold-started1522. Two of six histories are
-   complete;1533 remains queued. Control/B final success=2/12 versus6/12;
-   any-ball12/12 both, all-ball5/12 versus8/12; collisions0 both. Each completed
-   39000 learner updates. Both per-seed gates fail (<8/12); do not early-stop
-   or change the remaining histories. This single+4/12 pair is not the full
-   advancement decision. The canonical analyzer still reports IN_PROGRESS,
-   decision_ready=False. See `docs/SYNC_CAPTURE_FIRST_PAIR_20261105.md`.
-   Both40k checkpoint/replay byte hashes were independently verified against
-   manifests; all14 declared source hashes and both protocol hashes match.
-   All195 recorded post-warmup progress diagnostics per arm are finite.
-   Proof record: `results/masac_v4_sync_40k_progress_20261105/first_pair_integrity.json`.
+   **Latest completed pairs:4/6 histories complete.** The same original workers
+   cold-started1533 after saving1522 completion. Do not start another copy.
+   Registered40k control/B success pairs:1511=2/12 vs6/12 (+4 successes),
+   1522=1/12 vs0/12 (-1). This is a mixed partial result, not the full
+   advancement decision. The canonical analyzer remains IN_PROGRESS,
+   decision_ready=False, decision=None. See
+   `docs/SYNC_CAPTURE_TWO_PAIR_PROGRESS_20261105.md`; preserve the original
+   final40k endpoint and all decision rules for the remaining1533 pair.
+   All four completed histories have39000 updates and fail the per-seed8/12
+   absolute gate. Do not early-stop or extend the remaining histories.
+   Seed1522 any-ball=9/12 vs11/12, all-ball=1/12 vs2/12, collisions0 both;
+   trajectory recheck gives all-individually-captured counts1/12 vs2/12 but
+   simultaneous capture1/12 vs0/12. Proxy coverage cannot replace joint capture.
+   Checkpoint/replay bytes for all four completed histories were independently
+   verified against manifests; all14 declared source hashes and both protocol
+   hashes match. Each history has195 finite logged post-warmup diagnostics.
+   Proof records:1511 `results/masac_v4_sync_40k_progress_20261105/first_pair_integrity.json`;
+   1522 `results/masac_v4_sync_40k_progress_20261105/seed1522_integrity/verification.json`.
+   Reusable read-only checker: `scripts/verify_sync_seed_artifacts.py` accepts
+   --control ROOT --treatment ROOT --seed 1533 --out NEW_AUDIT_DIR. Use it on1533
+   only after its seed completion exists. It imports no torch/weights, validates
+   current source/config bytes and hashes binaries without deserializing them.
    This is not exact-CUDA-resume validation. Final progress.last_eval_step38000
    is expected because that line precedes final evaluation; use completion
    plus evaluation_40000.json for endpoints. Never overwrite old metrics.
-   Resource sample at05:37: GPU54%,1528MiB,59C; freeRAM~14.5GiB. Four python
+   Resource sample at06:38: GPU81%,1509MiB,64C; freeRAM~15GiB. Four python
    PIDs are two venv launchers plus two workers, not four training jobs.
    The offline trajectory analyzer ran on **all48 saved trajectories** across
    both arms at1511@20k/22k and passed metric/map-pair cross-checks:
@@ -113,12 +123,13 @@ binaries. Meaningful stages must be committed and pushed to both active branches
    included evaluation_summary.json) were corrected. They did not affect any
    training process/source/config. The failed integrity attempt and corrected
    success are both retained in integrity_progress_console.log.
-4. Commit/push protocol and completed pilot evidence before40k launch. Freeze
-   every file in trainer SOURCES for all six histories; checkpoint hashing reads
+4. Protocol/pilot evidence was committed and pushed before40k launch (`eaf83e2`).
+   Continue freezing every file in trainer SOURCES for all six histories; checkpoint hashing reads
    disk and would otherwise misidentify the loaded code. Analyze/log without
    editing these sources. Keep output-local status/completion authoritative;
    legacy shared registry can lose a display pointer under concurrent writes.
-5. After40k, record all seed-paired differences and the preregistered engineering
+5. After40k, verify1533 artifacts and run the canonical analyzer **before any
+   frozen source/config edit**. Then record all seed-paired differences and the preregistered engineering
    decision (not significance). If no capture floor/signal, call it inconclusive;
    no automatic budget restack. Proposed constant-fill/peer-CV identification is
    separate and not queued. Do not bulk-add partially extracted historical

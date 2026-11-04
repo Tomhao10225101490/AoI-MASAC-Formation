@@ -1,6 +1,6 @@
 # Registered40k study: first completed pair, seed1511
 
-**Study status: IN_PROGRESS. Two of six histories complete.** This is a record
+**Historical snapshot after the first pair: IN_PROGRESS,2/6 histories complete.** This is a record
 of the first seed's registered final40k endpoints, not the three-seed efficacy
 decision. Seeds1522 and1533 retain their original budgets and rules. No parameter,
 source, gate, continuation budget or sealed-map evaluation has been changed.

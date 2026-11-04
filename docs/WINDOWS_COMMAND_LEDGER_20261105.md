@@ -340,3 +340,47 @@ post-warmup diagnostics. This verifies byte integrity and recorded numerical
 diagnostics, not exact CUDA resumption. No binary is staged for Git.
 The first-pair note explicitly separates these endpoints from the pending full
 three-seed decision; all original workers and settings remain in use.
+
+## 10. Second registered40k pair: mixed partial results
+
+Three intervening read-only heartbeat checks confirmed live original workers,
+unchanged declared source/config hashes, no error.json, finite current learning
+diagnostics, and continuing checkpoint/eval output. Full printed commands remain
+in the chat; their appended monitor evidence is in
+`results/masac_v4_windows_audit_20261105/heartbeat_monitor_console.log`.
+
+At the next material checkpoint, both1522 seed completions were present and the
+same workers had cold-started1533. Final1522:control1/12, B0/12; first1511 was
+2/12 versus6/12. Four of six histories are complete. The registered final40k
+rule, budget and sealed-map restrictions remain unchanged; no efficacy decision
+is made on these two pairs.
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts/diagnose_sync_capture_trajectories.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --seed 1522 --step 40000 --out results/masac_v4_sync_40k_progress_20261105/trajectory_40000_seed1522 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/trajectory_40000_seed1522_console.log
+.\.venv\Scripts\python.exe -u scripts/analyze_sync_study.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --out results/masac_v4_sync_40k_analysis_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/study_analysis_console.log -Append
+```
+
+All24 final1522 trajectories passed metric/map-pair checks. Control/B individual
+never-ball, ball-only and capture counts:20/1/15 versus17/0/19. Team all-ever-ball
+and all-ever-capture:1 versus2; simultaneous success:1 versus0. Control has11
+incomplete-arrival failures; B10 incomplete-arrival and2 nonoverlapping-capture
+failures. There are no final collisions. Proxy coverage is not the primary target.
+The independent analyzer still gives IN_PROGRESS/decision_ready=False/decision=None.
+
+The successful inline first-pair artifact audit was encapsulated in a new,
+standard-library-only read-only recovery utility, without changing trainer
+SOURCES, protocol/config, the canonical analyzer or decision rules. Root reviewed
+the source and then ran it against the actual second pair:
+
+```powershell
+Get-Content -LiteralPath scripts/verify_sync_seed_artifacts.py
+.\.venv\Scripts\python.exe -u scripts/verify_sync_seed_artifacts.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --seed 1522 --out results/masac_v4_sync_40k_progress_20261105/seed1522_integrity 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/seed1522_integrity_console.log
+```
+
+Result:PAIR_SEED_VERIFICATION seed=1522 status=PASS, exit0. Each arm has39000
+updates and195 finite sampled progress diagnostics. Both14source sets and both
+frozen config hashes match; all four binary hashes match checkpoint manifests.
+The JSON keeps per-file byte sizes/observed/expected SHA256 and individual checks.
+It neither loads weights nor validates exact CUDA resume, and PASS means artifact
+checks, not passing the8/12 capture gate. Source/config paths resolve within the
+repository and binary reads use1MiB chunks. The original training continues1533.

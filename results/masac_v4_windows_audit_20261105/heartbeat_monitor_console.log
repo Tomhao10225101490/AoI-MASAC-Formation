@@ -1,0 +1,161 @@
+STATUS control {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1522, "seed_index": 1, "seeds_total": 3, "step": 11600, "total_steps": 40000, "updates": 10600, "episodes": 136, "steps_per_s": 14.874381482874421, "eta_s": 1909.3230890103405, "last_eval": 0.0, "last_eval_step": 10000, "pid": 25212, "updated_at": 1793829195.1714053, "updated_at_asia_shanghai": "2026-11-05 05:53 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.0, "actor_loss": 2.78267240524292, "critic_loss": 1.7011598348617554, "alpha": 0.02861172705888748, "actor_grad": 0.6231580376625061, "critic_grad": 135.73712158203125, "actor_grad_post": 0.6231580376625061, "critic_grad_post": 5.000000476837158, "actor_clipped": 0, "critic_clipped": 1, "q_mean": -3.7764713764190674, "target_mean": -3.64843487739563, "td_abs": 0.6702283620834351, "entropy": -2.6935133934020996, "terminal_sample_fraction": 0.0234375, "probe_clearance_mean": -0.009199283085763454, "probe_ttc_mean": 0.9713130593299866, "probe_positive_preview_frac": 0.9361293911933899}
+INTEGRITY control changed_sources= [] config_match= True errors= []
+COMPLETION results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\completion.json {
+  "seed": 1511,
+  "step": 40000,
+  "final_development_success": 0.16666666666666666,
+  "gate_met": false,
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "probe_mode": "static",
+  "warm_start": {
+    "mode": "cold"
+  }
+}
+
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+STATUS b {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1522, "seed_index": 1, "seeds_total": 3, "step": 11400, "total_steps": 40000, "updates": 10400, "episodes": 151, "steps_per_s": 15.261789362686278, "eta_s": 1873.9611273842152, "last_eval": 0.0, "last_eval_step": 10000, "pid": 2940, "updated_at": 1793829195.1414852, "updated_at_asia_shanghai": "2026-11-05 05:53 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.0, "actor_loss": 7.6568403244018555, "critic_loss": 1.3280574083328247, "alpha": 0.02219202183187008, "actor_grad": 0.7095341682434082, "critic_grad": 147.87452697753906, "actor_grad_post": 0.7095341682434082, "critic_grad_post": 5.000000476837158, "actor_clipped": 0, "critic_clipped": 1, "q_mean": -8.117098808288574, "target_mean": -8.337982177734375, "td_abs": 0.60197913646698, "entropy": -2.941960096359253, "terminal_sample_fraction": 0.0078125, "probe_clearance_mean": -0.006898037623614073, "probe_ttc_mean": 0.977494478225708, "probe_positive_preview_frac": 0.937225878238678}
+INTEGRITY b changed_sources= [] config_match= True errors= []
+COMPLETION results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\completion.json {
+  "seed": 1511,
+  "step": 40000,
+  "final_development_success": 0.5,
+  "gate_met": false,
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "probe_mode": "static",
+  "warm_start": {
+    "mode": "cold"
+  }
+}
+
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+MONITOR_UTC 2026-11-04T22:08:43.543014+00:00
+STATUS control {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1522, "seed_index": 1, "seeds_total": 3, "step": 22800, "total_steps": 40000, "updates": 21800, "episodes": 168, "steps_per_s": 13.37869324197494, "eta_s": 1285.6263081087704, "last_eval": 0.0, "last_eval_step": 22000, "pid": 25212, "updated_at": 1793830119.5097225, "updated_at_asia_shanghai": "2026-11-05 06:08 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.0, "actor_loss": -13.313572883605957, "critic_loss": 0.6848019957542419, "alpha": 0.016907814890146255, "actor_grad": 0.5793327689170837, "critic_grad": 54.04273986816406, "actor_grad_post": 0.5793327689170837, "critic_grad_post": 5.000000476837158, "actor_clipped": 0, "critic_clipped": 1, "q_mean": 12.64285945892334, "target_mean": 12.767633438110352, "td_abs": 0.4473593831062317, "entropy": -2.856006622314453, "terminal_sample_fraction": 0.0, "probe_clearance_mean": -0.0013801453169435263, "probe_ttc_mean": 0.9962993264198303, "probe_positive_preview_frac": 0.9872533082962036}
+INTEGRITY control changed_sources= [] config_match= True errors= []
+COMPLETION results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\completion.json {'complete': None, 'seed': 1511, 'step': 40000, 'final_development_success': 0.16666666666666666, 'gate_met': False}
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_020000\manifest.json
+RECENT_EVAL control EVAL probe=static seed=1522 step=12000: success=0/12 ever_ball_any=0/12 ever_ball_all=0/12 failures={'boundary_collision': 10, 'timeout_before_ball': 2} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=14000: success=0/12 ever_ball_any=6/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 6, 'timeout_before_ball': 6} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=16000: success=0/12 ever_ball_any=10/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 10, 'timeout_before_ball': 2} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=18000: success=0/12 ever_ball_any=6/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 6, 'timeout_before_ball': 6} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=20000: success=0/12 ever_ball_any=10/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 10, 'timeout_before_ball': 2} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=22000: success=0/12 ever_ball_any=9/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 9, 'timeout_before_ball': 3} mean_eff=None
+STATUS b {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1522, "seed_index": 1, "seeds_total": 3, "step": 22600, "total_steps": 40000, "updates": 21600, "episodes": 183, "steps_per_s": 13.547962164960229, "eta_s": 1284.3259959053096, "last_eval": 0.0, "last_eval_step": 22000, "pid": 2940, "updated_at": 1793830116.325028, "updated_at_asia_shanghai": "2026-11-05 06:08 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.0, "actor_loss": -8.353841781616211, "critic_loss": 0.895738959312439, "alpha": 0.017681492492556572, "actor_grad": 0.3608384430408478, "critic_grad": 54.36455154418945, "actor_grad_post": 0.36083847284317017, "critic_grad_post": 5.0, "actor_clipped": 0, "critic_clipped": 1, "q_mean": 7.682855606079102, "target_mean": 7.621610641479492, "td_abs": 0.4601580798625946, "entropy": -3.0310797691345215, "terminal_sample_fraction": 0.0, "probe_clearance_mean": -0.004380619153380394, "probe_ttc_mean": 0.9871710538864136, "probe_positive_preview_frac": 0.969024121761322}
+INTEGRITY b changed_sources= [] config_match= True errors= []
+COMPLETION results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\completion.json {'complete': None, 'seed': 1511, 'step': 40000, 'final_development_success': 0.5, 'gate_met': False}
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_020000\manifest.json
+RECENT_EVAL b EVAL probe=static seed=1522 step=12000: success=0/12 ever_ball_any=0/12 ever_ball_all=0/12 failures={'boundary_collision': 10, 'timeout_before_ball': 2} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=14000: success=0/12 ever_ball_any=4/12 ever_ball_all=0/12 failures={'timeout_before_ball': 8, 'timeout_after_ball_any_only': 4} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=16000: success=0/12 ever_ball_any=9/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 9, 'timeout_before_ball': 3} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=18000: success=0/12 ever_ball_any=5/12 ever_ball_all=0/12 failures={'timeout_before_ball': 7, 'timeout_after_ball_any_only': 5} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=20000: success=0/12 ever_ball_any=11/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 10, 'timeout_after_ball_all': 1, 'timeout_before_ball': 1} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=22000: success=0/12 ever_ball_any=11/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 11, 'timeout_before_ball': 1} mean_eff=None
+MONITOR_UTC 2026-11-04T22:24:03.438746+00:00
+STATUS control {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1522, "seed_index": 1, "seeds_total": 3, "step": 34000, "total_steps": 40000, "updates": 33000, "episodes": 201, "steps_per_s": 13.071577670413038, "eta_s": 459.01115774117653, "last_eval": 0.0, "last_eval_step": 32000, "pid": 25212, "updated_at": 1793831016.369865, "updated_at_asia_shanghai": "2026-11-05 06:23 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.03333333333333333, "actor_loss": -19.01741600036621, "critic_loss": 0.7878361940383911, "alpha": 0.015720538794994354, "actor_grad": 0.6621120572090149, "critic_grad": 28.419384002685547, "actor_grad_post": 0.6621120572090149, "critic_grad_post": 4.999999523162842, "actor_clipped": 0, "critic_clipped": 1, "q_mean": 18.689043045043945, "target_mean": 18.77352523803711, "td_abs": 0.4414791464805603, "entropy": -2.8286054134368896, "terminal_sample_fraction": 0.0, "probe_clearance_mean": -0.001972483703866601, "probe_ttc_mean": 0.9942982196807861, "probe_positive_preview_frac": 0.983826756477356}
+INTEGRITY control changed_sources= [] config_match= True finite_current_diagnostics= True errors= []
+COMPLETION results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\completion.json {'complete': None, 'seed': 1511, 'step': 40000, 'final_development_success': 0.16666666666666666, 'gate_met': False}
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_030000\manifest.json
+RECENT_EVAL control EVAL probe=static seed=1522 step=24000: success=0/12 ever_ball_any=11/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 10, 'timeout_before_ball': 1, 'timeout_after_ball_all': 1} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=26000: success=0/12 ever_ball_any=10/12 ever_ball_all=1/12 failures={'timeout_before_ball': 2, 'timeout_after_ball_any_only': 9, 'timeout_after_ball_all': 1} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=28000: success=0/12 ever_ball_any=12/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 11, 'timeout_after_ball_all': 1} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=30000: success=1/12 ever_ball_any=11/12 ever_ball_all=5/12 failures={'timeout_after_ball_any_only': 6, 'timeout_after_ball_all': 4, 'timeout_before_ball': 1} mean_eff=0.9030637473931401
+RECENT_EVAL control EVAL probe=static seed=1522 step=32000: success=0/12 ever_ball_any=11/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 10, 'timeout_before_ball': 1, 'timeout_after_ball_all': 1} mean_eff=None
+STATUS b {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1522, "seed_index": 1, "seeds_total": 3, "step": 34000, "total_steps": 40000, "updates": 33000, "episodes": 216, "steps_per_s": 13.211814266081623, "eta_s": 454.1389909941179, "last_eval": 0.0, "last_eval_step": 32000, "pid": 2940, "updated_at": 1793831021.6316137, "updated_at_asia_shanghai": "2026-11-05 06:23 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.03333333333333333, "actor_loss": -16.936580657958984, "critic_loss": 0.48727715015411377, "alpha": 0.01602141372859478, "actor_grad": 0.6221489310264587, "critic_grad": 31.68057632446289, "actor_grad_post": 0.6221489310264587, "critic_grad_post": 4.999999523162842, "actor_clipped": 0, "critic_clipped": 1, "q_mean": 16.421127319335938, "target_mean": 16.56744384765625, "td_abs": 0.3815113306045532, "entropy": -2.8009681701660156, "terminal_sample_fraction": 0.0078125, "probe_clearance_mean": -0.002160946372896433, "probe_ttc_mean": 0.9931469559669495, "probe_positive_preview_frac": 0.984375}
+INTEGRITY b changed_sources= [] config_match= True finite_current_diagnostics= True errors= []
+COMPLETION results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\completion.json {'complete': None, 'seed': 1511, 'step': 40000, 'final_development_success': 0.5, 'gate_met': False}
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_030000\manifest.json
+RECENT_EVAL b EVAL probe=static seed=1522 step=24000: success=0/12 ever_ball_any=10/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 9, 'timeout_after_ball_all': 1, 'timeout_before_ball': 2} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=26000: success=0/12 ever_ball_any=4/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 4, 'timeout_before_ball': 8} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=28000: success=0/12 ever_ball_any=10/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 10, 'timeout_before_ball': 2} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=30000: success=2/12 ever_ball_any=8/12 ever_ball_all=3/12 failures={'timeout_before_ball': 4, 'timeout_after_ball_any_only': 5, 'timeout_after_ball_all': 1} mean_eff=0.7555712077198845
+RECENT_EVAL b EVAL probe=static seed=1522 step=32000: success=0/12 ever_ball_any=10/12 ever_ball_all=3/12 failures={'timeout_before_ball': 2, 'timeout_after_ball_all': 3, 'timeout_after_ball_any_only': 7} mean_eff=None
+MONITOR_UTC 2026-11-04T22:38:58.587660+00:00
+STATUS control {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1533, "seed_index": 2, "seeds_total": 3, "step": 6600, "total_steps": 40000, "updates": 5600, "episodes": 103, "steps_per_s": 16.90632662450729, "eta_s": 1975.5917853606115, "last_eval": 0.0, "last_eval_step": 6000, "pid": 25212, "updated_at": 1793831937.3307083, "updated_at_asia_shanghai": "2026-11-05 06:38 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.0, "actor_loss": 13.517401695251465, "critic_loss": 1.802168607711792, "alpha": 0.030931571498513222, "actor_grad": 0.5524832606315613, "critic_grad": 198.906005859375, "actor_grad_post": 0.5524832606315613, "critic_grad_post": 5.000000476837158, "actor_clipped": 0, "critic_clipped": 1, "q_mean": -13.9345703125, "target_mean": -14.325454711914062, "td_abs": 0.7074061632156372, "entropy": -2.1347198486328125, "terminal_sample_fraction": 0.015625, "probe_clearance_mean": -0.008128638379275799, "probe_ttc_mean": 0.9755756258964539, "probe_positive_preview_frac": 0.9362664818763733}
+INTEGRITY control changed_sources= [] config_match= True finite_current_diagnostics= True errors= []
+COMPLETION results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\completion.json {'seed': 1511, 'step': 40000, 'final_development_success': 0.16666666666666666, 'gate_met': False}
+COMPLETION results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\completion.json {'seed': 1522, 'step': 40000, 'final_development_success': 0.08333333333333333, 'gate_met': False}
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1522\checkpoint_040000\manifest.json
+RECENT_EVAL control EVAL probe=static seed=1522 step=34000: success=0/12 ever_ball_any=11/12 ever_ball_all=0/12 failures={'timeout_after_ball_any_only': 11, 'timeout_before_ball': 1} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=36000: success=0/12 ever_ball_any=12/12 ever_ball_all=3/12 failures={'timeout_after_ball_any_only': 9, 'timeout_after_ball_all': 3} mean_eff=None
+RECENT_EVAL control EVAL probe=static seed=1522 step=38000: success=1/12 ever_ball_any=9/12 ever_ball_all=2/12 failures={'timeout_after_ball_any_only': 7, 'timeout_before_ball': 3, 'timeout_after_ball_all': 1} mean_eff=0.9365053450463484
+RECENT_EVAL control EVAL probe=static seed=1522 step=40000: success=1/12 ever_ball_any=9/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 8, 'timeout_before_ball': 3} mean_eff=0.9081011057762799
+STATUS b {"phase": "training", "experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105_static", "suite_experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105", "arm": "maneuver_static", "probe_mode": "static", "set_mode": "pool", "seed": 1533, "seed_index": 2, "seeds_total": 3, "step": 6400, "total_steps": 40000, "updates": 5400, "episodes": 91, "steps_per_s": 16.76515342511884, "eta_s": 2004.1570242750001, "last_eval": 0.0, "last_eval_step": 6000, "pid": 2940, "updated_at": 1793831933.9004686, "updated_at_asia_shanghai": "2026-11-05 06:38 Asia/Shanghai", "reshape": {"progress_scale": 1.0, "living_cost": 0.005, "acc_penalty": 0.002, "near_goal_radius_m": 15.0, "near_goal_bonus": 0.4, "ball_enter_bonus": 3.0, "capture_bonus": 8.0, "team_success_bonus": 50.0, "collision_penalty": 20.0, "train_ball_m": 4.0, "train_speed_mps": 2.0, "capture_latch": false, "horizon": 350}, "warm_start": false, "recent_success": 0.0, "actor_loss": 13.651250839233398, "critic_loss": 2.2434048652648926, "alpha": 0.030200378969311714, "actor_grad": 0.43368464708328247, "critic_grad": 175.88760375976562, "actor_grad_post": 0.4336846172809601, "critic_grad_post": 5.0, "actor_clipped": 0, "critic_clipped": 1, "q_mean": -13.761445045471191, "target_mean": -13.732810974121094, "td_abs": 0.7296730279922485, "entropy": -2.1357741355895996, "terminal_sample_fraction": 0.0234375, "probe_clearance_mean": -0.007253130432218313, "probe_ttc_mean": 0.9767270088195801, "probe_positive_preview_frac": 0.9409265518188477}
+INTEGRITY b changed_sources= [] config_match= True finite_current_diagnostics= True errors= []
+COMPLETION results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\completion.json {'seed': 1511, 'step': 40000, 'final_development_success': 0.5, 'gate_met': False}
+COMPLETION results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\completion.json {'seed': 1522, 'step': 40000, 'final_development_success': 0.0, 'gate_met': False}
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_040000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_010000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_020000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_030000\manifest.json
+CHECKPOINT_MANIFEST results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1522\checkpoint_040000\manifest.json
+RECENT_EVAL b EVAL probe=static seed=1522 step=34000: success=0/12 ever_ball_any=12/12 ever_ball_all=5/12 failures={'timeout_after_ball_any_only': 7, 'timeout_after_ball_all': 5} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=36000: success=0/12 ever_ball_any=12/12 ever_ball_all=1/12 failures={'timeout_after_ball_any_only': 11, 'timeout_after_ball_all': 1} mean_eff=None
+RECENT_EVAL b EVAL probe=static seed=1522 step=38000: success=2/12 ever_ball_any=11/12 ever_ball_all=2/12 failures={'timeout_after_ball_any_only': 9, 'timeout_before_ball': 1} mean_eff=0.6157896344436986
+RECENT_EVAL b EVAL probe=static seed=1522 step=40000: success=0/12 ever_ball_any=11/12 ever_ball_all=2/12 failures={'timeout_after_ball_all': 2, 'timeout_after_ball_any_only': 9, 'timeout_before_ball': 1} mean_eff=None
