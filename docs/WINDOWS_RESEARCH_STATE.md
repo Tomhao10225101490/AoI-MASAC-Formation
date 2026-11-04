@@ -6,7 +6,7 @@ Branch: `research/wowmom2027-upgrade`. Starting tip: `f81a588`.
 ## Standing user instruction
 
 Continue the research loop; if account usage is exhausted, wait and resume when
-usage becomes available. An ACTIVE hourly heartbeat named **MASAC 研究持续续接**,
+usage becomes available. An ACTIVE 15-minute heartbeat named **MASAC 研究持续续接**,
 automation id `masac`, returns to the current chat. It cannot bypass usage limits
 or guarantee the exact reset instant. Local scheduling needs the computer/app on.
 Do not create duplicate automations. Keep unchanged/non-actionable checks quiet.
@@ -72,6 +72,19 @@ binaries. Meaningful stages must be committed and pushed to both active branches
    `results/masac_v4_sync_40k_b_cuda_20261105`. Check their status before launching.
    Final40k primary; no lambda search/best-checkpoint replacement/auto extension.
    Reserved test manifest exists, **do not evaluate policies on it yet**.
+   **LAUNCHED 2026-11-05 04:49 Asia/Shanghai** after protocol/pilot evidence push
+   `eaf83e2`. Control PID25212, B PID2940 at launch. Current tool sessions
+   control27303/B5353 can be polled while still valid; verify OS process command
+   lines and output-local files on resumption. Both first2k evals0/12; control
+   any-ball2/12, B0/12. Intermediate values are not efficacy conclusions.
+   Independent analyzer:
+   `.venv\Scripts\python.exe -u scripts/analyze_sync_study.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --out results/masac_v4_sync_40k_analysis_20261105`.
+   Its14 decision/integrity tests passed; current output is IN_PROGRESS with
+   decision_ready=False. Rerun on later evidence; never infer completion from
+   absence of a recent log line. Five independent discrete-dynamics checks also
+   passed; see `docs/MATH_DISCRETE_PROBE_ERROR_20261105.md` (8.8m ideal discrete
+   peer-CV bound, not a safety certificate). Both running source hash sets were
+   independently rechecked unchanged.
 4. Commit/push protocol and completed pilot evidence before40k launch. Freeze
    every file in trainer SOURCES for all six histories; checkpoint hashing reads
    disk and would otherwise misidentify the loaded code. Analyze/log without
