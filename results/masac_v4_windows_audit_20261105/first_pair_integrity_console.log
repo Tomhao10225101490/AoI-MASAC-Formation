@@ -1,0 +1,7 @@
+FILE_HASH control results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_040000\checkpoint.pt {'bytes': 26682500, 'sha256': '63b796f65111577cabf74ce4b6ca161b5b7f0b71c3a41ffaaa4d5d66b418ecda', 'matches': True}
+FILE_HASH control results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_040000\replay.npz {'bytes': 357921742, 'sha256': 'b8c51058d915b41722ad319d06a273a9b4a6539e00d03b724ec0673cfb043772', 'matches': True}
+SEED_AUDIT control success= 2 /12 updates= 39000 finite_logged_diagnostics= True changed_sources= [] config_match= True checks_passed= True
+FILE_HASH b results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_040000\checkpoint.pt {'bytes': 26682500, 'sha256': 'eb54cb3b20210931175c8b7277ff0f9fc6037be6ebde8333306c0bc29453323d', 'matches': True}
+FILE_HASH b results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_040000\replay.npz {'bytes': 357921742, 'sha256': 'af88278c8c6a984b740f3becff6e36b0a820563bc5e1cf61c7528792a3cf8a04', 'matches': True}
+SEED_AUDIT b success= 6 /12 updates= 39000 finite_logged_diagnostics= True changed_sources= [] config_match= True checks_passed= True
+ARTIFACT C:\research\masac-maneuverability\results\masac_v4_sync_40k_progress_20261105\first_pair_integrity.json

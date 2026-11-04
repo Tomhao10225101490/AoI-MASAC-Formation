@@ -85,15 +85,23 @@ binaries. Meaningful stages must be committed and pushed to both active branches
    passed; see `docs/MATH_DISCRETE_PROBE_ERROR_20261105.md` (8.8m ideal discrete
    peer-CV bound, not a safety certificate). Both running source hash sets were
    independently rechecked unchanged.
-   **Latest monitoring stage (not final evidence):** both1511 histories are
-   around35k; both30k checkpoint manifests exist. The persisted integrity
-   snapshot at `results/masac_v4_sync_40k_progress_20261105/integrity_snapshot.json`
-   records control31800/B31000 with all14 local source hashes unchanged, both
-   protocol hashes matched and no error.json. Later log read reached
-   control35800/B35000; inspect current output-local files on resumption.
-   B eval24k/26k=1/12,28k/30k=0/12. These are not endpoints or a stopping rule.
-   GPU sample77%,1501MiB,63C; freeRAM~14.7GiB. Four python PIDs are two venv
-   launchers plus two actual workers, not four training jobs.
+   **Latest completed pair:** both1511 histories finished their registered40k,
+   then the same original workers cold-started1522. Two of six histories are
+   complete;1533 remains queued. Control/B final success=2/12 versus6/12;
+   any-ball12/12 both, all-ball5/12 versus8/12; collisions0 both. Each completed
+   39000 learner updates. Both per-seed gates fail (<8/12); do not early-stop
+   or change the remaining histories. This single+4/12 pair is not the full
+   advancement decision. The canonical analyzer still reports IN_PROGRESS,
+   decision_ready=False. See `docs/SYNC_CAPTURE_FIRST_PAIR_20261105.md`.
+   Both40k checkpoint/replay byte hashes were independently verified against
+   manifests; all14 declared source hashes and both protocol hashes match.
+   All195 recorded post-warmup progress diagnostics per arm are finite.
+   Proof record: `results/masac_v4_sync_40k_progress_20261105/first_pair_integrity.json`.
+   This is not exact-CUDA-resume validation. Final progress.last_eval_step38000
+   is expected because that line precedes final evaluation; use completion
+   plus evaluation_40000.json for endpoints. Never overwrite old metrics.
+   Resource sample at05:37: GPU54%,1528MiB,59C; freeRAM~14.5GiB. Four python
+   PIDs are two venv launchers plus two workers, not four training jobs.
    The offline trajectory analyzer ran on **all48 saved trajectories** across
    both arms at1511@20k/22k and passed metric/map-pair cross-checks:
    `scripts/diagnose_sync_capture_trajectories.py`. See

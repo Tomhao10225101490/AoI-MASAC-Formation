@@ -210,3 +210,133 @@ control35800/B35000. Both runs continue under the registered final40k protocol.
 B eval24k/26k=1/12 then28k/30k=0/12; no intermediate peak substitutes for final.
 The paper Methods, entropy-PBRS boundary note, failure hierarchy and frontier gap
 updates describe implemented formulas and diagnostic limits, not method success.
+
+## 9. First registered final40k pair and transition to1522
+
+The next heartbeat checked state/Git/processes/status/completion/resources before
+any action. Both original workers were still active; no duplicate was launched.
+The following foreground read-only stream ran180s and then exited successfully:
+
+```powershell
+@'
+import time
+from pathlib import Path
+
+handles = {}
+for arm in ("control", "b"):
+    path = Path(f"results/masac_v4_sync_40k_{arm}_cuda_20261105/train.log")
+    handle = path.open("r", encoding="utf-8")
+    handle.seek(0, 2)
+    handles[arm] = handle
+print("READ_ONLY_MONITOR_BEGIN duration_s=180; no training launched or changed", flush=True)
+deadline = time.monotonic() + 180
+try:
+    while time.monotonic() < deadline:
+        for arm, handle in handles.items():
+            while True:
+                line = handle.readline()
+                if not line:
+                    break
+                print(f"[{arm}] {line.rstrip()}", flush=True)
+        time.sleep(1)
+finally:
+    for handle in handles.values():
+        handle.close()
+print("READ_ONLY_MONITOR_END", flush=True)
+'@ | .\.venv\Scripts\python.exe -u - 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/study40k_first_pair_stream_20261105.log -Append
+```
+
+Observed final1511 evals:control2/12,any12,all5,failures7partial-arrival+3all-ball;
+B6/12,any12,all8,failures4partial-arrival+2all-ball. Both printed40k checkpoint
+paths and then **COLD-START seed1522** with the registered settings. Source review
+confirmed seed completion follows final eval and snapshot; root arm completion
+is written only after all three seeds. Per-seed completion files were read and
+matched. A final progress record can still report last_eval_step38000 because
+the final40k evaluation is later; it is not the authoritative endpoint.
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts/diagnose_sync_capture_trajectories.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --seed 1511 --step 40000 --out results/masac_v4_sync_40k_progress_20261105/trajectory_40000_seed1511 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/trajectory_40000_seed1511_console.log
+.\.venv\Scripts\python.exe -u scripts/analyze_sync_study.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --out results/masac_v4_sync_40k_analysis_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/study_analysis_console.log -Append
+```
+
+All24 final trajectories passed cross-checks. Individual never-ball/ball-only/
+captured counts7/1/28 control and6/0/30 B. The study remains
+`IN_PROGRESS / decision_ready=False / decision=None`.
+
+Independent source/config, finite-logged-diagnostics and raw-byte snapshot audit:
+
+```powershell
+@'
+import hashlib, json, math
+from datetime import datetime, timezone
+from pathlib import Path
+
+def read(path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+def digest(path):
+    h = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+records = []
+fields = ("actor_loss", "critic_loss", "alpha", "actor_grad", "critic_grad",
+          "actor_grad_post", "critic_grad_post", "q_mean", "target_mean", "td_abs", "entropy")
+for arm in ("control", "b"):
+    root = Path(f"results/masac_v4_sync_40k_{arm}_cuda_20261105")
+    directory = root / "maneuver_static_1511"
+    checkpoint = directory / "checkpoint_040000"
+    manifest = read(root / "run_manifest.json")
+    saved = read(checkpoint / "manifest.json")
+    completion = read(directory / "completion.json")
+    rows = read(directory / "evaluation_40000.json")
+    progress = [json.loads(line) for line in (directory / "metrics.jsonl").read_text(encoding="utf-8").splitlines()]
+    progress = [row for row in progress if row.get("kind") == "progress"]
+    trained = [row for row in progress if row["updates"] > 0]
+    finite = all(all(key in row and math.isfinite(row[key]) for key in fields) for row in trained)
+    changed = [name for name, expected in manifest["sources"].items() if digest(Path(name)) != expected]
+    config = Path(f"configs/masac_v4/sync_capture_40k_{arm}_cuda_20261105.json")
+    config_match = digest(config) == manifest["config_hashes"]["protocol"]
+    binaries = {}
+    for filename, key in (("checkpoint.pt", "checkpoint_sha256"), ("replay.npz", "replay_sha256")):
+        path = checkpoint / filename
+        observed = digest(path)
+        binaries[filename] = dict(bytes=path.stat().st_size, sha256=observed, matches=observed == saved[key])
+        print("FILE_HASH", arm, path, binaries[filename], flush=True)
+    success = sum(row["success"] for row in rows)
+    valid = (completion["seed"] == 1511 and completion["step"] == 40000
+             and len(rows) == 12 and all(row["step"] == 40000 for row in rows)
+             and abs(completion["final_development_success"] - success / 12) < 1e-12
+             and progress[-1]["step"] == 40000 and progress[-1]["updates"] == 39000
+             and bool(trained) and finite and not changed and config_match
+             and saved["complete"] is True and saved["step"] == 40000 and saved["seed"] == 1511
+             and saved["sources"] == manifest["sources"]
+             and all(item["matches"] for item in binaries.values()))
+    record = dict(arm=arm, seed=1511, step=40000, success_maps=success,
+                  updates=progress[-1]["updates"], logged_trained_progress_rows=len(trained),
+                  finite_logged_diagnostics=finite, changed_sources=changed,
+                  config_match=config_match, snapshot_sources_match_run=saved["sources"] == manifest["sources"],
+                  binaries=binaries, seed_artifact_checks_passed=valid,
+                  current_status=read(root / "status.json"))
+    records.append(record)
+    print("SEED_AUDIT", arm, "success=", success, "/12", "updates=", record["updates"],
+          "finite_logged_diagnostics=", finite, "changed_sources=", changed,
+          "config_match=", config_match, "checks_passed=", valid, flush=True)
+    if not valid:
+        raise RuntimeError(f"Seed artifact verification failed: {arm}")
+out = Path("results/masac_v4_sync_40k_progress_20261105/first_pair_integrity.json")
+out.write_text(json.dumps(dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),
+                              scope="Raw-byte artifact integrity and logged diagnostics only; not exact CUDA resume validation or a study efficacy decision.",
+                              records=records), indent=2, allow_nan=False) + "\n", encoding="utf-8")
+print("ARTIFACT", out.resolve(), flush=True)
+'@ | .\.venv\Scripts\python.exe -u - 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/first_pair_integrity_console.log
+```
+
+All four binary SHA256s matched their manifests; both protocols and14source
+hash sets matched. Both histories have39000 updates and195 finite logged
+post-warmup diagnostics. This verifies byte integrity and recorded numerical
+diagnostics, not exact CUDA resumption. No binary is staged for Git.
+The first-pair note explicitly separates these endpoints from the pending full
+three-seed decision; all original workers and settings remain in use.
