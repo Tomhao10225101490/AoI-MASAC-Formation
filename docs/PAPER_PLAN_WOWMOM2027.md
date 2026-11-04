@@ -1,5 +1,14 @@
 # PAPER_PLAN_WOWMOM2027 — Predictive Maneuverability-Aware MASAC
 
+**2026-11-05 evidence update:** All12 archived L0 development maps have zero
+external moving objects. Full/static cannot identify moving-obstacle prediction;
+new early-replay evidence also exposes neutral-value saturation confounds
+(`L0_CONTENT_IDENTIFIABILITY_AUDIT_20261105.md`). The two-seed2k B/control pilot
+is complete with0/12 final success in all four runs and finite diagnostics.
+The separate fixed40k×3seed static B-off/on protocol tests known potential shaping,
+not predictive-content novelty or a full curriculum. See
+`design/MASAC_V4_SYNC_CAPTURE_40K_PROTOCOL_20261105.md`.
+
 **Created:** 2026-11-04 15:20 Asia/Shanghai  
 **Repo:** https://github.com/Tomhao10225101490/masac-maneuverability  
 **Working branch:** `research/wowmom2027-upgrade` (keep `main` in sync)  

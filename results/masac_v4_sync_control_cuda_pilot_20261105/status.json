@@ -1,0 +1,100 @@
+{
+  "phase": "complete",
+  "complete": true,
+  "scope": "maneuver_static L0 12-map gate",
+  "suite_experiment_id": "masac_v4_sync_capture_control_cuda_20261105",
+  "experiment_id": "masac_v4_sync_capture_control_cuda_20261105_static",
+  "probe_mode": "static",
+  "set_mode": "pool",
+  "runs": [
+    {
+      "seed": 1411,
+      "step": 2000,
+      "final_development_success": 0.0,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    },
+    {
+      "seed": 1422,
+      "step": 2000,
+      "final_development_success": 0.0,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    }
+  ],
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": false,
+  "smoke": false,
+  "finished_at": 1793811760.4740534,
+  "finished_at_asia_shanghai": "2026-11-05 01:02 Asia/Shanghai",
+  "elapsed_s": 279.3694525000001,
+  "authorization": {
+    "date": "2026-11-05",
+    "provenance": "User authorizes B implementation and small validation, with CUDA enabled only after measured speedup. Windows audit benchmark recorded 8.75x over best measured CPU thread count.",
+    "scope": "Small cold-start paired static control vs static+B; no Attention/L1/old-suite rerun or checkpoint continuation."
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start_path": null,
+  "do_not_auto_launch_further": true,
+  "baseline_comparison": {
+    "role": "paired static CUDA control; no shaping",
+    "paired_arm": "masac_v4_sync_capture_pilot_cuda_20261105"
+  },
+  "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+  "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+}

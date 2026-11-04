@@ -1,0 +1,104 @@
+{
+  "version": "masac-v4-scene-v1",
+  "config": {
+    "family": "narrow_crossing",
+    "level": "L0",
+    "world": [
+      240.0,
+      240.0,
+      90.0
+    ],
+    "n_agents": 3,
+    "density": 1.0,
+    "building_height_range": [
+      25.0,
+      70.0
+    ],
+    "corridor_width": 24.0,
+    "turn_orientation": 1,
+    "goal_distance": 40.0,
+    "goal_heading_deg": 0.0,
+    "altitude_difference": 0.0,
+    "dynamic_count": 0,
+    "dynamic_speed": 3.0,
+    "dynamic_motion": "bounce",
+    "dynamic_radius": 2.5,
+    "uav_radius": 1.0,
+    "safety_margin": 0.0,
+    "conflict_degree": 0.0,
+    "sensor_range": 400,
+    "vmax": 10.0,
+    "amax": 4.0,
+    "horizon": 350,
+    "dt": 0.2
+  },
+  "seed": 830005,
+  "boxes": [
+    [
+      [
+        156.0,
+        19.2,
+        0.0
+      ],
+      [
+        204.0,
+        108.0,
+        26.465622671006646
+      ]
+    ],
+    [
+      [
+        156.0,
+        132.0,
+        0.0
+      ],
+      [
+        204.0,
+        220.8,
+        26.465622671006646
+      ]
+    ]
+  ],
+  "starts": [
+    [
+      44.77285994640536,
+      36.1518081083489,
+      30.127123344597845
+    ],
+    [
+      46.98543831244987,
+      123.18516464374167,
+      27.991102327400668
+    ],
+    [
+      51.003964664142096,
+      205.37939964160583,
+      30.155424030995327
+    ]
+  ],
+  "goals": [
+    [
+      84.77285994640536,
+      36.1518081083489,
+      30.127123344597845
+    ],
+    [
+      86.98543831244987,
+      123.18516464374167,
+      27.991102327400668
+    ],
+    [
+      91.0039646641421,
+      205.37939964160583,
+      30.155424030995327
+    ]
+  ],
+  "dynamic_positions": [],
+  "dynamic_velocities": [],
+  "dynamic_radii": [],
+  "object_ids": [
+    "crossing-south",
+    "crossing-north"
+  ],
+  "scene_sha256": "4373b4f33f1682ad56653bb3665c26977f6c767e956c9773a6847acbdd94cddb"
+}

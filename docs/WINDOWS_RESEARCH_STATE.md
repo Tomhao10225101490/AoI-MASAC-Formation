@@ -50,21 +50,40 @@ binaries. Meaningful stages must be committed and pushed to both active branches
 
 ## Current work / next ordered actions
 
-1. Source reviewed and B/CUDA pilot configs frozen. New opt-in B uses bounded
-   worst-agent normalized distance/speed potential; true termination zeros next
-   potential, time-limit truncation retains it to match existing bootstrap mask.
-   Evaluation uses original unshaped env and frozen4/2 latchFalse.
-2. CPU static smoke and CUDA control smoke complete; no further smoke rerun.
-3. Next: paired small CUDA B/control (1411,1422;2000steps each;128warmup/batch;
-   replay4096;static probes), two visible processes with1Torch thread each. Equal budgets/configs, visible
-   logs and all/any arrival, max simultaneous occupancy, failure counts.
-4. Summarize results, finite losses and compute use. Update paper/math/frontier
-   docs. Push only intentional source/docs and compact new result evidence; do
-   not bulk-add extracted historical metrics or assembled archive duplicates.
-5. If small pilot supports a next experiment, state its hypothesis/formulas,
-   controls/seeds/budget/gate and resource plan before launching larger work.
+1. CPU/CUDA smokes and two-arm two-seed2k pilot **COMPLETE**. All four final
+   evals0/12, all-agent-ever-ball0; B/1422 has any-ball1/12, others0. All7,488
+   updates passed the per-update finite guard. No method gain claimed. Reports:
+   `results/masac_v4_sync_pilot_diagnosis_20261105/{summary.json,PILOT_RESULTS.md}`.
+   Two concurrent processes:~15–16steps/s each, GPU84%,~1.5GiB VRAM total,
+   CPU27%,~15.6GiB RAM available at sample. Each process RSS~1.22GB.
+2. **New identification finding:** all12 archived L0 maps have no moving
+   objects and conflict_degree0. On new control/1411@2k sampled128states,
+   moving clearance is constant1 for full versus0 static; peer7204/7296 values
+   equal1. Other channels match in this sample. Not an audit of old final-policy
+   trajectories. See `docs/L0_CONTENT_IDENTIFIABILITY_AUDIT_20261105.md`.
+3. Next registered study **40k ×3seeds ×2arms**, static control/B with fixed
+   lambda.5/tau.1, cold seeds1511/1522/1533, warmup1000, batch128, capacity100000,
+   eval2k, checkpoint10k, CUDA1Torch thread per process,2processes. Plan was
+   summarized visibly before launch. Protocol:
+   `docs/design/MASAC_V4_SYNC_CAPTURE_40K_PROTOCOL_20261105.md` and
+   `configs/masac_v4/sync_capture_40k_{control,b}_cuda_20261105.json`.
+   Intended outputs:
+   `results/masac_v4_sync_40k_control_cuda_20261105` and
+   `results/masac_v4_sync_40k_b_cuda_20261105`. Check their status before launching.
+   Final40k primary; no lambda search/best-checkpoint replacement/auto extension.
+   Reserved test manifest exists, **do not evaluate policies on it yet**.
+4. Commit/push protocol and completed pilot evidence before40k launch. Freeze
+   every file in trainer SOURCES for all six histories; checkpoint hashing reads
+   disk and would otherwise misidentify the loaded code. Analyze/log without
+   editing these sources. Keep output-local status/completion authoritative;
+   legacy shared registry can lose a display pointer under concurrent writes.
+5. After40k, record all seed-paired differences and the preregistered engineering
+   decision (not significance). If no capture floor/signal, call it inconclusive;
+   no automatic budget restack. Proposed constant-fill/peer-CV identification is
+   separate and not queued. Do not bulk-add partially extracted historical
+   untracked metrics or assembled archive duplicates.
 
-Paper edits under review: final suite numbers, Standard-C common empty811@40k
+Paper edits pushed: final suite numbers, Standard-C common empty811@40k
 warm-start confound, POMDP/terminal/bootstrap assumptions, entropy target **-3**,
 19 probes =18 unit directions + zero, static is static-geometry preview, no
 unsupported safety/novelty/superiority claim. Frontier updated from primary sources

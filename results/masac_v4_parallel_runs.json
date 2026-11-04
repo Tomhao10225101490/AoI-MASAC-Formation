@@ -24,8 +24,8 @@
     "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793788906.454365,
-  "updated_at_asia_shanghai": "2026-11-04 18:40 Asia/Shanghai",
+  "updated_at": 1793811764.6784606,
+  "updated_at_asia_shanghai": "2026-11-05 01:02 Asia/Shanghai",
   "load_after": {
     "note": "monitor 2026-11-03 15:43 Asia/Shanghai; Path C L0 FULL PASS 3/3; train pids gone; machine idle"
   },
@@ -467,6 +467,92 @@
       "all_seeds_gate_met": false,
       "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai",
       "note": "COMPLETE gate FAIL 2/3 finals 11/12,10/12,5/12 bests 11@80k,11@58k,9@70k"
+    },
+    {
+      "out": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_control_cuda_pilot_20261105",
+      "pid": 27424,
+      "started_at": 1793811481.094815,
+      "kind": "v4_maneuver_static",
+      "phase": "complete",
+      "experiment_id": "masac_v4_sync_capture_control_cuda_20261105_static",
+      "suite_experiment_id": "masac_v4_sync_capture_control_cuda_20261105",
+      "probe_mode": "static",
+      "set_mode": "pool",
+      "seeds": [
+        1411,
+        1422
+      ],
+      "steps": 2000,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "lock_path": "C:\\research\\masac-maneuverability\\results\\locks\\masac_v4_maneuver_static_masac_v4_sync_control_cuda_pilot_20261105.lock",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_control_cuda_pilot_20261105\\train.log",
+      "authorization": {
+        "date": "2026-11-05",
+        "provenance": "User authorizes B implementation and small validation, with CUDA enabled only after measured speedup. Windows audit benchmark recorded 8.75x over best measured CPU thread count.",
+        "scope": "Small cold-start paired static control vs static+B; no Attention/L1/old-suite rerun or checkpoint continuation."
+      },
+      "do_not_auto_launch_further": true,
+      "caffeinate_pid": null,
+      "completed_at": 1793811760.4826796,
+      "all_seeds_gate_met": false
+    },
+    {
+      "out": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_b_cuda_pilot_20261105",
+      "pid": 11644,
+      "started_at": 1793811491.445148,
+      "kind": "v4_maneuver_static",
+      "phase": "complete",
+      "experiment_id": "masac_v4_sync_capture_pilot_cuda_20261105_static",
+      "suite_experiment_id": "masac_v4_sync_capture_pilot_cuda_20261105",
+      "probe_mode": "static",
+      "set_mode": "pool",
+      "seeds": [
+        1411,
+        1422
+      ],
+      "steps": 2000,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "lock_path": "C:\\research\\masac-maneuverability\\results\\locks\\masac_v4_maneuver_static_masac_v4_sync_b_cuda_pilot_20261105.lock",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_b_cuda_pilot_20261105\\train.log",
+      "authorization": {
+        "date": "2026-11-05",
+        "provenance": "User authorizes B implementation and small validation, with CUDA enabled only after measured speedup. Windows audit benchmark recorded 8.75x over best measured CPU thread count.",
+        "scope": "Small cold-start paired static control vs static+B; no Attention/L1/old-suite rerun or checkpoint continuation."
+      },
+      "do_not_auto_launch_further": true,
+      "caffeinate_pid": null,
+      "completed_at": 1793811764.6784606,
+      "all_seeds_gate_met": false
     }
   ],
   "aborted_rethread_arms": [

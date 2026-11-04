@@ -1,5 +1,14 @@
 # PAPER_OUTLINE_DRAFT — Predictive Maneuverability-Aware MASAC
 
+**2026-11-05 interpretation boundary:** L0's twelve archived development maps
+contain no external moving objects. The existing suite therefore does not
+identify a moving-obstacle prediction effect. New early static replay also
+shows largely neutral/saturated added channels; do not generalize that sample
+to historical final trajectories. The2k B pilot has finite updates but0/12
+final successes in all four seed/arm runs. The registered40k static B-off/on
+comparison tests fixed shaping only. Include these limitations in the abstract,
+ablation interpretation and discussion; see `L0_CONTENT_IDENTIFIABILITY_AUDIT_20261105.md`.
+
 **Draft date:** 2026-11-04 15:20 Asia/Shanghai  
 **Target shape:** IEEE two-column (WoWMoM regular or WIP)  
 **Updated:** 2026-11-05 Asia/Shanghai. All suite numbers below are final TomMac-mini development measurements. Windows B validation is a separate experiment. No predictive superiority, safety, unseen-map generalization or established novelty claim.

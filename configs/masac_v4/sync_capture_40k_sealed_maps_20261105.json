@@ -1,0 +1,65 @@
+{
+  "status": "reserved; no learned-policy evaluation authorized by this manifest",
+  "maps": [
+    {
+      "seed": 2026110501,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110502,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110503,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110504,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110505,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110506,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110507,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110508,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110509,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110510,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110511,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 2026110512,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    }
+  ]
+}

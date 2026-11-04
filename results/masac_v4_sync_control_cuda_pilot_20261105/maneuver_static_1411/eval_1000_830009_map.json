@@ -1,0 +1,117 @@
+{
+  "version": "masac-v4-scene-v1",
+  "config": {
+    "family": "courtyard",
+    "level": "L0",
+    "world": [
+      240.0,
+      240.0,
+      90.0
+    ],
+    "n_agents": 3,
+    "density": 1.0,
+    "building_height_range": [
+      25.0,
+      70.0
+    ],
+    "corridor_width": 24.0,
+    "turn_orientation": 1,
+    "goal_distance": 40.0,
+    "goal_heading_deg": 0.0,
+    "altitude_difference": 0.0,
+    "dynamic_count": 0,
+    "dynamic_speed": 3.0,
+    "dynamic_motion": "bounce",
+    "dynamic_radius": 2.5,
+    "uav_radius": 1.0,
+    "safety_margin": 0.0,
+    "conflict_degree": 0.0,
+    "sensor_range": 400,
+    "vmax": 10.0,
+    "amax": 4.0,
+    "horizon": 350,
+    "dt": 0.2
+  },
+  "seed": 830009,
+  "boxes": [
+    [
+      [
+        156.0,
+        72.0,
+        0.0
+      ],
+      [
+        164.4,
+        168.0,
+        58.028456545741975
+      ]
+    ],
+    [
+      [
+        156.0,
+        72.0,
+        0.0
+      ],
+      [
+        208.8,
+        80.4,
+        58.028456545741975
+      ]
+    ],
+    [
+      [
+        156.0,
+        159.6,
+        0.0
+      ],
+      [
+        208.8,
+        168.0,
+        58.028456545741975
+      ]
+    ]
+  ],
+  "starts": [
+    [
+      46.58450379275402,
+      32.341556836871064,
+      28.265874338298055
+    ],
+    [
+      46.02623521946174,
+      121.52385573438099,
+      30.365779898461593
+    ],
+    [
+      48.77068809630019,
+      207.78216999520288,
+      29.752174837579382
+    ]
+  ],
+  "goals": [
+    [
+      86.58450379275402,
+      32.341556836871064,
+      28.265874338298055
+    ],
+    [
+      86.02623521946174,
+      121.52385573438099,
+      30.365779898461593
+    ],
+    [
+      88.77068809630019,
+      207.78216999520288,
+      29.752174837579382
+    ]
+  ],
+  "dynamic_positions": [],
+  "dynamic_velocities": [],
+  "dynamic_radii": [],
+  "object_ids": [
+    "courtyard-back",
+    "courtyard-south",
+    "courtyard-north"
+  ],
+  "scene_sha256": "19306765afd4d3c2ca17436a1a979159419d9a5ad1e7a6711915ad070874e5bc"
+}
