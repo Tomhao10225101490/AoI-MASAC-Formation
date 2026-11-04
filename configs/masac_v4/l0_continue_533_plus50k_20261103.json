@@ -1,0 +1,128 @@
+{
+  "experiment_id": "l0_continue_533_plus50k_20261103",
+  "title": "V4 L0 Standard continuation: seed 533 from checkpoint_050000 +50k",
+  "created_at_asia_shanghai": "2026-11-03 12:13:37 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "choice": "B",
+    "widget_answer_id": "t0s9",
+    "date": "2026-11-03",
+    "provenance": "User widget answer choosing B after L0 gate FAILED; NOT silent failure_action expand.",
+    "allowed_scope": "Write new auditable protocol then continue Standard L0 training only.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware arms",
+      "Critic A/B diagnosis",
+      "L1 escalation",
+      "Silent further budget stacking without new user authorization"
+    ]
+  },
+  "parent_run": {
+    "results_dir": "results/masac_v4_l0_legacy_50k_20261103_102637",
+    "experiment_id": "v4_l0_legacy_20261103",
+    "protocol": "configs/masac_v4/l0_protocol.json",
+    "final_evals": {
+      "511": "1/12 (0.0833)",
+      "522": "1/12 (0.0833)",
+      "533": "6/12 (0.5)"
+    },
+    "gate_threshold": 0.6,
+    "gate_met": false,
+    "diagnosis_dir": "results/masac_v4_l0_legacy_50k_gate_diagnosis_20261103",
+    "rationale_for_533": "Only seed with nonzero team successes; late jump observed 48k\u219250k; highest EV continuation."
+  },
+  "mode": "legacy standard",
+  "observation": "Standard (Pooling / legacy observation); no attention; no maneuverability features",
+  "level": "L0",
+  "smoke": false,
+  "primary_arm": {
+    "name": "resume_533_plus50k",
+    "seed_list": [
+      533
+    ],
+    "resume_from": "results/masac_v4_l0_legacy_50k_20261103_102637/standard_533/checkpoint_050000",
+    "resume_checkpoint_candidates": [
+      "results/masac_v4_l0_legacy_50k_20261103_102637/standard_533/checkpoint_050000",
+      "results/masac_v4_l0_legacy_50k_20261103_102637/standard_533/checkpoints/checkpoint_050000",
+      "results/masac_v4_l0_legacy_50k_20261103_102637/seed_533/checkpoint_050000"
+    ],
+    "parent_steps_completed": 50000,
+    "extra_steps": 50000,
+    "target_total_steps": 100000,
+    "warmup": 0,
+    "note": "Warmup should not re-apply from scratch when resuming a trained checkpoint; confirm runner behavior on launch."
+  },
+  "secondary_arm_documented_not_launched": {
+    "name": "fresh_three_seed_100k_standard_l0",
+    "seed_list": [
+      511,
+      522,
+      533
+    ],
+    "resume_from": null,
+    "steps_per_seed": 100000,
+    "launch_now": false,
+    "fallback_if": "Primary resume impossible (missing checkpoint or no resume CLI). Then launch under a NEW experiment id and record why.",
+    "suggested_experiment_id_if_fallback": "l0_fresh_100k_standard_20261103"
+  },
+  "training_constants_inherited_from_parent": {
+    "replay_capacity": 100000,
+    "architecture": "legacy Pooling MASAC / SharedMASAC",
+    "maps": "same fixed L0 development maps as parent (map seeds 830001\u2013830012)",
+    "development_map_seeds": [
+      830001,
+      830002,
+      830003,
+      830004,
+      830005,
+      830006,
+      830007,
+      830008,
+      830009,
+      830010,
+      830011,
+      830012
+    ]
+  },
+  "eval_gate": {
+    "metric": "joint team success on the 12 L0 development maps",
+    "threshold_per_seed": 0.6,
+    "require_all_seeds_in_run": true,
+    "this_run_seeds": [
+      533
+    ],
+    "pass_condition": "seed 533 final development success >= 0.6 (at least 8/12)",
+    "report_rule": "Report raw N/12; do not hide failure behind pooled averages",
+    "on_fail": "failure_action=save_and_diagnose; NO auto further budget"
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze evidence; do NOT auto-start Attention/maneuver/L1; await explicit authorization",
+  "links": {
+    "frozen_base_protocol": "configs/masac_v4/l0_protocol.json",
+    "train_entry": "scripts/train_masac_v4_l0.py",
+    "prior_diagnosis": "results/masac_v4_l0_legacy_50k_gate_diagnosis_20261103",
+    "parent_results": "results/masac_v4_l0_legacy_50k_20261103_102637",
+    "protocol_note_md": "configs/masac_v4/l0_continue_533_plus50k_20261103.md"
+  },
+  "machine_target": {
+    "preferred": "TomMac-mini.local",
+    "machineId": "c70e463e-5629-4769-84af-f0ba33183f85",
+    "project_path": "/Users/a1/Desktop/research/MASAC",
+    "branch": "research/wowmom2027-upgrade"
+  },
+  "launch_status_at_protocol_write": {
+    "training_started": false,
+    "note": "Will launch immediately after this protocol update on TomMac-mini"
+  },
+  "runner": {
+    "frozen_entry_unchanged": "scripts/train_masac_v4_l0.py",
+    "continuation_entry": "scripts/train_masac_v4_l0_continue.py",
+    "why_new_entry": "Frozen validate_protocol hardcodes steps=50000; resume from checkpoint_050000 would train 0 steps. Changing frozen script would break checkpoint source hashes. New continue entry keeps frozen hashes and adds --extra-steps.",
+    "cli": {
+      "protocol": "configs/masac_v4/l0_protocol.json",
+      "authorization_protocol": "configs/masac_v4/l0_continue_533_plus50k_20261103.json",
+      "resume": "results/masac_v4_l0_legacy_50k_20261103_102637/standard_533/checkpoint_050000",
+      "extra_steps": 50000
+    }
+  }
+}

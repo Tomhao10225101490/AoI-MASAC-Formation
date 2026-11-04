@@ -48,11 +48,14 @@ cannot be "finished" and then succeeded somewhere else.
 
 from __future__ import annotations
 
+import copy
 import math
 from dataclasses import dataclass, field, fields
 
 import numpy as np
 
+from communication import Airtime, CallbackLink, Packet, SlottedRadio, link_seed
+from communication.voi import beacon_value, choose_sender, slotted_forward_value
 from envs.belief import LeaderBelief
 from envs.channel import packet_success_probability
 from envs.geometry import (
@@ -105,9 +108,8 @@ class ObsIndex:
     # Kept so the rest of the vector does not shift. Always written as 0.
     # Predicted blockage used to live here and was visible to every baseline.
     PRED_NLOS = 18
-    # Freshest leader packet in the team, divided by aoi_cap. Written for
-    # belief modes only; every other mode stores 0. This is the trigger a
-    # relay policy needs, and it does not reveal the leader's true pose.
+    # Privileged freshest team age. Zero unless oracle_team_aoi is enabled.
+    # A deployed policy must obtain such information through a priced protocol.
     TEAM_AOI = 34
     SLOT_X = 19
     SLOT_Y = 20
@@ -124,7 +126,18 @@ class ObsIndex:
     TEAMMATE_DIST = 31
     TEAMMATE_PRESENT = 32
     IS_LEADER = 33
-    OBS_START = 35
+    # Local delivered-cache state. These fields are derived from this
+    # aircraft's own cache only; no remote current age is exposed.
+    CACHE_PRESENT = 35
+    CACHE_AGE = 36
+    CACHE_STD_X = 37
+    CACHE_STD_Y = 38
+    CACHE_STD_Z = 39
+    # Cyclic eligibility is public schedule state. The last-transmit-age is
+    # local history, not the current state of another aircraft.
+    COMM_ELIGIBLE = 40
+    COMM_LAST_TX_AGE = 41
+    OBS_START = 42
     # rel_x, rel_y, rel_z, vx, vy, vz, radius, height, present
     OBS_FEATS = 9
 
@@ -151,6 +164,7 @@ def global_state_dim(
         + 3 * max_waypoints
         + 8 * max_obstacles
         + 12 * n_followers
+        + 5 * n_followers
     )
 
 
@@ -193,7 +207,10 @@ class EnvConfig:
     randomize_channel: bool = True
     p0_low: float = 0.45
     p0_high: float = 1.0
+    # Observation normalization only; stored age and metrics remain uncapped.
     aoi_cap: int = 40
+    # Privileged reference only: no protocol for gathering team ages is modeled.
+    oracle_team_aoi: bool = False
     obs_mode: str = "belief"
     use_aoi: bool = True
     nlos_q_scale: float = 4.0
@@ -266,15 +283,35 @@ class EnvConfig:
     # (envs/scenario.py) that replace obstacles, waypoints, offsets, start.
     scenario: str = "transit"
     # "off": no relay. "free": every follower rebroadcasts every step. That
-    # is an upper bound, four extra transmissions and no collisions.
+    # is a larger-resource reference, not a proven control-performance bound.
     # "beacon": the leader still speaks every step. On a separate neighbour
     # channel, exactly one follower beacons every ``relay_period`` steps,
-    # the one chosen by ``beacon_select``. Formation flying already sends
-    # that beacon. "tdma": the beacon takes the leader's slot instead.
+    # the one chosen by ``beacon_select``. "tdma" takes the leader's slot.
+    # Freshest selection and the AoI gate assume an oracle team-age scheduler.
+    # All relay payloads arrive one dt after sending; no MAC contention is modeled.
     follower_relay: bool = False
     relay_mode: str = "off"
     relay_period: int = 2
+    # "voi" uses current receiver ages/covariances and geometry (a privileged
+    # reference); "voi_local" uses only the sender's own belief and the known
+    # formation geometry. Both are myopic one-step expected-variance scores.
     beacon_select: str = "freshest"
+    # Minimum expected one-step slot-variance reduction (m^2) to spend a
+    # neighbour beacon. Zero means "transmit whenever strictly useful".
+    beacon_voi_threshold: float = 0.0
+    # Weight on the covariance term relative to the unit "one newer packet
+    # delivered" term. Zero is an age-and-geometry selector; large values
+    # approach a pure variance-reduction selector. The default is a
+    # diagnostic value, not a tuned paper setting.
+    beacon_voi_uncertainty_weight: float = 1.0
+    # Periodic status reports for the feedback-assisted selector. A report
+    # carries the source generation, position and velocity of one follower.
+    # 0 disables reports; "voi_feedback" requires a positive period. Reports
+    # use a separate control channel in this model; the byte overhead is
+    # counted, but no control-channel collision or queueing is simulated.
+    beacon_feedback_period: int = 0
+    beacon_feedback_delay: int = 1
+    beacon_feedback_bytes: int = 24
     # On a TDMA relay slot, hand the slot back to the leader when the freshest
     # follower packet is younger than this many steps. Negative means the
     # scheduled relay slot is always used.
@@ -294,6 +331,30 @@ class EnvConfig:
     shared_formation_reward: bool = False
     # Residual policy commands altitude only. Lateral axes stay with the tracker.
     residual_vertical_only: bool = False
+    # "legacy" retains the original immediate-link simulator. "slotted" routes
+    # source and forwarded packets through communication.SlottedRadio and adds
+    # one learned transmit/idle action for the cyclically eligible follower.
+    radio_model: str = "legacy"
+    radio_rate_bps: float = 128000.0
+    radio_payload_bytes: int = 48
+    radio_header_bytes: int = 8
+    radio_control_bytes: int = 16
+    radio_guard_seconds: float = 0.002
+    # A 48-byte estimate packet costs 0.0045 s + 0.002 s guard at 128 kbps
+    # before headers/control are included. This cap admits one charged packet.
+    radio_budget_seconds: float = 0.008
+    radio_latency_slots: int = 1
+    radio_tx_threshold: float = 0.0
+    # "action": the learned/scripted communication action decides.
+    # "voi"/"voi_local": the environment's analytical one-step score decides,
+    # which is what makes a scripted source-vs-forward comparison possible
+    # without a torch learner.
+    radio_tx_policy: str = "action"
+    radio_voi_threshold: float = 0.0
+    # Candidate-C stage C1: the follower tracker follows its delivered belief
+    # with zero residual. Movement action coordinates are masked to zero, so
+    # the learned decision is communication only.
+    communication_only: bool = False
 
     def __post_init__(self) -> None:
         if self.scenario == "canyon":
@@ -311,8 +372,31 @@ class EnvConfig:
             self.relay_mode = "free"
         if self.relay_mode not in ("off", "free", "tdma", "beacon"):
             raise ValueError(f"unknown relay_mode {self.relay_mode!r}")
-        if self.beacon_select not in ("freshest", "random", "round"):
+        if self.beacon_select not in (
+            "freshest", "random", "round", "voi", "voi_local",
+            "voi_nounc", "voi_nogeo", "voi_gap", "voi_status",
+            "voi_feedback", "fixed", "self_elect", "self_elect_nogeo",
+            "self_elect_oracle", "solicited", "solicited_random",
+            "solicited_oracle", "solicited_broadcast",
+            "solicited_broadcast_stale",
+        ):
             raise ValueError(f"unknown beacon_select {self.beacon_select!r}")
+        if self.beacon_feedback_period < 0:
+            raise ValueError("beacon_feedback_period must be non-negative")
+        if self.beacon_feedback_delay < 0:
+            raise ValueError("beacon_feedback_delay must be non-negative")
+        if self.beacon_feedback_bytes < 0:
+            raise ValueError("beacon_feedback_bytes must be non-negative")
+        if self.beacon_select == "voi_feedback" and self.beacon_feedback_period < 1:
+            raise ValueError("voi_feedback requires beacon_feedback_period >= 1")
+        if self.beacon_voi_threshold < 0.0:
+            raise ValueError("beacon_voi_threshold must be non-negative")
+        if self.beacon_voi_uncertainty_weight < 0.0:
+            raise ValueError("beacon_voi_uncertainty_weight must be non-negative")
+        if self.radio_tx_policy not in ("action", "voi", "voi_local"):
+            raise ValueError(f"unknown radio_tx_policy {self.radio_tx_policy!r}")
+        if self.radio_voi_threshold < 0.0:
+            raise ValueError("radio_voi_threshold must be non-negative")
         if self.relay_mode == "tdma" and self.relay_period < 2:
             raise ValueError("relay_period must be >= 2 in tdma mode")
         if self.relay_period < 1:
@@ -376,6 +460,18 @@ class EnvConfig:
             raise ValueError("follower_mode must be 'learned', 'slot', or 'residual'")
         if self.collision_step_penalty < 0.0:
             raise ValueError("collision_step_penalty must be non-negative")
+        if self.radio_model not in ("legacy", "slotted"):
+            raise ValueError("radio_model must be 'legacy' or 'slotted'")
+        if self.radio_rate_bps <= 0.0 or self.radio_budget_seconds <= 0.0:
+            raise ValueError("radio rate and budget must be positive")
+        if self.radio_payload_bytes < 1:
+            raise ValueError("radio_payload_bytes must be positive")
+        if self.radio_header_bytes < 0 or self.radio_control_bytes < 0:
+            raise ValueError("radio byte overhead must be non-negative")
+        if self.radio_guard_seconds < 0.0 or self.radio_latency_slots < 1:
+            raise ValueError("radio guard must be non-negative and latency at least one slot")
+        if self.communication_only and self.radio_model != "slotted":
+            raise ValueError("communication_only requires radio_model='slotted'")
 
 
 def env_config_from_dict(data: dict) -> EnvConfig:
@@ -469,6 +565,34 @@ class _Link:
     # "los", "overfly" (roof at or below the ceiling), or "impassable"
     # (roof above the ceiling). Impassable wins if one segment hits both.
     block_class: str = "los"
+    # Original source generation slot in the local packet cache.
+    source_tick: int = 0
+
+
+@dataclass(frozen=True)
+class _PacketContext:
+    """Simulator-side immutable payload paired with a SlottedRadio packet."""
+
+    measurement: tuple[float, float, float, float, float, float, float]
+
+
+@dataclass(frozen=True)
+class _RelayPacket:
+    """One successfully transmitted payload awaiting its one-step arrival.
+
+    The payload estimates the leader at reference_step, but its last actual
+    source measurement was generated at generation_step. Forwarding never
+    changes generation_step. Age is evaluated at the receiving control tick.
+    """
+
+    sender: int
+    receiver: int
+    generation_step: int
+    reference_step: int
+    delivery_step: int
+    mean: np.ndarray
+    covariance: np.ndarray
+    measurement: tuple[float, ...]
 
 
 class UAVFormationEnv:
@@ -478,7 +602,10 @@ class UAVFormationEnv:
         self.cfg = config if config is not None else EnvConfig()
         self.n_followers = int(self.cfg.n_followers)
         self.n_agents = self.n_followers + 1
-        self.action_dim = 3
+        self.movement_dim = 3
+        self.communication_dim = 1 if self.cfg.radio_model == "slotted" else 0
+        self.action_dim = self.movement_dim + self.communication_dim
+        self._uses_slotted_radio = self.cfg.radio_model == "slotted"
         self.obs_dim = ObsIndex.dim(self.cfg.n_nearest_obstacles)
         self.obs_dims = [self.obs_dim] * self.n_agents
         self.global_dim = global_state_dim(
@@ -504,6 +631,8 @@ class UAVFormationEnv:
         self.uavs: list[_UAV] = []
         self.obstacles: list[_Obstacle] = []
         self.links: list[_Link] = []
+        self._slotted_radio: SlottedRadio | None = None
+        self._packet_context: dict[tuple[int, int], _PacketContext] = {}
         self._wp_index = 0
         self._wp_done = 0
         self._step_count = 0
@@ -537,8 +666,6 @@ class UAVFormationEnv:
         # followers do with the shared generator.
         self._jink_rng = np.random.default_rng(int(self._rng.integers(2**31)))
         self._relay_rng = np.random.default_rng(int(self._rng.integers(2**31)))
-        self._relay_ok = 0
-        self._relay_attempts = 0
         self._jink = np.zeros(2, dtype=np.float64)
         self._apply_options(options or {})
         self._maybe_resample_canyon()
@@ -549,6 +676,8 @@ class UAVFormationEnv:
         self._deliver_initial_leader_state()
         self._step_count = 0
         self._reset_stat_counters()
+        self._seed_feedback_reports()
+        self._reset_slotted_radio()
         self._sample_wind_obs()
         self._prev_wp_dist = self._waypoint_distance()
         self._prev_form_err = self._formation_errors()
@@ -566,7 +695,17 @@ class UAVFormationEnv:
             raise ValueError("actions contain NaN or Inf")
         actions = np.array(np.clip(actions, -1.0, 1.0), dtype=np.float64, copy=True)
         policy_actions = actions.copy()
+        radio_action = None
+        if self._uses_slotted_radio:
+            if self.cfg.communication_only:
+                policy_actions[:, : self.movement_dim] = 0.0
+            radio_action = self._materialize_radio_action(policy_actions)
         actions = self._realized_actions(actions)
+        if self.cfg.leader_mode == "route":
+            # The leader actor is not executed. Replay must store the action
+            # that actually drove the transition, or the centralized critic
+            # conditions on a counterfactual leader command.
+            policy_actions[0] = actions[0]
 
         self._sample_wind_obs()
         self._integrate(actions)
@@ -579,7 +718,11 @@ class UAVFormationEnv:
         wp_dist_before = self._waypoint_distance()
         captured = self._advance_waypoints()
         wp_dist_after = self._waypoint_distance()
-        packet_ok = self._update_channel()
+        packet_ok = (
+            self._update_slotted_radio(radio_action)
+            if self._uses_slotted_radio
+            else self._update_channel()
+        )
         errors = self._formation_errors()
         rewards = self._rewards(
             actions=actions,
@@ -633,6 +776,8 @@ class UAVFormationEnv:
         info["waypoints_done"] = int(self._wp_done)
         info["executed_actions"] = actions.astype(np.float32, copy=True)
         info["policy_actions"] = policy_actions.astype(np.float32, copy=True)
+        if self._uses_slotted_radio:
+            info["radio"] = self._slotted_radio_info()
         if terminated or truncated:
             info["episode"] = self._episode_dict(
                 success,
@@ -690,7 +835,7 @@ class UAVFormationEnv:
             m = link.belief.mean
             parts.extend(
                 [
-                    link.aoi / cfg.aoi_cap,
+                    min(link.aoi, cfg.aoi_cap) / cfg.aoi_cap,
                     m[0] / cfg.map_width,
                     m[1] / cfg.map_height,
                     m[2] / self.alt_scale,
@@ -706,6 +851,30 @@ class UAVFormationEnv:
                     # off, the link is not treated as blocked. Actors do not
                     # receive this bit.
                     float(link.blocked if self.ep_use_blockage else 0.0),
+                ]
+            )
+        next_slot = self._next_radio_slot()
+        eligible = self._eligible_follower_for_slot(next_slot, self.n_followers)
+        for i in range(self.n_followers):
+            present, cache_age = self._cache_state(i)
+            last_tx_age = (
+                int(self._slotted_radio.slot - self._last_tx_slot[i])
+                if self._slotted_radio is not None and self._last_tx_slot[i] >= 0
+                else cfg.aoi_cap
+            )
+            parts.extend(
+                [
+                    float(present),
+                    min(cache_age if cache_age is not None else cfg.aoi_cap, cfg.aoi_cap)
+                    / cfg.aoi_cap,
+                    min(last_tx_age, cfg.aoi_cap) / cfg.aoi_cap,
+                    float(i == eligible),
+                    (
+                        self._slotted_radio.pending_count(i + 1, 0)
+                        / max(1, cfg.radio_latency_slots)
+                        if self._slotted_radio is not None
+                        else 0.0
+                    ),
                 ]
             )
         state = np.asarray(parts, dtype=np.float32)
@@ -1045,7 +1214,9 @@ class UAVFormationEnv:
         """Replace scripted agents. The buffer must store these, not the raw policy."""
         if self.cfg.leader_mode == "route":
             x, y, z, brake = self._avoid(self.uavs[0], *self._route_aim())
-            actions[0] = self._track_action(self.uavs[0], x, y, z, brake=brake)
+            actions[0, : self.movement_dim] = self._track_action(
+                self.uavs[0], x, y, z, brake=brake
+            )
             if self.ep_leader_jink > 0.0:
                 if self._step_count % max(1, self.cfg.leader_jink_hold) == 0:
                     self._jink = self._jink_rng.uniform(-1.0, 1.0, size=2) * self.ep_leader_jink
@@ -1065,7 +1236,7 @@ class UAVFormationEnv:
                     leader.v * math.cos(leader.heading) + self.wind_x,
                     leader.v * math.sin(leader.heading) + self.wind_y,
                 )
-                actions[i + 1] = self._slot_track_action(
+                actions[i + 1, : self.movement_dim] = self._slot_track_action(
                     self.uavs[i + 1], slots[i], leader.heading, ground
                 )
         elif self.cfg.follower_mode == "residual":
@@ -1078,12 +1249,14 @@ class UAVFormationEnv:
                 # Zero policy = follow the believed slot. A large command
                 # replaces the tracker on that axis instead of being added
                 # to an already-saturated command.
-                command = np.array(actions[i + 1], copy=True)
+                command = np.array(actions[i + 1, : self.movement_dim], copy=True)
                 if self.cfg.residual_vertical_only:
                     command[0] = 0.0
                     command[1] = 0.0
                 gate = np.abs(command)
-                actions[i + 1] = np.clip(nominal * (1.0 - gate) + command, -1.0, 1.0)
+                actions[i + 1, : self.movement_dim] = np.clip(
+                    nominal * (1.0 - gate) + command, -1.0, 1.0
+                )
         return actions
 
     def _believed_slot(self, follower_index: int) -> tuple[float, float, float]:
@@ -1308,9 +1481,282 @@ class UAVFormationEnv:
         if cleared:
             self._overfly_cleared_steps += 1
 
+    def _reset_slotted_radio(self) -> None:
+        """Rebuild the charged packet network and its documented initial sync."""
+        self._slotted_radio: SlottedRadio | None = None
+        self._packet_context: dict[tuple[int, int], _PacketContext] = {}
+        if not self._uses_slotted_radio:
+            return
+        cfg = self.cfg
+        links = {}
+        edges = [(0, receiver) for receiver in range(1, self.n_agents)]
+        edges.extend(
+            (sender, receiver)
+            for sender in range(1, self.n_agents)
+            for receiver in range(1, self.n_agents)
+            if sender != receiver
+        )
+        radio_seed = int(self._rng.integers(2**31))
+        for sender, receiver in edges:
+            links[(sender, receiver)] = CallbackLink(
+                probability_at=lambda _slot, s=sender, r=receiver: self._radio_probability(s, r),
+                seed=link_seed(radio_seed, sender, receiver),
+            )
+        self._slotted_radio = SlottedRadio(
+            links,
+            Airtime(
+                rate_bps=cfg.radio_rate_bps,
+                header_bytes=cfg.radio_header_bytes,
+                control_bytes=cfg.radio_control_bytes,
+                guard_seconds=cfg.radio_guard_seconds,
+            ),
+            slot_seconds=cfg.dt,
+            budget_seconds=cfg.radio_budget_seconds,
+            latency_slots=cfg.radio_latency_slots,
+        )
+        initial = self._make_source_packet(0)
+        for receiver in range(1, self.n_agents):
+            self._slotted_radio.seed_cache(receiver, initial)
+            link = self.links[receiver - 1]
+            link.aoi = 0
+            link.source_tick = 0
+
+    def _radio_probability(self, sender: int, receiver: int) -> float:
+        tx = self.uavs[sender]
+        rx = self.uavs[receiver]
+        blocked = bool(
+            self.ep_use_blockage
+            and self.ep_channel_mode == "distance"
+            and self._radio_blocked(tx.x, tx.y, tx.z, rx.x, rx.y, rx.z)
+        )
+        return packet_success_probability(
+            self._uav_distance(tx, rx),
+            self.ep_p0,
+            self.ep_d0,
+            self.ep_channel_mode,
+            blocked=blocked,
+            nlos_factor=self.ep_nlos_factor,
+        )
+
+    @staticmethod
+    def _eligible_follower_for_slot(slot: int, n_followers: int) -> int:
+        """Cyclic, decentralized eligibility; slot 1 starts with follower 0."""
+        return (int(slot) - 1) % int(n_followers)
+
+    def _next_radio_slot(self) -> int:
+        return self._step_count + 1
+
+    def _materialize_radio_action(self, policy_actions: np.ndarray) -> dict:
+        """Mask the policy vector to the one legal communication decision."""
+        slot = self._next_radio_slot()
+        eligible = self._eligible_follower_for_slot(slot, self.n_followers)
+        if self.cfg.radio_tx_policy == "action":
+            requested = bool(
+                policy_actions[eligible + 1, self.movement_dim]
+                > float(self.cfg.radio_tx_threshold)
+            )
+        else:
+            # Analytical scripts and diagnostic arms can drive the same
+            # environment through the one-step value score. This is not a
+            # learned policy and must be labelled accordingly.
+            value = self._slotted_voi_value(
+                eligible, slot, local=self.cfg.radio_tx_policy == "voi_local"
+            )
+            self._voi_last_score = float(value)
+            self._voi_opportunities += 1
+            requested = bool(value > float(self.cfg.radio_voi_threshold))
+            if requested:
+                self._voi_tx_count += 1
+        # Non-eligible transmit attempts and the leader's communication slot
+        # never enter the replay action. This keeps Q's action support legal.
+        policy_actions[:, self.movement_dim] = 0.0
+        policy_actions[eligible + 1, self.movement_dim] = 1.0 if requested else -1.0
+        return {
+            "slot": slot,
+            "eligible": eligible,
+            "requested": requested,
+        }
+
+    def _make_source_packet(self, slot: int) -> Packet:
+        leader = self.uavs[0]
+        packet = Packet(
+            0,
+            int(slot),
+            bytes(int(self.cfg.radio_payload_bytes)),
+        )
+        self._packet_context[(0, int(slot))] = _PacketContext(
+            (
+                leader.x,
+                leader.y,
+                leader.z,
+                leader.v * math.cos(leader.heading),
+                leader.v * math.sin(leader.heading),
+                leader.vz,
+                leader.heading,
+            )
+        )
+        return packet
+
+    def _packet_measurement(self, packet: Packet) -> tuple[float, ...]:
+        context = self._packet_context.get((packet.source, packet.generated_at))
+        if context is None:
+            raise RuntimeError(
+                f"missing payload context for source={packet.source}, "
+                f"generated_at={packet.generated_at}"
+            )
+        return context.measurement
+
+    def _update_slotted_radio(self, radio_action: dict) -> np.ndarray:
+        """Advance delivery, update local beliefs, then charge one broadcast."""
+        assert self._slotted_radio is not None
+        radio = self._slotted_radio
+        cfg = self.cfg
+        slot = radio_action["slot"]
+        eligible = int(radio_action["eligible"])
+        deliveries = radio.advance()
+        if radio.slot != slot:
+            raise RuntimeError(f"radio slot {radio.slot} != expected {slot}")
+
+        direct_ok = np.zeros(self.n_followers, dtype=np.float32)
+        accepted_receivers: set[int] = set()
+        for delivery in sorted(deliveries, key=lambda item: (item.receiver, item.packet.generated_at)):
+            receiver = delivery.receiver
+            if delivery.sender > 0:
+                self._relay_decoded += 1
+            if not delivery.accepted:
+                continue
+            accepted_receivers.add(receiver)
+            context = self._packet_measurement(delivery.packet)
+            link = self.links[receiver - 1]
+            link.belief.reset_from_measurement(*context)
+            for _ in range(max(0, slot - delivery.packet.generated_at)):
+                self._predict_belief(link, self.uavs[receiver])
+            link.source_tick = int(delivery.packet.generated_at)
+            if delivery.sender == 0:
+                direct_ok[receiver - 1] = 1.0
+            else:
+                self._relay_ok += 1
+
+        for i, link in enumerate(self.links):
+            follower = self.uavs[i + 1]
+            block_class = self._block_class(
+                self.uavs[0].x,
+                self.uavs[0].y,
+                self.uavs[0].z,
+                follower.x,
+                follower.y,
+                follower.z,
+            )
+            link.block_class = block_class
+            link.blocked = int(block_class != "los")
+            if link.blocked:
+                self._nlos_count += 1
+            receiver = i + 1
+            if receiver not in accepted_receivers:
+                self._predict_belief(link, follower)
+            age = radio.age(receiver, 0)
+            link.aoi = int(age if age is not None else link.aoi + 1)
+            if receiver in accepted_receivers:
+                if self._outage_streak[i] > 0:
+                    self._outage_lengths.append(int(self._outage_streak[i]))
+                self._outage_streak[i] = 0
+            else:
+                self._outage_streak[i] += 1
+
+        relayed = False
+        self._last_leader_slot = False
+        self._last_relay_slot = False
+        self._last_radio_reason = ""
+        if radio_action["requested"]:
+            sender = eligible + 1
+            cached = radio.cached_packet(sender, 0)
+            if cached is not None:
+                receivers = tuple(k for k in range(1, self.n_agents) if k != sender)
+                tx = radio.broadcast(sender, cached, receivers)
+                self._radio_forward_requests += 1
+                if tx.admitted:
+                    relayed = True
+                    self._last_relay_slot = True
+                    self._last_tx_slot[eligible] = slot
+                    self._relay_tx_count += 1
+                    self._relay_attempts += len(receivers)
+                    self._relay_decode_at_tx += len(tx.decoded_receivers)
+                    self._last_radio_reason = "forwarded"
+                else:
+                    self._radio_reject_count += 1
+                    self._last_radio_reason = tx.reason
+
+        if not relayed:
+            packet = self._make_source_packet(slot)
+            tx = radio.broadcast(0, packet, tuple(range(1, self.n_agents)))
+            if tx.admitted:
+                self._leader_tx_count += 1
+                self._packets_attempted += self.n_followers
+                self._last_leader_slot = True
+                direct_ok[:] = np.isin(
+                    np.arange(1, self.n_agents), np.asarray(tx.decoded_receivers)
+                ).astype(np.float32)
+                self._packets_ok += int(direct_ok.sum())
+                self._last_radio_reason = "source"
+            else:
+                self._radio_reject_count += 1
+                self._last_radio_reason = tx.reason
+
+        for i, link in enumerate(self.links):
+            self._belief_std_sum += float(np.mean(self._slot_std(i)))
+            self._aoi_sum += link.aoi
+            self._aoi_max = max(self._aoi_max, link.aoi)
+        return direct_ok
+
+    def _cache_state(self, follower_index: int) -> tuple[bool, int | None]:
+        if self._slotted_radio is None:
+            return False, None
+        packet = self._slotted_radio.cached_packet(follower_index + 1, 0)
+        if packet is None:
+            return False, None
+        return True, int(self._slotted_radio.slot - packet.generated_at)
+
+    def _slotted_radio_info(self) -> dict:
+        radio = self._slotted_radio
+        if radio is None:
+            return {}
+        return {
+            "slot": int(radio.slot),
+            "eligible_follower": int(
+                self._eligible_follower_for_slot(self._next_radio_slot(), self.n_followers)
+            ),
+            "source_timestamps": np.array(
+                [
+                    link.source_tick
+                    for link in self.links
+                ],
+                dtype=np.int64,
+            ),
+            "cache_ages": np.array(
+                [
+                    -1 if self._cache_state(i)[1] is None else int(self._cache_state(i)[1])
+                    for i in range(self.n_followers)
+                ],
+                dtype=np.int64,
+            ),
+            "used_seconds": float(radio.used_seconds),
+            "budget_seconds": float(radio.budget_seconds),
+            "total_airtime_seconds": float(radio.total_airtime_seconds),
+            "broadcast_count": int(radio.broadcast_count),
+            "last_reason": self._last_radio_reason,
+        }
+
     def _update_channel(self) -> np.ndarray:
         leader = self.uavs[0]
         ok = np.zeros(self.n_followers, dtype=np.float32)
+        # One radio decision per control tick, before any receiver age changes.
+        leader_slot = self._leader_slot()
+        relay_slot = self._relay_slot(leader_slot)
+        self._last_leader_slot = leader_slot
+        self._last_relay_slot = relay_slot
+        if leader_slot:
+            self._leader_tx_count += 1
+            self._packets_attempted += self.n_followers
         for i, link in enumerate(self.links):
             follower = self.uavs[i + 1]
             dist = math.dist(
@@ -1337,7 +1783,6 @@ class UAVFormationEnv:
             )
             # A TDMA relay slot is taken from the leader: time passes and the
             # belief coasts, but no leader packet is offered.
-            leader_slot = self._leader_slot()
             success = bool(leader_slot and self._rng.random() < p)
             if success:
                 if self._outage_streak[i] > 0:
@@ -1359,18 +1804,17 @@ class UAVFormationEnv:
                 ok[i] = 1.0
             else:
                 self._predict_belief(link, follower)
-                link.aoi = int(min(link.aoi + 1, self.cfg.aoi_cap))
+                link.aoi += 1
                 self._outage_streak[i] += 1
                 ok[i] = 0.0
-        if self._relay_slot():
+        self._deliver_relay_packets(self._step_count + 1)
+        if relay_slot:
             self._relay_beliefs(single=self.cfg.relay_mode != "free")
         for i, link in enumerate(self.links):
             self._belief_std_sum += float(np.mean(self._slot_std(i)))
             self._aoi_sum += link.aoi
             self._aoi_max = max(self._aoi_max, link.aoi)
-        if self._leader_slot():
-            self._packets_ok += int(ok.sum())
-            self._packets_attempted += self.n_followers
+        self._packets_ok += int(ok.sum())
         return ok
 
     def _leader_slot(self) -> bool:
@@ -1384,26 +1828,630 @@ class UAVFormationEnv:
         freshest = min(link.aoi for link in self.links)
         return freshest < self.cfg.relay_aoi_gate
 
-    def _relay_slot(self) -> bool:
+    def _relay_slot(self, leader_slot: bool | None = None) -> bool:
         if self.cfg.relay_mode == "free":
             return True
         if self.cfg.relay_mode == "tdma":
-            return not self._leader_slot()
+            return not (self._leader_slot() if leader_slot is None else leader_slot)
         if self.cfg.relay_mode == "beacon":
             return self._step_count % self.cfg.relay_period == 0
         return False
 
-    def _relay_beliefs(self, single: bool) -> None:
-        """One hop of follower-to-follower forwarding of the leader belief.
+    def _slot_trace_of(self, belief: LeaderBelief, follower_index: int) -> float:
+        """Sum of the three world-axis slot variances, in m^2."""
+        std = belief.slot_std(self._offset_xyz(follower_index)[:2])
+        return float(np.dot(std, std))
 
-        Every follower rebroadcasts in ``free`` mode. In ``tdma`` mode only
-        the freshest follower transmits, which is the one airtime slot the
-        leader gave up. A receiver adopts a neighbour's belief when it is
-        fresher than its own and the hop gets through the same distance- and
-        roof-dependent channel as the leader link. Senders transmit what they
-        hold now, and the hop costs one step of age.
+    def _coast_belief_at(
+        self, belief: LeaderBelief, x: float, y: float, z: float, steps: int
+    ) -> LeaderBelief:
+        """Copy a belief and coast it at a receiver position for ``steps``."""
+        projected = copy.deepcopy(belief)
+        for _ in range(int(steps)):
+            projected.drift(self.cfg.dt, self.wind_obs_x, self.wind_obs_y)
+            blocked = self._radio_blocked(
+                projected.mean[0], projected.mean[1], projected.mean[2], x, y, z
+            )
+            q_scale = self.cfg.nlos_q_scale if (self.ep_use_blockage and blocked) else 1.0
+            projected.add_process_noise(q_scale, self._heading_process_variance())
+        return projected
+
+    def _coast_belief(
+        self, belief: LeaderBelief, follower_index: int, steps: int
+    ) -> LeaderBelief:
+        follower = self.uavs[follower_index + 1]
+        return self._coast_belief_at(belief, follower.x, follower.y, follower.z, steps)
+
+    def _packet_probability_between(
+        self, tx_xyz: tuple[float, float, float], rx_xyz: tuple[float, float, float]
+    ) -> float:
+        blocked = bool(
+            self.ep_use_blockage
+            and self.ep_channel_mode == "distance"
+            and self._radio_blocked(*tx_xyz, *rx_xyz)
+        )
+        return packet_success_probability(
+            math.dist(tx_xyz, rx_xyz),
+            self.ep_p0,
+            self.ep_d0,
+            self.ep_channel_mode,
+            blocked=blocked,
+            nlos_factor=float(self.ep_nlos_factor),
+        )
+
+    def _seed_feedback_reports(self) -> None:
+        """Free initial status sync for the feedback-assisted selector."""
+        if self.cfg.beacon_select != "voi_feedback":
+            return
+        for i, link in enumerate(self.links):
+            uav = self.uavs[i + 1]
+            self._feedback_gen[i] = -int(link.aoi)
+            self._feedback_pos[i] = (uav.x, uav.y, uav.z)
+            self._feedback_vel[i] = (
+                uav.v * math.cos(uav.heading),
+                uav.v * math.sin(uav.heading),
+                uav.vz,
+            )
+            self._feedback_tick[i] = 0
+
+    def _promote_feedback_reports(self, tick: int) -> None:
+        ready = (
+            (self._feedback_pending_tick >= 0)
+            & (self._feedback_pending_available >= 0)
+            & (self._feedback_pending_available <= tick)
+        )
+        if not np.any(ready):
+            return
+        self._feedback_gen[ready] = self._feedback_pending_gen[ready]
+        self._feedback_pos[ready] = self._feedback_pending_pos[ready]
+        self._feedback_vel[ready] = self._feedback_pending_vel[ready]
+        self._feedback_tick[ready] = self._feedback_pending_tick[ready]
+        self._feedback_pending_gen[ready] = -1
+        self._feedback_pending_tick[ready] = -1
+        self._feedback_pending_available[ready] = -1
+
+    def _update_feedback_reports(self, tick: int) -> None:
+        period = int(self.cfg.beacon_feedback_period)
+        if period < 1 or tick % period != 0:
+            return
+        delay = int(self.cfg.beacon_feedback_delay)
+        for i, link in enumerate(self.links):
+            uav = self.uavs[i + 1]
+            self._feedback_pending_gen[i] = int(tick - link.aoi)
+            self._feedback_pending_pos[i] = (uav.x, uav.y, uav.z)
+            self._feedback_pending_vel[i] = (
+                uav.v * math.cos(uav.heading),
+                uav.v * math.sin(uav.heading),
+                uav.vz,
+            )
+            self._feedback_pending_tick[i] = int(tick)
+            self._feedback_pending_available[i] = int(tick + delay)
+        self._feedback_reports += self.n_followers
+        self._feedback_bytes += self.n_followers * int(self.cfg.beacon_feedback_bytes)
+
+    def _beacon_feedback_scores(self, tick: int) -> np.ndarray:
+        """Score candidates from delayed position/age reports.
+
+        The scheduler is the leader: it knows its own position exactly and
+        receives each follower's source generation, position and velocity.
+        Positions are extrapolated at the reported velocity over the report
+        age. Ages are not extrapolated into a predicted future cache; the
+        reported generation is a lower bound, so the score may overestimate
+        the value of a beacon. This is a protocol abstraction, not a MAC.
+        """
+        n = self.n_followers
+        scores = np.zeros(n, dtype=np.float64)
+        leader = self.uavs[0]
+        leader_xyz = (leader.x, leader.y, leader.z)
+        elapsed = (tick - self._feedback_tick).astype(np.float64) * self.cfg.dt
+        positions = self._feedback_pos + self._feedback_vel * elapsed[:, None]
+        valid = self._feedback_tick >= 0
+        for k in range(n):
+            if not valid[k]:
+                continue
+            own_gen = int(self._feedback_gen[k])
+            pk = positions[k]
+            for j in range(n):
+                if j == k or not valid[j]:
+                    continue
+                if own_gen <= int(self._feedback_gen[j]):
+                    continue
+                pj = positions[j]
+                p_direct = self._packet_probability_between(leader_xyz, (pj[0], pj[1], pj[2]))
+                p_relay = self._packet_probability_between(
+                    (pk[0], pk[1], pk[2]), (pj[0], pj[1], pj[2])
+                )
+                scores[k] += (1.0 - p_direct) * p_relay
+        return scores
+
+    def _beacon_status_score(self, eligible: int, held, tick: int) -> float:
+        """Local-only score for a cyclically eligible sender.
+
+        The sender knows its own cached generation, its own leader belief, the
+        known formation offsets, and the last source generation it heard from
+        each peer. It does not read a peer's current age, covariance, or
+        position. Missing peer state is treated as one step staler than self,
+        which bootstraps the first beacon.
+        """
+        age, mean, _covariance, _measurement = held[eligible]
+        own_gen = int(tick) - int(age)
+        heading = float(mean[6])
+        leader_xyz = (float(mean[0]), float(mean[1]), float(mean[2]))
+        tx = self.uavs[eligible + 1]
+        score = 0.0
+        for j in range(self.n_followers):
+            if j == eligible:
+                continue
+            est_gen = int(self._peer_gen[eligible, j])
+            if est_gen < 0:
+                est_gen = own_gen - 1
+            if own_gen <= est_gen:
+                continue
+            slot = desired_slot(leader_xyz, heading, self._offset_xyz(j))
+            rx = (float(slot[0]), float(slot[1]), float(slot[2]))
+            p_direct = self._packet_probability_between(leader_xyz, rx)
+            p_relay = self._packet_probability_between((tx.x, tx.y, tx.z), rx)
+            score += (1.0 - p_direct) * p_relay
+        return float(score)
+
+    def _self_elect_score(
+        self,
+        k: int,
+        held,
+        tick: int,
+        geometry: bool = True,
+        oracle_peer: bool = False,
+    ) -> float:
+        """Local value score used by follower ``k`` in self-election.
+
+        Every deployable quantity is available to ``k``: its own cached age
+        and leader belief, the source generations it has overheard from each
+        peer, the known formation offsets, and the calibrated channel law. It
+        does not read a peer's current age, true position, covariance, or
+        decision. ``oracle_peer`` is a diagnostic bound that substitutes true
+        peer ages and positions; it is never a deployable policy.
+        """
+        age, mean, _covariance, _measurement = held[k]
+        own_gen = int(tick) - int(age)
+        if oracle_peer:
+            leader = self.uavs[0]
+            leader_xyz = (leader.x, leader.y, leader.z)
+            heading = float(leader.heading)
+        else:
+            leader_xyz = (float(mean[0]), float(mean[1]), float(mean[2]))
+            heading = float(mean[6])
+        tx = self.uavs[k + 1]
+        tx_xyz = (tx.x, tx.y, tx.z)
+        score = 0.0
+        for j in range(self.n_followers):
+            if j == k:
+                continue
+            if oracle_peer:
+                est_gen = int(tick) - int(self.links[j].aoi)
+                rx = self.uavs[j + 1]
+                rx_xyz = (rx.x, rx.y, rx.z)
+            else:
+                est_gen = int(self._peer_gen[k, j])
+                if est_gen < 0:
+                    est_gen = own_gen - 1
+                slot = desired_slot(leader_xyz, heading, self._offset_xyz(j))
+                rx_xyz = (float(slot[0]), float(slot[1]), float(slot[2]))
+            if own_gen <= est_gen:
+                continue
+            if not geometry:
+                score += 1.0
+                continue
+            p_direct = self._packet_probability_between(leader_xyz, rx_xyz)
+            p_relay = self._packet_probability_between(tx_xyz, rx_xyz)
+            score += (1.0 - p_direct) * p_relay
+        return float(score)
+
+    def _self_elect_senders(self, held, tick: int, variant: str) -> list[int]:
+        """Resolve the self-election contest and return at most one sender.
+
+        Every follower scores itself from its own cache, the generations it
+        has overheard from peers, and the known formation geometry, then
+        contends with a value-proportional backoff. The simulator resolves
+        the earliest expiry, which is equivalent to carrier-sense deferral by
+        lower-priority candidates. No node reads another node's current age,
+        position, covariance, or decision. The oracle regret recorded below is
+        a privileged diagnostic and never gates or changes a decision.
+        """
+        geometry = variant != "self_elect_nogeo"
+        oracle_peer = variant == "self_elect_oracle"
+        scores = np.array(
+            [
+                self._self_elect_score(k, held, tick, geometry, oracle_peer)
+                for k in range(self.n_followers)
+            ],
+            dtype=np.float64,
+        )
+        self._self_elect_opportunities += 1
+        positive = int(np.sum(scores > self.cfg.beacon_voi_threshold))
+        self._self_elect_candidates += positive
+        best = choose_sender(scores, self.cfg.beacon_voi_threshold)
+        self._self_elect_last_score = (
+            float(np.max(scores)) if scores.size else 0.0
+        )
+        if best is None:
+            return []
+        self._self_elect_tx_count += 1
+        self._self_elect_deferrals += max(0, positive - 1)
+        freshest = min(range(self.n_followers), key=lambda k: (held[k][0], k))
+        if best != freshest:
+            self._self_elect_freshest_disagreements += 1
+        oracle = self._beacon_voi_scores(held, tick, "voi_nounc")
+        regret = max(0.0, float(np.max(oracle) - oracle[best]))
+        self._self_elect_oracle_regret_sum += regret
+        self._self_elect_oracle_regret_max = max(
+            self._self_elect_oracle_regret_max, regret
+        )
+        return [best]
+
+    def _solicited_senders(self, held, tick: int, variant: str) -> list[int]:
+        """Receiver-solicited relay with a piggybacked 8-byte request.
+
+        The protocol alternates two-tick cycles. On the first tick, the token
+        receiver transmits its own cached sample and appends a request naming
+        one helper. On the second tick, the helper answers with its own cached
+        sample if and only if its current source generation is newer than the
+        generation named in the request. The requester chooses the helper from
+        its own reception history: the last source generation it decoded from
+        each peer and the age of that observation. Only the receiver's own
+        cache age and its decoded-packet history are used.
+
+        ``solicited_oracle`` substitutes the true current generations when
+        choosing the helper. It is a diagnostic bound, not a deployable arm.
+        ``solicited_random`` ignores the history and cycles through peers.
+        """
+        n = self.n_followers
+        cycle = int(tick) // 2
+        phase = int(tick) % 2
+        if phase == 0:
+            token = cycle % n
+            own_gen = int(tick) - int(held[token][0])
+            self._solicit_pending = None
+            if variant in ("solicited_broadcast", "solicited_broadcast_stale"):
+                if variant == "solicited_broadcast_stale" and int(held[token][0]) <= 0:
+                    # The protocol's design intent: a fresh token has nothing
+                    # to ask for. This variant is a sensitivity check; the
+                    # frozen confirmation ran the ungated broadcast arm.
+                    return [token]
+                # One 8-byte broadcast request. Every peer that decodes it is
+                # a candidate helper; the fresh ones self-select with a
+                # generation-proportional backoff, and the freshest eligible
+                # helper is resolved as the winner. The requester needs no
+                # peer table, only its own cache age and generation.
+                self._solicit_requests += 1
+                self._solicit_bytes += 8
+                self._solicit_slots += 1
+                tx = self.uavs[token + 1]
+                heard = []
+                for k in range(n):
+                    if k == token:
+                        continue
+                    rx = self.uavs[k + 1]
+                    p = self._packet_probability_between(
+                        (tx.x, tx.y, tx.z), (rx.x, rx.y, rx.z)
+                    )
+                    if self._relay_rng.random() < p:
+                        heard.append(k)
+                if heard:
+                    self._solicit_requests_ok += 1
+                eligible = [
+                    k for k in heard if int(tick) - int(held[k][0]) > own_gen
+                ]
+                if eligible:
+                    helper = max(
+                        eligible,
+                        key=lambda k: (int(tick) - int(held[k][0]), -k),
+                    )
+                    self._solicit_pending = (
+                        helper, token, own_gen, int(tick) + 1
+                    )
+                elif heard:
+                    # The request was decoded but no helper held a newer
+                    # generation; the odd tick falls back to the scheduled
+                    # sender. Diagnostic only.
+                    self._solicit_declines += 1
+                return [token]
+            helper = self._solicited_helper(token, own_gen, tick, variant)
+            if helper is not None:
+                self._solicit_requests += 1
+                self._solicit_bytes += 8
+                self._solicit_slots += 1
+                tx = self.uavs[token + 1]
+                rx = self.uavs[helper + 1]
+                p = self._packet_probability_between(
+                    (tx.x, tx.y, tx.z), (rx.x, rx.y, rx.z)
+                )
+                if self._relay_rng.random() < p:
+                    self._solicit_requests_ok += 1
+                    self._solicit_pending = (helper, token, own_gen, int(tick) + 1)
+            else:
+                self._solicit_unknown_helper += 1
+            # The token's own data beacon uses the same opportunity as the
+            # request; the 8-byte request is charged on top of the 32-byte
+            # payload and fits the 48-byte opportunity.
+            return [token]
+        # Odd opportunity: the requested helper pre-empts the scheduled
+        # fallback sender only when it is actually fresher than the requester.
+        # Otherwise the scheduled sender beacons, so the data rate stays at
+        # one packet per tick in both cases.
+        fallback = (cycle + 1) % n
+        pending = self._solicit_pending
+        self._solicit_pending = None
+        if pending is None:
+            return [fallback]
+        helper, _requester, request_gen, due = pending
+        if int(due) != int(tick):
+            return [fallback]
+        current_gen = int(tick) - int(held[helper][0])
+        if current_gen > int(request_gen):
+            self._solicit_responses += 1
+            return [helper]
+        self._solicit_declines += 1
+        return [fallback]
+
+    def _solicited_helper(
+        self, token: int, own_gen: int, tick: int, variant: str
+    ) -> int | None:
+        """Choose one helper using only the token receiver's local history.
+
+        ``_peer_gen[token, k]`` and ``_peer_tick[token, k]`` are updated when
+        the token decodes a packet from peer ``k``, even if that packet is
+        stale and rejected. The score rewards a peer whose last decoded
+        generation is newer than the token's and whose observation is recent.
+        """
+        n = self.n_followers
+        # Only a receiver that has actually missed updates solicits. A fresh
+        # token has nothing to ask for.
+        own_age = int(tick) - int(own_gen)
+        if own_age <= 0:
+            return None
+        if variant == "solicited_random":
+            return (token + 1 + (int(tick) // 2) % max(1, n - 1)) % n
+        best = None
+        best_score = 0.0
+        for k in range(n):
+            if k == token:
+                continue
+            if variant == "solicited_oracle":
+                est_gen = int(tick) - int(self.links[k].aoi)
+                if est_gen <= own_gen:
+                    continue
+                recency = 1.0
+            else:
+                est_gen = int(self._peer_gen[token, k])
+                last = int(self._peer_tick[token, k])
+                if est_gen < 0 or last < 0:
+                    continue
+                # A stale observation is not evidence that the helper is
+                # fresh now. Only recent beacons are candidates.
+                if int(tick) - last > 16:
+                    continue
+                recency = float(np.exp(-max(0, int(tick) - last) / 8.0))
+                # The last decoded generation is a lower bound. Prefer a
+                # helper that was already newer, but allow a recently heard
+                # helper whose bound is older: the helper checks its current
+                # generation before answering and declines if it is stale.
+                est_gen = max(est_gen, own_gen)
+            score = (1.0 + float(max(0, est_gen - own_gen))) * recency
+            if score > best_score:
+                best_score = score
+                best = k
+        return best
+
+    def _beacon_voi_scores(self, held, tick: int, variant: str) -> np.ndarray:
+        """One-step expected slot-variance reduction for each possible beacon.
+
+        ``held`` is the list built by :meth:`_relay_beliefs`: current age,
+        believe mean, covariance and last raw measurement for each follower.
+        The oracle version reads every receiver's current age and covariance.
+        The local version uses only the sender's belief, its own age as the
+        receiver-age proxy, and the known formation geometry.
+
+        Ablations: ``voi_nounc`` replaces the variance gain by a unit count,
+        keeping age and geometry; ``voi_nogeo`` sets the relay delivery
+        probability to one, keeping age and uncertainty.
+        """
+        n = self.n_followers
+        scores = np.zeros(n, dtype=np.float64)
+        if variant == "voi_local":
+            for k in range(n):
+                age, mean, covariance, _measurement = held[k]
+                sender = self._new_belief()
+                sender.mean[:] = mean
+                sender.P[:] = covariance
+                heading = float(mean[6])
+                leader_xyz = (float(mean[0]), float(mean[1]), float(mean[2]))
+                for j in range(n):
+                    if j == k:
+                        continue
+                    slot = desired_slot(leader_xyz, heading, self._offset_xyz(j))
+                    ex, ey, ez = float(slot[0]), float(slot[1]), float(slot[2])
+                    # The sender cannot read the receiver's cache. It assumes
+                    # the receiver is one coast step staler than itself.
+                    tau_coast = self._slot_trace_of(
+                        self._coast_belief_at(sender, ex, ey, ez, 2), j
+                    )
+                    tau_relay = self._slot_trace_of(
+                        self._coast_belief_at(sender, ex, ey, ez, 1), j
+                    )
+                    p_direct = self._packet_probability_between(
+                        leader_xyz, (ex, ey, ez)
+                    )
+                    tx = self.uavs[k + 1]
+                    p_relay = self._packet_probability_between(
+                        (tx.x, tx.y, tx.z), (ex, ey, ez)
+                    )
+                    weight = float(self.cfg.beacon_voi_uncertainty_weight)
+                    scores[k] += beacon_value(
+                        1.0 + weight * tau_coast,
+                        weight * tau_relay,
+                        p_direct,
+                        p_relay,
+                        True,
+                    )
+            return scores
+
+        tau_coast = np.empty(n, dtype=np.float64)
+        p_direct = np.empty(n, dtype=np.float64)
+        for j in range(n):
+            tau_coast[j] = self._slot_trace_of(
+                self._coast_belief(self.links[j].belief, j, 1), j
+            )
+            p_direct[j] = self._radio_probability(0, j + 1)
+        for k in range(n):
+            age, mean, covariance, _measurement = held[k]
+            sender = self._new_belief()
+            sender.mean[:] = mean
+            sender.P[:] = covariance
+            for j in range(n):
+                if j == k:
+                    continue
+                tau_relay = self._slot_trace_of(
+                    self._coast_belief(sender, j, 1), j
+                )
+                # A direct packet at the delivery tick wins a tie; equal
+                # source timestamps are rejected by the relay cache rule.
+                accepted = age < self.links[j].aoi
+                weight = (
+                    0.0 if variant == "voi_nounc"
+                    else float(self.cfg.beacon_voi_uncertainty_weight)
+                )
+                if variant == "voi_gap":
+                    # The receiver's age gap is a proxy for the bias that a
+                    # newer packet removes. This is the "freshness value"
+                    # term without a covariance weight.
+                    tc = float(max(0, self.links[j].aoi - age))
+                    tr = 0.0
+                else:
+                    tc = 1.0 + weight * tau_coast[j]
+                    tr = weight * tau_relay
+                p_relay = (
+                    1.0 if variant == "voi_nogeo"
+                    else self._radio_probability(k + 1, j + 1)
+                )
+                scores[k] += beacon_value(tc, tr, p_direct[j], p_relay, accepted)
+        return scores
+
+    def _slotted_voi_value(self, eligible: int, slot: int, local: bool = False) -> float:
+        """Myopic value of forwarding instead of sending the source packet.
+
+        The radio charges one packet per slot, so the source opportunity cost
+        is explicit: every receiver loses the fresh leader packet that the
+        idle action would have offered.
+        """
+        radio = self._slotted_radio
+        if radio is None:
+            return 0.0
+        packet = radio.cached_packet(eligible + 1, 0)
+        if packet is None:
+            return 0.0
+        packet_age = int(slot - packet.generated_at)
+        measurement = self._packet_measurement(packet)
+        n = self.n_followers
+        value = 0.0
+        for j in range(n):
+            if local:
+                # The sender knows the formation offset and its own belief;
+                # it assumes the receiver is one step staler.
+                link = self.links[eligible]
+                heading = float(link.belief.mean[6])
+                leader_xyz = (
+                    float(link.belief.mean[0]),
+                    float(link.belief.mean[1]),
+                    float(link.belief.mean[2]),
+                )
+                estimated = desired_slot(leader_xyz, heading, self._offset_xyz(j))
+                rx = (float(estimated[0]), float(estimated[1]), float(estimated[2]))
+                p_direct = self._packet_probability_between(leader_xyz, rx)
+                tx = self.uavs[eligible + 1]
+                p_relay = self._packet_probability_between(
+                    (tx.x, tx.y, tx.z), rx
+                )
+                fresh = self._new_belief()
+                fresh.reset_from_measurement(
+                    leader_xyz[0], leader_xyz[1], leader_xyz[2],
+                    float(link.belief.mean[3]), float(link.belief.mean[4]),
+                    float(link.belief.mean[5]), heading,
+                )
+                tau_fresh = self._slot_trace_of(
+                    self._coast_belief_at(fresh, rx[0], rx[1], rx[2], 1), j
+                )
+                tau_coast = self._slot_trace_of(
+                    self._coast_belief_at(fresh, rx[0], rx[1], rx[2], 2), j
+                )
+                if j == eligible:
+                    tau_relay = tau_coast
+                else:
+                    relay = self._new_belief()
+                    relay.reset_from_measurement(*measurement)
+                    tau_relay = self._slot_trace_of(
+                        self._coast_belief_at(
+                            relay, rx[0], rx[1], rx[2], packet_age + 1
+                        ),
+                        j,
+                    )
+                value += slotted_forward_value(
+                    tau_coast, tau_fresh, tau_relay, p_direct, p_relay, True
+                )
+                continue
+
+            link = self.links[j]
+            p_direct = self._radio_probability(0, j + 1)
+            p_relay = self._radio_probability(eligible + 1, j + 1)
+            try:
+                cache_age = radio.age(j + 1, 0)
+            except ValueError:
+                cache_age = None
+            accepted = cache_age is None or packet_age < cache_age
+            tau_coast = self._slot_trace_of(
+                self._coast_belief(link.belief, j, 1), j
+            )
+            leader = self.uavs[0]
+            fresh = self._new_belief()
+            fresh.reset_from_measurement(
+                leader.x, leader.y, leader.z,
+                leader.v * math.cos(leader.heading),
+                leader.v * math.sin(leader.heading),
+                leader.vz, leader.heading,
+            )
+            tau_fresh = self._slot_trace_of(
+                self._coast_belief(fresh, j, 1), j
+            )
+            if j == eligible:
+                tau_relay = tau_coast
+            else:
+                relay = self._new_belief()
+                relay.reset_from_measurement(*measurement)
+                tau_relay = self._slot_trace_of(
+                    self._coast_belief_at(
+                        relay,
+                        self.uavs[j + 1].x,
+                        self.uavs[j + 1].y,
+                        self.uavs[j + 1].z,
+                        packet_age + 1,
+                    ),
+                    j,
+                )
+            value += slotted_forward_value(
+                tau_coast, tau_fresh, tau_relay, p_direct, p_relay, accepted
+            )
+        return float(value)
+
+    def _relay_beliefs(self, single: bool) -> None:
+        """Transmit snapshots now; successful payloads arrive next control tick.
+
+        A broadcast is charged once regardless of how many neighbours decode
+        it or need its information. Every other follower is a potential radio
+        receiver. In free mode the broadcasts are collision-free orthogonal
+        resources, not simultaneous interference-free physical transmissions.
+        Freshest selection is a centralized/oracle-age reference.
         """
         cfg = self.cfg
+        tick = self._step_count + 1
         held = [
             (
                 link.aoi,
@@ -1413,46 +2461,148 @@ class UAVFormationEnv:
             )
             for link in self.links
         ]
-        if self.cfg.relay_mode == "beacon" or single:
-            if self.cfg.beacon_select == "random":
-                freshest_first = [int(self._relay_rng.integers(0, self.n_followers))]
-            elif self.cfg.beacon_select == "round":
-                freshest_first = [self._step_count % self.n_followers]
+        if single:
+            if cfg.beacon_select in (
+                "solicited", "solicited_random", "solicited_oracle",
+                "solicited_broadcast", "solicited_broadcast_stale",
+            ):
+                senders = self._solicited_senders(
+                    held, tick, cfg.beacon_select
+                )
+            elif cfg.beacon_select == "fixed":
+                # Static deployable baseline: one designated follower beacons
+                # at every opportunity, with no remote state.
+                senders = [0]
+            elif cfg.beacon_select == "random":
+                senders = [int(self._relay_rng.integers(0, self.n_followers))]
+            elif cfg.beacon_select == "round":
+                # Advance once per opportunity, even when period divides N.
+                senders = [self._relay_opportunities % self.n_followers]
+            elif cfg.beacon_select == "voi_feedback":
+                # Centralized scheduler with periodic delayed status reports.
+                self._promote_feedback_reports(tick)
+                self._update_feedback_reports(tick)
+                scores = self._beacon_feedback_scores(tick)
+                best = choose_sender(scores, cfg.beacon_voi_threshold)
+                self._voi_opportunities += 1
+                self._voi_last_score = float(np.max(scores)) if scores.size else 0.0
+                if best is None:
+                    senders = []
+                else:
+                    senders = [best]
+                    self._voi_tx_count += 1
+                    freshest = min(
+                        range(self.n_followers), key=lambda k: (held[k][0], k)
+                    )
+                    if best != freshest:
+                        self._voi_freshest_disagreements += 1
+            elif cfg.beacon_select == "voi_status":
+                # Decentralized cyclic eligibility: only the scheduled
+                # follower may beacon, and it uses its local status table.
+                eligible = self._relay_opportunities % self.n_followers
+                score = self._beacon_status_score(eligible, held, tick)
+                self._voi_opportunities += 1
+                self._voi_last_score = float(score)
+                if score > cfg.beacon_voi_threshold:
+                    senders = [eligible]
+                    self._voi_tx_count += 1
+                    freshest = min(
+                        range(self.n_followers), key=lambda k: (held[k][0], k)
+                    )
+                    if eligible != freshest:
+                        self._voi_freshest_disagreements += 1
+                else:
+                    senders = []
+            elif cfg.beacon_select in (
+                "self_elect", "self_elect_nogeo", "self_elect_oracle"
+            ):
+                senders = self._self_elect_senders(
+                    held, tick, cfg.beacon_select
+                )
+            elif cfg.beacon_select in (
+                "voi", "voi_local", "voi_nounc", "voi_nogeo", "voi_gap"
+            ):
+                scores = self._beacon_voi_scores(held, tick, cfg.beacon_select)
+                best = choose_sender(scores, cfg.beacon_voi_threshold)
+                self._voi_opportunities += 1
+                self._voi_last_score = float(np.max(scores)) if scores.size else 0.0
+                if best is None:
+                    senders = []
+                else:
+                    senders = [best]
+                    self._voi_tx_count += 1
+                    freshest = min(
+                        range(self.n_followers), key=lambda k: (held[k][0], k)
+                    )
+                    if best != freshest:
+                        self._voi_freshest_disagreements += 1
             else:
-                freshest_first = [min(range(self.n_followers), key=lambda k: (held[k][0], k))]
+                senders = [min(range(self.n_followers), key=lambda k: (held[k][0], k))]
         else:
-            freshest_first = sorted(range(self.n_followers), key=lambda k: (held[k][0], k))
-        for j, link in enumerate(self.links):
-            rx = self.uavs[j + 1]
-            for k in freshest_first:
+            senders = list(range(self.n_followers))
+        self._relay_opportunities += 1
+        self._relay_tx_count += len(senders)
+        for k in senders:
+            tx = self.uavs[k + 1]
+            age, mean, covariance, measurement = held[k]
+            for j in range(self.n_followers):
                 if k == j:
                     continue
-                if held[k][0] + 1 >= link.aoi:
-                    break
-                tx = self.uavs[k + 1]
                 self._relay_attempts += 1
+                rx = self.uavs[j + 1]
                 blocked = bool(
                     self.ep_use_blockage
                     and self.ep_channel_mode == "distance"
                     and self._radio_blocked(tx.x, tx.y, tx.z, rx.x, rx.y, rx.z)
                 )
                 p = packet_success_probability(
-                    self._uav_distance(tx, rx),
-                    self.ep_p0,
-                    self.ep_d0,
-                    self.ep_channel_mode,
-                    blocked=blocked,
+                    self._uav_distance(tx, rx), self.ep_p0, self.ep_d0,
+                    self.ep_channel_mode, blocked=blocked,
                     nlos_factor=float(self.ep_nlos_factor),
                 )
-                if self._relay_rng.random() >= p:
-                    continue
-                aoi, mean, cov, meas = held[k]
-                link.belief.mean[:] = mean
-                link.belief.P[:] = cov
-                (link.meas_x, link.meas_y, link.meas_z, link.meas_v, link.meas_heading, link.meas_vz) = meas
-                link.aoi = int(min(aoi + 1, cfg.aoi_cap))
-                self._relay_ok += 1
-                break
+                if self._relay_rng.random() < p:
+                    self._relay_in_flight.append(_RelayPacket(
+                        sender=k, receiver=j, generation_step=tick - age,
+                        reference_step=tick, delivery_step=tick + 1,
+                        mean=mean.copy(), covariance=covariance.copy(),
+                        measurement=measurement,
+                    ))
+
+    def _deliver_relay_packets(self, tick: int) -> None:
+        """Accept only newer source measurements and coast to arrival time.
+
+        Channel success was sampled at transmission geometry; receiver motion
+        during the fixed one-step latency does not trigger another channel
+        draw. Direct updates at this tick take precedence over old relays.
+        """
+        due = [p for p in self._relay_in_flight if p.delivery_step <= tick]
+        self._relay_in_flight = [p for p in self._relay_in_flight if p.delivery_step > tick]
+        # Freshest first prevents counting multiple superseded updates at one
+        # receiver in the same tick. Equal timestamps are duplicate packets.
+        due.sort(key=lambda p: (-p.generation_step, p.receiver))
+        for packet in due:
+            self._relay_decoded += 1
+            if 0 <= packet.sender < self.n_followers and 0 <= packet.receiver < self.n_followers:
+                # The receiver learns the sender's cached source generation
+                # even if the payload is stale and rejected. This is the only
+                # remote state a decentralized status selector can use.
+                self._peer_gen[packet.receiver, packet.sender] = max(
+                    int(self._peer_gen[packet.receiver, packet.sender]),
+                    int(packet.generation_step),
+                )
+                self._peer_tick[packet.receiver, packet.sender] = int(tick)
+            link = self.links[packet.receiver]
+            age = tick - packet.generation_step
+            if age >= link.aoi:
+                continue
+            link.belief.mean[:] = packet.mean
+            link.belief.P[:] = packet.covariance
+            (link.meas_x, link.meas_y, link.meas_z, link.meas_v,
+             link.meas_heading, link.meas_vz) = packet.measurement
+            for _ in range(tick - packet.reference_step):
+                self._predict_belief(link, self.uavs[packet.receiver + 1])
+            link.aoi = age
+            self._relay_ok += 1
 
     def _heading_process_variance(self) -> float:
         """Variance of one coast step of heading when yaw is unknown.
@@ -1547,8 +2697,11 @@ class UAVFormationEnv:
                 ref_x, ref_y, ref_z, ref_v, ref_h, ref_vz = (float(v) for v in ref)
                 link = self.links[i - 1]
                 show_aoi = self.ep_obs_mode in ("aoi", "belief", "belief_point") and self.ep_use_aoi
-                aoi_norm = (link.aoi / cfg.aoi_cap) if show_aoi else 0.0
-                team_aoi = (min(item.aoi for item in self.links) / cfg.aoi_cap) if show_aoi else 0.0
+                aoi_norm = (min(link.aoi, cfg.aoi_cap) / cfg.aoi_cap) if show_aoi else 0.0
+                team_aoi = (
+                    min(min(item.aoi for item in self.links), cfg.aoi_cap) / cfg.aoi_cap
+                    if show_aoi and cfg.oracle_team_aoi else 0.0
+                )
                 if self.ep_obs_mode == "belief":
                     raw_std = self._slot_std(i - 1)
                     std = tuple(float(s / cfg.std_scale) for s in raw_std)
@@ -1559,6 +2712,33 @@ class UAVFormationEnv:
                 slot = self._offset_xyz(i - 1)
                 des = self._slot_from((ref_x, ref_y, ref_z), ref_h, slot)
                 des_x, des_y, des_z = float(des[0]), float(des[1]), float(des[2])
+                if self._uses_slotted_radio:
+                    present, cache_age = self._cache_state(i - 1)
+                    obs[ObsIndex.CACHE_PRESENT] = float(present)
+                    obs[ObsIndex.CACHE_AGE] = (
+                        min(cache_age, cfg.aoi_cap) / cfg.aoi_cap
+                        if cache_age is not None
+                        else 1.0
+                    )
+                    cache_std = (
+                        self._slot_std(i - 1)
+                        if present
+                        else np.zeros(3, dtype=np.float64)
+                    )
+                    obs[ObsIndex.CACHE_STD_X] = float(cache_std[0] / cfg.std_scale)
+                    obs[ObsIndex.CACHE_STD_Y] = float(cache_std[1] / cfg.std_scale)
+                    obs[ObsIndex.CACHE_STD_Z] = float(cache_std[2] / cfg.std_scale)
+                    next_eligible = self._eligible_follower_for_slot(
+                        self._next_radio_slot(), self.n_followers
+                    )
+                    obs[ObsIndex.COMM_ELIGIBLE] = float(i - 1 == next_eligible)
+                    last_tx = int(self._last_tx_slot[i - 1])
+                    obs[ObsIndex.COMM_LAST_TX_AGE] = (
+                        min(max(0, self._slotted_radio.slot - last_tx), cfg.aoi_cap)
+                        / cfg.aoi_cap
+                        if self._slotted_radio is not None and last_tx >= 0
+                        else 1.0
+                    )
                 obs[ObsIndex.IS_LEADER] = 0.0
                 obs[ObsIndex.WP_FRAC] = 0.0
             obs[ObsIndex.REF_REL_X] = (ref_x - u.x) / cfg.map_width
@@ -1693,7 +2873,7 @@ class UAVFormationEnv:
         leader = self.uavs[0]
         wx, wy, _wz = self.waypoints[self._wp_index]
         bearing = math.atan2(wy - leader.y, wx - leader.x)
-        smooth0 = float(np.sum(np.square(actions[0])))
+        smooth0 = float(np.sum(np.square(actions[0, : self.movement_dim])))
         rewards[0] = (
             cfg.w_progress * progress
             + cfg.w_heading * math.cos(wrap_angle(bearing - leader.heading))
@@ -1701,7 +2881,7 @@ class UAVFormationEnv:
             - cfg.w_step
         )
         for i in range(self.n_followers):
-            smooth = float(np.sum(np.square(actions[i + 1])))
+            smooth = float(np.sum(np.square(actions[i + 1, : self.movement_dim])))
             # Match the heading this follower is allowed to know. The true
             # heading still enters the formation error below, so a stale
             # heading is paid for once, as slot error, not as a second
@@ -1725,7 +2905,10 @@ class UAVFormationEnv:
             )
             if cfg.follower_mode == "residual" and policy_actions is not None:
                 # A correction has to earn its keep. Zero keeps the slot tracker.
-                rewards[i + 1] -= np.float32(cfg.w_residual * float(np.sum(np.square(policy_actions[i + 1]))))
+                rewards[i + 1] -= np.float32(
+                    cfg.w_residual
+                    * float(np.sum(np.square(policy_actions[i + 1, : self.movement_dim])))
+                )
         for i, u in enumerate(self.uavs):
             gap = self._nearest_gap(u)
             if gap < cfg.clearance_margin:
@@ -1738,12 +2921,71 @@ class UAVFormationEnv:
             penalty = cfg.collision_penalty if cfg.end_on_collision else cfg.collision_step_penalty
             rewards -= np.float32(penalty)
         route_done = self._wp_done >= len(self.waypoints)
-        if route_done and np.all(errors <= cfg.formation_tol) and not (hit_obstacle or hit_uav):
+        ever_collided = bool(hit_obstacle or hit_uav or
+                             self._hit_obstacle_ever or self._hit_uav_ever)
+        if route_done and np.all(errors <= cfg.formation_tol) and not ever_collided:
             rewards += np.float32(cfg.success_bonus)
         rewards -= oob.astype(np.float32) * np.float32(cfg.oob_penalty)
         return rewards
 
     def _reset_stat_counters(self) -> None:
+        self._leader_tx_count = 0
+        self._relay_tx_count = 0
+        self._radio_forward_requests = 0
+        self._radio_reject_count = 0
+        self._relay_decode_at_tx = 0
+        self._voi_opportunities = 0
+        self._voi_tx_count = 0
+        self._voi_freshest_disagreements = 0
+        self._voi_last_score = 0.0
+        # Self-election diagnostics. The transmission decision uses only each
+        # node's own score. The oracle regret below is recorded for analysis
+        # and never gates or changes a decision.
+        self._self_elect_opportunities = 0
+        self._self_elect_candidates = 0
+        self._self_elect_tx_count = 0
+        self._self_elect_deferrals = 0
+        self._self_elect_oracle_regret_sum = 0.0
+        self._self_elect_oracle_regret_max = 0.0
+        self._self_elect_freshest_disagreements = 0
+        self._self_elect_last_score = 0.0
+        # Receiver-solicited relay state. The request is piggybacked on the
+        # token receiver's data beacon; the named helper answers on the next
+        # opportunity only if its cached generation is newer.
+        self._solicit_pending = None
+        self._solicit_requests = 0
+        self._solicit_requests_ok = 0
+        self._solicit_responses = 0
+        self._solicit_declines = 0
+        self._solicit_bytes = 0
+        self._solicit_slots = 0
+        self._solicit_unknown_helper = 0
+        self._peer_gen = np.full(
+            (self.n_followers, self.n_followers), -1, dtype=np.int64
+        )
+        self._peer_tick = np.full(
+            (self.n_followers, self.n_followers), -1, dtype=np.int64
+        )
+        self._feedback_gen = np.full(self.n_followers, -1, dtype=np.int64)
+        self._feedback_pos = np.zeros((self.n_followers, 3), dtype=np.float64)
+        self._feedback_vel = np.zeros((self.n_followers, 3), dtype=np.float64)
+        self._feedback_tick = np.full(self.n_followers, -1, dtype=np.int64)
+        self._feedback_pending_gen = np.full(self.n_followers, -1, dtype=np.int64)
+        self._feedback_pending_pos = np.zeros((self.n_followers, 3), dtype=np.float64)
+        self._feedback_pending_vel = np.zeros((self.n_followers, 3), dtype=np.float64)
+        self._feedback_pending_tick = np.full(self.n_followers, -1, dtype=np.int64)
+        self._feedback_pending_available = np.full(self.n_followers, -1, dtype=np.int64)
+        self._feedback_reports = 0
+        self._feedback_bytes = 0
+        self._last_radio_reason = ""
+        self._last_tx_slot = np.full(self.n_followers, -1, dtype=np.int64)
+        self._relay_opportunities = 0
+        self._relay_attempts = 0
+        self._relay_decoded = 0
+        self._relay_ok = 0
+        self._relay_in_flight: list[_RelayPacket] = []
+        self._last_leader_slot = False
+        self._last_relay_slot = False
         self._form_keep_steps = 0
         self._form_err_sum = 0.0
         self._aoi_sum = 0.0
@@ -1898,21 +3140,22 @@ class UAVFormationEnv:
             "mean_formation_error": self._form_err_sum / steps,
             "mean_aoi": self._aoi_sum / (steps * self.n_followers),
             "max_aoi": float(self._aoi_max),
+            "mean_aoi_seconds": self.cfg.dt * self._aoi_sum / (steps * self.n_followers),
+            "max_aoi_seconds": self.cfg.dt * self._aoi_max,
+            **self.communication_counters(),
             "packet_success_rate": (
                 self._packets_ok / self._packets_attempted if self._packets_attempted else 1.0
             ),
             "mean_outage_length": float(np.mean(lengths)) if lengths else 0.0,
             "waypoint_fraction": self._wp_done / len(self.waypoints),
             "nlos_fraction": (
-                self._nlos_count / self._packets_attempted if self._packets_attempted else 0.0
+                self._nlos_count / (steps * self.n_followers)
             ),
             "min_clearance": float(clearance),
             # Slot standard deviation in meters, not leader-position std.
             # The name is kept so existing CSV readers still find the column.
             "mean_belief_std": (
                 self._belief_std_sum / (steps * self.n_followers)
-                if self._packets_attempted
-                else 0.0
             ),
             "los_mean_formation_error": self._mean_or_nan(self._los_err_sum, self._los_link_steps),
             "nlos_mean_formation_error": self._mean_or_nan(
@@ -1959,6 +3202,65 @@ class UAVFormationEnv:
             row[f"{role}_link_steps"] = float(self._act_n[role])
         return row
 
+    def communication_counters(self) -> dict:
+        """Cumulative packet counts plus charged airtime for the slotted model."""
+        counters = {
+            "leader_tx_count": self._leader_tx_count,
+            "leader_rx_attempts": self._packets_attempted,
+            "leader_decode_count": self._packets_ok,
+            "relay_tx_count": self._relay_tx_count,
+            "relay_rx_attempts": self._relay_attempts,
+            "relay_decode_at_tx_count": self._relay_decode_at_tx,
+            "relay_decode_count": self._relay_decoded,
+            "relay_update_count": self._relay_ok,
+            "relay_pending_count": len(self._relay_in_flight),
+            "radio_forward_requests": self._radio_forward_requests,
+            "radio_reject_count": self._radio_reject_count,
+            "voi_opportunities": self._voi_opportunities,
+            "voi_tx_count": self._voi_tx_count,
+            "voi_freshest_disagreements": self._voi_freshest_disagreements,
+            "voi_last_score": self._voi_last_score,
+            "self_elect_opportunities": self._self_elect_opportunities,
+            "self_elect_candidates": self._self_elect_candidates,
+            "self_elect_tx_count": self._self_elect_tx_count,
+            "self_elect_deferrals": self._self_elect_deferrals,
+            "self_elect_oracle_regret_sum": self._self_elect_oracle_regret_sum,
+            "self_elect_oracle_regret_max": self._self_elect_oracle_regret_max,
+            "self_elect_freshest_disagreements": self._self_elect_freshest_disagreements,
+            "self_elect_last_score": self._self_elect_last_score,
+            "solicit_requests": self._solicit_requests,
+            "solicit_requests_ok": self._solicit_requests_ok,
+            "solicit_responses": self._solicit_responses,
+            "solicit_declines": self._solicit_declines,
+            "solicit_bytes": self._solicit_bytes,
+            "solicit_slots": self._solicit_slots,
+            "solicit_unknown_helper": self._solicit_unknown_helper,
+            "feedback_reports": self._feedback_reports,
+            "feedback_bytes": self._feedback_bytes,
+        }
+        if self._slotted_radio is not None:
+            radio = self._slotted_radio
+            counters.update(
+                {
+                    "radio_total_airtime_seconds": float(radio.total_airtime_seconds),
+                    "radio_broadcast_count": int(radio.broadcast_count),
+                    "radio_budget_utilization": (
+                        float(radio.used_seconds / radio.budget_seconds)
+                        if radio.budget_seconds
+                        else 0.0
+                    ),
+                }
+            )
+        else:
+            counters.update(
+                {
+                    "radio_total_airtime_seconds": 0.0,
+                    "radio_broadcast_count": 0,
+                    "radio_budget_utilization": 0.0,
+                }
+            )
+        return counters
+
     def _info_skeleton(self) -> dict:
         return {
             "p0": float(self.ep_p0),
@@ -1966,7 +3268,14 @@ class UAVFormationEnv:
             "obs_mode": self.ep_obs_mode,
             "use_aoi": bool(self.ep_use_aoi),
             "use_blockage": bool(self.ep_use_blockage),
-            "aoi": np.array([link.aoi for link in self.links], dtype=np.int32),
+            "aoi": np.array([link.aoi for link in self.links], dtype=np.int64),
+            "communication_model_version": (
+                "slotted_radio_v1" if self._uses_slotted_radio else "store_forward_v2"
+            ),
+            "communication": self.communication_counters(),
+            "radio": self._slotted_radio_info(),
+            "leader_slot": self._last_leader_slot,
+            "relay_slot": self._last_relay_slot,
             "wind": np.array([self.wind_x, self.wind_y], dtype=np.float32),
             "waypoints_done": int(self._wp_done),
             "collision": False,

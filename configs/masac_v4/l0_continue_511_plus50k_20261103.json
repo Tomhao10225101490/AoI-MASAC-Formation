@@ -1,0 +1,61 @@
+{
+  "experiment_id": "l0_continue_511_plus50k_20261103",
+  "title": "V4 L0 Standard PARALLEL continuation: seed 511 from checkpoint_050000 +50k",
+  "created_at_asia_shanghai": "2026-11-03 12:21:30 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "choice": "intensity_parallel_B_style_continue",
+    "widget_answer_ids": [
+      "t0s9",
+      "t1u"
+    ],
+    "date": "2026-11-03",
+    "provenance": "User B (t0s9) authorized audited continue; user t1u demanded maxed parallel training intensity for paper on learnable strategy + path planning. This arm is an ADDITIONAL independent Standard-navigation continue, not a silent failure_action expand of the primary 533 run.",
+    "allowed_scope": "Parallel Standard L0 continue from existing checkpoint_050000 with new result dir and per-arm lock; no Attention / maneuverability.",
+    "forbidden": [
+      "Attention comparison arms",
+      "Predictive Maneuverability-Aware training arms",
+      "Silent further budget stacking without new user authorization",
+      "Overwriting masac_v4_active_run.json primary continue pointer",
+      "Killing or stealing primary 533 continue lock/out dir"
+    ]
+  },
+  "parent_run": {
+    "results_dir": "results/masac_v4_l0_legacy_50k_20261103_102637",
+    "experiment_id": "v4_l0_legacy_20261103",
+    "protocol": "configs/masac_v4/l0_protocol.json",
+    "diagnosis_dir": "results/masac_v4_l0_legacy_50k_gate_diagnosis_20261103",
+    "seed": 511,
+    "rationale": "Seed 511 finished 1/12 at 50k; parallel +50k tests whether late breakthrough generalizes beyond 533 while primary 533 continue runs."
+  },
+  "mode": "legacy standard parallel continuation",
+  "observation": "Standard (Pooling / legacy observation); no attention; no maneuverability features",
+  "level": "L0",
+  "smoke": false,
+  "primary_arm": {
+    "name": "resume_511_plus50k_parallel",
+    "seed_list": [
+      511
+    ],
+    "resume_from": "results/masac_v4_l0_legacy_50k_20261103_102637/standard_511/checkpoint_050000",
+    "parent_steps_completed": 50000,
+    "extra_steps": 50000,
+    "target_total_steps": 100000,
+    "warmup": 0
+  },
+  "parallelism": {
+    "uses_global_l0_lock": false,
+    "lock_strategy": "per-arm results/locks/masac_v4_l0_parallel_<out>.lock",
+    "registry": "results/masac_v4_parallel_runs.json",
+    "primary_unchanged": "results/masac_v4_active_run.json stays on 533 continue"
+  },
+  "eval_gate": {
+    "metric": "joint team success on the 12 L0 development maps",
+    "threshold_per_seed": 0.6,
+    "pass_condition": "seed 511 final development success >= 0.6 (at least 8/12)",
+    "on_fail": "failure_action=save_and_diagnose; NO auto further budget"
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "freeze evidence; do NOT auto-start Attention/maneuver/L1; await explicit authorization",
+  "paper_relevance": "Learnability / Standard navigation gate evidence for multi-seed path-planning policy; supports paper claims only after gate passes."
+}

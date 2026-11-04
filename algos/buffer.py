@@ -91,3 +91,39 @@ class ReplayBuffer:
             next_global=t(self.next_global[idx]),
             terminated=t(self.terminated[idx]),
         )
+
+    def state_dict(self) -> dict:
+        """Serialize populated slots only, including circular position and RNG."""
+        import copy
+        fields = ("global_state", "next_global", "actions", "rewards", "terminated")
+        return {
+            "capacity": self.capacity, "size": self.size, "index": self._idx,
+            "rng": copy.deepcopy(self._rng.bit_generator.state),
+            "obs": [x[:self.size].copy() for x in self.obs],
+            "next_obs": [x[:self.size].copy() for x in self.next_obs],
+            **{key: getattr(self, key)[:self.size].copy() for key in fields},
+        }
+
+    def load_state_dict(self, state: dict) -> None:
+        """Restore replay with shape validation; never silently truncate data."""
+        import copy
+        size, index = int(state["size"]), int(state["index"])
+        if int(state["capacity"]) != self.capacity or not 0 <= size <= self.capacity:
+            raise ValueError("replay capacity/size mismatch")
+        if not 0 <= index < self.capacity or (size < self.capacity and index != size):
+            raise ValueError("invalid replay circular index")
+        pairs = []
+        for key in ("obs", "next_obs"):
+            target, source = getattr(self, key), state[key]
+            if len(target) != len(source):
+                raise ValueError("replay agent count mismatch")
+            pairs.extend(zip(target, source))
+        pairs.extend((getattr(self, key), state[key]) for key in
+                     ("global_state", "next_global", "actions", "rewards", "terminated"))
+        for target, source in pairs:
+            if source.shape != (size, *target.shape[1:]):
+                raise ValueError("replay array shape mismatch")
+        for target, source in pairs:
+            target[:size] = source
+        self.size, self._idx = size, index
+        self._rng.bit_generator.state = copy.deepcopy(state["rng"])

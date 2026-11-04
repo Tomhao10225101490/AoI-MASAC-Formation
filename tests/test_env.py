@@ -88,7 +88,7 @@ def test_obstacle_feature_present_and_absent():
     assert obs[0][ObsIndex.OBS_START + ObsIndex.OBS_FEATS - 1] == pytest.approx(0.0)
 
 
-def test_aoi_increments_caps_and_can_be_hidden():
+def test_aoi_is_uncapped_but_observation_caps_and_can_be_hidden():
     env = UAVFormationEnv(
         _quiet_cfg(obs_mode="aoi", use_aoi=True, aoi_cap=4, p0=0.0, max_steps=10)
     )
@@ -98,7 +98,7 @@ def test_aoi_increments_caps_and_can_be_hidden():
     for expected in range(1, 6):
         obs, _, terminated, truncated, info = env.step(np.zeros((2, env.action_dim), dtype=np.float32))
         assert not terminated and not truncated
-        assert env.links[0].aoi == min(expected, 4)
+        assert env.links[0].aoi == expected
         assert obs[1][ObsIndex.AOI] == pytest.approx(min(expected, 4) / 4.0)
 
     hidden = UAVFormationEnv(_quiet_cfg(obs_mode="aoi", use_aoi=False, p0=0.0))
@@ -670,3 +670,15 @@ def test_bad_action_shape_and_unknown_config_key():
         from envs.formation_env import env_config_from_dict
 
         env_config_from_dict({"not_a_real_key": 1})
+
+
+def test_route_leader_replay_stores_the_executed_action():
+    env = UAVFormationEnv(
+        _quiet_cfg(leader_mode="route", follower_mode="slot", n_followers=1)
+    )
+    env.reset(seed=0)
+    actions = np.full((env.n_agents, env.action_dim), 0.7)
+    _, _, _, _, info = env.step(actions)
+    assert np.allclose(info["policy_actions"][0], info["executed_actions"][0])
+    # The leader's raw command was not executed; the tracker replaced it.
+    assert not np.allclose(info["executed_actions"][0], actions[0])

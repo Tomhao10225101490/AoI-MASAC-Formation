@@ -47,12 +47,17 @@ def test_aoi_gate_gives_a_fresh_slot_back_to_the_leader():
     env.links[1].aoi = 9
     env.links[1].belief.mean[0] += 500.0
     env.step(zeros)
-    # Leader was silent. The fresh follower coasted one step and the other
-    # adopted that belief one hop later.
+    # Leader was silent; the relay is in flight for one actual control step.
     assert env.links[0].aoi == 1
-    assert env.links[1].aoi == 2
-    assert abs(env.links[1].belief.mean[0] - env.links[0].belief.mean[0]) < 1e-6
-    assert env._relay_ok == 1
+    assert env.links[1].aoi == 10
+    assert env._relay_ok == 0
+    assert env._relay_tx_count == 1
+    assert len(env._relay_in_flight) == 1
+    # A new direct measurement next tick supersedes the delayed relay.
+    env.step(zeros)
+    assert env.links[1].aoi == 0
+    assert env._relay_decoded == 1
+    assert env._relay_ok == 0
 
 
 def test_free_relay_does_not_take_the_leader_slot():
@@ -76,9 +81,10 @@ def test_beacon_does_not_take_the_leader_slot():
     env.links[1].aoi = 6
     env.links[1].belief.mean[0] += 400.0
     env._relay_beliefs(single=True)
+    assert env.links[1].aoi == 6  # queued, not delivered in the sending call
+    env._deliver_relay_packets(env._step_count + 2)
     assert env.links[1].aoi == 1
-    assert abs(env.links[1].belief.mean[0] - env.links[0].belief.mean[0]) < 1e-6
-    env = _open()
+    env = _open(oracle_team_aoi=True)
     env.reset(seed=0)
     env.links[0].aoi = 8
     env.links[1].aoi = 3

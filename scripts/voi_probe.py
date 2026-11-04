@@ -135,7 +135,14 @@ def parse_policy(spec: str) -> dict:
         "mode": parts[1] if parts[0] == "relay" else None,
         "period": period,
         "select": select,
-        "threshold": float(parts[-1]) if len(parts) > 1 and parts[-1] not in ("fixed", "cheap", "coverfixed", "covercheap", "random", "round", "freshest") else 0.0,
+        "threshold": float(parts[-1]) if len(parts) > 1 and parts[-1] not in (
+            "fixed", "cheap", "coverfixed", "covercheap", "random", "round",
+            "freshest", "voi", "voi_local", "voi_nounc", "voi_nogeo",
+            "voi_gap", "voi_status", "voi_feedback", "self_elect",
+            "self_elect_nogeo", "self_elect_oracle", "solicited",
+            "solicited_random", "solicited_oracle", "solicited_broadcast",
+            "solicited_broadcast_stale",
+        ) else 0.0,
     }
 
 
@@ -271,6 +278,16 @@ def _run(job: dict) -> dict:
     env_cfg["canyon_random"] = job["canyon_random"]
     env_cfg["relay_period"] = job["relay_period"]
     env_cfg["beacon_select"] = "freshest"
+    # Defaults keep older job builders (including the frozen mechanism
+    # ablation) compatible with fields added for the feedback selector.
+    env_cfg["beacon_voi_threshold"] = job.get("beacon_voi_threshold", 0.0)
+    env_cfg["beacon_voi_uncertainty_weight"] = job.get(
+        "beacon_voi_uncertainty_weight", 1.0
+    )
+    env_cfg["beacon_feedback_period"] = job.get("beacon_feedback_period", 0)
+    env_cfg["beacon_feedback_delay"] = job.get("beacon_feedback_delay", 1)
+    env_cfg["beacon_feedback_bytes"] = job.get("beacon_feedback_bytes", 24)
+    env_cfg["radio_voi_threshold"] = job.get("radio_voi_threshold", 0.0)
     if policy["kind"] == "yield":
         # Spend the relay slot only once the freshest packet is older than K.
         env_cfg["relay_mode"] = "tdma"
@@ -338,12 +355,41 @@ def _run(job: dict) -> dict:
         row["e3_p95"] = float(np.percentile(e3s, 95))
         row["break_frac"] = float(np.mean(e3s > BREAK_M))
         row["relay_per_step"] = env._relay_ok / max(steps, 1)
+        row["relay_tx_per_step"] = env._relay_tx_count / max(steps, 1)
+        row["voi_opportunities"] = int(env._voi_opportunities)
+        row["voi_tx_count"] = int(env._voi_tx_count)
+        row["voi_freshest_disagreements"] = int(env._voi_freshest_disagreements)
+        row["self_elect_opportunities"] = int(env._self_elect_opportunities)
+        row["self_elect_candidates"] = int(env._self_elect_candidates)
+        row["self_elect_tx_count"] = int(env._self_elect_tx_count)
+        row["self_elect_deferrals"] = int(env._self_elect_deferrals)
+        row["self_elect_oracle_regret_sum"] = float(env._self_elect_oracle_regret_sum)
+        row["self_elect_oracle_regret_max"] = float(env._self_elect_oracle_regret_max)
+        row["self_elect_freshest_disagreements"] = int(env._self_elect_freshest_disagreements)
+        row["beacon_payload_bytes_per_step"] = 32.0 * env._relay_tx_count / max(steps, 1)
+        row["solicit_requests"] = int(env._solicit_requests)
+        row["solicit_requests_ok"] = int(env._solicit_requests_ok)
+        row["solicit_responses"] = int(env._solicit_responses)
+        row["solicit_declines"] = int(env._solicit_declines)
+        row["solicit_bytes"] = int(env._solicit_bytes)
+        row["solicit_slots"] = int(env._solicit_slots)
+        row["solicit_bytes_per_step"] = env._solicit_bytes / max(steps, 1)
+        row["solicit_slots_per_step"] = env._solicit_slots / max(steps, 1)
+        row["solicit_unknown_helper"] = int(env._solicit_unknown_helper)
+        row["feedback_reports"] = int(env._feedback_reports)
+        row["feedback_bytes"] = int(env._feedback_bytes)
+        row["feedback_bytes_per_step"] = env._feedback_bytes / max(steps, 1)
         row["collision"] = float(collided)
         per_ep.append(row)
     out = {k: job[k] for k in ("jink", "nlos_factor", "blockage", "p0", "trigger")}
     out["relay_mode"] = env.cfg.relay_mode
     out["relay_period"] = int(env.cfg.relay_period)
     out["beacon_select"] = env.cfg.beacon_select
+    out["beacon_voi_threshold"] = float(env.cfg.beacon_voi_threshold)
+    out["beacon_voi_uncertainty_weight"] = float(env.cfg.beacon_voi_uncertainty_weight)
+    out["beacon_feedback_period"] = int(env.cfg.beacon_feedback_period)
+    out["beacon_feedback_delay"] = int(env.cfg.beacon_feedback_delay)
+    out["beacon_feedback_bytes"] = int(env.cfg.beacon_feedback_bytes)
     out["canyon_random"] = bool(env.cfg.canyon_random)
     for key in per_ep[0]:
         vals = np.array([r[key] for r in per_ep])
@@ -367,6 +413,30 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--nlos-factors", default="0.2")
     parser.add_argument("--relay-mode", default="tdma", choices=("off", "free", "tdma"))
     parser.add_argument("--relay-period", type=int, default=2)
+    parser.add_argument(
+        "--beacon-voi-threshold", type=float, default=0.0,
+        help="Minimum expected one-step slot-variance reduction (m^2) to beacon.",
+    )
+    parser.add_argument(
+        "--beacon-uncertainty-weight", type=float, default=1.0,
+        help="Covariance weight relative to the unit newer-packet term.",
+    )
+    parser.add_argument(
+        "--beacon-feedback-period", type=int, default=0,
+        help="Status-report period in control ticks; 0 disables feedback.",
+    )
+    parser.add_argument(
+        "--beacon-feedback-delay", type=int, default=1,
+        help="Report delivery delay in control ticks.",
+    )
+    parser.add_argument(
+        "--beacon-feedback-bytes", type=int, default=24,
+        help="Bytes per status report.",
+    )
+    parser.add_argument(
+        "--radio-voi-threshold", type=float, default=0.0,
+        help="Minimum net source-vs-forward value (m^2) to spend the slotted packet.",
+    )
     parser.add_argument("--canyon-random", action="store_true")
     parser.add_argument(
         "--triggers",
@@ -398,6 +468,12 @@ def main(argv: list[str] | None = None) -> None:
             "trigger": trigger,
             "relay_mode": args.relay_mode,
             "relay_period": args.relay_period,
+            "beacon_voi_threshold": args.beacon_voi_threshold,
+            "beacon_voi_uncertainty_weight": args.beacon_uncertainty_weight,
+            "beacon_feedback_period": args.beacon_feedback_period,
+            "beacon_feedback_delay": args.beacon_feedback_delay,
+            "beacon_feedback_bytes": args.beacon_feedback_bytes,
+            "radio_voi_threshold": args.radio_voi_threshold,
             "canyon_random": args.canyon_random,
             "lift": args.lift,
             "episodes": args.episodes,

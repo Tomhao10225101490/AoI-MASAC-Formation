@@ -70,6 +70,12 @@ class LeaderBelief:
             np.array([q_pos, q_pos, q_pos, q_vel, q_vel, q_vel, 0.0], dtype=np.float64)
         )
         self.var_cap = float(var_cap)
+        if not np.isfinite(self.var_cap) or self.var_cap <= 0:
+            raise ValueError("var_cap must be finite and positive")
+        if not np.all(np.isfinite(self.meas_var)) or np.any(self.meas_var < 0):
+            raise ValueError("measurement variances must be finite and nonnegative")
+        if not np.all(np.isfinite(self.Q)) or np.any(np.diag(self.Q) < 0):
+            raise ValueError("process variances must be finite and nonnegative")
         self.mean = np.zeros(STATE_DIM, dtype=np.float64)
         self.P = np.diag(self.meas_var.copy())
         self._F = np.eye(STATE_DIM, dtype=np.float64)
@@ -147,6 +153,8 @@ class LeaderBelief:
 
     def _clip_covariance(self) -> None:
         self.P = 0.5 * (self.P + self.P.T)
-        np.clip(self.P, -self.var_cap, self.var_cap, out=self.P)
-        for i in range(STATE_DIM):
-            self.P[i, i] = min(max(self.P[i, i], 0.0), self.var_cap)
+        # A congruence transform preserves PSD; element-wise clipping does
+        # not (large cross-covariance can outgrow a clipped diagonal).
+        # This remains a numerical cap, not a calibrated uncertainty bound.
+        scale = np.sqrt(self.var_cap / np.maximum(np.diag(self.P), self.var_cap))
+        self.P *= scale[:, None] * scale[None, :]

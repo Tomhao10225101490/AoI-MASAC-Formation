@@ -42,7 +42,11 @@ def resolve_test_observation(
 ) -> tuple[str, bool, str]:
     """Pick the observation builder used at test time."""
     if requested_obs in (None, "auto"):
-        lossy = channel_mode != "perfect" and p0 < 1.0 - 1e-12
+        # p0 is a distance-channel intercept, not its delivery probability.
+        # Even p0=1 is lossy after distance attenuation / roof blockage.
+        lossy = channel_mode == "distance" or (
+            channel_mode != "perfect" and p0 < 1.0 - 1e-12
+        )
         if trained_obs_mode == "perfect" and lossy:
             return (
                 "hold",

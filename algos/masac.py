@@ -33,6 +33,16 @@ from algos.common import OUNoise, clone_module, obs_to_tensor, soft_update, stac
 from algos.networks import SquashedGaussianActor, TwinQCritic
 
 
+def sac_actor_loss(q_pi, logp, action, alpha, action_l2: float = 0.0):
+    """SAC objective with an optional action penalty; retain the Q gradient.
+
+    Do not center Q by its differentiable batch mean: the mean of the
+    centered values is identically zero, including its actor gradient.
+    Regularization is in the reward/Q units and needs independent tuning.
+    """
+    return (alpha * logp - q_pi).mean() + action_l2 * action.square().mean()
+
+
 class MASAC:
     def __init__(
         self,
@@ -63,11 +73,14 @@ class MASAC:
         critic_in = self.global_dim + self.n_agents * self.action_dim
 
         init_log_std = float(train_cfg.get("init_log_std", -0.5))
+        layer_norm = bool(train_cfg.get("layer_norm", False))
         self.actors = [
-            SquashedGaussianActor(obs_dims[i], action_dim, hidden, init_log_std=init_log_std).to(device)
+            SquashedGaussianActor(obs_dims[i], action_dim, hidden, init_log_std=init_log_std,
+                                  layer_norm=layer_norm).to(device)
             for i in range(self.n_agents)
         ]
-        self.critics = [TwinQCritic(critic_in, hidden).to(device) for _ in range(self.n_agents)]
+        self.critics = [TwinQCritic(critic_in, hidden, layer_norm=layer_norm).to(device)
+                        for _ in range(self.n_agents)]
         self.critic_targets = [clone_module(c).to(device) for c in self.critics]
         for target in self.critic_targets:
             target.requires_grad_(False)
@@ -137,8 +150,9 @@ class MASAC:
         batch = self.buffer.sample(self.batch_size, self.device)
         replay_actions = batch.actions.reshape(self.batch_size, -1)
 
-        next_actions, next_logp = self._policy_actions(batch.next_obs)
-        next_cat = torch.cat(next_actions, dim=-1)
+        with torch.no_grad():
+            next_actions, next_logp = self._policy_actions(batch.next_obs)
+            next_cat = torch.cat(next_actions, dim=-1)
 
         critic_losses = []
         actor_losses = []
@@ -165,15 +179,7 @@ class MASAC:
             q1_pi, q2_pi = self.critics[i](batch.global_state, mixed)
             q_pi = torch.min(q1_pi, q2_pi)
             alpha = self.log_alpha[i].exp().detach()
-            if self.action_l2 > 0.0:
-                # Returns here are thousands. An unnormalized -Q term drowns any
-                # penalty that is supposed to keep a residual near the tracker.
-                centered = q_pi - q_pi.mean()
-                scale = centered.std(unbiased=False).clamp_min(1e-3)
-                advantage = centered / scale
-                actor_loss = (alpha * logp - advantage).mean() + self.action_l2 * new_action.square().mean()
-            else:
-                actor_loss = (alpha * logp - q_pi).mean()
+            actor_loss = sac_actor_loss(q_pi, logp, new_action, alpha, self.action_l2)
             self.actor_opts[i].zero_grad(set_to_none=True)
             actor_loss.backward()
             torch.nn.utils.clip_grad_norm_(self.actors[i].parameters(), self.grad_clip)

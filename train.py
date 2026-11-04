@@ -35,6 +35,8 @@ from utils.config import load_config, resolve_device
 from utils.logger import CsvLogger, TrainLogger
 from utils.rollout import evaluate_agent
 from utils.seeding import set_seed
+from utils.checkpoint import (atomic_torch_save, capture_random_state,
+                              restore_random_state, validate_resume_config)
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -66,6 +68,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--use-aoi", type=int, default=None, choices=[0, 1])
     parser.add_argument("--n-followers", type=int, default=None)
     parser.add_argument("--hidden", type=int, default=None)
+    parser.add_argument("--resume", default=None, help="Trusted episode-boundary checkpoint; creates a new run directory.")
+    parser.add_argument("--stop-after-episode", type=int, default=None,
+                        help="Stop cleanly at this episode without changing the planned curriculum.")
     return parser.parse_args(argv)
 
 
@@ -104,6 +109,10 @@ def apply_cli(cfg: dict, args: argparse.Namespace) -> dict:
         cfg["env"]["n_followers"] = int(args.n_followers)
     if args.hidden is not None:
         cfg["train"]["hidden"] = int(args.hidden)
+    if args.resume:
+        cfg["train"]["resume_from"] = args.resume
+    if args.stop_after_episode is not None:
+        cfg["train"]["stop_after_episode"] = args.stop_after_episode
     return cfg
 
 
@@ -124,7 +133,9 @@ def _probe_options(env_cfg: dict) -> dict:
         "randomize_channel": False,
         "obs_mode": env_cfg["obs_mode"],
         "use_aoi": env_cfg["use_aoi"],
-        "d0": env_cfg.get("d0", 250.0),
+        # Must match EnvConfig's default; a different probe d0 silently
+        # evaluates a different channel from the one used in training.
+        "d0": env_cfg.get("d0", 200.0),
     }
     # When training randomizes the regime, the probe is the hard corner:
     # roofs that barely pass a packet, and a leader that keeps changing speed.
@@ -164,6 +175,13 @@ def run_training(cfg: dict) -> Path:
     """Train and return the run directory."""
     cfg = copy.deepcopy(cfg)
     _configure_threads()
+    resume_path = cfg["train"].get("resume_from")
+    resume = None
+    if resume_path:
+        resume = torch.load(resume_path, map_location="cpu", weights_only=False)
+        if "training_state" not in resume or "replay" not in resume:
+            raise ValueError("Checkpoint lacks replay/training RNG state; evaluation-only checkpoint cannot resume")
+        validate_resume_config(resume["config"], cfg)
     seed = int(cfg.get("seed", 0))
     set_seed(seed)
     device_name = resolve_device(cfg.get("device", "auto"))
@@ -237,6 +255,13 @@ def run_training(cfg: dict) -> Path:
             "far_roof_mean_z",
             "far_roof_mean_alt_error",
             "nlos_mean_formation_error",
+            "radio_total_airtime_seconds",
+            "radio_budget_utilization",
+            "radio_broadcast_count",
+            "radio_forward_requests",
+            "radio_reject_count",
+            "relay_decode_at_tx_count",
+            "relay_update_count",
         ],
     )
     episodes = int(train_cfg["episodes"])
@@ -265,7 +290,35 @@ def run_training(cfg: dict) -> Path:
     episode_walls: list[float] = []
 
     perfect_eps = int(episodes * float(train_cfg.get("curriculum_perfect_frac", 0.0)))
-    for ep in range(episodes):
+    start_episode = 0
+    if resume is not None:
+        algo.load_state_dict(resume["algo"])
+        algo.buffer.load_state_dict(resume["replay"])
+        saved = resume["training_state"]
+        start_episode = int(resume["episode"])
+        total_steps = int(resume["total_steps"])
+        total_updates = int(saved["total_updates"])
+        total_update_time = float(saved["total_update_time"])
+        total_wall = float(saved["total_wall"])
+        episode_walls = list(saved["episode_walls"])
+        perfect_eps = int(saved["perfect_episodes"])
+        restore_random_state(saved["random"], algo, rng)
+        (run_dir / "resume.json").write_text(json.dumps({
+            "source": str(Path(resume_path).resolve()), "completed_episodes": start_episode,
+            "device_changed": resume["config"]["device"] != device_name,
+            "note": "New logs contain continuation episodes only. Source logs are preserved."}, indent=2))
+    stop_episode = min(episodes, int(train_cfg.get("stop_after_episode", episodes)))
+    if stop_episode <= start_episode:
+        logger.close()
+        eval_logger.close()
+        raise ValueError("resume/stop must leave at least one new episode to execute")
+
+    def training_state() -> dict:
+        return {"total_updates": total_updates, "total_update_time": total_update_time,
+                "total_wall": total_wall, "episode_walls": episode_walls,
+                "perfect_episodes": perfect_eps, "random": capture_random_state(algo, rng)}
+
+    for ep in range(start_episode, stop_episode):
         ep_t0 = time.perf_counter()
         update_time = 0.0
         n_updates = 0
@@ -428,6 +481,13 @@ def run_training(cfg: dict) -> Path:
                     "far_roof_mean_z": summary["far_roof_mean_z"],
                     "far_roof_mean_alt_error": summary["far_roof_mean_alt_error"],
                     "nlos_mean_formation_error": summary["nlos_mean_formation_error"],
+                    "radio_total_airtime_seconds": summary["radio_total_airtime_seconds"],
+                    "radio_budget_utilization": summary["radio_budget_utilization"],
+                    "radio_broadcast_count": summary["radio_broadcast_count"],
+                    "radio_forward_requests": summary["radio_forward_requests"],
+                    "radio_reject_count": summary["radio_reject_count"],
+                    "relay_decode_at_tx_count": summary["relay_decode_at_tx_count"],
+                    "relay_update_count": summary["relay_update_count"],
                 }
             )
             print(
@@ -436,16 +496,17 @@ def run_training(cfg: dict) -> Path:
                 f"编队保持={summary['formation_keeping_rate']:.2f} 平均AoI={summary['mean_aoi']:.2f}"
             )
         if save_every > 0 and (ep + 1) % save_every == 0:
-            _save_checkpoint(run_dir / f"ckpt_ep{ep + 1:04d}.pt", algo, cfg, algo_name, ep + 1, total_steps, env)
+            _save_checkpoint(run_dir / f"ckpt_ep{ep + 1:04d}.pt", algo, cfg, algo_name, ep + 1, total_steps, env, training_state())
 
-    _save_checkpoint(run_dir / "ckpt_final.pt", algo, cfg, algo_name, episodes, total_steps, env)
+    _save_checkpoint(run_dir / "ckpt_final.pt", algo, cfg, algo_name, stop_episode, total_steps, env, training_state())
     speed = {
         "label": "short-or-configured-run",
         "device": device_name,
         "cpu_count": __import__("os").cpu_count(),
         "algo": algo_name,
         "seed": seed,
-        "episodes": episodes,
+        "episodes": stop_episode,
+        "planned_episodes": episodes,
         "total_steps": total_steps,
         "total_updates": total_updates,
         "mean_episode_sec": float(np.mean(episode_walls)) if episode_walls else None,
@@ -489,6 +550,7 @@ def _act_value(env, role: str, kind: str) -> float | None:
 
 
 def _live_payload(cfg, env, algo_name, seed, episode, episodes, reward_sum, phase: str) -> dict:
+    communication = env.communication_counters()
     return {
         "arm": str(cfg.get("study_arm", algo_name)),
         "seed": int(seed),
@@ -509,28 +571,40 @@ def _live_payload(cfg, env, algo_name, seed, episode, episodes, reward_sum, phas
         "nlos_form": None
         if env._nlos_link_steps <= 0
         else float(env._nlos_err_sum) / float(env._nlos_link_steps),
+        "radio_broadcasts": communication.get("radio_broadcast_count", 0),
+        "radio_forward_requests": communication.get("radio_forward_requests", 0),
+        "radio_rejections": communication.get("radio_reject_count", 0),
+        "radio_airtime_seconds": communication.get("radio_total_airtime_seconds", 0.0),
+        "radio_budget_utilization": communication.get("radio_budget_utilization", 0.0),
     }
 
 
-def _save_checkpoint(path: Path, algo, cfg: dict, algo_name: str, episode: int, total_steps: int, env) -> None:
-    torch.save(
-        {
-            "algo": algo.state_dict(),
-            "config": cfg,
-            "algo_name": algo_name,
-            "episode": episode,
-            "total_steps": total_steps,
-            "obs_dim": env.obs_dim,
-            "global_dim": env.global_dim,
-            "n_agents": env.n_agents,
-        },
-        path,
-    )
+def _save_checkpoint(path: Path, algo, cfg: dict, algo_name: str, episode: int,
+                     total_steps: int, env, training_state: dict | None = None) -> None:
+    payload = {
+        "algo": algo.state_dict(), "config": cfg, "algo_name": algo_name,
+        "episode": episode, "total_steps": total_steps, "obs_dim": env.obs_dim,
+        "global_dim": env.global_dim, "n_agents": env.n_agents,
+        "checkpoint_schema": 2,
+    }
+    # Set checkpoint_replay: false for compact evaluation-only artifacts.
+    if training_state is not None and cfg["train"].get("checkpoint_replay", True):
+        payload["training_state"] = training_state
+        payload["replay"] = algo.buffer.state_dict()
+    atomic_torch_save(payload, path)
 
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    cfg = load_config(args.config)
+    if args.resume:
+        payload = torch.load(args.resume, map_location="cpu", weights_only=False)
+        cfg = copy.deepcopy(payload["config"])
+        cfg["train"].pop("run_dir", None)
+        cfg["train"].pop("stop_after_episode", None)
+        if args.seeds:
+            raise ValueError("--resume cannot be combined with --seeds")
+    else:
+        cfg = load_config(args.config)
     apply_cli(cfg, args)
     if args.seeds:
         seeds = [int(part) for part in args.seeds.split(",") if part.strip() != ""]

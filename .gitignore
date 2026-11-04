@@ -4,17 +4,37 @@ __pycache__/
 .mypy_cache/
 .ruff_cache/
 runs/
-# Local runs stay out. The beacon and airtime tables are tracked:
-# results/relay_beacon, relay_free, relay_tdma, relay_tdma4, relay_yield.
+# Local runs stay out by default. Whitelist research artifact trees below.
+# Heavy binaries remain ignored even under whitelisted trees.
 results/*
 !results/relay_beacon/
+!results/relay_beacon/**
 !results/relay_free/
+!results/relay_free/**
 !results/relay_tdma/
+!results/relay_tdma/**
 !results/relay_tdma4/
+!results/relay_tdma4/**
 !results/relay_yield/
+!results/relay_yield/**
+# MASAC V3/V4 + critic-sampling research metrics (json/log/md/csv/png/…)
+!results/masac_v3*/
+!results/masac_v3*/**
+!results/masac_v4*/
+!results/masac_v4*/**
+!results/v4_*/
+!results/v4_*/**
+# Root-level MASAC sidecars (status json, launcher outs, pending notes)
+!results/masac_v3*
+!results/masac_v4*
+!results/v4_*
 checkpoints/
 *.pt
 *.pth
+# Replay buffers / eval trajectory dumps (kept local; see docs/LOCAL_ARTIFACTS_*)
+**/replay*.npz
+**/buffer*.npz
+**/eval_*.npz
 tb/
 .venv/
 venv/
@@ -24,3 +44,6 @@ venv/
 .vscode/
 .DS_Store
 *.npz
+.env
+.env.*
+!.env.example

@@ -1,0 +1,19 @@
+{
+  "experiment_id": "v4_critic_sampling_parallel_intensity_20261103",
+  "title": "Critic A/B sampling diagnostic shard under intensity authorization",
+  "created_at_asia_shanghai": "2026-11-03 12:21:30 Asia/Shanghai",
+  "authorization": {
+    "user": "Tom Zhong",
+    "widget_answer_id": "t1u",
+    "date": "2026-11-03",
+    "provenance": "User t1u demanded maxed parallel training for paper; parent brief listed Critic A/B as priority E independent arm. Not an Attention/maneuverability arm; not V4 method validation.",
+    "forbidden": [
+      "Attention arms",
+      "Maneuverability feature training",
+      "Claiming novelty from this diagnostic alone"
+    ]
+  },
+  "base_protocol": "configs/masac_v4/critic_sampling_diagnostic.json",
+  "lock": "results/masac_v3_training.lock (independent of L0 locks)",
+  "paper_relevance": "Learnability / critic sampling isolation for Standard SAC; secondary to L0 navigation gate."
+}

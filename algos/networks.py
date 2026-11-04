@@ -18,7 +18,18 @@ LOG_STD_MIN = -20.0
 LOG_STD_MAX = 2.0
 
 
-def _mlp(in_dim: int, hidden: int, out_dim: int) -> nn.Sequential:
+def _features(in_dim: int, hidden: int, layer_norm: bool = False) -> nn.Sequential:
+    """Legacy layout stays byte-for-byte compatible when normalization is off."""
+    if layer_norm:
+        return nn.Sequential(nn.Linear(in_dim, hidden), nn.LayerNorm(hidden), nn.ReLU(),
+                             nn.Linear(hidden, hidden), nn.LayerNorm(hidden), nn.ReLU())
+    return nn.Sequential(nn.Linear(in_dim, hidden), nn.ReLU(),
+                         nn.Linear(hidden, hidden), nn.ReLU())
+
+
+def _mlp(in_dim: int, hidden: int, out_dim: int, layer_norm: bool = False) -> nn.Sequential:
+    if layer_norm:
+        return nn.Sequential(*_features(in_dim, hidden, True), nn.Linear(hidden, out_dim))
     return nn.Sequential(
         nn.Linear(in_dim, hidden),
         nn.ReLU(),
@@ -31,14 +42,10 @@ def _mlp(in_dim: int, hidden: int, out_dim: int) -> nn.Sequential:
 class SquashedGaussianActor(nn.Module):
     """SAC actor. Actions are tanh-squashed into [-1, 1]."""
 
-    def __init__(self, obs_dim: int, act_dim: int, hidden: int = 128, init_log_std: float = -0.5):
+    def __init__(self, obs_dim: int, act_dim: int, hidden: int = 128, init_log_std: float = -0.5,
+                 layer_norm: bool = False):
         super().__init__()
-        self.body = nn.Sequential(
-            nn.Linear(obs_dim, hidden),
-            nn.ReLU(),
-            nn.Linear(hidden, hidden),
-            nn.ReLU(),
-        )
+        self.body = _features(obs_dim, hidden, layer_norm)
         self.mean = nn.Linear(hidden, act_dim)
         self.log_std = nn.Linear(hidden, act_dim)
         nn.init.uniform_(self.mean.weight, -1e-3, 1e-3)
@@ -92,10 +99,10 @@ class DeterministicActor(nn.Module):
 class TwinQCritic(nn.Module):
     """Two Q heads. SAC and TD3 use the minimum of the two targets."""
 
-    def __init__(self, in_dim: int, hidden: int = 128):
+    def __init__(self, in_dim: int, hidden: int = 128, layer_norm: bool = False):
         super().__init__()
-        self.q1 = _mlp(in_dim, hidden, 1)
-        self.q2 = _mlp(in_dim, hidden, 1)
+        self.q1 = _mlp(in_dim, hidden, 1, layer_norm)
+        self.q2 = _mlp(in_dim, hidden, 1, layer_norm)
 
     def forward(
         self, state: torch.Tensor, actions: torch.Tensor

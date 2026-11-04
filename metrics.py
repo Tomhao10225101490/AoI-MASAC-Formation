@@ -65,6 +65,13 @@ EPISODE_METRIC_KEYS = (
     "far_roof_mean_alt_error",
     "far_roof_mean_leader_z",
     "far_roof_link_steps",
+    "radio_total_airtime_seconds",
+    "radio_budget_utilization",
+    "radio_broadcast_count",
+    "radio_forward_requests",
+    "radio_reject_count",
+    "relay_decode_at_tx_count",
+    "relay_update_count",
 )
 
 # Keys that become "<name>" and "<name>_std" after summarize_episodes.
@@ -117,6 +124,13 @@ SUMMARY_KEYS = (
     "far_roof_mean_alt_error",
     "far_roof_mean_leader_z",
     "far_roof_link_steps",
+    "radio_total_airtime_seconds",
+    "radio_budget_utilization",
+    "radio_broadcast_count",
+    "radio_forward_requests",
+    "radio_reject_count",
+    "relay_decode_at_tx_count",
+    "relay_update_count",
 )
 
 
@@ -242,6 +256,9 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
     def col(name: str) -> list[float]:
         return [float(r[name]) for r in rows]
 
+    def optional_col(name: str, default: float = 0.0) -> list[float]:
+        return [float(r.get(name, default)) for r in rows]
+
     mapping = {
         "success_rate": col("success"),
         "collision_rate": col("collision"),
@@ -291,6 +308,13 @@ def summarize_episodes(rows: list[dict]) -> dict[str, float]:
         "far_roof_mean_alt_error": col("far_roof_mean_alt_error"),
         "far_roof_mean_leader_z": col("far_roof_mean_leader_z"),
         "far_roof_link_steps": col("far_roof_link_steps"),
+        "radio_total_airtime_seconds": optional_col("radio_total_airtime_seconds"),
+        "radio_budget_utilization": optional_col("radio_budget_utilization"),
+        "radio_broadcast_count": optional_col("radio_broadcast_count"),
+        "radio_forward_requests": optional_col("radio_forward_requests"),
+        "radio_reject_count": optional_col("radio_reject_count"),
+        "relay_decode_at_tx_count": optional_col("relay_decode_at_tx_count"),
+        "relay_update_count": optional_col("relay_update_count"),
     }
     skip_nan = {
         "los_mean_formation_error",
