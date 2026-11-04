@@ -1,0 +1,51 @@
+{
+  "snapshot_at_asia_shanghai": "2026-11-04 15:08 Asia/Shanghai",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "stamp": "20261103_162345",
+  "machine": "TomMac-mini.local",
+  "note": "zero arm COMPLETE gate FAIL; full/static still running; do not kill",
+  "do_not_kill": true,
+  "do_not_auto_launch_further": true,
+  "arms": {
+    "zero": {
+      "out": "results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
+      "complete": true,
+      "finished_at_asia_shanghai": "2026-11-04 14:52 Asia/Shanghai",
+      "elapsed_h_approx": 22.5,
+      "all_seeds_gate_met": false,
+      "finals": {
+        "1211": "1/12",
+        "1222": "0/12",
+        "1233": "1/12"
+      },
+      "bests": {
+        "1211": "1/12@56k",
+        "1222": "2/12@60k",
+        "1233": "5/12@48k"
+      },
+      "alive": false
+    },
+    "full": {
+      "pid": 45262,
+      "caffeinate_pid": 45265,
+      "out": "results/masac_v4_maneuver_paper_suite_20261103_full_20261103_162345",
+      "seed": 1233,
+      "step": 47600,
+      "total_steps": 80000,
+      "steps_per_s": 2.61,
+      "last_eval": "1/12@46k",
+      "alive": true
+    },
+    "static": {
+      "pid": 45356,
+      "caffeinate_pid": 45359,
+      "out": "results/masac_v4_maneuver_paper_suite_20261103_static_20261103_162345",
+      "seed": 1233,
+      "step": 44200,
+      "total_steps": 80000,
+      "steps_per_s": 2.59,
+      "last_eval": "8/12@44k",
+      "alive": true
+    }
+  }
+}

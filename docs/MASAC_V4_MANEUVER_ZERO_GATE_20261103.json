@@ -1,0 +1,87 @@
+{
+  "title": "V4 Predictive Maneuverability paper suite \u2014 zero arm gate",
+  "arm": "maneuver-zero",
+  "probe_mode": "zero",
+  "suite_experiment_id": "masac_v4_maneuver_paper_suite_20261103",
+  "experiment_id": "masac_v4_maneuver_paper_suite_20261103_zero",
+  "out": "results/masac_v4_maneuver_paper_suite_20261103_zero_20261103_162345",
+  "stamp": "20261103_162345",
+  "asia_shanghai_finished": "2026-11-04 14:52 Asia/Shanghai",
+  "elapsed_s": 80939.691881167,
+  "elapsed_h_approx": 22.5,
+  "complete": true,
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": false,
+  "seeds": {
+    "1211": {
+      "final_development_success": 0.08333333333333333,
+      "final_frac": "1/12",
+      "gate_met": false,
+      "best": {
+        "step": 56000,
+        "success": "1/12"
+      },
+      "steps": 80000
+    },
+    "1222": {
+      "final_development_success": 0.0,
+      "final_frac": "0/12",
+      "gate_met": false,
+      "best": {
+        "step": 60000,
+        "success": "2/12"
+      },
+      "steps": 80000
+    },
+    "1233": {
+      "final_development_success": 0.08333333333333333,
+      "final_frac": "1/12",
+      "gate_met": false,
+      "best": {
+        "step": 48000,
+        "success": "5/12"
+      },
+      "steps": 80000
+    }
+  },
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start": "cold",
+  "authorization": "t4s17",
+  "do_not_auto_launch_further": true,
+  "siblings_at_doc_write_asia_shanghai": "2026-11-04 15:08 Asia/Shanghai",
+  "siblings_live": {
+    "full": {
+      "pid": 45262,
+      "seed": 1233,
+      "step": 47600,
+      "total_steps": 80000,
+      "steps_per_s": 2.61,
+      "last_eval": "1/12@46k",
+      "alive": true
+    },
+    "static": {
+      "pid": 45356,
+      "seed": 1233,
+      "step": 44200,
+      "total_steps": 80000,
+      "steps_per_s": 2.59,
+      "last_eval": "8/12@44k",
+      "alive": true
+    }
+  },
+  "stance": {
+    "do_not_kill_full_or_static": true,
+    "forbidden": [
+      "Attention arms",
+      "L1 escalation",
+      "Silent budget restack",
+      "Auto-launch further",
+      "Cursor cloud agents"
+    ],
+    "next": "Record zero FAIL; await suite (full/static) completion + user before further stages"
+  }
+}
