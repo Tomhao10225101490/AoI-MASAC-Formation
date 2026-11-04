@@ -1,6 +1,6 @@
 {
   "analysis_version": 1,
-  "generated_at_utc": "2026-11-04T21:01:29.815482+00:00",
+  "generated_at_utc": "2026-11-04T21:34:00.034459+00:00",
   "status": "IN_PROGRESS",
   "decision_ready": false,
   "decision": null,
@@ -19,35 +19,36 @@
         "completed_40000": false,
         "root_complete": false,
         "latest_evaluation": {
-          "step": 10000,
+          "step": 34000,
           "maps": 12,
           "successes": 0,
-          "ever_ball_any_maps": 0,
+          "ever_ball_any_maps": 8,
           "ever_ball_all_maps": 0,
           "exclusive_failure_reasons": {
-            "boundary_collision": 12
+            "timeout_after_ball_any_only": 8,
+            "timeout_before_ball": 4
           },
           "collision_flags_nonexclusive": {
             "uav_collision": 0,
             "static_collision": 0,
             "dynamic_collision": 0,
-            "boundary_collision": 12
+            "boundary_collision": 0
           },
           "max_simultaneous_capture_occupancy_by_map": {
-            "830001": 0,
-            "830002": 0,
+            "830001": 1,
+            "830002": 1,
             "830003": 0,
-            "830004": 0,
-            "830005": 0,
+            "830004": 1,
+            "830005": 1,
             "830006": 0,
             "830007": 0,
-            "830008": 0,
-            "830009": 0,
-            "830010": 0,
+            "830008": 1,
+            "830009": 1,
+            "830010": 1,
             "830011": 0,
-            "830012": 0
+            "830012": 2
           },
-          "mean_max_simultaneous_capture_occupancy": 0.0
+          "mean_max_simultaneous_capture_occupancy": 0.75
         },
         "final_evaluation": null,
         "curves": [
@@ -207,72 +208,461 @@
               "830012": 0
             },
             "mean_max_simultaneous_capture_occupancy": 0.0
+          },
+          {
+            "step": 12000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 0,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "boundary_collision": 11,
+              "timeout_before_ball": 1
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 11
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 0,
+              "830009": 0,
+              "830010": 0,
+              "830011": 0,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.0
+          },
+          {
+            "step": 14000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 5,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "boundary_collision": 6,
+              "timeout_before_ball": 4,
+              "timeout_after_ball_any_only": 2
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 6
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 1,
+              "830004": 0,
+              "830005": 1,
+              "830006": 0,
+              "830007": 0,
+              "830008": 0,
+              "830009": 1,
+              "830010": 0,
+              "830011": 1,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.3333333333333333
+          },
+          {
+            "step": 16000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 4,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 4,
+              "timeout_before_ball": 4,
+              "boundary_collision": 4
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 4
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 1,
+              "830007": 1,
+              "830008": 0,
+              "830009": 0,
+              "830010": 0,
+              "830011": 0,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.3333333333333333
+          },
+          {
+            "step": 18000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 1,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_before_ball": 11,
+              "timeout_after_ball_any_only": 1
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 0,
+              "830009": 0,
+              "830010": 0,
+              "830011": 1,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.08333333333333333
+          },
+          {
+            "step": 20000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 8,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_before_ball": 4,
+              "timeout_after_ball_any_only": 8
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 1,
+              "830003": 0,
+              "830004": 1,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 1,
+              "830009": 1,
+              "830010": 0,
+              "830011": 0,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.4166666666666667
+          },
+          {
+            "step": 22000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 11,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 11,
+              "timeout_before_ball": 1
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 1,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 1,
+              "830008": 1,
+              "830009": 1,
+              "830010": 0,
+              "830011": 1,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.4166666666666667
+          },
+          {
+            "step": 24000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 9,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 9,
+              "timeout_before_ball": 3
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 1,
+              "830009": 1,
+              "830010": 0,
+              "830011": 1,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.25
+          },
+          {
+            "step": 26000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 4,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_before_ball": 8,
+              "boundary_collision": 2,
+              "timeout_after_ball_any_only": 2
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 2
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 1,
+              "830009": 0,
+              "830010": 0,
+              "830011": 0,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.08333333333333333
+          },
+          {
+            "step": 28000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 12,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 9,
+              "boundary_collision": 3
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 3
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 1,
+              "830003": 1,
+              "830004": 1,
+              "830005": 2,
+              "830006": 1,
+              "830007": 1,
+              "830008": 1,
+              "830009": 2,
+              "830010": 1,
+              "830011": 0,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 1.0833333333333333
+          },
+          {
+            "step": 30000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 11,
+            "ever_ball_all_maps": 2,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 8,
+              "timeout_after_ball_all": 2,
+              "boundary_collision": 1,
+              "timeout_before_ball": 1
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 1
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 1,
+              "830003": 1,
+              "830004": 1,
+              "830005": 1,
+              "830006": 1,
+              "830007": 0,
+              "830008": 1,
+              "830009": 1,
+              "830010": 1,
+              "830011": 2,
+              "830012": 2
+            },
+            "mean_max_simultaneous_capture_occupancy": 1.0833333333333333
+          },
+          {
+            "step": 32000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 2,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_before_ball": 10,
+              "timeout_after_ball_any_only": 2
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 1,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 0,
+              "830009": 1,
+              "830010": 0,
+              "830011": 0,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.16666666666666666
+          },
+          {
+            "step": 34000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 8,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 8,
+              "timeout_before_ball": 4
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 1,
+              "830003": 0,
+              "830004": 1,
+              "830005": 1,
+              "830006": 0,
+              "830007": 0,
+              "830008": 1,
+              "830009": 1,
+              "830010": 1,
+              "830011": 0,
+              "830012": 2
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.75
           }
         ],
         "metrics": {
-          "progress_records": 57,
-          "learning_progress_records": 52,
+          "progress_records": 178,
+          "learning_progress_records": 173,
           "finite_diagnostics_observed": true,
           "finite_final_diagnostics_established": false,
           "finite_evidence_interpretation": "finite_diagnostics_observed describes available learning progress (null means no loss sample yet). A false finite_final_diagnostics_established before final40k means pending final evidence, not a nonfinite failure.",
-          "latest_progress_step": 11400,
-          "latest_update_count": 10400,
+          "latest_progress_step": 35600,
+          "latest_update_count": 34600,
           "incomplete_live_metrics_tail_ignored": false,
           "diagnostics": {
             "critic_clipped": {
               "progress_sample_mean": 1.0,
               "latest": 1.0,
-              "sample_count": 52
+              "sample_count": 173
             },
             "actor_clipped": {
               "progress_sample_mean": 0.0,
               "latest": 0.0,
-              "sample_count": 52
+              "sample_count": 173
             },
             "entropy": {
-              "progress_sample_mean": -1.8886493702347462,
-              "latest": -2.675293445587158,
-              "sample_count": 52
+              "progress_sample_mean": -2.6343382998353486,
+              "latest": -2.8529715538024902,
+              "sample_count": 173
             },
             "alpha": {
-              "progress_sample_mean": 0.04058162509821928,
-              "latest": 0.024861719459295273,
-              "sample_count": 52
+              "progress_sample_mean": 0.02693986929307094,
+              "latest": 0.019565524533391,
+              "sample_count": 173
             },
             "td_abs": {
-              "progress_sample_mean": 0.7144038167137367,
-              "latest": 0.9243590831756592,
-              "sample_count": 52
+              "progress_sample_mean": 0.6451513271111284,
+              "latest": 0.4248153269290924,
+              "sample_count": 173
             },
             "critic_grad": {
-              "progress_sample_mean": 194.33833522063034,
-              "latest": 182.02838134765625,
-              "sample_count": 52
+              "progress_sample_mean": 123.69105988430839,
+              "latest": 44.74303436279297,
+              "sample_count": 173
             },
             "actor_grad": {
-              "progress_sample_mean": 0.3911824335272496,
-              "latest": 0.6579908132553101,
-              "sample_count": 52
+              "progress_sample_mean": 0.5483171355862149,
+              "latest": 0.47353920340538025,
+              "sample_count": 173
             },
             "terminal_sample_fraction": {
-              "progress_sample_mean": 0.014423076923076924,
-              "latest": 0.015625,
-              "sample_count": 52
+              "progress_sample_mean": 0.009664017341040462,
+              "latest": 0.0078125,
+              "sample_count": 173
             }
           },
-          "completed_episode_count": 144,
+          "completed_episode_count": 218,
           "completed_episode_returns": {
             "base_return": {
-              "completed_episode_total": -8258.370116313918,
-              "episodes_with_field": 144
+              "completed_episode_total": -6572.917586140777,
+              "episodes_with_field": 218
             },
             "shaping_return": {
               "completed_episode_total": 0.0,
-              "episodes_with_field": 144
+              "episodes_with_field": 218
             },
             "return_": {
-              "completed_episode_total": -8258.370116313918,
-              "episodes_with_field": 144
+              "completed_episode_total": -6572.917586140777,
+              "episodes_with_field": 218
             }
           },
           "return_scope": "Only completed episodes logged in metrics; excludes the unfinished episode. Shaped returns are not comparable performance scores.",
@@ -443,36 +833,36 @@
         "completed_40000": false,
         "root_complete": false,
         "latest_evaluation": {
-          "step": 10000,
+          "step": 34000,
           "maps": 12,
           "successes": 0,
-          "ever_ball_any_maps": 1,
+          "ever_ball_any_maps": 9,
           "ever_ball_all_maps": 0,
           "exclusive_failure_reasons": {
-            "boundary_collision": 9,
+            "timeout_after_ball_any_only": 9,
             "timeout_before_ball": 3
           },
           "collision_flags_nonexclusive": {
             "uav_collision": 0,
             "static_collision": 0,
             "dynamic_collision": 0,
-            "boundary_collision": 9
+            "boundary_collision": 0
           },
           "max_simultaneous_capture_occupancy_by_map": {
-            "830001": 0,
+            "830001": 1,
             "830002": 0,
-            "830003": 0,
+            "830003": 1,
             "830004": 0,
-            "830005": 0,
-            "830006": 0,
-            "830007": 0,
+            "830005": 1,
+            "830006": 1,
+            "830007": 2,
             "830008": 0,
-            "830009": 0,
+            "830009": 2,
             "830010": 0,
             "830011": 0,
-            "830012": 0
+            "830012": 1
           },
-          "mean_max_simultaneous_capture_occupancy": 0.0
+          "mean_max_simultaneous_capture_occupancy": 0.75
         },
         "final_evaluation": null,
         "curves": [
@@ -632,72 +1022,456 @@
               "830012": 0
             },
             "mean_max_simultaneous_capture_occupancy": 0.0
+          },
+          {
+            "step": 12000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 0,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_before_ball": 12
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 0,
+              "830009": 0,
+              "830010": 0,
+              "830011": 0,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.0
+          },
+          {
+            "step": 14000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 0,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_before_ball": 12
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 0,
+              "830002": 0,
+              "830003": 0,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 0,
+              "830008": 0,
+              "830009": 0,
+              "830010": 0,
+              "830011": 0,
+              "830012": 0
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.0
+          },
+          {
+            "step": 16000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 10,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 9,
+              "timeout_before_ball": 2,
+              "boundary_collision": 1
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 1
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 0,
+              "830003": 1,
+              "830004": 0,
+              "830005": 1,
+              "830006": 1,
+              "830007": 1,
+              "830008": 1,
+              "830009": 1,
+              "830010": 0,
+              "830011": 1,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.75
+          },
+          {
+            "step": 18000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 11,
+            "ever_ball_all_maps": 1,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 8,
+              "timeout_after_ball_all": 1,
+              "boundary_collision": 3
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 3
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 1,
+              "830003": 1,
+              "830004": 0,
+              "830005": 0,
+              "830006": 1,
+              "830007": 1,
+              "830008": 0,
+              "830009": 1,
+              "830010": 0,
+              "830011": 1,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.6666666666666666
+          },
+          {
+            "step": 20000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 8,
+            "ever_ball_all_maps": 2,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_all": 2,
+              "timeout_after_ball_any_only": 6,
+              "timeout_before_ball": 4
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 1,
+              "830003": 1,
+              "830004": 0,
+              "830005": 0,
+              "830006": 0,
+              "830007": 1,
+              "830008": 0,
+              "830009": 1,
+              "830010": 0,
+              "830011": 0,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.5
+          },
+          {
+            "step": 22000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 10,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 10,
+              "timeout_before_ball": 2
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 1,
+              "830003": 0,
+              "830004": 2,
+              "830005": 1,
+              "830006": 1,
+              "830007": 1,
+              "830008": 1,
+              "830009": 1,
+              "830010": 0,
+              "830011": 1,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.9166666666666666
+          },
+          {
+            "step": 24000,
+            "maps": 12,
+            "successes": 1,
+            "ever_ball_any_maps": 9,
+            "ever_ball_all_maps": 1,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 8,
+              "timeout_before_ball": 3
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 0,
+              "830003": 1,
+              "830004": 1,
+              "830005": 3,
+              "830006": 2,
+              "830007": 1,
+              "830008": 0,
+              "830009": 1,
+              "830010": 2,
+              "830011": 0,
+              "830012": 2
+            },
+            "mean_max_simultaneous_capture_occupancy": 1.1666666666666667
+          },
+          {
+            "step": 26000,
+            "maps": 12,
+            "successes": 1,
+            "ever_ball_any_maps": 10,
+            "ever_ball_all_maps": 1,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 9,
+              "timeout_before_ball": 2
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 2,
+              "830002": 0,
+              "830003": 1,
+              "830004": 1,
+              "830005": 3,
+              "830006": 0,
+              "830007": 1,
+              "830008": 0,
+              "830009": 1,
+              "830010": 1,
+              "830011": 2,
+              "830012": 2
+            },
+            "mean_max_simultaneous_capture_occupancy": 1.1666666666666667
+          },
+          {
+            "step": 28000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 9,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 9,
+              "timeout_before_ball": 3
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 0,
+              "830003": 1,
+              "830004": 1,
+              "830005": 1,
+              "830006": 1,
+              "830007": 1,
+              "830008": 0,
+              "830009": 1,
+              "830010": 1,
+              "830011": 0,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.75
+          },
+          {
+            "step": 30000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 12,
+            "ever_ball_all_maps": 6,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_all": 6,
+              "timeout_after_ball_any_only": 6
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 2,
+              "830002": 1,
+              "830003": 1,
+              "830004": 2,
+              "830005": 1,
+              "830006": 1,
+              "830007": 2,
+              "830008": 1,
+              "830009": 1,
+              "830010": 2,
+              "830011": 1,
+              "830012": 2
+            },
+            "mean_max_simultaneous_capture_occupancy": 1.4166666666666667
+          },
+          {
+            "step": 32000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 12,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 12
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 2,
+              "830002": 1,
+              "830003": 1,
+              "830004": 1,
+              "830005": 1,
+              "830006": 1,
+              "830007": 1,
+              "830008": 1,
+              "830009": 1,
+              "830010": 1,
+              "830011": 1,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 1.0833333333333333
+          },
+          {
+            "step": 34000,
+            "maps": 12,
+            "successes": 0,
+            "ever_ball_any_maps": 9,
+            "ever_ball_all_maps": 0,
+            "exclusive_failure_reasons": {
+              "timeout_after_ball_any_only": 9,
+              "timeout_before_ball": 3
+            },
+            "collision_flags_nonexclusive": {
+              "uav_collision": 0,
+              "static_collision": 0,
+              "dynamic_collision": 0,
+              "boundary_collision": 0
+            },
+            "max_simultaneous_capture_occupancy_by_map": {
+              "830001": 1,
+              "830002": 0,
+              "830003": 1,
+              "830004": 0,
+              "830005": 1,
+              "830006": 1,
+              "830007": 2,
+              "830008": 0,
+              "830009": 2,
+              "830010": 0,
+              "830011": 0,
+              "830012": 1
+            },
+            "mean_max_simultaneous_capture_occupancy": 0.75
           }
         ],
         "metrics": {
-          "progress_records": 55,
-          "learning_progress_records": 50,
+          "progress_records": 175,
+          "learning_progress_records": 170,
           "finite_diagnostics_observed": true,
           "finite_final_diagnostics_established": false,
           "finite_evidence_interpretation": "finite_diagnostics_observed describes available learning progress (null means no loss sample yet). A false finite_final_diagnostics_established before final40k means pending final evidence, not a nonfinite failure.",
-          "latest_progress_step": 11000,
-          "latest_update_count": 10000,
+          "latest_progress_step": 35000,
+          "latest_update_count": 34000,
           "incomplete_live_metrics_tail_ignored": false,
           "diagnostics": {
             "critic_clipped": {
               "progress_sample_mean": 1.0,
               "latest": 1.0,
-              "sample_count": 50
+              "sample_count": 170
             },
             "actor_clipped": {
               "progress_sample_mean": 0.0,
               "latest": 0.0,
-              "sample_count": 50
+              "sample_count": 170
             },
             "entropy": {
-              "progress_sample_mean": -1.7217723041772843,
-              "latest": -2.4891278743743896,
-              "sample_count": 50
+              "progress_sample_mean": -2.6180382267517204,
+              "latest": -2.9996039867401123,
+              "sample_count": 170
             },
             "alpha": {
-              "progress_sample_mean": 0.04074542455375194,
-              "latest": 0.0250408798456192,
-              "sample_count": 50
+              "progress_sample_mean": 0.024383510451983004,
+              "latest": 0.016239605844020844,
+              "sample_count": 170
             },
             "td_abs": {
-              "progress_sample_mean": 0.6367419964075088,
-              "latest": 0.8265085220336914,
-              "sample_count": 50
+              "progress_sample_mean": 0.5613421787233913,
+              "latest": 0.514305591583252,
+              "sample_count": 170
             },
             "critic_grad": {
-              "progress_sample_mean": 176.01274600982666,
-              "latest": 288.60418701171875,
-              "sample_count": 50
+              "progress_sample_mean": 110.36041472939884,
+              "latest": 66.64815521240234,
+              "sample_count": 170
             },
             "actor_grad": {
-              "progress_sample_mean": 0.4725661861896515,
-              "latest": 0.4592146575450897,
-              "sample_count": 50
+              "progress_sample_mean": 0.5225409767206978,
+              "latest": 0.7478770017623901,
+              "sample_count": 170
             },
             "terminal_sample_fraction": {
-              "progress_sample_mean": 0.01640625,
-              "latest": 0.03125,
-              "sample_count": 50
+              "progress_sample_mean": 0.009512867647058823,
+              "latest": 0.0,
+              "sample_count": 170
             }
           },
-          "completed_episode_count": 148,
+          "completed_episode_count": 220,
           "completed_episode_returns": {
             "base_return": {
-              "completed_episode_total": -5885.028355266329,
-              "episodes_with_field": 148
+              "completed_episode_total": -1117.8437216620316,
+              "episodes_with_field": 220
             },
             "shaping_return": {
-              "completed_episode_total": -12.453162380646454,
-              "episodes_with_field": 148
+              "completed_episode_total": -34.66641707974924,
+              "episodes_with_field": 220
             },
             "return_": {
-              "completed_episode_total": -5897.481517646979,
-              "episodes_with_field": 148
+              "completed_episode_total": -1152.5101387417876,
+              "episodes_with_field": 220
             }
           },
           "return_scope": "Only completed episodes logged in metrics; excludes the unfinished episode. Shaped returns are not comparable performance scores.",
@@ -870,7 +1644,19 @@
         4000,
         6000,
         8000,
-        10000
+        10000,
+        12000,
+        14000,
+        16000,
+        18000,
+        20000,
+        22000,
+        24000,
+        26000,
+        28000,
+        30000,
+        32000,
+        34000
       ],
       "grid_starts_at_step_zero": false,
       "control": {
@@ -880,9 +1666,9 @@
         "last_common_is_final_40000": false
       },
       "treatment": {
-        "success_fraction_auc_step_units_on_common_observed_grid": 0.0,
-        "normalized_auc_on_observed_interval": 0.0,
-        "peak_to_last_common_drop": 0.0,
+        "success_fraction_auc_step_units_on_common_observed_grid": 333.3333333333333,
+        "normalized_auc_on_observed_interval": 0.010416666666666666,
+        "peak_to_last_common_drop": 0.08333333333333333,
         "last_common_is_final_40000": false
       }
     },

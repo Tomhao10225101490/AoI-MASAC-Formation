@@ -68,6 +68,11 @@ Tie to MATH E1.
 
 ## IV. Method
 
+Paper-ready English prose and source-matched Equations (1)–(8) are now in
+[PAPER_METHOD_DRAFT_20261105.md](PAPER_METHOD_DRAFT_20261105.md). The B policy-ordering
+and neural-learning distinction is derived in
+[MATH_PBRS_SCOPE_NOTE_20261105.md](MATH_PBRS_SCOPE_NOTE_20261105.md).
+
 ### IV-A Shared MASAC learner (not novelty)
 - Twin team Q, observation-based target and actor/temperature losses — MATH E1–E3. Exact temperature variable is log-alpha; the implemented entropy target is \(-3\).
 - Historical replay stores true terminal only and bootstraps on timeout; no unconditional finite-horizon Bellman or neural convergence theorem.
@@ -93,13 +98,13 @@ Static is not prediction-free. A valid unrun direction-shuffle holds directions 
 
 ### IV-E B hypothesis (new experiment; effectiveness unestablished)
 
-Follow `docs/design/MASAC_V4_SYNC_CAPTURE_20261105.md` for the fixed potential coefficient and terminal/bootstrap convention. Distinguish pathwise algebra, policy-ordering assumptions and finite-sample learning. Target worst-agent approach/capture; the failure counts do not identify a pure synchronization cause. Evaluation remains 4 m / 2 m·s⁻¹, latch off.
+Follow `docs/design/MASAC_V4_SYNC_CAPTURE_20261105.md` for the fixed potential coefficient and terminal/bootstrap convention. B is **fixed potential shaping**, with no scheduled reset/reward progression and no explicit arrival-time-gap term. Distinguish pathwise algebra, exact soft-objective policy ordering and finite-sample learning; cite established entropy-regularized PBRS rather than claiming a new invariance theorem. Target worst-agent approach/capture; the failure counts do not identify a pure synchronization cause. Evaluation remains 4 m / 2 m·s⁻¹, latch off.
 
 ---
 
 ## V. Experimental Protocol
 
-- Historical hardware: Apple Mac mini, CPU suite. Windows audit/device timings are separate in `docs/HARDWARE_AUDIT_WIN.md`; CPU remains default until a CUDA speed benefit is demonstrated.
+- Historical hardware: Apple Mac mini, CPU suite. Windows audit/device timings are separate in `docs/HARDWARE_AUDIT_WIN.md`. CPU remains the historical default; the new explicit CUDA protocols have measured throughput evidence (8.75x microbenchmark, 6.58x complete smoke) and do not retroactively change the Mac protocol.
 - Budget: 80 000 steps/seed; warmup 1000; eval every 2000.
 - Seeds: 1211 / 1222 / 1233 paired across arms.
 - Gate: ≥0.60 = **at least 8/12** per seed; an arm passes only if all three seeds pass.
@@ -129,6 +134,7 @@ Follow `docs/design/MASAC_V4_SYNC_CAPTURE_20261105.md` for the fixed potential c
 - Of **65** final failures, **61** have only some UAVs ever entering their balls; **four** have all UAVs entering at some times without joint success. There are **zero** collisions. Historical `timeout_after_ball` covers both classes because its entry test is any-UAV.
 - Source: `results/masac_v4_windows_audit_20261105/analysis.json` derived from saved final evaluation records. All-entry alone does not distinguish speed from timing; inspect per-UAV trajectories.
 - B targets worst-agent approach/capture as a hypothesis. Report new small-validation results separately.
+- New offline diagnosis separates \(A=\forall i\exists t\,b_i(t)\), \(C=\forall i\exists t\,c_i(t)\), and \(J=\exists t\forall i\,c_i(t)\), where \(b\) is distance-only and \(c\) adds the speed threshold. Then \(J\Rightarrow C\Rightarrow A\). For collision-free failures report \(\neg A\), \(A\land\neg C\), and \(C\land\neg J\); retain collision flags separately. See [interim trajectory diagnosis](SYNC_CAPTURE_INTERIM_DIAGNOSIS_20261105.md) for post-hoc seed1511@20k/22k examples, not final efficacy evidence.
 
 ### VI-F Final within-suite ablation table
 
@@ -155,7 +161,7 @@ Descriptive totals: zero 2/36, static 26/36, full 15/36. Mean final ordering is 
 ## VIII. Conclusion
 
 - Restate measured ablations.
-- Next authorized work: Windows audit, CPU replication and B small validation. Large launches require a plan summary; Attention, L1 and a complete suite rerun remain unauthorized.
+- Windows audit, CPU/CUDA execution smokes and the two-seed2k paired B pilot are complete. The preregistered three-seed/two-arm40k study is running; report every final40k pair after all six histories complete, without automatic extension or interim-checkpoint replacement. Large new launches require a plan summary; Attention, L1 and a historical complete-suite rerun remain unauthorized.
 
 ---
 
@@ -174,7 +180,8 @@ Descriptive totals: zero 2/36, static 26/36, full 15/36. Mean final ordering is 
 - [x] Choose the mixed/negative story and separate the warm-started Standard-C floor.
 - [x] Match equations to source, including temperature sign, zero control, Markov assumptions, discount and timeout conventions.
 - [x] Separate any-agent entry, all-agent eventual entry and joint capture.
-- [ ] Freeze a sealed unseen-map test protocol before confirmation.
+- [x] Reserve the sealed map namespace before the40k launch; no policy has been evaluated on it.
+- [ ] Freeze the confirmation/inference plan before any sealed-map evaluation.
 - [ ] Draw Fig.1 system diagram; Fig.2 probe geometry; Fig.3 curves; Fig.4 bars.
 - [ ] Anonymize GitHub URL for double-blind if submitting WoWMoM.
 - [ ] Sync EN abstract with CN one-pager for collaborators (optional).

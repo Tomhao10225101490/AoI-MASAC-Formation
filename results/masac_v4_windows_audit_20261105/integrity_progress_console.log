@@ -1,0 +1,28 @@
+GUARD control changed_sources= [] config_match= True errors= [] seed= 1511 step= 31000 steps_per_s= 13.598274934667913
+CHECKPOINTS
+results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+Traceback (most recent call last):
+  File "<stdin>", line 25, in <module>
+  File "<stdin>", line 25, in <lambda>
+ValueError: invalid literal for int() with base 10: 'summary'
+GUARD control changed_sources= [] config_match= True errors= [] seed= 1511 step= 31800 steps_per_s= 13.63674393778502
+CHECKPOINTS
+results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+results\masac_v4_sync_40k_control_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+EVAL control seed= 1511 step= 24000 success= 0 any_ball= 9 all_ball= 0 collisions= 0 maps= 12
+EVAL control seed= 1511 step= 26000 success= 0 any_ball= 4 all_ball= 0 collisions= 2 maps= 12
+EVAL control seed= 1511 step= 28000 success= 0 any_ball= 12 all_ball= 0 collisions= 3 maps= 12
+EVAL control seed= 1511 step= 30000 success= 0 any_ball= 11 all_ball= 2 collisions= 1 maps= 12
+GUARD b changed_sources= [] config_match= True errors= [] seed= 1511 step= 31000 steps_per_s= 13.359494758446813
+CHECKPOINTS
+results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_010000\manifest.json
+results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_020000\manifest.json
+results\masac_v4_sync_40k_b_cuda_20261105\maneuver_static_1511\checkpoint_030000\manifest.json
+EVAL b seed= 1511 step= 24000 success= 1 any_ball= 9 all_ball= 1 collisions= 0 maps= 12
+EVAL b seed= 1511 step= 26000 success= 1 any_ball= 10 all_ball= 1 collisions= 0 maps= 12
+EVAL b seed= 1511 step= 28000 success= 0 any_ball= 9 all_ball= 0 collisions= 0 maps= 12
+EVAL b seed= 1511 step= 30000 success= 0 any_ball= 12 all_ball= 6 collisions= 0 maps= 12
+ARTIFACT C:\research\masac-maneuverability\results\masac_v4_sync_40k_progress_20261105\integrity_snapshot.json

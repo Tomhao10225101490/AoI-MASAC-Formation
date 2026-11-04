@@ -1,0 +1,2043 @@
+{
+  "diagnosis": "POSTHOC_INTERMEDIATE_TRAJECTORY_DESCRIPTION",
+  "training_seed": 1511,
+  "step": 20000,
+  "dt_s": 0.2,
+  "capture_predicate": "post-step distance<4m AND speed<2m/s; unlatched",
+  "closest_distance_scope": "min_distance_m and JSON closest include reset frame, matching evaluate(); capture/ever-ball/streak/timing use only post-step frames.",
+  "arrival_gap_scope": "Range of first-capture times only if every agent ever captures; null otherwise. Eventual capture and first-arrival gap do not establish simultaneous capture.",
+  "counting_scope": "Each arm has 36 correlated agent-map observations from one training seed and 12 development maps; these are descriptive counts, not 36 independent trials.",
+  "efficacy_decision": null,
+  "protocol_status": "Post-hoc intermediate diagnosis only. The registered final40k primary endpoint and six-history advancement rule remain unchanged; no training change, automatic extension or sealed-test evaluation is authorized.",
+  "paired_map_metadata_verified": true,
+  "arms": {
+    "control": {
+      "root": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105",
+      "evaluation": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\evaluation_20000.json",
+      "training_seed": 1511,
+      "step": 20000,
+      "map_count": 12,
+      "agent_map_observations": 36,
+      "agent_classification_counts": {
+        "never_ball": 27,
+        "ball_without_capture": 4,
+        "ever_capture": 5
+      },
+      "success_maps": 0,
+      "collision_maps": 0,
+      "collision_flags_nonexclusive": {
+        "uav_collision": 0,
+        "static_collision": 0,
+        "dynamic_collision": 0,
+        "boundary_collision": 0
+      },
+      "any_agent_ever_in_ball_maps": 8,
+      "all_agents_ever_in_ball_maps": 0,
+      "all_agents_ever_captured_maps": 0,
+      "max_simultaneous_capture_occupancy_histogram": {
+        "0": 7,
+        "1": 5
+      },
+      "maps": [
+        {
+          "map_seed": 830001,
+          "family": "urban_canyon",
+          "scene_sha256": "1ae4cf846a79e771122e27293eff0afeacdddb7c00dbe31a0a818481a004ab30",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830001.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 8.764928121182836,
+          "worst_final_goal_distance_m": 27.085952613274927,
+          "worst_final_speed_mps": 6.443426599068389,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 7.1547136281998736,
+              "post_step_min_distance_m": 7.1547136281998736,
+              "final_distance_m": 14.320697953583563,
+              "final_speed_mps": 6.443426599068389,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.764928121182836,
+              "post_step_min_distance_m": 8.764928121182836,
+              "final_distance_m": 27.085952613274927,
+              "final_speed_mps": 2.057533038810512,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.341435407940908,
+              "post_step_min_distance_m": 8.341435407940908,
+              "final_distance_m": 14.33735235414376,
+              "final_speed_mps": 5.062074096110223,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830002,
+          "family": "warehouse",
+          "scene_sha256": "b1de7bb3db487e367b37ee68073a902a58481d2a389e768a39a593c590158bfd",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830002.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 5.085313486568132,
+          "worst_final_goal_distance_m": 17.256347477919977,
+          "worst_final_speed_mps": 5.3745597470675115,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 3.2700965096428933,
+              "post_step_min_distance_m": 3.2700965096428933,
+              "final_distance_m": 17.256347477919977,
+              "final_speed_mps": 3.029606083082612,
+              "capture_frames": 6,
+              "max_capture_streak_frames": 6,
+              "first_capture_time_s": 30.400000000000002,
+              "first_ball_time_s": 30.0
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 5.085313486568132,
+              "post_step_min_distance_m": 5.085313486568132,
+              "final_distance_m": 11.667753432696712,
+              "final_speed_mps": 4.126396518752412,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.2474522242464845,
+              "post_step_min_distance_m": 4.2474522242464845,
+              "final_distance_m": 6.7215614586161925,
+              "final_speed_mps": 5.3745597470675115,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830003,
+          "family": "courtyard",
+          "scene_sha256": "1a7e6e96605450fa82e342af46b5334ff102617c0a0da039ce82fa2fbd718113",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830003.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 8.283066568849382,
+          "worst_final_goal_distance_m": 25.48187690229301,
+          "worst_final_speed_mps": 5.881791419413708,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 1,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.899600114374132,
+              "post_step_min_distance_m": 4.899600114374132,
+              "final_distance_m": 6.308840066734948,
+              "final_speed_mps": 0.7276550081074941,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.283066568849382,
+              "post_step_min_distance_m": 8.283066568849382,
+              "final_distance_m": 25.48187690229301,
+              "final_speed_mps": 5.881791419413708,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ball_without_capture",
+              "ever_in_ball": true,
+              "ever_captured": false,
+              "min_distance_m": 1.2099062610413556,
+              "post_step_min_distance_m": 1.2099062610413556,
+              "final_distance_m": 11.82305619031627,
+              "final_speed_mps": 2.92871198548276,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": 39.400000000000006
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830004,
+          "family": "overpass",
+          "scene_sha256": "93e868983959ddc12270598ed81b5d56d4d859d002f6cec58492250ff1fed788",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830004.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 14.369329287771668,
+          "worst_final_goal_distance_m": 24.244229420497447,
+          "worst_final_speed_mps": 6.789389613076349,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 14.369329287771668,
+              "post_step_min_distance_m": 14.369329287771668,
+              "final_distance_m": 24.244229420497447,
+              "final_speed_mps": 2.2315175223617065,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.376165034940678,
+              "post_step_min_distance_m": 8.376165034940678,
+              "final_distance_m": 21.715620439672886,
+              "final_speed_mps": 2.7938329568494105,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.1558027706540885,
+              "post_step_min_distance_m": 2.1558027706540885,
+              "final_distance_m": 16.185262595322005,
+              "final_speed_mps": 6.789389613076349,
+              "capture_frames": 5,
+              "max_capture_streak_frames": 4,
+              "first_capture_time_s": 33.4,
+              "first_ball_time_s": 32.4
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830005,
+          "family": "narrow_crossing",
+          "scene_sha256": "4373b4f33f1682ad56653bb3665c26977f6c767e956c9773a6847acbdd94cddb",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830005.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 17.549130858129793,
+          "worst_final_goal_distance_m": 27.078104561944766,
+          "worst_final_speed_mps": 3.6155070715989406,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 17.549130858129793,
+              "post_step_min_distance_m": 17.549130858129793,
+              "final_distance_m": 27.078104561944766,
+              "final_speed_mps": 3.2547433394251497,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 9.196347945925888,
+              "post_step_min_distance_m": 9.196347945925888,
+              "final_distance_m": 14.622524998757418,
+              "final_speed_mps": 2.3429857557096034,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.7329355572145,
+              "post_step_min_distance_m": 8.7329355572145,
+              "final_distance_m": 18.35782715409798,
+              "final_speed_mps": 3.6155070715989406,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830006,
+          "family": "dynamic_crossing",
+          "scene_sha256": "3ced5531203752d48297e4a012a53b3b6d293682c1297564a0e73eba9ec0c9d6",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830006.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 5.691916078527745,
+          "worst_final_goal_distance_m": 16.7756381417755,
+          "worst_final_speed_mps": 5.194473056382096,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 1,
+            "ball_without_capture": 2,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 5.691916078527745,
+              "post_step_min_distance_m": 5.691916078527745,
+              "final_distance_m": 15.991725506677353,
+              "final_speed_mps": 2.490356256607556,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "ball_without_capture",
+              "ever_in_ball": true,
+              "ever_captured": false,
+              "min_distance_m": 3.367843418126402,
+              "post_step_min_distance_m": 3.367843418126402,
+              "final_distance_m": 8.994065726882232,
+              "final_speed_mps": 3.252400092298191,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": 28.400000000000002
+            },
+            {
+              "agent_index": 2,
+              "classification": "ball_without_capture",
+              "ever_in_ball": true,
+              "ever_captured": false,
+              "min_distance_m": 3.760011637591823,
+              "post_step_min_distance_m": 3.760011637591823,
+              "final_distance_m": 16.7756381417755,
+              "final_speed_mps": 5.194473056382096,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": 36.2
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830007,
+          "family": "urban_canyon",
+          "scene_sha256": "48b3f0b1c90de112693c43da7439d698165eccf86c61025913ad9fdd3a549fc5",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830007.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 7.997183358090325,
+          "worst_final_goal_distance_m": 20.11991985398574,
+          "worst_final_speed_mps": 6.4621852499369306,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 7.997183358090325,
+              "post_step_min_distance_m": 7.997183358090325,
+              "final_distance_m": 13.601555581251958,
+              "final_speed_mps": 0.8682852789991111,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 5.039354844594727,
+              "post_step_min_distance_m": 5.039354844594727,
+              "final_distance_m": 20.11991985398574,
+              "final_speed_mps": 6.4621852499369306,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.987252173581157,
+              "post_step_min_distance_m": 4.987252173581157,
+              "final_distance_m": 17.827327887974704,
+              "final_speed_mps": 4.515683152591419,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830008,
+          "family": "warehouse",
+          "scene_sha256": "2e04f81e83abb1539caca70d71ae8cc454fd98c3593a41782ad0152d0cf84da1",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830008.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 6.026645450949313,
+          "worst_final_goal_distance_m": 11.620133442139625,
+          "worst_final_speed_mps": 4.473129781209317,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.026645450949313,
+              "post_step_min_distance_m": 6.026645450949313,
+              "final_distance_m": 11.620133442139625,
+              "final_speed_mps": 4.473129781209317,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.014351736853505,
+              "post_step_min_distance_m": 6.014351736853505,
+              "final_distance_m": 8.994306935175636,
+              "final_speed_mps": 2.1333247162213156,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 0.9271209639597325,
+              "post_step_min_distance_m": 0.9271209639597325,
+              "final_distance_m": 10.92845077130405,
+              "final_speed_mps": 4.30328284972014,
+              "capture_frames": 18,
+              "max_capture_streak_frames": 4,
+              "first_capture_time_s": 25.6,
+              "first_ball_time_s": 24.8
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830009,
+          "family": "courtyard",
+          "scene_sha256": "19306765afd4d3c2ca17436a1a979159419d9a5ad1e7a6711915ad070874e5bc",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830009.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 7.363416892462425,
+          "worst_final_goal_distance_m": 16.255265920881335,
+          "worst_final_speed_mps": 4.5949716670116,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.009697621600865,
+              "post_step_min_distance_m": 4.009697621600865,
+              "final_distance_m": 4.824096299532047,
+              "final_speed_mps": 3.59910676480929,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 7.363416892462425,
+              "post_step_min_distance_m": 7.363416892462425,
+              "final_distance_m": 16.255265920881335,
+              "final_speed_mps": 4.5949716670116,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 1.5816958318579795,
+              "post_step_min_distance_m": 1.5816958318579795,
+              "final_distance_m": 15.378221259652948,
+              "final_speed_mps": 0.4496419792746986,
+              "capture_frames": 22,
+              "max_capture_streak_frames": 6,
+              "first_capture_time_s": 34.0,
+              "first_ball_time_s": 25.0
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830010,
+          "family": "overpass",
+          "scene_sha256": "f92c3847ef2a4d844b5f56f3ddabbe71b50e8e192409029e365874409dc83c28",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830010.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 13.195373898097559,
+          "worst_final_goal_distance_m": 25.09326090490525,
+          "worst_final_speed_mps": 5.135927070986371,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 11.931158290350291,
+              "post_step_min_distance_m": 11.931158290350291,
+              "final_distance_m": 25.09326090490525,
+              "final_speed_mps": 3.8112902071054107,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 13.195373898097559,
+              "post_step_min_distance_m": 13.195373898097559,
+              "final_distance_m": 23.776382525011076,
+              "final_speed_mps": 2.416169589928734,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.357693451488653,
+              "post_step_min_distance_m": 4.357693451488653,
+              "final_distance_m": 22.310279268504228,
+              "final_speed_mps": 5.135927070986371,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830011,
+          "family": "narrow_crossing",
+          "scene_sha256": "540054042598b1055b403aee4a3510a6f2de87346b5dc85e88a321be776aeab6",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830011.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 6.836521444873432,
+          "worst_final_goal_distance_m": 15.272817534953091,
+          "worst_final_speed_mps": 4.949583997739097,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 1,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.836521444873432,
+              "post_step_min_distance_m": 6.836521444873432,
+              "final_distance_m": 8.408253395105747,
+              "final_speed_mps": 2.549460441513553,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "ball_without_capture",
+              "ever_in_ball": true,
+              "ever_captured": false,
+              "min_distance_m": 3.350528589778654,
+              "post_step_min_distance_m": 3.350528589778654,
+              "final_distance_m": 14.817961202370867,
+              "final_speed_mps": 4.949583997739097,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": 21.0
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.725336094980341,
+              "post_step_min_distance_m": 6.725336094980341,
+              "final_distance_m": 15.272817534953091,
+              "final_speed_mps": 0.45483651160112765,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830012,
+          "family": "dynamic_crossing",
+          "scene_sha256": "45834d0cbc42cf43b2dfa89ccc5626f50cadded7b9ab078c68f2bbe47438fbf7",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_control_cuda_20261105\\maneuver_static_1511\\eval_20000_830012.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 10.558544805756929,
+          "worst_final_goal_distance_m": 22.86686995229417,
+          "worst_final_speed_mps": 6.332367195066869,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 3.0598997244389685,
+              "post_step_min_distance_m": 3.0598997244389685,
+              "final_distance_m": 6.08540891947307,
+              "final_speed_mps": 0.9771672612690868,
+              "capture_frames": 5,
+              "max_capture_streak_frames": 5,
+              "first_capture_time_s": 37.2,
+              "first_ball_time_s": 36.800000000000004
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 10.558544805756929,
+              "post_step_min_distance_m": 10.558544805756929,
+              "final_distance_m": 22.86686995229417,
+              "final_speed_mps": 6.332367195066869,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.617733389731549,
+              "post_step_min_distance_m": 6.617733389731549,
+              "final_distance_m": 16.17997748813416,
+              "final_speed_mps": 4.096366416181189,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        }
+      ]
+    },
+    "treatment": {
+      "root": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105",
+      "evaluation": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\evaluation_20000.json",
+      "training_seed": 1511,
+      "step": 20000,
+      "map_count": 12,
+      "agent_map_observations": 36,
+      "agent_classification_counts": {
+        "never_ball": 22,
+        "ball_without_capture": 2,
+        "ever_capture": 12
+      },
+      "success_maps": 0,
+      "collision_maps": 0,
+      "collision_flags_nonexclusive": {
+        "uav_collision": 0,
+        "static_collision": 0,
+        "dynamic_collision": 0,
+        "boundary_collision": 0
+      },
+      "any_agent_ever_in_ball_maps": 8,
+      "all_agents_ever_in_ball_maps": 2,
+      "all_agents_ever_captured_maps": 2,
+      "max_simultaneous_capture_occupancy_histogram": {
+        "0": 6,
+        "1": 6
+      },
+      "maps": [
+        {
+          "map_seed": 830001,
+          "family": "urban_canyon",
+          "scene_sha256": "1ae4cf846a79e771122e27293eff0afeacdddb7c00dbe31a0a818481a004ab30",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830001.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": true,
+          "all_agents_ever_captured": true,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 3.7646163306401665,
+          "worst_final_goal_distance_m": 15.105009290152669,
+          "worst_final_speed_mps": 0.22507488355107408,
+          "first_capture_arrival_gap_s": 10.600000000000001,
+          "agent_classification_counts": {
+            "never_ball": 0,
+            "ball_without_capture": 0,
+            "ever_capture": 3
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 3.7646163306401665,
+              "post_step_min_distance_m": 3.7646163306401665,
+              "final_distance_m": 8.711572627865669,
+              "final_speed_mps": 0.15255403043958163,
+              "capture_frames": 11,
+              "max_capture_streak_frames": 11,
+              "first_capture_time_s": 12.0,
+              "first_ball_time_s": 12.0
+            },
+            {
+              "agent_index": 1,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.131330469418583,
+              "post_step_min_distance_m": 2.131330469418583,
+              "final_distance_m": 15.105009290152669,
+              "final_speed_mps": 0.03476046986403584,
+              "capture_frames": 1,
+              "max_capture_streak_frames": 1,
+              "first_capture_time_s": 22.6,
+              "first_ball_time_s": 20.200000000000003
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 3.2303283801637552,
+              "post_step_min_distance_m": 3.2303283801637552,
+              "final_distance_m": 7.112366176944303,
+              "final_speed_mps": 0.22507488355107408,
+              "capture_frames": 17,
+              "max_capture_streak_frames": 17,
+              "first_capture_time_s": 18.0,
+              "first_ball_time_s": 18.0
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830002,
+          "family": "warehouse",
+          "scene_sha256": "b1de7bb3db487e367b37ee68073a902a58481d2a389e768a39a593c590158bfd",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830002.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 6.920362493230512,
+          "worst_final_goal_distance_m": 22.083108088683712,
+          "worst_final_speed_mps": 0.07465298069261032,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 5.985688289642456,
+              "post_step_min_distance_m": 5.985688289642456,
+              "final_distance_m": 12.698631921724237,
+              "final_speed_mps": 0.07465298069261032,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.920362493230512,
+              "post_step_min_distance_m": 6.920362493230512,
+              "final_distance_m": 22.083108088683712,
+              "final_speed_mps": 0.01111664389148767,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 3.2555476976369997,
+              "post_step_min_distance_m": 3.2555476976369997,
+              "final_distance_m": 17.611715699717003,
+              "final_speed_mps": 0.06552408270121232,
+              "capture_frames": 3,
+              "max_capture_streak_frames": 3,
+              "first_capture_time_s": 19.200000000000003,
+              "first_ball_time_s": 17.8
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830003,
+          "family": "courtyard",
+          "scene_sha256": "1a7e6e96605450fa82e342af46b5334ff102617c0a0da039ce82fa2fbd718113",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830003.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 7.33591113278625,
+          "worst_final_goal_distance_m": 22.138569108429778,
+          "worst_final_speed_mps": 0.11870012698500318,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 0,
+            "ever_capture": 1
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.503311360895153,
+              "post_step_min_distance_m": 4.503311360895153,
+              "final_distance_m": 6.520401525766313,
+              "final_speed_mps": 0.03880001219939157,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 7.33591113278625,
+              "post_step_min_distance_m": 7.33591113278625,
+              "final_distance_m": 22.138569108429778,
+              "final_speed_mps": 0.006694613800263246,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.5102794640557446,
+              "post_step_min_distance_m": 2.5102794640557446,
+              "final_distance_m": 4.62846762562156,
+              "final_speed_mps": 0.11870012698500318,
+              "capture_frames": 110,
+              "max_capture_streak_frames": 109,
+              "first_capture_time_s": 19.200000000000003,
+              "first_ball_time_s": 19.200000000000003
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830004,
+          "family": "overpass",
+          "scene_sha256": "93e868983959ddc12270598ed81b5d56d4d859d002f6cec58492250ff1fed788",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830004.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 8.557005132458864,
+          "worst_final_goal_distance_m": 14.75294189012975,
+          "worst_final_speed_mps": 0.1108462447429557,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.301848808078894,
+              "post_step_min_distance_m": 8.301848808078894,
+              "final_distance_m": 14.75294189012975,
+              "final_speed_mps": 0.0038197918481018556,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.557005132458864,
+              "post_step_min_distance_m": 8.557005132458864,
+              "final_distance_m": 8.557005132458864,
+              "final_speed_mps": 0.1108462447429557,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.83318483991476,
+              "post_step_min_distance_m": 6.83318483991476,
+              "final_distance_m": 6.83318483991476,
+              "final_speed_mps": 0.017727277395641335,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830005,
+          "family": "narrow_crossing",
+          "scene_sha256": "4373b4f33f1682ad56653bb3665c26977f6c767e956c9773a6847acbdd94cddb",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830005.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 8.951782560244625,
+          "worst_final_goal_distance_m": 30.172756614816375,
+          "worst_final_speed_mps": 0.2551032197445597,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.352765559472839,
+              "post_step_min_distance_m": 4.352765559472839,
+              "final_distance_m": 20.63484570340215,
+              "final_speed_mps": 0.2551032197445597,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.682906845130143,
+              "post_step_min_distance_m": 8.682906845130143,
+              "final_distance_m": 30.172756614816375,
+              "final_speed_mps": 0.057383206887187455,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.951782560244625,
+              "post_step_min_distance_m": 8.951782560244625,
+              "final_distance_m": 14.60558221856681,
+              "final_speed_mps": 0.10405963885324382,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830006,
+          "family": "dynamic_crossing",
+          "scene_sha256": "3ced5531203752d48297e4a012a53b3b6d293682c1297564a0e73eba9ec0c9d6",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830006.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 4.911363282013187,
+          "worst_final_goal_distance_m": 18.61099121788588,
+          "worst_final_speed_mps": 0.16940704989312913,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 1,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.911363282013187,
+              "post_step_min_distance_m": 4.911363282013187,
+              "final_distance_m": 11.289273558782607,
+              "final_speed_mps": 0.018603166799750596,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "ball_without_capture",
+              "ever_in_ball": true,
+              "ever_captured": false,
+              "min_distance_m": 1.411497731726452,
+              "post_step_min_distance_m": 1.411497731726452,
+              "final_distance_m": 18.61099121788588,
+              "final_speed_mps": 0.04478969772811734,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": 28.400000000000002
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.26575891108779,
+              "post_step_min_distance_m": 4.26575891108779,
+              "final_distance_m": 9.548363966143043,
+              "final_speed_mps": 0.16940704989312913,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830007,
+          "family": "urban_canyon",
+          "scene_sha256": "48b3f0b1c90de112693c43da7439d698165eccf86c61025913ad9fdd3a549fc5",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830007.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 4.789445368315934,
+          "worst_final_goal_distance_m": 16.48011566352028,
+          "worst_final_speed_mps": 0.15385490978727026,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 1,
+            "ball_without_capture": 0,
+            "ever_capture": 2
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.967981378253147,
+              "post_step_min_distance_m": 2.967981378253147,
+              "final_distance_m": 4.97708375719928,
+              "final_speed_mps": 0.10473889199355378,
+              "capture_frames": 21,
+              "max_capture_streak_frames": 21,
+              "first_capture_time_s": 9.4,
+              "first_ball_time_s": 9.200000000000001
+            },
+            {
+              "agent_index": 1,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 1.7501575249848096,
+              "post_step_min_distance_m": 1.7501575249848096,
+              "final_distance_m": 16.48011566352028,
+              "final_speed_mps": 0.05457902534568529,
+              "capture_frames": 3,
+              "max_capture_streak_frames": 3,
+              "first_capture_time_s": 27.400000000000002,
+              "first_ball_time_s": 25.200000000000003
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.789445368315934,
+              "post_step_min_distance_m": 4.789445368315934,
+              "final_distance_m": 9.52044754648072,
+              "final_speed_mps": 0.15385490978727026,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830008,
+          "family": "warehouse",
+          "scene_sha256": "2e04f81e83abb1539caca70d71ae8cc454fd98c3593a41782ad0152d0cf84da1",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830008.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 8.576208322379356,
+          "worst_final_goal_distance_m": 24.941344286355076,
+          "worst_final_speed_mps": 0.10421538341635744,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.257172105850315,
+              "post_step_min_distance_m": 4.257172105850315,
+              "final_distance_m": 15.128684588036641,
+              "final_speed_mps": 0.10421538341635744,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.576208322379356,
+              "post_step_min_distance_m": 8.576208322379356,
+              "final_distance_m": 24.941344286355076,
+              "final_speed_mps": 0.016023823629270916,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.579337401906031,
+              "post_step_min_distance_m": 4.579337401906031,
+              "final_distance_m": 16.59854699656784,
+              "final_speed_mps": 0.062117698747591266,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830009,
+          "family": "courtyard",
+          "scene_sha256": "19306765afd4d3c2ca17436a1a979159419d9a5ad1e7a6711915ad070874e5bc",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830009.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 4.578478462536038,
+          "worst_final_goal_distance_m": 22.199627234574344,
+          "worst_final_speed_mps": 0.16665239571544377,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 1,
+            "ball_without_capture": 0,
+            "ever_capture": 2
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.319504313461166,
+              "post_step_min_distance_m": 2.319504313461166,
+              "final_distance_m": 6.977816794776417,
+              "final_speed_mps": 0.08253491744049685,
+              "capture_frames": 22,
+              "max_capture_streak_frames": 22,
+              "first_capture_time_s": 9.600000000000001,
+              "first_ball_time_s": 9.0
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 4.578478462536038,
+              "post_step_min_distance_m": 4.578478462536038,
+              "final_distance_m": 22.199627234574344,
+              "final_speed_mps": 0.06070501352147331,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 3.2149405641063207,
+              "post_step_min_distance_m": 3.2149405641063207,
+              "final_distance_m": 7.894996008208381,
+              "final_speed_mps": 0.16665239571544377,
+              "capture_frames": 16,
+              "max_capture_streak_frames": 16,
+              "first_capture_time_s": 18.0,
+              "first_ball_time_s": 18.0
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830010,
+          "family": "overpass",
+          "scene_sha256": "f92c3847ef2a4d844b5f56f3ddabbe71b50e8e192409029e365874409dc83c28",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830010.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": false,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 8.024150834487811,
+          "worst_final_goal_distance_m": 13.365045601397627,
+          "worst_final_speed_mps": 0.11477200032382841,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 3,
+            "ball_without_capture": 0,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 8.024150834487811,
+              "post_step_min_distance_m": 8.024150834487811,
+              "final_distance_m": 13.365045601397627,
+              "final_speed_mps": 0.0032049638268916796,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 7.80999835756346,
+              "post_step_min_distance_m": 7.80999835756346,
+              "final_distance_m": 7.80999835756346,
+              "final_speed_mps": 0.11477200032382841,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 5.057890158276798,
+              "post_step_min_distance_m": 5.057890158276798,
+              "final_distance_m": 5.27478835162041,
+              "final_speed_mps": 0.013419852238750142,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830011,
+          "family": "narrow_crossing",
+          "scene_sha256": "540054042598b1055b403aee4a3510a6f2de87346b5dc85e88a321be776aeab6",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830011.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": false,
+          "all_agents_ever_captured": false,
+          "max_simultaneous_capture_occupancy": 0,
+          "worst_closest_goal_distance_m": 10.916276268679905,
+          "worst_final_goal_distance_m": 36.59756426052065,
+          "worst_final_speed_mps": 0.21543311813758376,
+          "first_capture_arrival_gap_s": null,
+          "agent_classification_counts": {
+            "never_ball": 2,
+            "ball_without_capture": 1,
+            "ever_capture": 0
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ball_without_capture",
+              "ever_in_ball": true,
+              "ever_captured": false,
+              "min_distance_m": 3.384273498784063,
+              "post_step_min_distance_m": 3.384273498784063,
+              "final_distance_m": 22.77192377661335,
+              "final_speed_mps": 0.21543311813758376,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": 9.8
+            },
+            {
+              "agent_index": 1,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 10.916276268679905,
+              "post_step_min_distance_m": 10.916276268679905,
+              "final_distance_m": 36.59756426052065,
+              "final_speed_mps": 0.00993744497386758,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            },
+            {
+              "agent_index": 2,
+              "classification": "never_ball",
+              "ever_in_ball": false,
+              "ever_captured": false,
+              "min_distance_m": 6.028654076034759,
+              "post_step_min_distance_m": 6.028654076034759,
+              "final_distance_m": 7.119096627573107,
+              "final_speed_mps": 0.030161992217313985,
+              "capture_frames": 0,
+              "max_capture_streak_frames": 0,
+              "first_capture_time_s": null,
+              "first_ball_time_s": null
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        },
+        {
+          "map_seed": 830012,
+          "family": "dynamic_crossing",
+          "scene_sha256": "45834d0cbc42cf43b2dfa89ccc5626f50cadded7b9ab078c68f2bbe47438fbf7",
+          "trajectory": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105\\maneuver_static_1511\\eval_20000_830012.npz",
+          "post_step_frames": 350,
+          "duration_s": 70.0,
+          "json_success": false,
+          "collision": false,
+          "collision_flags_nonexclusive": {
+            "uav_collision": false,
+            "static_collision": false,
+            "dynamic_collision": false,
+            "boundary_collision": false
+          },
+          "recomputed_joint_capture": false,
+          "recomputed_collision_free_success": false,
+          "first_joint_capture_time_s": null,
+          "any_agent_ever_in_ball": true,
+          "all_agents_ever_in_ball": true,
+          "all_agents_ever_captured": true,
+          "max_simultaneous_capture_occupancy": 1,
+          "worst_closest_goal_distance_m": 2.8766809517878578,
+          "worst_final_goal_distance_m": 13.198295467596935,
+          "worst_final_speed_mps": 0.1761540140753897,
+          "first_capture_arrival_gap_s": 14.0,
+          "agent_classification_counts": {
+            "never_ball": 0,
+            "ball_without_capture": 0,
+            "ever_capture": 3
+          },
+          "agents": [
+            {
+              "agent_index": 0,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.8766809517878578,
+              "post_step_min_distance_m": 2.8766809517878578,
+              "final_distance_m": 11.194345454010701,
+              "final_speed_mps": 0.07508097641951532,
+              "capture_frames": 21,
+              "max_capture_streak_frames": 21,
+              "first_capture_time_s": 9.600000000000001,
+              "first_ball_time_s": 9.0
+            },
+            {
+              "agent_index": 1,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 1.8264254894687388,
+              "post_step_min_distance_m": 1.8264254894687388,
+              "final_distance_m": 13.198295467596935,
+              "final_speed_mps": 0.03027624899559159,
+              "capture_frames": 4,
+              "max_capture_streak_frames": 4,
+              "first_capture_time_s": 23.6,
+              "first_ball_time_s": 21.200000000000003
+            },
+            {
+              "agent_index": 2,
+              "classification": "ever_capture",
+              "ever_in_ball": true,
+              "ever_captured": true,
+              "min_distance_m": 2.538246775046579,
+              "post_step_min_distance_m": 2.538246775046579,
+              "final_distance_m": 9.112273566381534,
+              "final_speed_mps": 0.1761540140753897,
+              "capture_frames": 16,
+              "max_capture_streak_frames": 16,
+              "first_capture_time_s": 19.200000000000003,
+              "first_ball_time_s": 19.0
+            }
+          ],
+          "cross_checks": {
+            "ever_in_ball_matches": true,
+            "closest_including_initial_matches": true,
+            "collision_free_success_matches": true,
+            "max_occupancy_matches": true
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,117 @@
+# Method: observation-only control probes and team potential shaping
+
+*Paper draft, 2026-11-05. The registered 40k experiment is running; its final endpoints are pending. The text below specifies the implemented method and makes no effectiveness claim from intermediate checkpoints.*
+
+## Task, information and constrained motion
+
+We consider three UAVs with independent, fixed goals \(g_i\). “Capture” denotes operational **simultaneous goal settling**: at some common step, every UAV must satisfy \(d_i=\|p_i-g_i\|_2<4\) m and \(\|v_i\|_2<2\) m/s, without collision. The predicate is unlatched; an agent that leaves its ball or accelerates above the threshold loses its captured status. There is no moving target, pursuit–evasion objective or prey-encirclement geometry.
+
+The latent state \(s_t\) includes scene geometry, vehicle states, time and reward memory. Agent \(i\) receives a masked current observation \(o_{i,t}=h_i(s_t)\in\mathbb R^{162}\), containing ego variables and visible object slots. A parameter-shared actor executes locally; centralized critics receive \(O_t=(o_{1,t},\ldots,o_{N,t})\) and joint actions. Joint current observations do not necessarily recover the Markov state, particularly first-entry memory and time. We therefore describe the implemented observation-based critic without asserting an observation-space Bellman convergence result.
+
+The actor uses a reparameterized diagonal Gaussian
+\(z_i\sim\mathcal N(\mu_\theta(o_i),\operatorname{diag}\sigma_\theta^2(o_i))\).
+For \(a_i=\tanh z_i\), the idealized dynamics are
+\[
+u_i=\frac{a_i}{\max(1,\|a_i\|_2)},\quad
+v_{i,t+1}=\Pi_V(v_{i,t}+hAu_i),\quad
+p_{i,t+1}=p_{i,t}+hv_{i,t+1},
+\tag{1}
+\]
+where \(\Pi_V\) projects onto the speed ball, \(A=4\) m/s², \(V=10\) m/s and \(h=0.2\) s. Episodes terminate on success/collision or truncate at 350 steps. Equation (1) idealizes exact projection; the simulator uses a denominator regularizer, probe code uses a clamped denominator, and observation/integration arithmetic has finite precision. Mathematical bounds below exclude unquantified numerical residuals.
+
+## Shared soft actor–critic and Path-C reward
+
+We use the existing shared soft actor–critic learner [Haarnoja et al.](https://arxiv.org/abs/1801.01290), with the approximate learner and automatic-temperature context of [SAC applications](https://arxiv.org/abs/1812.05905). Let \(\bar\ell=N^{-1}\sum_i\log\pi_\theta(a_i\mid o_i)\), with coordinate log densities summed within each UAV. Both the scalar reward \(r=N^{-1}\sum_i r_i\) and entropy contribution use agent means. Twin critics minimize summed squared residuals against
+\[
+y=r+\gamma(1-\delta)
+ [\min_k Q_{\bar\psi_k}(O',A')-\alpha\bar\ell'],\quad
+ A'\sim\pi_\theta,\quad \gamma=0.99.
+\tag{2}
+\]
+Replay stores the true-terminal flag \(\delta\), not the truncation flag. Timeout transitions therefore bootstrap even though their episodes reset, retaining the historical continuing-value approximation.
+
+With \(\beta=\log\alpha\), the source-matched losses are
+\[
+J_\pi=\mathbb E[\operatorname{sg}(e^\beta)\bar\ell-\min_kQ_{\psi_k}(O,A)],
+\quad
+J_\beta=-\mathbb E[\beta(\operatorname{sg}(\bar\ell)-3)].
+\tag{3}
+\]
+Here \(\operatorname{sg}\) stops gradients. The implemented differential-entropy target is **−3**: the temperature stationary condition is \(\mathbb E[\bar\ell]=3\). Exact tanh Jacobian correction defines this density before radial command projection and speed clipping. Actor/critic gradient norms are clipped at five; target updates use coefficient 0.005.
+
+Let \(b_{i,t}=\mathbf1[d_{i,t}<4]\), \(c_{i,t}=b_{i,t}\mathbf1[\|v_{i,t}\|<2]\), and let \(e_{i,t}\) track previous ball entry. Write \(G_t\) for collision-free joint success and \(K_t\) for collision on transition \(t\). Path-C assigns
+\[
+\begin{aligned}
+r_{i,t}={}&d_{i,t}-d_{i,t+1}-0.005-0.002\|\Delta v_{i,t}/h\|_2^2\\
+&+0.4\,\mathrm{clip}(1-d_{i,t+1}/15,0,1)
+ +3b_{i,t+1}(1-e_{i,t})\\
+&+8(c_{i,t+1}-c_{i,t})+50G_t-20K_t .
+\end{aligned}
+\tag{4}
+\]
+Thus ball entry is rewarded once, whereas losing unlatched capture incurs −8. Path-C is an engineering reward, not policy-invariant shaping of sparse success. For example,
+\[
+\sum_{t=0}^{T-1}\gamma^t(d_t-d_{t+1})
+=d_0-\gamma^{T-1}d_T-(1-\gamma)\sum_{t=1}^{T-1}\gamma^{t-1}d_t,
+\]
+and the near-goal term is added undifferenced.
+
+## Observation-only control probes
+
+Our representation uses zero, six axial and twelve face-diagonal commands: 18 unit directions plus zero. For each \(u_j\), Equation (1) generates a constant-command ego preview over \(H=2\) s, with ten updates and eleven sampled positions. Zero holds velocity; it is not braking. Visible peers and moving objects are extrapolated at their decoded current world velocities. No simulator future, reference path or peer-policy rollout enters the actor.
+
+At each sample, signed clearances are computed to inflated static boxes, moving spheres, peer spheres and world bounds. Let \(m_j^q\) be the minimum across sample times for clearance family \(q\), \(c_{j,0}\) the minimum current clearance, and \(D=\|v\|^2/(2A)\) a stopping-distance surrogate. The 11-component feature is
+\[
+f_j=[u_j;\ C(m_j^{\rm st}/L),C(m_j^{\rm mv}/L),
+ C(m_j^{\rm peer}/L),C(m_j^{\rm bd}/L);\
+ T_j/H;\ \mathrm{clip}(D/L,0,1);\
+ C((c_{j,0}-D)/L);\ \mathbf1[\min_qm_j^q>0]],
+\tag{5}
+\]
+where \(L=40\) m and \(C(x)=\mathrm{clip}(x,-1,1)\). The first sampled nonpositive-clearance time \(T_j\) defaults to \(H\), conflating no hit with a hit exactly at the horizon.
+
+A shared 11→64→64 probe MLP followed by mean/max pooling produces 128 features. Concatenation with the 384-dimensional pool SetEncoder gives 512 features; the actor and each critic have separate encoder parameters. Full/static/zero arms retain identical architecture. The object encoder consumes typed geometry/velocity tokens with explicit validity masks; padding contributes neither to masked means nor maxima. In the pool backbone, token-wise residual MLP blocks retain permutation invariance without attention. Probe pooling is likewise invariant to whole-token permutation, so a direction-alignment intervention must retain canonical direction coordinates while permuting scalar contents; permuting complete tokens would be vacuous. Static replaces moving/peer clearances by the neutral sentinel \(L\) before computing derived features, then zeros those two output channels; ego/static/boundary preview remains. Zero replaces all features, including directions, by constants. Neither contrast proves encoder-use causality.
+
+The evaluated L0 maps contain no external moving obstacles. Missing moving channels are therefore constant full-versus-static fills, while peer channels can saturate. Consequently this mask contrast does not identify moving-obstacle prediction quality. Unlike preview coupled to action correction in [SCOPE](https://ijcai.org/proceedings/2026/7), these features do not replace or filter executed actions.
+
+## Fixed team potential shaping
+
+B adds one training-only scalar to the static learner. Define \(\nu_\epsilon(x)=\sqrt{\|x\|^2+\epsilon^2}-\epsilon\), \(\epsilon=10^{-8}\), and
+\[
+q=[\nu_\epsilon(g_i-p_i)/4;\nu_\epsilon(v_i)/2]_{i=1}^N,\quad
+M_\tau=\tau\log\!\left(\frac1{2N}\sum_j e^{q_j/\tau}\right),\quad
+\Phi(s)=\frac1{1+M_\tau},\quad \tau=0.1.
+\tag{6}
+\]
+Since \(q_j\ge0\), \(0<\Phi\le1\). For \(q_{\max}=\max_jq_j\), the standard log-mean-exp bounds give \(q_{\max}-\tau\log(2N)\le M_\tau\le q_{\max}\). Thus this potential softens the worst normalized distance/speed; it is not an exact capture predicate and contains no explicit arrival-time-gap term. With fixed \(\lambda=0.5\),
+\[
+F_t=\lambda[\gamma(1-\delta_t)\Phi(s_{t+1})-\Phi(s_t)],
+\qquad r'_t=r_t+F_t.
+\tag{7}
+\]
+B changes neither observations nor evaluation reward and is not a time-varying curriculum. Current team states compute this centralized training reward only; they provide no additional actor input or future information.
+
+The replay reward in Equation (2) is \(r'_t\) when B is enabled and \(r_t\) otherwise.
+
+For absorbing-zero true terminals, discounted shaping telescopes to \(-\lambda\Phi(s_0)\). At a timeout it retains \(\gamma^T\lambda\Phi(s_T)\), canceled only by the consistent bootstrap transformation \(V'=V-\lambda\Phi\). Standard entropy-regularized PBRS theory, including [Adamczyk et al., Theorem 5 and Remark 7](https://arxiv.org/html/2212.01174v2), supplies context rather than a new theorem. Exact policy-order preservation requires a common policy information class, initial distribution, entropy convention and valid terminal/continuation boundary. It concerns the Path-C soft objective, not sparse success. It does not imply equivalent neural critic, target-network or automatic-temperature learning trajectories; see the [scope derivation](MATH_PBRS_SCOPE_NOTE_20261105.md).
+
+## Discrete model error and evidence scope
+
+For a feasible initial velocity and a common timestep/speed ball, projection nonexpansiveness gives a bounded-acceleration peer's error relative to its initial-velocity CV model:
+\[
+E_{\rm peer}(k)\le\epsilon_p+kh\epsilon_v+
+ \tfrac12Ah^2k(k+1).
+\tag{8}
+\]
+With the same projection/direction, ego acceleration-magnitude error \(\delta A\) adds at most \(\tfrac12\delta A h^2k(k+1)\), plus initial errors. For a changing executed policy, a vector-control discrepancy bound is required; equal acceleration magnitudes do not imply equal directions. Reverse triangle inequality bounds peer-sphere clearance error by the two position errors. On the same peer set/grid, minima and normalized clipping preserve the corresponding Lipschitz bound; TTC and the positive flag do not.
+
+At \(H=2\), \(h=0.2\), \(A=4\), the discrete term is 8.8 m; continuous \(AH^2/2=8\) m underestimates the semi-implicit witness. These standard perturbation bounds exclude unseen peers, mask changes, numerical residuals, early termination and inter-sample contact. They do not constitute joint safety certificates or the reachable-set/safety-filter construction studied in the [CC-HGCBF preprint](https://arxiv.org/abs/2610.41214).
+
+
+## Training and evaluation contract
+
+The registered B study cold-starts both static arms at training seeds 1511, 1522 and 1533, with 40,000 transitions per run, 1,000 warmup steps, batch size 128 and replay capacity 100,000. Both arms use the same frozen optimizer, cache and benchmark-supported execution configuration; their scientific difference is the B enabled flag. Episode-index map generators are paired, but policy-dependent episode lengths can change training-map exposure at a given transition index. We do not describe training transitions as identical paired samples.
+
+Deterministic evaluation uses the same 12 L0 development maps every 2,000 steps with shaping disabled. The fixed 40k checkpoint, rather than a selected best checkpoint, supplies each seed's endpoint. We separately report any-agent eventual ball entry, all-agent eventual entry and simultaneous strict capture: their quantifiers are respectively \(\exists i\exists t\), \(\forall i\exists t\) and \(\exists t\forall i\), with the speed predicate added for capture. Failures and collisions remain explicit; path efficiency is conditional on success. A separate 12-map namespace is reserved but remains sealed until the final artifacts and development decision are frozen. Training seeds, rather than repeatedly evaluated maps or checkpoints, are the replication units. These controls support interpretation of the experiment without establishing an effect before completion.
+
+Equations (5)–(7) define the representation and finite-budget learning hypothesis. Their effects require matched experiments; the registered 40k static/off-versus-on final endpoints remain pending. Static+B alone cannot identify predictive-content utility, and no intermediate result establishes superiority, novelty, safety or convergence.

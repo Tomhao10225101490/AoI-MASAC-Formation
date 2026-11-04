@@ -85,6 +85,26 @@ binaries. Meaningful stages must be committed and pushed to both active branches
    passed; see `docs/MATH_DISCRETE_PROBE_ERROR_20261105.md` (8.8m ideal discrete
    peer-CV bound, not a safety certificate). Both running source hash sets were
    independently rechecked unchanged.
+   **Latest monitoring stage (not final evidence):** both1511 histories are
+   around35k; both30k checkpoint manifests exist. The persisted integrity
+   snapshot at `results/masac_v4_sync_40k_progress_20261105/integrity_snapshot.json`
+   records control31800/B31000 with all14 local source hashes unchanged, both
+   protocol hashes matched and no error.json. Later log read reached
+   control35800/B35000; inspect current output-local files on resumption.
+   B eval24k/26k=1/12,28k/30k=0/12. These are not endpoints or a stopping rule.
+   GPU sample77%,1501MiB,63C; freeRAM~14.7GiB. Four python PIDs are two venv
+   launchers plus two actual workers, not four training jobs.
+   The offline trajectory analyzer ran on **all48 saved trajectories** across
+   both arms at1511@20k/22k and passed metric/map-pair cross-checks:
+   `scripts/diagnose_sync_capture_trajectories.py`. See
+   `docs/SYNC_CAPTURE_INTERIM_DIAGNOSIS_20261105.md`. Distinguish J=>C=>A:
+   simultaneous capture, all-agent individual capture, all-agent ball entry.
+   B20k has two C-but-not-J episodes with maximum occupancy1; most episodes
+   still lack A. This is post-hoc diagnosis, not a B effect or causal claim.
+   Offline read mistakes (wrong root manifest filename; numeric glob initially
+   included evaluation_summary.json) were corrected. They did not affect any
+   training process/source/config. The failed integrity attempt and corrected
+   success are both retained in integrity_progress_console.log.
 4. Commit/push protocol and completed pilot evidence before40k launch. Freeze
    every file in trainer SOURCES for all six histories; checkpoint hashing reads
    disk and would otherwise misidentify the loaded code. Analyze/log without
@@ -102,6 +122,13 @@ warm-start confound, POMDP/terminal/bootstrap assumptions, entropy target **-3**
 unsupported safety/novelty/superiority claim. Frontier updated from primary sources
 including SCOPE and actuator-aware safe MARL. Official WoWMoM deadline: Dec1 2026
 23:59AoE = Dec2 19:59 China time; see FRONTIER_GAP_UPDATE_20261105.md.
+
+Paper-ready English Methods now lives in `docs/PAPER_METHOD_DRAFT_20261105.md`.
+`docs/MATH_PBRS_SCOPE_NOTE_20261105.md` connects B to established entropy-regularized
+PBRS (AAAI2023), states common-information/initial-distribution/boundary conditions,
+and explicitly separates exact objective ordering from approximate critic,
+target-network and automatic-temperature learning paths. B is fixed shaping,
+not a scheduled curriculum; it has no explicit arrival-time-gap penalty.
 
 ## Resumption safety
 
