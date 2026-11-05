@@ -68,5 +68,8 @@ These are layout revisions, with no outcome-based selection or study changes.
 The initial error stack and subsequent render logs are retained in the Windows
 audit directory. Earlier layout drafts remain local; the manuscript linksv3.
 The final asset directory disables Git newline conversion to preserve generated
-SVG/JSON bytes. Source hashes describe the inspected working-tree bytes; a
+SVG/JSON bytes. Generated assets also opt out of source-code whitespace lint;
+SVG/XML, JSON and PNG parsing plus artifact hashes validate them instead. The
+verbatim initial error trace similarly preserves its original line-end spaces.
+These attributes do not change handwritten source/protocol lint. Source hashes describe the inspected working-tree bytes; a
 new rendering on another platform/version is not promised bit-identical.

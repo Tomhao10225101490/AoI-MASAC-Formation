@@ -920,3 +920,16 @@ No measured cost/speedup, bitwise test, causal outcome claim or hotfix. Pending
 audit records ownership/shuffle/RNG/evaluation conditions for a future post-study
 change. All current20sources/configs remain frozen; no new training/diagnostic
 model load or sealed access occurred for this source review/illustration.
+
+## 24. Correct figure-stage precommit control flow
+
+Commit72e728b reached both branches even though the preceding staged whitespace
+check failed: root did not gate the second exec call on the first exit1. This
+was an execution-control mistake, not a training/source/protocol change.
+Generated WindowsSVG/JSON bytes containCRLF, SVG path-data whitespace is valid,
+and the original mathtext error line contains a trailing blank. The original
+artifact/trace bytes are preserved. A follow-up commit scopes-whitespace only
+to generated figure assets and the one verbatim error log; handwritten source
+and protocol checks remain active. Recheck the entire figure change from3e2405a,
+parseSVG/JSON/PNG, verify actual artifact/source hashes and freeze20/two configs
+before push. No history restart, outcome rule change or force-push.
