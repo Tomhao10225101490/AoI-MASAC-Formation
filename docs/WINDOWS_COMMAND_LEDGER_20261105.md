@@ -893,3 +893,30 @@ browserconsoleerrors[]. No measured training-speedup claim. Existing local
 server remains live; only the page was reloaded, no training/worker/source/config
 change, new experiment or sealed read. Screenshot shown in chat; live dashboard
 remains the current-data deliverable.
+
+## 23. Source-aligned Figure1 and pending cache guard finding
+
+Existing session27468 confirmed live, four registered histories roughly23–24k
+at the start of this stage. Read-only network/provider/trainer call-path review.
+Figure renderer is outside frozen20sources, runs only MatplotlibAgg/CPU and
+loads no model/environment/experiment/test data. First render failed mathtext
+unbraced mathcal before images; stack preservedsystem_figure_render_console.log.
+Second render fixed braces, then visual QA prompted a layout-only collection
+arrow reroute/label clarification. Final render:
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts\render_masac_system_figure.py --out docs/figures/masac_system_20261105_v3 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/system_figure_render_v3_console.log
+```
+
+Exit0, SVG/PNG/source-artifactmanifest written, image visually inspected.
+Manuscript/caption distinguish rawprobe cache from learned latents, per-agent
+criticMLP+agentpool from fixed-Nconcat, and separateB/near reward studies. Only
+Fig1writingcheckbox marked complete; geometry/curve/final-count figures remain.
+
+Read-only source finding: act caches(N,19,11), push's implicit-risk shape guard
+compares(N,162), so action-time reuse branch is unreachable in the actualtrainer
+caller. Current probes are recomputed; minibatch replaycache remains enabled.
+No measured cost/speedup, bitwise test, causal outcome claim or hotfix. Pending
+audit records ownership/shuffle/RNG/evaluation conditions for a future post-study
+change. All current20sources/configs remain frozen; no new training/diagnostic
+model load or sealed access occurred for this source review/illustration.

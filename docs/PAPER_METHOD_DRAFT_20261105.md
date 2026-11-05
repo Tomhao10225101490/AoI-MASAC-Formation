@@ -4,6 +4,14 @@
 
 ## Task, information and constrained motion
 
+![Figure1: source-aligned actor, probes, replay and centralized critics](figures/masac_system_20261105_v3/figure1_system.png)
+
+**Figure1.** The implemented pooled architecture and training-only reward paths.
+Actor and critics have separate encoders; each critic pools per-agent256-vectors
+by mean/max before its scalar head. Probe replay caches raw19-by11tensors,
+not learned latents. Reward interventions belong to separate studies and do not
+change the actor's input information. [Full caption/source/layout provenance](FIGURE1_SYSTEM_CAPTION_20261105.md).
+
 We consider three UAVs with independent, fixed goals \(g_i\). “Capture” denotes operational **simultaneous goal settling**: at some common step, every UAV must satisfy \(d_i=\|p_i-g_i\|_2<4\) m and \(\|v_i\|_2<2\) m/s, without collision. The predicate is unlatched; an agent that leaves its ball or accelerates above the threshold loses its captured status. There is no moving target, pursuit–evasion objective or prey-encirclement geometry.
 
 The latent state \(s_t\) includes scene geometry, vehicle states, time and reward memory. Agent \(i\) receives a masked current observation \(o_{i,t}=h_i(s_t)\in\mathbb R^{162}\), containing ego variables and visible object slots. A parameter-shared actor executes locally; centralized critics receive \(O_t=(o_{1,t},\ldots,o_{N,t})\) and joint actions. Joint current observations do not necessarily recover the Markov state, particularly first-entry memory and time. We therefore describe the implemented observation-based critic without asserting an observation-space Bellman convergence result.

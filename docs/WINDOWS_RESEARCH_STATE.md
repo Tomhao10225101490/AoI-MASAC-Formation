@@ -92,6 +92,18 @@ near-objective cohort. New Equations(N1)–(N3) usePsi for mean-distance near
 potential, distinguish physical removal from absorbing addition, and show the
 discounted reward-sum difference from PathC. No efficacy or prediction claim.
 
+Paper Fig.1 source-aligned architecture SVG/PNG/caption now lives at
+`docs/figures/masac_system_20261105_v3` and `docs/FIGURE1_SYSTEM_CAPTION_20261105.md`.
+Rendered without model/environment/experiment data; source/artifact hashes and
+layout QA recorded. Critic architecture correctly uses per-agent515->256,
+agentmean/max512, then scalar head; no fixed-Nconcatenation claim.
+Read-only source audit found an unreachable action-time probe reuse guard:
+obs(N,162)compared withcachedprobes(N,19,11). The minibatch replay cache still
+works. `docs/PENDING_PROBE_CACHE_SHAPE_AUDIT_20261105.md` specifies limits and a
+future optimization check after final analysis. Do not hot-fix any frozen source,
+reinterpret old outcomes or claim an unmeasured speedup. No new model/experiment
+execution was performed to establish this source fact.
+
 Parallel paper/frontier review: `docs/FRONTIER_CONTRIBUTION_CRITERIA_20261105.md`
 inspects12primary-source precedents, defines concrete falsifiers and disallows
 unsupported novelty/SOTA claims. Long L0 sensor range is not strong limited

@@ -1,0 +1,43 @@
+Traceback (most recent call last):
+  File "C:\research\masac-maneuverability\scripts\render_masac_system_figure.py", line 127, in <module>
+    render(parser.parse_args().out)
+  File "C:\research\masac-maneuverability\scripts\render_masac_system_figure.py", line 98, in render
+    fig.canvas.draw()
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\backends\backend_agg.py", line 382, in draw
+    self.figure.draw(self.renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\artist.py", line 94, in draw_wrapper
+    result = draw(artist, renderer, *args, **kwargs)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\figure.py", line 3257, in draw
+    mimage._draw_list_compositing_images(
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\image.py", line 134, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\axes\_base.py", line 3181, in draw
+    mimage._draw_list_compositing_images(
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\image.py", line 134, in _draw_list_compositing_images
+    a.draw(renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\artist.py", line 71, in draw_wrapper
+    return draw(artist, renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\text.py", line 752, in draw
+    bbox, info, descent = self._get_layout(renderer)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\text.py", line 382, in _get_layout
+    w, h, d = _get_text_metrics_with_cache(
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\text.py", line 69, in _get_text_metrics_with_cache
+    return _get_text_metrics_with_cache_impl(
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\text.py", line 77, in _get_text_metrics_with_cache_impl
+    return renderer_ref().get_text_width_height_descent(text, fontprop, ismath)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\backends\backend_agg.py", line 215, in get_text_width_height_descent
+    self.mathtext_parser.parse(s, self.dpi, prop)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\mathtext.py", line 86, in parse
+    return self._parse_cached(s, dpi, prop, antialiased, load_glyph_flags)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\mathtext.py", line 100, in _parse_cached
+    box = self._parser.parse(s, fontset, fontsize, dpi)
+  File "C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\matplotlib\_mathtext.py", line 2173, in parse
+    raise ValueError("\n" + ParseException.explain(err, 0)) from None
+ValueError: 
+\mathcal R(O),\mathcal R(O')
+^
+ParseFatalException: Unknown symbol: \mathcal, found '\'  (at char 0), (line:1, col:1)

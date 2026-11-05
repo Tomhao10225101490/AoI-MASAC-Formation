@@ -1,0 +1,45 @@
+{
+  "complete": true,
+  "kind": "architecture illustration, not experimental evidence",
+  "created_at_utc": "2026-11-05T06:03:33.388428+00:00",
+  "sources": {
+    "uav_planning/v4_networks.py": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+    "uav_planning/v4_prediction.py": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+    "uav_planning/v4_maneuver_masac.py": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+    "uav_planning/v4_sync_capture.py": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+    "uav_planning/v4_near_objective.py": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+    "uav_planning/v4_near_study_runtime.py": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+    "scripts/render_masac_system_figure.py": "3267fe2f83d3482e3b52bed615e45b77c9b7e9951a47f5f8decbf8576d44ea08"
+  },
+  "matplotlib_version": "3.10.0",
+  "no_model": true,
+  "no_environment": true,
+  "no_training": true,
+  "no_sealed_access": true,
+  "manual_source_facts": {
+    "observation": 162,
+    "set_features": 384,
+    "probes": [
+      19,
+      11
+    ],
+    "risk_features": 128,
+    "actor_features": 512,
+    "action": 3,
+    "critic_per_agent_input": 515,
+    "critic_agent_latent": 256,
+    "critic_team_mean_max": 512,
+    "critics_have_independent_encoders": true,
+    "replay_caches_raw_probes_not_learned_latents": true
+  },
+  "artifacts": {
+    "figure1_system.svg": {
+      "sha256": "cb0257927da64b2295305c576c8ee56646bd4130864bac7b1c4c3aa4b7825894",
+      "bytes": 60532
+    },
+    "figure1_system.png": {
+      "sha256": "4fabb563117b10a1bf6974e854ceac6847ab23e547a9315831d21b920d88dc61",
+      "bytes": 338226
+    }
+  }
+}

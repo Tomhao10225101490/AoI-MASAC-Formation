@@ -219,6 +219,7 @@ The three verified final trajectory summaries are under results/masac_v4_sync_40
 - [x] Separate any-agent entry, all-agent eventual entry and joint capture.
 - [x] Reserve the sealed map namespace before the40k launch; no policy has been evaluated on it.
 - [ ] Freeze the confirmation/inference plan before any sealed-map evaluation.
-- [ ] Draw Fig.1 system diagram; Fig.2 probe geometry; Fig.3 curves; Fig.4 bars.
+- [x] Draw source-aligned Fig.1 system diagram: [SVG/PNG and caption](FIGURE1_SYSTEM_CAPTION_20261105.md), visually checked; no performance/novelty claim.
+- [ ] Draw Fig.2 probe geometry; Fig.3 curves; Fig.4 final paired counts with all seeds and fixed endpoints.
 - [ ] Anonymize GitHub URL for double-blind if submitting WoWMoM.
 - [ ] Sync EN abstract with CN one-pager for collaborators (optional).
