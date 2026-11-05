@@ -1,0 +1,10 @@
+FINAL_FAILURE_COUNTS 1511 control {"success": 2, "incomplete_ball_arrival": 7, "ball_without_all_individual_capture": 0, "individual_capture_without_joint": 3, "collision": 0, "any_ball": 12, "all_ball": 5, "all_individual_capture": 5}
+FINAL_FAILURE_COUNTS 1511 treatment {"success": 6, "incomplete_ball_arrival": 4, "ball_without_all_individual_capture": 0, "individual_capture_without_joint": 2, "collision": 0, "any_ball": 12, "all_ball": 8, "all_individual_capture": 8}
+FINAL_FAILURE_COUNTS 1522 control {"success": 1, "incomplete_ball_arrival": 11, "ball_without_all_individual_capture": 0, "individual_capture_without_joint": 0, "collision": 0, "any_ball": 9, "all_ball": 1, "all_individual_capture": 1}
+FINAL_FAILURE_COUNTS 1522 treatment {"success": 0, "incomplete_ball_arrival": 10, "ball_without_all_individual_capture": 0, "individual_capture_without_joint": 2, "collision": 0, "any_ball": 11, "all_ball": 2, "all_individual_capture": 2}
+FINAL_FAILURE_COUNTS 1533 control {"success": 4, "incomplete_ball_arrival": 7, "ball_without_all_individual_capture": 0, "individual_capture_without_joint": 1, "collision": 0, "any_ball": 12, "all_ball": 5, "all_individual_capture": 5}
+FINAL_FAILURE_COUNTS 1533 treatment {"success": 5, "incomplete_ball_arrival": 4, "ball_without_all_individual_capture": 1, "individual_capture_without_joint": 2, "collision": 0, "any_ball": 12, "all_ball": 8, "all_individual_capture": 7}
+ARTIFACT C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\failure_taxonomy.json
+ARTIFACT C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\distance_shortfall_diagnosis.json
+FIGURE C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\final_endpoints_and_failure_classes.png
+FIGURE C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\final_endpoints_and_failure_classes.svg

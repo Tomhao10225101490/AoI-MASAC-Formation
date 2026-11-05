@@ -80,111 +80,61 @@ are obsolete. Per-output manifest/completion/status remain authoritative.
 
 Next ordered actions:
 
-1. Integrate the complete results into paper/math/frontier, and push completed
-   evidence plus the separate offline plan before running that diagnostic.
-2. Follow `docs/design/MASAC_V4_POST40K_NEXT_MINIMAL_PLAN_20261105.md`: no policy
-   load/action/map rollout/training; six final replays, last8000 transitions,
-   fixed uniform linspace1024 observations/history. Same-observation full/static/
-   static-fill1, validity separated from missing and saturated1 values. Freeze
-   indices/input SHA/source/config, report all11 channels and derived features.
-   New `scripts/audit_final_replay_probe_content.py` needs root review before run.
-   Population is static control/B late-training replay, **not** final on-policy
-   states or historical full-policy states. Feature differences do not identify
-   prediction accuracy or the cause of the historical full/static ranking.
-3. Analyze/push that audit, then record the next smallest justified hypothesis
-   and experiment. Any substantial new training first needs a concrete visible
-   plan. Current relative rule only supports designing confirmation.
+1. Complete results, paper/math/frontier and the separate offline plan were
+   pushed to both branches as d8ff5ad before the next diagnostic. Final failure
+   tables/figure are reproduced by scripts/summarize_sync_final_failures.py.
+   Post-hoc never-ball localization:65agent-map records,29closest4–5m and36
+   closest5–10m, all finalspeed<2. This is near-goal descriptive evidence, not
+   proof of hovering/reward causality or a replacement efficacy endpoint.
+2. Offline plan above is **COMPLETE**, script reviewed and run successfully on
+   CUDA/chunk128/Torch1thread: six final replays,6144jointobs,48chunks. Every
+   full/static trace bitwise-equals the frozen provider, maxerror0;3 independent
+   geometry witnesses pass. No model/actor/rollout/test loaded or run.
+   Report: `docs/LATE_REPLAY_CONTENT_AUDIT_20261105.md`; raw results in
+   `results/masac_v4_sync_40k_late_content_audit_20261105`.
+   IndicesSHA eca0cfd9c12108af9627b89910fcf6a657c168a9c1bb54622eb628d15d3b3fc7.
+   Full==static-fill1 in349849/350208tokens=99.89748949%;359peer-only residuals
+   all incontrol1522; no TTC/brake/reserve/flag or other-column residual.
+   Every18432agentobs has2validpeers; most peer1values are valid-far geometry
+   capped by40m padding sentinel, not absence. Moving0valid slots. Population
+   remains late static-trained replay, not historical full/finalonpolicy.
+   Do not rerun into the same output (the script rejects overwrite).
+3. Integrate/push this audit and reward mathematical diagnosis. Path-C ball
+   bonus is once-ever; capture is+8/-8 state difference. Positive holding
+   reward alone does not establish hover preference; a feasible near-goal
+   finish yields54.06949 and beats waiting in the documented example.
+   See `docs/MATH_PATHC_OBJECTIVE_DIAGNOSTIC_20261105.md`; no root cause claimed.
+4. Next minimum is a separately frozen **offline actor-response** diagnostic
+   (protocol/script under preparation, not yet executed). Reuse the same6144
+   observations/hashes; compare tanh(mu), not E[action], with64fixed isolated
+   Gaussian draws; only analytic one-step distance/speed, no simulator/rollout,
+   new training or sealed maps. Root must review and push the new concrete
+   protocol/code before any model load/run. It is separate from the completed
+   phaseA no-policy-load contract. Any substantial new training still needs a
+   visible plan; current relative rule supports planning confirmation only.
 
 Before this final stage both remote branches were e3425c2; obtain the actual new
 tip from Git. Preserve uncommitted intended edits and historical restoration
 leftovers; never bulk-add results/ or reset/clean the repository.
 
-## Historical snapshot before completion (superseded, not launch instructions)
+## Historical pilot and identification context
 
-1. CPU/CUDA smokes and two-arm two-seed2k pilot **COMPLETE**. All four final
-   evals0/12, all-agent-ever-ball0; B/1422 has any-ball1/12, others0. All7,488
-   updates passed the per-update finite guard. No method gain claimed. Reports:
-   `results/masac_v4_sync_pilot_diagnosis_20261105/{summary.json,PILOT_RESULTS.md}`.
-   Two concurrent processes:~15–16steps/s each, GPU84%,~1.5GiB VRAM total,
-   CPU27%,~15.6GiB RAM available at sample. Each process RSS~1.22GB.
-2. **New identification finding:** all12 archived L0 maps have no moving
-   objects and conflict_degree0. On new control/1411@2k sampled128states,
-   moving clearance is constant1 for full versus0 static; peer7204/7296 values
-   equal1. Other channels match in this sample. Not an audit of old final-policy
-   trajectories. See `docs/L0_CONTENT_IDENTIFIABILITY_AUDIT_20261105.md`.
-3. Active registered study **40k ×3seeds ×2arms**, static control/B with fixed
-   lambda.5/tau.1, cold seeds1511/1522/1533, warmup1000, batch128, capacity100000,
-   eval2k, checkpoint10k, CUDA1Torch thread per process,2processes. Plan was
-   summarized visibly before launch. Protocol:
-   `docs/design/MASAC_V4_SYNC_CAPTURE_40K_PROTOCOL_20261105.md` and
-   `configs/masac_v4/sync_capture_40k_{control,b}_cuda_20261105.json`.
-   Intended outputs:
-   `results/masac_v4_sync_40k_control_cuda_20261105` and
-   `results/masac_v4_sync_40k_b_cuda_20261105`. Check their status before launching.
-   Final40k primary; no lambda search/best-checkpoint replacement/auto extension.
-   Reserved test manifest exists, **do not evaluate policies on it yet**.
-   **LAUNCHED 2026-11-05 04:49 Asia/Shanghai** after protocol/pilot evidence push
-   `eaf83e2`. Control PID25212, B PID2940 at launch. Current tool sessions
-   control27303/B5353 can be polled while still valid; verify OS process command
-   lines and output-local files on resumption. Both first2k evals0/12; control
-   any-ball2/12, B0/12. Intermediate values are not efficacy conclusions.
-   Independent analyzer:
-   `.venv\Scripts\python.exe -u scripts/analyze_sync_study.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --out results/masac_v4_sync_40k_analysis_20261105`.
-   Its14 decision/integrity tests passed; current output is IN_PROGRESS with
-   decision_ready=False. Rerun on later evidence; never infer completion from
-   absence of a recent log line. Five independent discrete-dynamics checks also
-   passed; see `docs/MATH_DISCRETE_PROBE_ERROR_20261105.md` (8.8m ideal discrete
-   peer-CV bound, not a safety certificate). Both running source hash sets were
-   independently rechecked unchanged.
-   **Latest completed pairs:4/6 histories complete.** The same original workers
-   cold-started1533 after saving1522 completion. Do not start another copy.
-   Registered40k control/B success pairs:1511=2/12 vs6/12 (+4 successes),
-   1522=1/12 vs0/12 (-1). This is a mixed partial result, not the full
-   advancement decision. The canonical analyzer remains IN_PROGRESS,
-   decision_ready=False, decision=None. See
-   `docs/SYNC_CAPTURE_TWO_PAIR_PROGRESS_20261105.md`; preserve the original
-   final40k endpoint and all decision rules for the remaining1533 pair.
-   All four completed histories have39000 updates and fail the per-seed8/12
-   absolute gate. Do not early-stop or extend the remaining histories.
-   Seed1522 any-ball=9/12 vs11/12, all-ball=1/12 vs2/12, collisions0 both;
-   trajectory recheck gives all-individually-captured counts1/12 vs2/12 but
-   simultaneous capture1/12 vs0/12. Proxy coverage cannot replace joint capture.
-   Checkpoint/replay bytes for all four completed histories were independently
-   verified against manifests; all14 declared source hashes and both protocol
-   hashes match. Each history has195 finite logged post-warmup diagnostics.
-   Proof records:1511 `results/masac_v4_sync_40k_progress_20261105/first_pair_integrity.json`;
-   1522 `results/masac_v4_sync_40k_progress_20261105/seed1522_integrity/verification.json`.
-   Reusable read-only checker: `scripts/verify_sync_seed_artifacts.py` accepts
-   --control ROOT --treatment ROOT --seed 1533 --out NEW_AUDIT_DIR. Use it on1533
-   only after its seed completion exists. It imports no torch/weights, validates
-   current source/config bytes and hashes binaries without deserializing them.
-   This is not exact-CUDA-resume validation. Final progress.last_eval_step38000
-   is expected because that line precedes final evaluation; use completion
-   plus evaluation_40000.json for endpoints. Never overwrite old metrics.
-   Resource sample at06:38: GPU81%,1509MiB,64C; freeRAM~15GiB. Four python
-   PIDs are two venv launchers plus two workers, not four training jobs.
-   The offline trajectory analyzer ran on **all48 saved trajectories** across
-   both arms at1511@20k/22k and passed metric/map-pair cross-checks:
-   `scripts/diagnose_sync_capture_trajectories.py`. See
-   `docs/SYNC_CAPTURE_INTERIM_DIAGNOSIS_20261105.md`. Distinguish J=>C=>A:
-   simultaneous capture, all-agent individual capture, all-agent ball entry.
-   B20k has two C-but-not-J episodes with maximum occupancy1; most episodes
-   still lack A. This is post-hoc diagnosis, not a B effect or causal claim.
-   Offline read mistakes (wrong root manifest filename; numeric glob initially
-   included evaluation_summary.json) were corrected. They did not affect any
-   training process/source/config. The failed integrity attempt and corrected
-   success are both retained in integrity_progress_console.log.
-4. Protocol/pilot evidence was committed and pushed before40k launch (`eaf83e2`).
-   Continue freezing every file in trainer SOURCES for all six histories; checkpoint hashing reads
-   disk and would otherwise misidentify the loaded code. Analyze/log without
-   editing these sources. Keep output-local status/completion authoritative;
-   legacy shared registry can lose a display pointer under concurrent writes.
-5. After40k, verify1533 artifacts and run the canonical analyzer **before any
-   frozen source/config edit**. Then record all seed-paired differences and the preregistered engineering
-   decision (not significance). If no capture floor/signal, call it inconclusive;
-   no automatic budget restack. Proposed constant-fill/peer-CV identification is
-   separate and not queued. Do not bulk-add partially extracted historical
-   untracked metrics or assembled archive duplicates.
+The CPU/CUDA smokes and two-arm/two-seed2k pilot are complete. All four final
+pilot evaluations had0/12joint and0all-agent-ball; only B1422 had1any-ball.
+All7488updates passed finite guards. This was runtime sanity, not gain evidence.
+Pilot reports: results/masac_v4_sync_pilot_diagnosis_20261105.
+
+The early control1411@2k128-observation audit found moving clearance constant1
+in full versus0static and peer7204/7296exact1, with other channels equal only
+on that sample. All12development scenes have no external movers/conflict0.
+That early sample does not describe late replay or historical full-policy
+trajectories; the separately pushed next plan addresses only late-replay content.
+
+Original40k launch was04:49 after protocol push eaf83e2; runtime two concurrent
+workers used approximately1.5GiBVRAM and15–16steps/s each in the pilot. Old
+worker/session identifiers are retired. Source/config remained frozen through
+the final six-history verification. Full completed-study evidence and offline
+plan pushed to both branches as d8ff5ad; later analysis has separate artifacts.
 
 Paper edits pushed: final suite numbers, Standard-C common empty811@40k
 warm-start confound, POMDP/terminal/bootstrap assumptions, entropy target **-3**,

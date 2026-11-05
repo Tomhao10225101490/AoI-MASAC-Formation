@@ -95,3 +95,25 @@ This minimal step is complete when all six files have verifiable sample provenan
 After reviewing the audit, a **future confirmation plan** may specify fresh paired training seeds, initialization, fixed budget, B setting, static/constant-fill/full comparisons, stopping rules and a sealed-data policy. It must first determine whether the desired contrast has informative, nonconstant content under the unchanged L0 task. Keep the completed 40k and historical 80k runs as separate evidence. Do not extend an existing run, select a favorable checkpoint, alter L0 world parameters, add Attention/GNN/L1, or open sealed evaluation data as an automatic response to `ADVANCEMENT_RULE_MET`.
 
 The theoretical context remains standard: [entropy-regularized PBRS](https://arxiv.org/html/2212.01174v2) supplies a conditional exact-value/policy-ordering result, not a new 2026 theorem or a guarantee of neural learning improvement. [SCOPE](https://ijcai.org/proceedings/2026/7) and [CC-HGCBF](https://arxiv.org/abs/2610.41214) remain close precedents for preview-based coordination and capability representations. The next auditable contribution is a correct identification of what information this experiment actually varies.
+
+## 8. Execution-complete addendum — 2026-11-05
+
+This addendum records execution without rewriting the prespecified sampling, counterfactuals or decision criteria above. The offline audit completed with **exit code 0**, processing **48 CUDA chunks and 6,144 selected observations**. All **three synthetic witnesses passed**. The instrumented/recomputed full and static modes each matched their corresponding frozen provider **bitwise across all 11 columns**, with maximum absolute error **0**. This provider-parity result is distinct from the differences between full and static modes.
+
+The frozen index-manifest SHA-256 is:
+
+`eca0cfd9c12108af9627b89910fcf6a657c168a9c1bb54622eb628d15d3b3fc7`
+
+Per-replay input hashes, selected indices and other execution provenance are retained in [audit.json](../../results/masac_v4_sync_40k_late_content_audit_20261105/audit.json). The narrative [audit.md](../../results/masac_v4_sync_40k_late_content_audit_20261105/audit.md), [features.csv](../../results/masac_v4_sync_40k_late_content_audit_20261105/features.csv) and [provenance_counts.csv](../../results/masac_v4_sync_40k_late_content_audit_20261105/provenance_counts.csv) are the result artifacts.
+
+| Observation from the executed audit | Exact population / interpretation |
+|---|---|
+| Full equals static-constant-fill-1 on **349,849/350,208 tokens = 99.89748949%** | Complete 11-component probe-token comparisons on the selected late-training observations. This is feature equality, not policy equivalence. |
+| **359** full/constant-fill differences, maximum absolute difference **0.4561988711** | All occur in the peer-clearance column of control seed 1522's sampled replay. Their location does not identify a cause of that seed's training outcome. |
+| Moving full clearance always **1**, static always **0** | There are **0/73,728 valid moving-object slots**. The current sampled moving channel carries a neutral-value offset. |
+| All other **9 columns** match between full/static | Includes TTC, braking distance, reserve and positive-clearance flag; no derived propagation is observed on these selected observations. The peer and moving clearance slots account for the differences. |
+| **18,432 agent observations**, each with **2 valid peers**, giving **36,864 valid peer slots** | Neutral peer clearance cannot be classified as peer absence. |
+| **349,849** raw valid-peer minima are above **40 m**; **359** are below **40 m** | In the first group the **40 m masked-slot sentinel is smaller** and caps the aggregate. Record this provider behavior separately from an absent peer and from normalization alone. |
+| **52,038/147,456 valid static-box slots**, but only **8/350,208** static-clearance outputs differ from **1** | Valid but far static objects plus the sentinel cap produce mostly neutral static clearance. Boundary features provide the most varying geometric content in this sampled population. |
+
+The completion claim is restricted to this offline content audit. The sample contains the six static control/B policies' **late-training replay**, not fresh final-policy evaluations or the historical full-policy distribution. No trained policy was loaded and no policy action, new training or sealed-test evaluation was performed. The results do not measure predictive accuracy, prove actor reliance on a channel, attribute the old full arm's weakness, or establish how a newly trained constant-fill arm would behave. They justify a more accurate feature-content description and **planning** a future confirmation contrast; they authorize no additional training.

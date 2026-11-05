@@ -1,5 +1,5 @@
 {
-  "scope": "Post-hoc final40k development trajectory diagnosis; three training replicates, repeated maps; not a new efficacy endpoint",
+  "scope": "Post-hoc descriptive final40k development trajectory diagnosis; three training replicates, correlated agent/map observations; not a new efficacy endpoint or causal attribution",
   "definitions": {
     "A": "all agents ever distance<4m",
     "C": "all agents ever distance<4m and speed<2m/s",

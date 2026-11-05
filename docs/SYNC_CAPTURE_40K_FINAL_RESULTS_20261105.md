@@ -63,6 +63,27 @@ each seed JSON describes its original diagnostic interface; these selected
 step40000 records are the final endpoint trajectories. The efficacy decision
 comes only from the independent registered-study analyzer.
 
+![Registered endpoints and final failure classes](../results/masac_v4_sync_40k_analysis_20261105/final_endpoints_and_failure_classes.png)
+
+### Post-hoc localization of incomplete arrival
+
+Among the65 correlated agent-map records classified never-ball, all have
+post-step closest distance in[4,10)m:29 in[4,5)m and36 in[5,10)m. Control has
+38records (17/21 in those two bins), B27records (12/15). Median closest distance
+is5.118m/control and5.187m/B. All65 have final speed below2m/s; median final
+distance is6.893m/control and7.760m/B. These conditional samples differ between
+arms, so their distance medians are not a treatment-effect comparison.
+
+This locates a near-goal precision/retention question, rather than showing that
+all incomplete arrivals remain far from their goals. A low-speed final frame
+does not show stationary hovering throughout the episode, and closest distance
+alone does not establish a feasible local route or reward-induced behavior.
+The bins were fixed immediately before this post-hoc computation, not before
+training, and cannot replace the registered success endpoint.
+`distance_shortfall_diagnosis.json` records every seed and arm, including full
+fixed quantiles and denominators. Reproduce these tables and the figure with
+`scripts/summarize_sync_final_failures.py`; no trajectory or policy is rerun.
+
 ## Integrity, numerical evidence and limitations
 
 All12 final checkpoint/replay binary SHA256 checks match their manifests, all14

@@ -440,3 +440,102 @@ script is reviewed separately; it is not part of frozen trainer SOURCES.
 The existing ACTIVE heartbeat idmasac was updated to this completed-study
 recovery entry; frequency/thread were preserved, no duplicate created and no
 account/payment setting changed. Confirmation training remains unqueued.
+
+Explicit final-stage path selection was saved in
+`results/masac_v4_sync_40k_analysis_20261105/git_intended_files_final40k.txt`.
+394 intended paths,344 actually changed; cached diff check passed and the
+forbidden-extension query returned no checkpoint/replay/credential paths.
+Commit/push commands:
+
+```powershell
+git commit --quiet -m "research: finalize registered 40k B study and freeze offline content audit"
+git rev-parse HEAD
+git push --atomic origin HEAD:main HEAD:research/wowmom2027-upgrade
+git ls-remote --heads origin main research/wowmom2027-upgrade
+```
+
+Both remote tips verified `d8ff5ada79be438c11ee5340e00fd3dd26c4b709`.
+The new offline feature script was deliberately excluded until review/completion.
+
+## 12. Reproducible final figure and near-goal shortfall localization
+
+Printed inline plotting and distance aggregation commands were executed before
+being encapsulated in a separate JSON-only entry point. Their tee logs are
+final_figure_console.log and distance_shortfall_console.log in the Windows audit
+root. All65 never-ball agent-map records have closest distance4–10m:29closest
+4–5m,36closest5–10m; all65finalspeeds<2m/s. Their final distances need not be
+their closest distances. This suggests a near-goal diagnosis, not a causal
+claim or proof of stationary behavior. B/control populations are selected by
+their own failures and must not be compared as matched independent samples.
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts/summarize_sync_final_failures.py --progress results/masac_v4_sync_40k_progress_20261105 --out results/masac_v4_sync_40k_analysis_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/final_failure_reproduction_console.log
+nvidia-smi --query-gpu=name,utilization.gpu,memory.used,memory.total,temperature.gpu,power.draw --format=csv
+Get-CimInstance Win32_OperatingSystem | Select-Object TotalVisibleMemorySize,FreePhysicalMemory
+```
+
+Entry point exit0 reproduces all six failure-count vectors, both JSON tables
+and final_endpoints_and_failure_classes.png/.svg. PNG visually reviewed: all
+seeds, the negative pair,8/12gate and exhaustive descriptive classes visible.
+No best checkpoint, confidence interval from pooled maps, model load or rollout.
+System-wide sample:GPU59%,803MiB,38C; freeRAM~17.14GiB. These system-wide GPU
+values are not attributed to a training worker; the40k workers had already exited.
+
+## 13. Six-history late-replay content audit: COMPLETE
+
+The separate offline plan was already pushed in d8ff5ad. Root reviewed the entire
+new analysis script in bounded reads, including raw validity,
+mode inclusion, sentinel/geometric minima, current/preview/first-hit provenance,
+sample freezing, three synthetic witnesses and error/overwrite handling. No
+frozen trainer source/config was changed. The only model-related import was
+the deterministic feature provider; no checkpoint was deserialized or actor run.
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts/audit_final_replay_probe_content.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --out results/masac_v4_sync_40k_late_content_audit_20261105 --device cuda --sample-size 1024 --window 8000 --chunk-size 128 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/late_replay_content_console.log
+```
+
+Exit0. Six replay identities and actual SHA256s matched before computation;
+all14declared source hashes and both config hashes match. Fixed1024indices in
+each final replay's last8000transitions; index manifest SHA256
+eca0cfd9c12108af9627b89910fcf6a657c168a9c1bb54622eb628d15d3b3fc7.
+48chunks/6144jointobs complete, every full/static trace bitwise equals frozen
+provider, maximum error0. All3 independent geometry-only witnesses pass and
+are excluded from real-data counts. Per-chunk progress and hashes were streamed
+to the screen and the console log; no error.json or nonfinite output occurred.
+
+All18432agent observations have two valid peers; moving0/73728validslots.
+Full==static-fill1 on349849/350208tokens=99.89748949%. Only359peer residuals,
+allcontrol1522, maximum normalized difference0.4561988711. Other nine columns,
+including TTC/brake/reserve/flag, have zero mode differences. Most peer1 values
+come from valid-far geometry and a strictly smaller40m padding sentinel, not
+absent peers. Static boxes are also present but staticclearance differs from1
+in only8tokens; boundary/ego channels retain variation. This describes only
+static-trained late replay, not historical full policy or fresh final rollouts.
+
+Root printed and ran a compact metadata consistency check: index/script/provider
+SHA256s, six histories/same-variant input SHA,6144samplecount,350208channel counts,
+48zero-errortracechunks, zero nonfinite values, and peer residual count equal to
+the traced valid-geometric-min-below-scale count. It reports
+AUDIT_ARTIFACT_CONSISTENCY PASS residual_peer_tokens359 total350208.
+Detailed extraction and check logs are late_content_summary_console.log and
+late_content_consistency_console.log. The full artifact set is in the named
+late-content audit directory; no .pt/.npz is copied or staged.
+
+Paper/frontier appendices now report these results and their population bounds.
+MATH_PATHC_OBJECTIVE_DIAGNOSTIC_20261105.md separately checks actual once-ever
+ball memory, capture entry/exit signs, bounded discounted capture component,
+legal control examples and delay-versus-finish accounting. Positive near-goal
+holding reward alone does not prove a hover preference or the observed cause.
+Its feasible one-step finish example returns54.06949, better than a one-step
+delay. These are mathematical constructions, not extra trained-policy rollouts.
+
+Next under preparation is a separately frozen offline actor-response diagnostic
+on the same hashed observations. It may load only the already verified own final
+checkpoint after a new protocol/code review/push; phaseA's no-model contract is
+complete and unchanged. No new training, environment step or sealed test is queued.
+
+The first cached diff check stopped with exit2 on Matplotlib-generated SVG
+trailing spaces. The SVG exporter now strips line-end whitespace, and the
+existing SVG was cleaned after asserting every parsed path's numeric command
+tokens remain identical. This is formatting only; plot values and geometry
+remain unchanged. No check was bypassed and no commit was made before repair.

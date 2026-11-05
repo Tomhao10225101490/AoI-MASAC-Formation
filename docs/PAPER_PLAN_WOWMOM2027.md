@@ -110,6 +110,12 @@ Let A mean all UAVs ever enter their balls, Cevt mean all UAVs individually atta
 
 Across 72 final rollouts there are **18 successes and 54 failures**, with **zero collisions**. The exhaustive collision-free failure partition is **43 not-all-ball-entry**, **one all-ball-entry without all-individual-strict-capture**, and **10 all-individual-strict-capture without joint capture**. These are observed event classes, not identified causes. Do not pool this 40k diagnosis with the Mac 80k suite's 65 failures or infer that B caused a change in synchronization difficulty from raw category totals.
 
+### 3.5 Late-replay input audit — a bounded population, not learning equivalence
+
+The [new late-replay audit](../results/masac_v4_sync_40k_late_content_audit_20261105/audit.md) covers **6,144 joint observations** from the six completed 40k histories: **18,432 agent observations and 350,208 probe vectors**. Full equals static_fill1 in **349,849/350,208 vectors (99.89748949%)**; all **359** exceptions differ only in the peer column and occur in control/1522. The other nine columns, including TTC/brake/reserve/flag, are bitwise identical between full/static; moving outputs are always full=1, static=0. Every audited agent observation has two valid peers: saturated peer=1 mostly reflects valid far peers plus the 40 m padding sentinel, not absent peers. Five of six histories have complete vector identity within this audited sample.
+
+These are same-observation feature calculations on the declared sampled population, not the entire replay, historical Mac 80k suite, a policy rollout or sealed-map evidence. They do not establish equal learned functions/optimization trajectories or identify constant fill as a performance cause. The original experiment and rule remain unchanged.
+
 ## 4. Evidence and next work before stronger claims
 
 1. Freeze the completed three-seed finals above; carry seed variability and the static 1233 drop into the abstract and results.

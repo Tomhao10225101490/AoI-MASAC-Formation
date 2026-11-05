@@ -1,0 +1,19 @@
+{
+  "arm": "control",
+  "seed": 1511,
+  "replay_sha256": "b8c51058d915b41722ad319d06a273a9b4a6539e00d03b724ec0673cfb043772",
+  "index_manifest_sha256": "eca0cfd9c12108af9627b89910fcf6a657c168a9c1bb54622eb628d15d3b3fc7",
+  "dtype": "<f4",
+  "shape": [
+    1024,
+    3,
+    162
+  ],
+  "byte_order": "little",
+  "array_order": "C",
+  "array_bytes": 1990656,
+  "array_bytes_sha256": "a01cd0faf75c9d0d402ca6deddfbf2aff0e0a9ec427d0e168e82e40dacc50475",
+  "canonical_sha256": "eb9ec513ebf5e29b10136ba6f925c76f7c099eac87c0c25e50b2ef41debda967",
+  "canonical_serialization": "UTF-8 compact sorted-key header JSON, one LF byte, then little-endian float32 C-order array bytes",
+  "canonical_header_json": "{\"array_order\":\"C\",\"byte_order\":\"little\",\"dtype\":\"<f4\",\"shape\":[1024,3,162]}"
+}
