@@ -1,0 +1,143 @@
+{
+  "version": "masac-v4-sync-capture-pilot-v1",
+  "experiment_id": "masac_v4_near_objective_2k_original_cuda_20261105",
+  "suite_experiment_id": "masac_v4_near_objective_2k_original_cuda_20261105",
+  "paired_experiment_family": "near_objective_2k_20261105",
+  "change_set": "near_original",
+  "authorization": {
+    "date": "2026-11-05",
+    "provenance": "Persistent user-authorized problem-hypothesis-minimal-experiment loop; concrete two-arm 2k plan shown before launch.",
+    "scope": "New cold-start two-arm 2k runtime/numerical pilot only; no historical continuation or automatic 40k launch."
+  },
+  "set_mode": "pool",
+  "probe_modes": [
+    "static"
+  ],
+  "default_probe_mode": "static",
+  "families": [
+    "urban_canyon",
+    "warehouse",
+    "courtyard",
+    "overpass",
+    "narrow_crossing",
+    "dynamic_crossing"
+  ],
+  "seeds": [
+    1644
+  ],
+  "steps": 2000,
+  "warmup": 1000,
+  "batch_size": 128,
+  "replay_capacity": 10000,
+  "eval_interval": 2000,
+  "checkpoint_interval": 2000,
+  "log_interval": 100,
+  "device": "cuda",
+  "compute_evidence": "results/masac_v4_windows_audit_20261105/device_benchmark.json",
+  "n_agents": 3,
+  "sensor_range": 400,
+  "training_map_seed_offset": 2000000,
+  "training_seed_multiplier": 10000,
+  "sync_capture": {
+    "enabled": false,
+    "coefficient": 0.5,
+    "temperature": 0.1,
+    "ball_m": 4.0,
+    "speed_mps": 2.0
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "development_maps": [
+    {
+      "seed": 830001,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830002,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830003,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830004,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830005,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830006,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830007,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830008,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830009,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830010,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830011,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830012,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    }
+  ],
+  "gate": {
+    "per_seed_joint_success_fraction": 0.6,
+    "finite_losses_required": true
+  },
+  "baseline_comparison": {
+    "role": "paired original near occupancy vs discounted near potential replacement",
+    "paired_mode": "potential"
+  },
+  "evidence_scope": "Single-seed 2k runtime and numerical sanity only; not performance evidence.",
+  "do_not_auto_launch_further": true,
+  "preregistered_protocol": "docs/design/MASAC_V4_NEAR_OBJECTIVE_2K_PROTOCOL_20261105.md",
+  "reserved_test_manifest": "configs/masac_v4/sync_capture_40k_sealed_maps_20261105.json",
+  "near_objective": {
+    "mode": "original",
+    "coefficient": 0.4,
+    "radius_m": 15.0,
+    "gamma": 0.99
+  }
+}

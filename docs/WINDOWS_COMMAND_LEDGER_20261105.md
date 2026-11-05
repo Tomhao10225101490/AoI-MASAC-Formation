@@ -685,3 +685,33 @@ stabilization. These are close prior art/limits, not novelty or causal clearance
 Next separate candidate is training near occupancy replacement by a discounted
 potential difference, static/B-off; two-arm2k sanity must be registered/pushed
 before launch. No next40k or historical continuation is queued.
+
+## 17. Separate near-objective2k pilot registration
+
+Concrete plan shown before launch: two new cold seed1644runs, original near
+occupancy reward versus discounted potential replacement; static/B-off,2k,
+warmup1000,batch128,replay10k,eval/checkpoint2k,log100,CUDA/Torch1thread,
+two concurrent jobs. No continuation/weights load or efficacy decision.
+Pure adapter and an explicit new entry reuse the unchanged14source trainer;
+only training reward callback/logging is hooked. Evaluation uses original
+Path-C and asserts unchanged training state. Both manifests hash17sources and
+name base/shaping-return semantics. Every training reward transition is logged.
+
+```powershell
+.venv\Scripts\python.exe -m pytest tests/test_v4_near_objective.py -q 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_tests.log
+.venv\Scripts\python.exe -m py_compile scripts\train_masac_v4_near_objective.py uav_planning\v4_near_objective.py
+git diff --check
+```
+
+22tests pass; syntax/diffchecks exit0. Independent read-only review confirms
+training/evaluation boundary and episode/reset ordering. Finite corrections
+must stay[-.404,0]nonterminal/[-.8,0]terminal; module tests cover true-terminal
+telescoping, timeout boundary with transformed bootstrap, stationary occupancy
+and invalid data. This changes the old soft objective; PBRS applies only to
+Path-C-minus-near and supplies no sparse-success guarantee. Protocol/code/config
+must be pushed before either exact CLI below is executed:
+
+```powershell
+.venv\Scripts\python.exe -u scripts\train_masac_v4_near_objective.py --protocol configs/masac_v4/near_objective_2k_original_cuda_20261105.json --out results/masac_v4_near_objective_2k_original_cuda_20261105 --torch-threads 1 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_2k_original_console.log
+.venv\Scripts\python.exe -u scripts\train_masac_v4_near_objective.py --protocol configs/masac_v4/near_objective_2k_potential_cuda_20261105.json --out results/masac_v4_near_objective_2k_potential_cuda_20261105 --torch-threads 1 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_2k_potential_console.log
+```
