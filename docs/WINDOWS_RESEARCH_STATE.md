@@ -50,14 +50,13 @@ binaries. Meaningful stages must be committed and pushed to both active branches
 
 ## Current authoritative status: completed40k, next offline diagnosis
 
-**Latest recovery checkpoint:** actor results pushed83ea090; interrupted draft
-preserved4b92498. Normal tools resumed. Root and independent read-only review
-completed the trajectory dwell/reward protocol/code; syntax check passed.
-Before first execution, push the reviewed version and verify both remote refs.
-Then run once into `results/masac_v4_sync_40k_final_dwell_audit_20261105` using
-the printed CLI in the command ledger. Check output existence/status/processes
-first; an existing completed output must be analyzed, not rerun. No Python
-process remained at the current recovery check. The goal remains unfinished.
+**Latest recovery checkpoint:** reviewed dwell protocol/code pushed **ebaa9c9**
+before first execution; fixed72trajectory audit now COMPLETE, exit0. Independent
+summary verifies183input/six output hashes,72MAP lines and zero physics errors.
+Report: `docs/FINAL_TRAJECTORY_DWELL_RESULTS_20261105.md`; original audit and
+summary outputs named in action5below. Do not rerun completed diagnostics.
+The goal remains unfinished. Next: prepare/review a separate near-objective
+formula-replacement 2k runtime pilot; no new training is registered/launched yet.
 
 Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
 Both workers finished normally at07:22/07:23; no Python training process remained
@@ -131,18 +130,31 @@ Next ordered actions:
    Not uniform MCrescue, control failure, causal evidence or actualfinaloccupancy.
    Report: `docs/NEAR_GOAL_ACTOR_OFFLINE_RESULTS_20261105.md`.
    It is separate from completed phaseA's no-model contract.
-5. Next minimum reviewed, pending registration push/execution: **saved final trajectory dwell/reward audit**,
+5. **COMPLETE saved final trajectory dwell/reward audit**,
    exactly72 original40000NPZs/JSONs, no new rollout/model/training/test. Fixed
    near-stall description4<=d<10 andspeed<.5,>=25consecutivepoststepframes:
    5s occupancy-equivalent step count,4.8s first-to-last sample span; no
    continuous-time dwell proof,
-   plus all distance/speed bins and A/C/J/event cross-checks. Protocol/code reviewed;
-   push before run. Includes original14source/config freeze, saved action physics
+   plus all distance/speed bins and A/C/J/event cross-checks. Protocol/code reviewed
+   and pushed ebaa9c9 before run. Includes original14source/config freeze, saved action physics
    consistency, premeasurement manifest and hashed final artifacts. Actual evalJSON lacks cumulative return, so source-
    derived reward components must mark reference-return validation UNAVAILABLE;
    do not invent it. Reward/dwell remain diagnostic, not a new primary endpoint.
-   Any substantial new training still needs a visible plan; relative40k rule
-   supports planning confirmation only. No training or sealed evaluation queued.
+   Original output `results/masac_v4_sync_40k_final_dwell_audit_20261105` COMPLETE72;
+   independent output `results/masac_v4_sync_40k_final_dwell_summary_20261105` PASS.
+   Of65never-ball agentmaps,39have>=25frame near-stall runs,48end near-stall;
+  11491/22750frames meet it. B1522haslowest near-stall fraction20.09%yet0/12success,
+  58capture entries/53exits. Lower sampled stall is insufficient for joint success.
+6. Next smallest **under preparation**, not registered/launched: static/B-off
+   original near occupancy reward versus replacement by discounted near potential
+   difference. Samec=.4,R15,gamma.99; true-terminal absorbingPhi0, timeout retains
+   continuation. This intentionally changes the old PathC soft objective; PBRS
+   applies only relative to PathC minus near. No sparse-success equivalence.
+   Implement via separate module/entry point without changing14 frozen sources.
+   First two arms each2k new cold-start seed1644 for numerical/runtime sanity,
+   not gain evidence; protocol/code review and push before launch. Any later
+  40k×3newseed confirmation requires its own visible concrete plan/registration.
+   No old continuation or sealed evaluation queued.
 
 Before this final stage both remote branches were e3425c2; obtain the actual new
 tip from Git. Preserve uncommitted intended edits and historical restoration

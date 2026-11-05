@@ -110,6 +110,18 @@ At \(H=2\), \(h=0.2\), \(A=4\), the discrete term is 8.8 m; continuous \(AH^2/2=
 
 ## Training and evaluation contract
 
+The separate post-hoc [saved-trajectory audit](FINAL_TRAJECTORY_DWELL_RESULTS_20261105.md)
+describes all72 final episodes without executing a policy. It uses post-step
+distance/speed occupancy, strict capture entries/exits and realized acceleration;
+25samples at h=.2s represent5s occupancy count but4.8s endpoint span. Among65
+never-ball agent-map records,39have such a near-stall run (4<=d<10,speed<.5),
+and48end in that predicate. B/1522 nevertheless has the lowest near-stall frame
+fraction,0/12joint successes and58capture entries/53exits. Approach and retention
+must both remain visible. These correlated, policy-selected/censored traces do
+not identify a causal failure mechanism. Formula-derived base reward components
+have no saved cumulative evaluation-return reference, so validation is explicitly
+UNAVAILABLE; raw discounted sums omit entropy and bootstrap.
+
 The registered B study cold-starts both static arms at training seeds 1511, 1522 and 1533, with 40,000 transitions per run, 1,000 warmup steps, batch size 128 and replay capacity 100,000. Both arms use the same frozen optimizer, cache and benchmark-supported execution configuration; their scientific difference is the B enabled flag. Episode-index map generators are paired, but policy-dependent episode lengths can change training-map exposure at a given transition index. We do not describe training transitions as identical paired samples.
 
 Deterministic evaluation uses the same 12 L0 development maps every 2,000 steps with shaping disabled. The fixed 40k checkpoint, rather than a selected best checkpoint, supplies each seed's endpoint. We separately report any-agent eventual ball entry, all-agent eventual entry and simultaneous strict capture: their quantifiers are respectively \(\exists i\exists t\), \(\forall i\exists t\) and \(\exists t\forall i\), with the speed predicate added for capture. Failures and collisions remain explicit; path efficiency is conditional on success. A separate 12-map namespace is reserved but remains sealed until the final artifacts and development decision are frozen. Training seeds, rather than repeatedly evaluated maps or checkpoints, are the replication units. The completed analysis additionally distinguishes all agents ever satisfying individual strict capture from simultaneous team capture; these events have different temporal quantifiers.

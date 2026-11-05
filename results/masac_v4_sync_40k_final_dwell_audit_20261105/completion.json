@@ -1,0 +1,16 @@
+{
+  "phase": "COMPLETE",
+  "complete": true,
+  "processed_maps": 72,
+  "dwell_available_maps": 72,
+  "reward_reference_validation": "UNAVAILABLE",
+  "missing_input_measurements": 0,
+  "artifact_sha256": {
+    "maps.jsonl": "060a311e924b10ef2db31444a8733ec175e2339e2e76e88bb9ce3299f28c9c9e",
+    "summary.json": "c24bd7e3b9afe35004dfb19a3f8487a073350fee247317faa18445709c7b9ce9",
+    "summary.md": "47c66e5b23112f4afaff6225f9e0eea06cf6c671c0f14d3380ae0fbef4b61cad",
+    "manifest.json": "78e06196b2a84d95a931eeb42008416eda22a804f87a5dde712dbff9fbccdb77",
+    "status.json": "6e207d94c1dd8b9d308c958c730c383ba8d2da6f6c1c3eeeeda273ee431d9849",
+    "audit.log": "779bae33eaa447b0b928f35d50b3509785c8aebfc11aad387dc6a640d625d782"
+  }
+}

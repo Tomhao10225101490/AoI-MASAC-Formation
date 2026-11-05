@@ -1,0 +1,549 @@
+{
+  "integrity": "PASS",
+  "artifact_hashes_verified": 6,
+  "input_hashes_verified": 183,
+  "maps": 72,
+  "agents": 216,
+  "max_velocity_abs_error": 0.0,
+  "max_position_abs_error": 0.0,
+  "histories": [
+    {
+      "arm": "control",
+      "seed": 1511,
+      "agent_maps": 36,
+      "agent_frames": 10932,
+      "near_stall_frames": 5248,
+      "with_25plus_run": 19,
+      "longest_run_frames": 269,
+      "final_near_stall": 20,
+      "classes": {
+        "never_ball": {
+          "agent_maps": 7,
+          "agent_frames": 2450,
+          "near_stall_frames": 1833,
+          "with_25plus_run": 7,
+          "longest_run_frames": 269,
+          "final_near_stall": 7
+        },
+        "ball_without_capture": {
+          "agent_maps": 1,
+          "agent_frames": 350,
+          "near_stall_frames": 0,
+          "with_25plus_run": 0,
+          "longest_run_frames": 0,
+          "final_near_stall": 0
+        },
+        "ever_capture": {
+          "agent_maps": 28,
+          "agent_frames": 8132,
+          "near_stall_frames": 3415,
+          "with_25plus_run": 12,
+          "longest_run_frames": 263,
+          "final_near_stall": 13
+        }
+      },
+      "successes": 2,
+      "failed_maps_with_any_25plus_run": 8,
+      "band_frames": {
+        "d0_4_v0_2": 1873,
+        "d0_4_v2_inf": 73,
+        "d4_5_v0_2": 1989,
+        "d4_5_v2_inf": 58,
+        "d5_10_v0_2": 4564,
+        "d5_10_v2_inf": 298,
+        "d10_inf_v0_2": 644,
+        "d10_inf_v2_inf": 1433
+      },
+      "mean_episode_reward_components": {
+        "progress": {
+          "undiscounted_team_mean": 34.634522193873245,
+          "raw_discounted_team_mean": 25.971724715678572
+        },
+        "living": {
+          "undiscounted_team_mean": -1.5183333333333333,
+          "raw_discounted_team_mean": -0.4471704959092732
+        },
+        "real_acceleration_penalty": {
+          "undiscounted_team_mean": -3.804174817353612,
+          "raw_discounted_team_mean": -1.1904982381657108
+        },
+        "near": {
+          "undiscounted_team_mean": 64.85920190559561,
+          "raw_discounted_team_mean": 13.682461295035374
+        },
+        "first_ever_ball": {
+          "undiscounted_team_mean": 2.4166666666666665,
+          "raw_discounted_team_mean": 1.2888343484660147
+        },
+        "capture_delta": {
+          "undiscounted_team_mean": 2.6666666666666665,
+          "raw_discounted_team_mean": 1.5936694354969123
+        },
+        "team_terminal": {
+          "undiscounted_team_mean": 8.333333333333334,
+          "raw_discounted_team_mean": 4.08757455247332
+        },
+        "collision": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "total": {
+          "undiscounted_team_mean": 107.5878826154486,
+          "raw_discounted_team_mean": 44.9865956130752
+        }
+      },
+      "capture_entries": 45,
+      "capture_exits": 33
+    },
+    {
+      "arm": "control",
+      "seed": 1522,
+      "agent_maps": 36,
+      "agent_frames": 11688,
+      "near_stall_frames": 4328,
+      "with_25plus_run": 17,
+      "longest_run_frames": 299,
+      "final_near_stall": 19,
+      "classes": {
+        "never_ball": {
+          "agent_maps": 20,
+          "agent_frames": 7000,
+          "near_stall_frames": 3574,
+          "with_25plus_run": 14,
+          "longest_run_frames": 299,
+          "final_near_stall": 15
+        },
+        "ball_without_capture": {
+          "agent_maps": 1,
+          "agent_frames": 350,
+          "near_stall_frames": 0,
+          "with_25plus_run": 0,
+          "longest_run_frames": 0,
+          "final_near_stall": 0
+        },
+        "ever_capture": {
+          "agent_maps": 15,
+          "agent_frames": 4338,
+          "near_stall_frames": 754,
+          "with_25plus_run": 3,
+          "longest_run_frames": 259,
+          "final_near_stall": 4
+        }
+      },
+      "successes": 1,
+      "failed_maps_with_any_25plus_run": 9,
+      "band_frames": {
+        "d0_4_v0_2": 2398,
+        "d0_4_v2_inf": 32,
+        "d4_5_v0_2": 1002,
+        "d4_5_v2_inf": 52,
+        "d5_10_v0_2": 5083,
+        "d5_10_v2_inf": 483,
+        "d10_inf_v0_2": 1635,
+        "d10_inf_v2_inf": 1003
+      },
+      "mean_episode_reward_components": {
+        "progress": {
+          "undiscounted_team_mean": 33.4580044406,
+          "raw_discounted_team_mean": 28.023426637925667
+        },
+        "living": {
+          "undiscounted_team_mean": -1.623333333333333,
+          "raw_discounted_team_mean": -0.4601585810765003
+        },
+        "real_acceleration_penalty": {
+          "undiscounted_team_mean": -2.4186587180358194,
+          "raw_discounted_team_mean": -1.0855647625975775
+        },
+        "near": {
+          "undiscounted_team_mean": 65.46937467786528,
+          "raw_discounted_team_mean": 15.115483056397608
+        },
+        "first_ever_ball": {
+          "undiscounted_team_mean": 1.3333333333333333,
+          "raw_discounted_team_mean": 0.8107102922248748
+        },
+        "capture_delta": {
+          "undiscounted_team_mean": 2.2222222222222223,
+          "raw_discounted_team_mean": 1.5786977381479284
+        },
+        "team_terminal": {
+          "undiscounted_team_mean": 4.166666666666667,
+          "raw_discounted_team_mean": 2.650772858599462
+        },
+        "collision": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "total": {
+          "undiscounted_team_mean": 102.60760928931832,
+          "raw_discounted_team_mean": 46.63336723962146
+        }
+      },
+      "capture_entries": 23,
+      "capture_exits": 13
+    },
+    {
+      "arm": "control",
+      "seed": 1533,
+      "agent_maps": 36,
+      "agent_frames": 9123,
+      "near_stall_frames": 3899,
+      "with_25plus_run": 15,
+      "longest_run_frames": 286,
+      "final_near_stall": 16,
+      "classes": {
+        "never_ball": {
+          "agent_maps": 11,
+          "agent_frames": 3850,
+          "near_stall_frames": 2481,
+          "with_25plus_run": 8,
+          "longest_run_frames": 282,
+          "final_near_stall": 9
+        },
+        "ball_without_capture": {
+          "agent_maps": 0,
+          "agent_frames": 0,
+          "near_stall_frames": 0,
+          "with_25plus_run": 0,
+          "longest_run_frames": 0,
+          "final_near_stall": 0
+        },
+        "ever_capture": {
+          "agent_maps": 25,
+          "agent_frames": 5273,
+          "near_stall_frames": 1418,
+          "with_25plus_run": 7,
+          "longest_run_frames": 286,
+          "final_near_stall": 7
+        }
+      },
+      "successes": 4,
+      "failed_maps_with_any_25plus_run": 7,
+      "band_frames": {
+        "d0_4_v0_2": 2062,
+        "d0_4_v2_inf": 0,
+        "d4_5_v0_2": 1735,
+        "d4_5_v2_inf": 18,
+        "d5_10_v0_2": 3205,
+        "d5_10_v2_inf": 231,
+        "d10_inf_v0_2": 750,
+        "d10_inf_v2_inf": 1122
+      },
+      "mean_episode_reward_components": {
+        "progress": {
+          "undiscounted_team_mean": 35.00267156428574,
+          "raw_discounted_team_mean": 29.296646112508686
+        },
+        "living": {
+          "undiscounted_team_mean": -1.2670833333333331,
+          "raw_discounted_team_mean": -0.39891391538675053
+        },
+        "real_acceleration_penalty": {
+          "undiscounted_team_mean": -2.985709963822597,
+          "raw_discounted_team_mean": -1.318485512521777
+        },
+        "near": {
+          "undiscounted_team_mean": 55.445559540160524,
+          "raw_discounted_team_mean": 13.645497763215232
+        },
+        "first_ever_ball": {
+          "undiscounted_team_mean": 2.0833333333333335,
+          "raw_discounted_team_mean": 1.175397037925798
+        },
+        "capture_delta": {
+          "undiscounted_team_mean": 3.7777777777777772,
+          "raw_discounted_team_mean": 2.5632197943684822
+        },
+        "team_terminal": {
+          "undiscounted_team_mean": 16.666666666666668,
+          "raw_discounted_team_mean": 9.211724423864313
+        },
+        "collision": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "total": {
+          "undiscounted_team_mean": 108.7232155850681,
+          "raw_discounted_team_mean": 54.17508570397399
+        }
+      },
+      "capture_entries": 47,
+      "capture_exits": 30
+    },
+    {
+      "arm": "b",
+      "seed": 1511,
+      "agent_maps": 36,
+      "agent_frames": 8172,
+      "near_stall_frames": 2925,
+      "with_25plus_run": 7,
+      "longest_run_frames": 271,
+      "final_near_stall": 11,
+      "classes": {
+        "never_ball": {
+          "agent_maps": 6,
+          "agent_frames": 2100,
+          "near_stall_frames": 952,
+          "with_25plus_run": 2,
+          "longest_run_frames": 271,
+          "final_near_stall": 4
+        },
+        "ball_without_capture": {
+          "agent_maps": 0,
+          "agent_frames": 0,
+          "near_stall_frames": 0,
+          "with_25plus_run": 0,
+          "longest_run_frames": 0,
+          "final_near_stall": 0
+        },
+        "ever_capture": {
+          "agent_maps": 30,
+          "agent_frames": 6072,
+          "near_stall_frames": 1973,
+          "with_25plus_run": 5,
+          "longest_run_frames": 261,
+          "final_near_stall": 7
+        }
+      },
+      "successes": 6,
+      "failed_maps_with_any_25plus_run": 4,
+      "band_frames": {
+        "d0_4_v0_2": 1903,
+        "d0_4_v2_inf": 36,
+        "d4_5_v0_2": 1517,
+        "d4_5_v2_inf": 41,
+        "d5_10_v0_2": 3023,
+        "d5_10_v2_inf": 231,
+        "d10_inf_v0_2": 133,
+        "d10_inf_v2_inf": 1288
+      },
+      "mean_episode_reward_components": {
+        "progress": {
+          "undiscounted_team_mean": 35.644661157421936,
+          "raw_discounted_team_mean": 28.44342971952446
+        },
+        "living": {
+          "undiscounted_team_mean": -1.135,
+          "raw_discounted_team_mean": -0.389073965536189
+        },
+        "real_acceleration_penalty": {
+          "undiscounted_team_mean": -3.247008426934731,
+          "raw_discounted_team_mean": -1.3661845700467419
+        },
+        "near": {
+          "undiscounted_team_mean": 50.40899729761528,
+          "raw_discounted_team_mean": 12.670871863962551
+        },
+        "first_ever_ball": {
+          "undiscounted_team_mean": 2.5,
+          "raw_discounted_team_mean": 1.3796924515696851
+        },
+        "capture_delta": {
+          "undiscounted_team_mean": 4.666666666666666,
+          "raw_discounted_team_mean": 2.89536848934588
+        },
+        "team_terminal": {
+          "undiscounted_team_mean": 25.0,
+          "raw_discounted_team_mean": 10.455406550612759
+        },
+        "collision": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "total": {
+          "undiscounted_team_mean": 113.83831669476915,
+          "raw_discounted_team_mean": 54.0895105394324
+        }
+      },
+      "capture_entries": 52,
+      "capture_exits": 31
+    },
+    {
+      "arm": "b",
+      "seed": 1522,
+      "agent_maps": 36,
+      "agent_frames": 12600,
+      "near_stall_frames": 2531,
+      "with_25plus_run": 6,
+      "longest_run_frames": 210,
+      "final_near_stall": 12,
+      "classes": {
+        "never_ball": {
+          "agent_maps": 17,
+          "agent_frames": 5950,
+          "near_stall_frames": 1609,
+          "with_25plus_run": 4,
+          "longest_run_frames": 50,
+          "final_near_stall": 9
+        },
+        "ball_without_capture": {
+          "agent_maps": 0,
+          "agent_frames": 0,
+          "near_stall_frames": 0,
+          "with_25plus_run": 0,
+          "longest_run_frames": 0,
+          "final_near_stall": 0
+        },
+        "ever_capture": {
+          "agent_maps": 19,
+          "agent_frames": 6650,
+          "near_stall_frames": 922,
+          "with_25plus_run": 2,
+          "longest_run_frames": 210,
+          "final_near_stall": 3
+        }
+      },
+      "successes": 0,
+      "failed_maps_with_any_25plus_run": 4,
+      "band_frames": {
+        "d0_4_v0_2": 1954,
+        "d0_4_v2_inf": 75,
+        "d4_5_v0_2": 1581,
+        "d4_5_v2_inf": 58,
+        "d5_10_v0_2": 5994,
+        "d5_10_v2_inf": 458,
+        "d10_inf_v0_2": 772,
+        "d10_inf_v2_inf": 1708
+      },
+      "mean_episode_reward_components": {
+        "progress": {
+          "undiscounted_team_mean": 33.76071240541301,
+          "raw_discounted_team_mean": 24.95754486072138
+        },
+        "living": {
+          "undiscounted_team_mean": -1.7499999999999998,
+          "raw_discounted_team_mean": -0.48516498077451087
+        },
+        "real_acceleration_penalty": {
+          "undiscounted_team_mean": -3.4792504216503546,
+          "raw_discounted_team_mean": -1.1650636573941813
+        },
+        "near": {
+          "undiscounted_team_mean": 71.1269375377283,
+          "raw_discounted_team_mean": 13.95340804127975
+        },
+        "first_ever_ball": {
+          "undiscounted_team_mean": 1.5833333333333333,
+          "raw_discounted_team_mean": 0.7436427326292373
+        },
+        "capture_delta": {
+          "undiscounted_team_mean": 1.111111111111111,
+          "raw_discounted_team_mean": 0.7867511692892651
+        },
+        "team_terminal": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "collision": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "total": {
+          "undiscounted_team_mean": 102.35284396593538,
+          "raw_discounted_team_mean": 38.79111816575094
+        }
+      },
+      "capture_entries": 58,
+      "capture_exits": 53
+    },
+    {
+      "arm": "b",
+      "seed": 1533,
+      "agent_maps": 36,
+      "agent_frames": 8415,
+      "near_stall_frames": 3007,
+      "with_25plus_run": 11,
+      "longest_run_frames": 289,
+      "final_near_stall": 11,
+      "classes": {
+        "never_ball": {
+          "agent_maps": 4,
+          "agent_frames": 1400,
+          "near_stall_frames": 1042,
+          "with_25plus_run": 4,
+          "longest_run_frames": 275,
+          "final_near_stall": 4
+        },
+        "ball_without_capture": {
+          "agent_maps": 3,
+          "agent_frames": 1050,
+          "near_stall_frames": 827,
+          "with_25plus_run": 3,
+          "longest_run_frames": 282,
+          "final_near_stall": 3
+        },
+        "ever_capture": {
+          "agent_maps": 29,
+          "agent_frames": 5965,
+          "near_stall_frames": 1138,
+          "with_25plus_run": 4,
+          "longest_run_frames": 289,
+          "final_near_stall": 4
+        }
+      },
+      "successes": 5,
+      "failed_maps_with_any_25plus_run": 7,
+      "band_frames": {
+        "d0_4_v0_2": 3037,
+        "d0_4_v2_inf": 79,
+        "d4_5_v0_2": 2100,
+        "d4_5_v2_inf": 54,
+        "d5_10_v0_2": 1454,
+        "d5_10_v2_inf": 264,
+        "d10_inf_v0_2": 357,
+        "d10_inf_v2_inf": 1070
+      },
+      "mean_episode_reward_components": {
+        "progress": {
+          "undiscounted_team_mean": 36.0907152966993,
+          "raw_discounted_team_mean": 29.48877667744638
+        },
+        "living": {
+          "undiscounted_team_mean": -1.16875,
+          "raw_discounted_team_mean": -0.3889872617364647
+        },
+        "real_acceleration_penalty": {
+          "undiscounted_team_mean": -1.4029125672102989,
+          "raw_discounted_team_mean": -0.7463220463890154
+        },
+        "near": {
+          "undiscounted_team_mean": 57.4850412587486,
+          "raw_discounted_team_mean": 14.276135291863469
+        },
+        "first_ever_ball": {
+          "undiscounted_team_mean": 2.6666666666666665,
+          "raw_discounted_team_mean": 1.678577974061472
+        },
+        "capture_delta": {
+          "undiscounted_team_mean": 5.333333333333333,
+          "raw_discounted_team_mean": 3.2731795897928104
+        },
+        "team_terminal": {
+          "undiscounted_team_mean": 20.833333333333332,
+          "raw_discounted_team_mean": 10.339290610976429
+        },
+        "collision": {
+          "undiscounted_team_mean": 0.0,
+          "raw_discounted_team_mean": 0.0
+        },
+        "total": {
+          "undiscounted_team_mean": 119.83742732157096,
+          "raw_discounted_team_mean": 57.920650836015064
+        }
+      },
+      "capture_entries": 29,
+      "capture_exits": 5
+    }
+  ],
+  "never_ball_population": {
+    "agent_maps": 65,
+    "agent_frames": 22750,
+    "near_stall_frames": 11491,
+    "with_25plus_run": 39,
+    "longest_run_frames": 299,
+    "final_near_stall": 48
+  },
+  "reward_reference_validation": "UNAVAILABLE",
+  "scope": "Descriptive, correlated, policy-dependent lengths/terminal censoring; not causal arm comparison."
+}

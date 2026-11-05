@@ -662,3 +662,26 @@ output directory and processes:
 
 Fixed72 saved trajectories, CPU/NumPy only, no weights, actor, environment,
 training or sealed maps. Logged evaluation-return reference remains UNAVAILABLE.
+
+Protocol/code pushed ebaa9c988eaa4d26e7eb35d5300ab909daac3b78 to both branches,
+remote refs verified; no Python process, output directory absent before first run.
+The printed audit CLI completed exit0 with all72MAP lines,72available traces.
+
+```powershell
+.venv\Scripts\python.exe -u scripts\summarize_sync_final_dwell.py --audit results/masac_v4_sync_40k_final_dwell_audit_20261105 --out results/masac_v4_sync_40k_final_dwell_summary_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/final_dwell_summary_console.log
+```
+
+Exit0; integrity PASS183input/six output hashes, full JSONL/summary identity,
+all72saved action physics checks max velocity/position error0. Of65never-ball
+agentmaps,39have>=25frame near-stall runs and48end near-stall. Occupancy figure
+visually checked; sampled fractions are length/censoring-dependent, not arm
+causality. B1522=0/12despite lowest near-stall fraction20.09%,58entries/53exits.
+Reward components are formula-derived, reference validation UNAVAILABLE.
+Report/figure/all negative cases retained. Primary endpoints/gates unchanged.
+
+Primary-source frontier recheck added Vasan2024 goal-reaching/time-on-goal,
+Farrahi/Mahmood2025preprint/PMLR2026 continuingSAC and Quartz2024 conditional
+stabilization. These are close prior art/limits, not novelty or causal clearance.
+Next separate candidate is training near occupancy replacement by a discounted
+potential difference, static/B-off; two-arm2k sanity must be registered/pushed
+before launch. No next40k or historical continuation is queued.
