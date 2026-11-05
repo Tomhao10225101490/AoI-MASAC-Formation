@@ -1,0 +1,1262 @@
+[
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 251.835751763139,
+    "path_length_by_uav": [
+      84.84465812395831,
+      82.00697492182583,
+      84.98411871735487
+    ],
+    "time": 10.200000000000001,
+    "min_separation": 74.37971184065479,
+    "min_clearance": -0.22350096614366066,
+    "jerk_integral": 199.1413161982469,
+    "remaining_distance": 51.063348597902994,
+    "scene_sha256": "1ae4cf846a79e771122e27293eff0afeacdddb7c00dbe31a0a818481a004ab30",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830001,
+    "family": "urban_canyon",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.57621202699546,
+      14.958263292263176,
+      18.994364937098855
+    ],
+    "final_goal_m_by_uav": [
+      52.53501852449722,
+      47.34589228996995,
+      53.309134979241804
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.007102270675686133,
+    "probe_ttc_mean": 0.9727554181042839,
+    "probe_brake_mean": 0.23092176109168897,
+    "probe_reserve_mean": 0.4787248063321207,
+    "probe_positive_preview_frac": 0.9428964584481483,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 222.8271967589484,
+    "path_length_by_uav": [
+      75.06442061618405,
+      72.07445444476556,
+      75.68832169799877
+    ],
+    "time": 9.200000000000001,
+    "min_separation": 82.62967430979629,
+    "min_clearance": -0.6105376279907659,
+    "jerk_integral": 215.22196043386944,
+    "remaining_distance": 42.57235042131812,
+    "scene_sha256": "b1de7bb3db487e367b37ee68073a902a58481d2a389e768a39a593c590158bfd",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830002,
+    "family": "warehouse",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.82686817941522,
+      15.185283260693586,
+      20.051151761826358
+    ],
+    "final_goal_m_by_uav": [
+      43.66371991775561,
+      38.21289124046839,
+      45.840440105730366
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.008614414880867116,
+    "probe_ttc_mean": 0.9661708603734556,
+    "probe_brake_mean": 0.22357321387845214,
+    "probe_reserve_mean": 0.4665884589371474,
+    "probe_positive_preview_frac": 0.93249428142672,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 222.46939475254848,
+    "path_length_by_uav": [
+      74.6817644346262,
+      72.10495616681784,
+      75.68267415110444
+    ],
+    "time": 9.200000000000001,
+    "min_separation": 75.1129614395518,
+    "min_clearance": -0.5268258360882214,
+    "jerk_integral": 202.97587468238785,
+    "remaining_distance": 42.362629448352685,
+    "scene_sha256": "1a7e6e96605450fa82e342af46b5334ff102617c0a0da039ce82fa2fbd718113",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830003,
+    "family": "courtyard",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.415667886779772,
+      15.230495414851829,
+      20.00757796849414
+    ],
+    "final_goal_m_by_uav": [
+      42.983729146048034,
+      38.31781209313127,
+      45.78634710587876
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.0084528372605311,
+    "probe_ttc_mean": 0.9665903889614603,
+    "probe_brake_mean": 0.22303765037086914,
+    "probe_reserve_mean": 0.45728331739487854,
+    "probe_positive_preview_frac": 0.9344012218972911,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 228.31751929495374,
+    "path_length_by_uav": [
+      76.81453716550561,
+      74.4737211107236,
+      77.02926101872453
+    ],
+    "time": 9.4,
+    "min_separation": 75.1544629356657,
+    "min_clearance": -0.24628708538321575,
+    "jerk_integral": 198.77796433670423,
+    "remaining_distance": 43.95986981857228,
+    "scene_sha256": "93e868983959ddc12270598ed81b5d56d4d859d002f6cec58492250ff1fed788",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830004,
+    "family": "overpass",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.412186749596906,
+      15.53915154366115,
+      19.125662116628064
+    ],
+    "final_goal_m_by_uav": [
+      44.90864767676266,
+      40.62298322131406,
+      46.34797855764013
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.00775958093761298,
+    "probe_ttc_mean": 0.9701381122812311,
+    "probe_brake_mean": 0.22467035209225056,
+    "probe_reserve_mean": 0.46925023578582925,
+    "probe_positive_preview_frac": 0.9369167622099531,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 228.26352031895965,
+    "path_length_by_uav": [
+      76.90738707148785,
+      74.42677355968017,
+      76.92935968779163
+    ],
+    "time": 9.4,
+    "min_separation": 81.0204611966626,
+    "min_clearance": -0.1964249935215321,
+    "jerk_integral": 208.06918723298313,
+    "remaining_distance": 43.88649048839884,
+    "scene_sha256": "4373b4f33f1682ad56653bb3665c26977f6c767e956c9773a6847acbdd94cddb",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830005,
+    "family": "narrow_crossing",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.41645727995819,
+      15.429693923900764,
+      19.11326793565625
+    ],
+    "final_goal_m_by_uav": [
+      44.98082966824451,
+      40.381674346364974,
+      46.29696745058704
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.007613775694985537,
+    "probe_ttc_mean": 0.970698023096044,
+    "probe_brake_mean": 0.22457245839115708,
+    "probe_reserve_mean": 0.47546928613743883,
+    "probe_positive_preview_frac": 0.9380365825713949,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 246.79618542545091,
+    "path_length_by_uav": [
+      82.9635548790387,
+      80.94881240028012,
+      82.8838181461321
+    ],
+    "time": 10.0,
+    "min_separation": 81.57633261097327,
+    "min_clearance": -0.1557120936708145,
+    "jerk_integral": 206.606053105954,
+    "remaining_distance": 49.695188484030005,
+    "scene_sha256": "3ced5531203752d48297e4a012a53b3b6d293682c1297564a0e73eba9ec0c9d6",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830006,
+    "family": "dynamic_crossing",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.508018841736078,
+      16.130285680667058,
+      18.950551688977278
+    ],
+    "final_goal_m_by_uav": [
+      50.71835236030011,
+      46.90495900940361,
+      51.4622540823863
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.007134508259769063,
+    "probe_ttc_mean": 0.9726315784454346,
+    "probe_brake_mean": 0.23050216178642585,
+    "probe_reserve_mean": 0.4713769102096558,
+    "probe_positive_preview_frac": 0.9424561429023742,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 264.75342709164505,
+    "path_length_by_uav": [
+      89.33189951802792,
+      86.44720389332478,
+      88.97432368029236
+    ],
+    "time": 10.600000000000001,
+    "min_separation": 76.77160601958846,
+    "min_clearance": -0.7024482378777748,
+    "jerk_integral": 219.19012424552722,
+    "remaining_distance": 55.3606227568884,
+    "scene_sha256": "48b3f0b1c90de112693c43da7439d698165eccf86c61025913ad9fdd3a549fc5",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830007,
+    "family": "urban_canyon",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      18.208943052439174,
+      15.53060211892933,
+      19.015309005664083
+    ],
+    "final_goal_m_by_uav": [
+      57.22640139957011,
+      51.84049016992353,
+      57.01497670117154
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.007592354325262335,
+    "probe_ttc_mean": 0.9698113236787185,
+    "probe_brake_mean": 0.23518039206183464,
+    "probe_reserve_mean": 0.46078178174090834,
+    "probe_positive_preview_frac": 0.9400860667228699,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 246.83806222773896,
+    "path_length_by_uav": [
+      83.35461118427337,
+      80.0977580877294,
+      83.38569295573618
+    ],
+    "time": 10.0,
+    "min_separation": 76.23649894924917,
+    "min_clearance": -0.4429791077440939,
+    "jerk_integral": 210.21890217230109,
+    "remaining_distance": 49.91611595539759,
+    "scene_sha256": "2e04f81e83abb1539caca70d71ae8cc454fd98c3593a41782ad0152d0cf84da1",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830008,
+    "family": "warehouse",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      18.29551929830104,
+      15.112793219234003,
+      19.592922891307193
+    ],
+    "final_goal_m_by_uav": [
+      51.68554526458726,
+      45.74072555179924,
+      52.32207704980628
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.007634858681121841,
+    "probe_ttc_mean": 0.9708421087265015,
+    "probe_brake_mean": 0.23071993444580585,
+    "probe_reserve_mean": 0.45936358749866485,
+    "probe_positive_preview_frac": 0.9400000011920929,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 204.8674531435717,
+    "path_length_by_uav": [
+      69.38695145636842,
+      66.14838813866857,
+      69.33211354853474
+    ],
+    "time": 8.6,
+    "min_separation": 82.31331145689785,
+    "min_clearance": -0.3824777094658032,
+    "jerk_integral": 213.71980503658327,
+    "remaining_distance": 37.3502037375367,
+    "scene_sha256": "19306765afd4d3c2ca17436a1a979159419d9a5ad1e7a6711915ad070874e5bc",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830009,
+    "family": "courtyard",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      18.305888150495715,
+      15.230672031255258,
+      19.712336669966945
+    ],
+    "final_goal_m_by_uav": [
+      38.91786217621699,
+      32.8970814103926,
+      40.23566762600052
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.008774612367635073,
+    "probe_ttc_mean": 0.9663810688395833,
+    "probe_brake_mean": 0.21752198487195337,
+    "probe_reserve_mean": 0.4608792163604914,
+    "probe_positive_preview_frac": 0.9302325595256894,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 229.02696831719982,
+    "path_length_by_uav": [
+      77.41016336365315,
+      74.34188166113749,
+      77.27492329240918
+    ],
+    "time": 9.4,
+    "min_separation": 76.02423485652469,
+    "min_clearance": -0.00040660390999391893,
+    "jerk_integral": 204.3955841516994,
+    "remaining_distance": 44.53406937023444,
+    "scene_sha256": "f92c3847ef2a4d844b5f56f3ddabbe71b50e8e192409029e365874409dc83c28",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830010,
+    "family": "overpass",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      18.419220674139257,
+      15.471415699953202,
+      19.4929983637596
+    ],
+    "final_goal_m_by_uav": [
+      46.2213685950863,
+      40.52965430985428,
+      46.85118520576275
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.00736382897934589,
+    "probe_ttc_mean": 0.9718924925682393,
+    "probe_brake_mean": 0.22579247388800489,
+    "probe_reserve_mean": 0.4468562070359575,
+    "probe_positive_preview_frac": 0.9391564042010205,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 246.00004099484323,
+    "path_length_by_uav": [
+      83.04422279223411,
+      80.28300285802248,
+      82.67281534458662
+    ],
+    "time": 10.0,
+    "min_separation": 79.67204005642446,
+    "min_clearance": -0.38380263006666837,
+    "jerk_integral": 218.32069648102635,
+    "remaining_distance": 49.2838522112903,
+    "scene_sha256": "540054042598b1055b403aee4a3510a6f2de87346b5dc85e88a321be776aeab6",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830011,
+    "family": "narrow_crossing",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.741234107768705,
+      15.217798996743022,
+      18.714138881410868
+    ],
+    "final_goal_m_by_uav": [
+      50.954928807391646,
+      45.74462487237295,
+      51.152002954106315
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.007451353739597834,
+    "probe_ttc_mean": 0.9715438640117645,
+    "probe_brake_mean": 0.2295131316455081,
+    "probe_reserve_mean": 0.487468301653862,
+    "probe_positive_preview_frac": 0.940701756477356,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  },
+  {
+    "success": false,
+    "uav_collision": false,
+    "static_collision": false,
+    "dynamic_collision": false,
+    "boundary_collision": true,
+    "arrived_fraction": 0.0,
+    "arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "arrived_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "in_ball_now_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_in_ball_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "capture_latch": false,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "frozen_eval_note": "This experiment eval uses soft train thresholds (ball<4.0, speed<2.0, latch=False). Frozen L0 gate remains dist<4.0 AND speed<2.0.",
+    "path_length": 264.5639409519989,
+    "path_length_by_uav": [
+      89.0812342638822,
+      86.75640619954464,
+      88.72630048857206
+    ],
+    "time": 10.600000000000001,
+    "min_separation": 76.13793511254661,
+    "min_clearance": -0.5895217657652267,
+    "jerk_integral": 214.01160182954098,
+    "remaining_distance": 55.20076903125962,
+    "scene_sha256": "45834d0cbc42cf43b2dfa89ccc5626f50cadded7b9ab078c68f2bbe47438fbf7",
+    "reshape": {
+      "progress_scale": 1.0,
+      "living_cost": 0.005,
+      "acc_penalty": 0.002,
+      "near_goal_radius_m": 15.0,
+      "near_goal_bonus": 0.4,
+      "ball_enter_bonus": 3.0,
+      "capture_bonus": 8.0,
+      "team_success_bonus": 50.0,
+      "collision_penalty": 20.0,
+      "train_ball_m": 4.0,
+      "train_speed_mps": 2.0,
+      "capture_latch": false,
+      "horizon": 350
+    },
+    "map_seed": 830012,
+    "family": "dynamic_crossing",
+    "level": "L0",
+    "step": 2000,
+    "terminated": true,
+    "truncated": false,
+    "timeout": false,
+    "closest_goal_m_by_uav": [
+      17.84400501740269,
+      15.97779090152022,
+      18.629390542328178
+    ],
+    "final_goal_m_by_uav": [
+      56.69755958895205,
+      52.365371505817514,
+      56.53937599900927
+    ],
+    "ever_arrived_by_uav": [
+      false,
+      false,
+      false
+    ],
+    "ever_ball_any": false,
+    "ever_ball_all": false,
+    "max_simultaneous_capture_occupancy": 0,
+    "evaluation_shaping_enabled": false,
+    "simultaneously_arrived": false,
+    "near_goal_low_speed_uncaptured_steps_by_uav": [
+      0,
+      0,
+      0
+    ],
+    "success_efficiency_direct_over_path_by_uav": null,
+    "mean_path_efficiency_direct_over_path": null,
+    "probe_mode": "static",
+    "probe_min_clearance_mean": -0.0073929732091030775,
+    "probe_ttc_mean": 0.9709698749038408,
+    "probe_brake_mean": 0.23490362512694565,
+    "probe_reserve_mean": 0.4586175742014399,
+    "probe_positive_preview_frac": 0.9430652114580262,
+    "eval_capture_rule": {
+      "ball_m": 4.0,
+      "speed_mps": 2.0,
+      "latch": false,
+      "note": "Train+gate use frozen L0 capture ball<4.0 speed<2.0 latch=False."
+    }
+  }
+]

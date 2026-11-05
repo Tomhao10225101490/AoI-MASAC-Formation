@@ -384,3 +384,59 @@ The JSON keeps per-file byte sizes/observed/expected SHA256 and individual check
 It neither loads weights nor validates exact CUDA resume, and PASS means artifact
 checks, not passing the8/12 capture gate. Source/config paths resolve within the
 repository and binary reads use1MiB chunks. The original training continues1533.
+
+## 11. Third pair, complete registered endpoint and next offline plan
+
+Both original workers finished normally at07:22/07:23 Asia/Shanghai. No Python
+worker remained at the resumed check. The following commands were printed before
+execution and completed without a training/source/config change:
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts/verify_sync_seed_artifacts.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --seed 1533 --out results/masac_v4_sync_40k_progress_20261105/seed1533_integrity 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/seed1533_integrity_console.log
+.\.venv\Scripts\python.exe -u scripts/diagnose_sync_capture_trajectories.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --seed 1533 --step 40000 --out results/masac_v4_sync_40k_progress_20261105/trajectory_40000_seed1533 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/trajectory_40000_seed1533_console.log
+.\.venv\Scripts\python.exe -u scripts/analyze_sync_study.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --out results/masac_v4_sync_40k_analysis_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/study_analysis_console.log -Append
+```
+
+1533 artifact checks PASS, success control4/12/B5/12, all24 final trajectories
+match JSON/map metadata. Across all six histories the12 final binary SHA256s,
+14source sets and both config hashes match. All39,000 updates/history completed;
+each history retains195 finite sampled post-warmup diagnostics. Exact CUDA
+restore is not established by these checks.
+
+The independent analyzer now reports COMPLETE/decision_ready=true/
+ADVANCEMENT_RULE_MET. Paired counts control[2,1,4], B[6,0,5], differences[+4,-1,+1],
+mean fraction1/9. All four preregistered engineering criteria hold. Both absolute
+gates FAIL0/3. This supports planning confirmation only, not training/test launch
+or significance. Full report: SYNC_CAPTURE_40K_FINAL_RESULTS_20261105.md.
+
+A printed inline Python aggregation loaded the three existing final trajectory
+summary JSONs, asserted step40000, paired-map checks, J=>C=>A, success consistency
+and12 exhaustive outcomes/arm/seed, and wrote
+`results/masac_v4_sync_40k_analysis_20261105/failure_taxonomy.json`.
+Its complete stdout is `results/masac_v4_windows_audit_20261105/final_failure_taxonomy_console.log`.
+Control failure classes25/0/4; B18/1/6. Total54failures=43 incomplete all-agent
+ball arrivals+1 all-ball without all-individual capture+10 individual captures
+without overlap; all72 final episodes have no collision flags. These are
+descriptive classes, not identified causes or independent-map training trials.
+
+Read-only recovery checks used WINDOWS_RESEARCH_STATE, Git status/HEAD, CIM Python
+process command lines, both root completions and canonical analysis. One full
+Git status and one oversized verification read were truncated by tool output;
+subsequent reads were narrowed. Disk artifacts are complete and unchanged.
+The persistent state now puts6/6complete above the superseded4/6 snapshot.
+
+Paper/math/frontier integration retains the negative seed and separates the
+40k Windows cohort, historical80k Mac ablation and legacy warm-start Standard-C.
+SCOPE's official IJCAI2026 page and CC-HGCBF's October30preprint were rechecked
+from primary sources. No novelty or guarantee follows from these comparisons.
+
+The next plan is separately recorded in
+`design/MASAC_V4_POST40K_NEXT_MINIMAL_PLAN_20261105.md`: offline only, six final
+replays, last8000transitions, fixed1024linspace observations/history, paired
+full/static/static-fill1 features. No policy load/actions, training, simulator
+rollout or sealed-test access. Inputs/indices/source hashes and validity versus
+sentinel/saturation are required before interpreting content. The new analysis
+script is reviewed separately; it is not part of frozen trainer SOURCES.
+The existing ACTIVE heartbeat idmasac was updated to this completed-study
+recovery entry; frequency/thread were preserved, no duplicate created and no
+account/payment setting changed. Confirmation training remains unqueued.

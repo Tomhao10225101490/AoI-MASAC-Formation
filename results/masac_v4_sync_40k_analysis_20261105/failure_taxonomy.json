@@ -1,0 +1,111 @@
+{
+  "scope": "Post-hoc final40k development trajectory diagnosis; three training replicates, repeated maps; not a new efficacy endpoint",
+  "definitions": {
+    "A": "all agents ever distance<4m",
+    "C": "all agents ever distance<4m and speed<2m/s",
+    "J": "simultaneous strict capture; unlatched",
+    "hierarchy": "J implies C implies A"
+  },
+  "pairs": [
+    {
+      "seed": 1511,
+      "source": "results\\masac_v4_sync_40k_progress_20261105\\trajectory_40000_seed1511\\summary.json",
+      "arms": {
+        "control": {
+          "success": 2,
+          "incomplete_ball_arrival": 7,
+          "ball_without_all_individual_capture": 0,
+          "individual_capture_without_joint": 3,
+          "collision": 0,
+          "any_ball": 12,
+          "all_ball": 5,
+          "all_individual_capture": 5
+        },
+        "treatment": {
+          "success": 6,
+          "incomplete_ball_arrival": 4,
+          "ball_without_all_individual_capture": 0,
+          "individual_capture_without_joint": 2,
+          "collision": 0,
+          "any_ball": 12,
+          "all_ball": 8,
+          "all_individual_capture": 8
+        }
+      }
+    },
+    {
+      "seed": 1522,
+      "source": "results\\masac_v4_sync_40k_progress_20261105\\trajectory_40000_seed1522\\summary.json",
+      "arms": {
+        "control": {
+          "success": 1,
+          "incomplete_ball_arrival": 11,
+          "ball_without_all_individual_capture": 0,
+          "individual_capture_without_joint": 0,
+          "collision": 0,
+          "any_ball": 9,
+          "all_ball": 1,
+          "all_individual_capture": 1
+        },
+        "treatment": {
+          "success": 0,
+          "incomplete_ball_arrival": 10,
+          "ball_without_all_individual_capture": 0,
+          "individual_capture_without_joint": 2,
+          "collision": 0,
+          "any_ball": 11,
+          "all_ball": 2,
+          "all_individual_capture": 2
+        }
+      }
+    },
+    {
+      "seed": 1533,
+      "source": "results\\masac_v4_sync_40k_progress_20261105\\trajectory_40000_seed1533\\summary.json",
+      "arms": {
+        "control": {
+          "success": 4,
+          "incomplete_ball_arrival": 7,
+          "ball_without_all_individual_capture": 0,
+          "individual_capture_without_joint": 1,
+          "collision": 0,
+          "any_ball": 12,
+          "all_ball": 5,
+          "all_individual_capture": 5
+        },
+        "treatment": {
+          "success": 5,
+          "incomplete_ball_arrival": 4,
+          "ball_without_all_individual_capture": 1,
+          "individual_capture_without_joint": 2,
+          "collision": 0,
+          "any_ball": 12,
+          "all_ball": 8,
+          "all_individual_capture": 7
+        }
+      }
+    }
+  ],
+  "totals": {
+    "control": {
+      "success": 7,
+      "incomplete_ball_arrival": 25,
+      "ball_without_all_individual_capture": 0,
+      "individual_capture_without_joint": 4,
+      "collision": 0,
+      "any_ball": 33,
+      "all_ball": 11,
+      "all_individual_capture": 11
+    },
+    "treatment": {
+      "success": 11,
+      "incomplete_ball_arrival": 18,
+      "ball_without_all_individual_capture": 1,
+      "individual_capture_without_joint": 6,
+      "collision": 0,
+      "any_ball": 35,
+      "all_ball": 18,
+      "all_individual_capture": 17
+    }
+  }
+}

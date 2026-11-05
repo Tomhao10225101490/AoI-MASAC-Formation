@@ -1,0 +1,32 @@
+{
+  "step": 30000,
+  "maps": 12,
+  "successes": 0,
+  "ever_ball_any_maps": 12,
+  "ever_ball_all_maps": 6,
+  "max_simultaneous_capture_occupancy": [
+    2,
+    1,
+    1,
+    2,
+    1,
+    1,
+    2,
+    1,
+    1,
+    2,
+    1,
+    2
+  ],
+  "exclusive_failure_reasons": {
+    "timeout_after_ball_all": 6,
+    "timeout_after_ball_any_only": 6
+  },
+  "collision_flags_nonexclusive": {
+    "uav_collision": 0,
+    "static_collision": 0,
+    "dynamic_collision": 0,
+    "boundary_collision": 0
+  },
+  "evaluation_shaping_enabled": false
+}

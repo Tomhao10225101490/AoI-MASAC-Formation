@@ -1,24 +1,99 @@
 {
-  "phase": "training",
-  "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static",
+  "phase": "complete",
+  "complete": true,
+  "scope": "maneuver_static L0 12-map gate",
   "suite_experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105",
-  "arm": "maneuver_static",
+  "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static",
   "probe_mode": "static",
   "set_mode": "pool",
-  "seed": 1533,
-  "seed_index": 2,
-  "seeds_total": 3,
-  "step": 14400,
-  "total_steps": 40000,
-  "updates": 13400,
-  "episodes": 157,
-  "steps_per_s": 14.345689853517833,
-  "eta_s": 1784.5081178666635,
-  "last_eval": 0.0,
-  "last_eval_step": 14000,
-  "pid": 25212,
-  "updated_at": 1793832550.7298832,
-  "updated_at_asia_shanghai": "2026-11-05 06:49 Asia/Shanghai",
+  "runs": [
+    {
+      "seed": 1511,
+      "step": 40000,
+      "final_development_success": 0.16666666666666666,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    },
+    {
+      "seed": 1522,
+      "step": 40000,
+      "final_development_success": 0.08333333333333333,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    },
+    {
+      "seed": 1533,
+      "step": 40000,
+      "final_development_success": 0.3333333333333333,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    }
+  ],
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": false,
+  "smoke": false,
+  "finished_at": 1793834568.575558,
+  "finished_at_asia_shanghai": "2026-11-05 07:22 Asia/Shanghai",
+  "elapsed_s": 9188.647219100003,
+  "authorization": {
+    "date": "2026-11-05",
+    "provenance": "User authorizes persistent Windows B research, small-before-large validation; 2k paired pilot completed, and fixed 40k x3 two-arm plan shown before launch.",
+    "scope": "Named 40k cold-start static control/B study only; no Attention/L1, old suite rerun, coefficient search or automatic budget extension."
+  },
   "reshape": {
     "progress_scale": 1.0,
     "living_cost": 0.005,
@@ -34,23 +109,17 @@
     "capture_latch": false,
     "horizon": 350
   },
-  "warm_start": false,
-  "recent_success": 0.0,
-  "actor_loss": 3.783486843109131,
-  "critic_loss": 0.975335955619812,
-  "alpha": 0.02149445004761219,
-  "actor_grad": 0.4567292332649231,
-  "critic_grad": 82.48021697998047,
-  "actor_grad_post": 0.4567292630672455,
-  "critic_grad_post": 5.000000476837158,
-  "actor_clipped": 0,
-  "critic_clipped": 1,
-  "q_mean": -4.529727458953857,
-  "target_mean": -4.2964067459106445,
-  "td_abs": 0.4852449297904968,
-  "entropy": -2.716036558151245,
-  "terminal_sample_fraction": 0.015625,
-  "probe_clearance_mean": -0.010657825507223606,
-  "probe_ttc_mean": 0.9707099795341492,
-  "probe_positive_preview_frac": 0.936951756477356
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start_path": null,
+  "do_not_auto_launch_further": true,
+  "baseline_comparison": {
+    "role": "paired static control vs static+B",
+    "paired_arm": "masac_v4_sync_capture_40k_b_cuda_20261105"
+  },
+  "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+  "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
 }

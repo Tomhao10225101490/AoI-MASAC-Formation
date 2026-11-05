@@ -24,8 +24,8 @@
     "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793825390.2628772,
-  "updated_at_asia_shanghai": "2026-11-05 04:49 Asia/Shanghai",
+  "updated_at": 1793834627.0290089,
+  "updated_at_asia_shanghai": "2026-11-05 07:23 Asia/Shanghai",
   "load_after": {
     "note": "monitor 2026-11-03 15:43 Asia/Shanghai; Path C L0 FULL PASS 3/3; train pids gone; machine idle"
   },
@@ -559,7 +559,7 @@
       "pid": 25212,
       "started_at": 1793825379.9187474,
       "kind": "v4_maneuver_static",
-      "phase": "running",
+      "phase": "complete",
       "experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105_static",
       "suite_experiment_id": "masac_v4_sync_capture_40k_control_cuda_20261105",
       "probe_mode": "static",
@@ -594,14 +594,16 @@
         "scope": "Named 40k cold-start static control/B study only; no Attention/L1, old suite rerun, coefficient search or automatic budget extension."
       },
       "do_not_auto_launch_further": true,
-      "caffeinate_pid": null
+      "caffeinate_pid": null,
+      "completed_at": 1793834568.5845628,
+      "all_seeds_gate_met": false
     },
     {
       "out": "C:\\research\\masac-maneuverability\\results\\masac_v4_sync_40k_b_cuda_20261105",
       "pid": 2940,
       "started_at": 1793825390.2558794,
       "kind": "v4_maneuver_static",
-      "phase": "running",
+      "phase": "complete",
       "experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105_static",
       "suite_experiment_id": "masac_v4_sync_capture_40k_b_cuda_20261105",
       "probe_mode": "static",
@@ -636,7 +638,9 @@
         "scope": "Named 40k cold-start static control/B study only; no Attention/L1, old suite rerun, coefficient search or automatic budget extension."
       },
       "do_not_auto_launch_further": true,
-      "caffeinate_pid": null
+      "caffeinate_pid": null,
+      "completed_at": 1793834627.0290089,
+      "all_seeds_gate_met": false
     }
   ],
   "aborted_rethread_arms": [

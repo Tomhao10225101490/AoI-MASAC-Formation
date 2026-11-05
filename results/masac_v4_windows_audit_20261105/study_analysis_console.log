@@ -6,3 +6,5 @@ ANALYSIS status=IN_PROGRESS decision_ready=False decision=None
 ARTIFACTS C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\analysis.json C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\analysis.md C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\curves.png
 ANALYSIS status=IN_PROGRESS decision_ready=False decision=None
 ARTIFACTS C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\analysis.json C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\analysis.md C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\curves.png
+ANALYSIS status=COMPLETE decision_ready=True decision=ADVANCEMENT_RULE_MET
+ARTIFACTS C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\analysis.json C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\analysis.md C:\research\masac-maneuverability\results\masac_v4_sync_40k_analysis_20261105\curves.png

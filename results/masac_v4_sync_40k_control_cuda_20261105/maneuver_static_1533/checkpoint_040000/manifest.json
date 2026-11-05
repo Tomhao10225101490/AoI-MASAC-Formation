@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "step": 40000,
+  "seed": 1533,
+  "replay_size": 40000,
+  "replay_index": 40000,
+  "checkpoint_sha256": "16198bb48f2e1077fb9139a69baacc5ba7d9756718a09e695a54afff90664b9c",
+  "replay_sha256": "6aae659552ee57c89815eb7c7865e18478382da9e109fd41d8fa0a0ed9546344",
+  "sources": {
+    "scripts/train_masac_v4_maneuver.py": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+    "uav_planning/v4_maneuver_masac.py": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+    "uav_planning/v4_networks.py": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+    "uav_planning/v4_prediction.py": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+    "uav_planning/v4_reward_reshape.py": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+    "uav_planning/v4_training.py": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+    "uav_planning/v4_environment.py": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+    "uav_planning/v4_maps.py": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+    "uav_planning/shared_masac.py": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+    "uav_planning/structured.py": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+    "uav_planning/environment.py": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+    "uav_planning/v4_reference.py": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+    "uav_planning/run_lock.py": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+    "uav_planning/v4_sync_capture.py": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647"
+  },
+  "arm": "maneuver_static",
+  "set_mode": "pool",
+  "probe_mode": "static",
+  "warm_start": {
+    "mode": "cold"
+  },
+  "complete": true
+}

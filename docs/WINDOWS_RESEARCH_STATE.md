@@ -48,7 +48,58 @@ binaries. Meaningful stages must be committed and pushed to both active branches
   finite and0/2success (boundary collision), both saved checkpoints. CUDA RNG
   stream presence verified. This is execution validation only.
 
-## Current work / next ordered actions
+## Current authoritative status: completed40k, next offline diagnosis
+
+Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
+Both workers finished normally at07:22/07:23; no Python training process remained
+at the post-completion check. Do not restart or extend these completed runs.
+The launch PIDs/sessions and pending statements in the historical snapshot below
+are obsolete. Per-output manifest/completion/status remain authoritative.
+
+- Control final successes[2,1,4]/12; B[6,0,5]/12; paired differences[+4,-1,+1].
+  Mean fraction difference1/9. Canonical analyzer COMPLETE/decision_ready=true/
+  ADVANCEMENT_RULE_MET. This means **planning confirmation only**, not a launch,
+  significance or a paper superiority claim. Both arms FAIL the absolute gate,
+  zero of three seeds reaching8/12. Retain the negative1522 seed.
+- All six histories reached40,000 transitions/39,000 updates. SOURCE/config
+  freeze was honored through all completions and final integrity/analysis.
+  All12 final checkpoint/replay SHA256s,14 declared source hashes and both
+  config hashes match. Each history has195 finite sampled post-warmup diagnostic
+  rows plus the trainer's per-update finite guard, not39,000 retained rows.
+  This does not validate exact CUDA resume. Preserve snapshots and original bytes.
+- All72 final trajectories checked:54 failures =43 incomplete all-agent ball
+  arrivals +1 all-ball without all-individual capture +10 individual capture
+  without overlap; no final collision. Not a purely synchronization bottleneck.
+- Full report: `docs/SYNC_CAPTURE_40K_FINAL_RESULTS_20261105.md`.
+  Canonical decision/curves/failure_taxonomy.json:
+  `results/masac_v4_sync_40k_analysis_20261105`.
+  Integrity proof added: progress root's `seed1533_integrity/verification.json`;
+  trajectory summaries `trajectory_40000_seed{1511,1522,1533}/summary.{json,md}`.
+- Sealed seeds2026110501..2026110512 remain unopened. No automatic confirmation,
+  40k-to80k continuation, best-checkpoint substitution or test launch is queued.
+
+Next ordered actions:
+
+1. Integrate the complete results into paper/math/frontier, and push completed
+   evidence plus the separate offline plan before running that diagnostic.
+2. Follow `docs/design/MASAC_V4_POST40K_NEXT_MINIMAL_PLAN_20261105.md`: no policy
+   load/action/map rollout/training; six final replays, last8000 transitions,
+   fixed uniform linspace1024 observations/history. Same-observation full/static/
+   static-fill1, validity separated from missing and saturated1 values. Freeze
+   indices/input SHA/source/config, report all11 channels and derived features.
+   New `scripts/audit_final_replay_probe_content.py` needs root review before run.
+   Population is static control/B late-training replay, **not** final on-policy
+   states or historical full-policy states. Feature differences do not identify
+   prediction accuracy or the cause of the historical full/static ranking.
+3. Analyze/push that audit, then record the next smallest justified hypothesis
+   and experiment. Any substantial new training first needs a concrete visible
+   plan. Current relative rule only supports designing confirmation.
+
+Before this final stage both remote branches were e3425c2; obtain the actual new
+tip from Git. Preserve uncommitted intended edits and historical restoration
+leftovers; never bulk-add results/ or reset/clean the repository.
+
+## Historical snapshot before completion (superseded, not launch instructions)
 
 1. CPU/CUDA smokes and two-arm two-seed2k pilot **COMPLETE**. All four final
    evals0/12, all-agent-ever-ball0; B/1422 has any-ball1/12, others0. All7,488
