@@ -1,12 +1,20 @@
 # Method: observation-only control probes and team potential shaping
 
-*Paper draft, 2026-11-05. The registered 40k experiment is COMPLETE: all six final histories and artifacts were verified. Its original advancement rule permits planning confirmation only; both arms fail the absolute task gate.*
+*Paper draft, 2026-11-05. The B 40k study (seeds1511/1522/1533) is COMPLETE: all six final histories and artifacts were verified. Its original advancement rule permits planning confirmation only; both arms fail the absolute task gate. A separate near-objective 40k study (fresh1611/1622/1633) was registered/pushed b4b3a1e before launch and is RUNNING. No final outcome for that study is asserted here.*
 
 ## Task, information and constrained motion
 
 We consider three UAVs with independent, fixed goals \(g_i\). “Capture” denotes operational **simultaneous goal settling**: at some common step, every UAV must satisfy \(d_i=\|p_i-g_i\|_2<4\) m and \(\|v_i\|_2<2\) m/s, without collision. The predicate is unlatched; an agent that leaves its ball or accelerates above the threshold loses its captured status. There is no moving target, pursuit–evasion objective or prey-encirclement geometry.
 
 The latent state \(s_t\) includes scene geometry, vehicle states, time and reward memory. Agent \(i\) receives a masked current observation \(o_{i,t}=h_i(s_t)\in\mathbb R^{162}\), containing ego variables and visible object slots. A parameter-shared actor executes locally; centralized critics receive \(O_t=(o_{1,t},\ldots,o_{N,t})\) and joint actions. Joint current observations do not necessarily recover the Markov state, particularly first-entry memory and time. We therefore describe the implemented observation-based critic without asserting an observation-space Bellman convergence result.
+
+The L0 configuration requires nominal sensor range at least the world diagonal;
+the evaluated configurations use400m. Visibility filters by distance and then
+retains capped object lists. These experiments therefore do not establish
+performance under severe range-limited sensing, occlusion or physical LiDAR.
+Slot truncation and omitted episode memory still prevent an inference of full
+observability from the long nominal range. Decentralized actor execution and a
+demanding limited-information benchmark are distinct claims.
 
 The actor uses a reparameterized diagonal Gaussian
 \(z_i\sim\mathcal N(\mu_\theta(o_i),\operatorname{diag}\sigma_\theta^2(o_i))\).
@@ -74,6 +82,19 @@ A shared 11→64→64 probe MLP followed by mean/max pooling produces 128 featur
 
 The evaluated L0 maps contain no external moving obstacles. Missing moving channels are therefore constant full-versus-static fills, while peer channels can saturate. Consequently this mask contrast does not identify moving-obstacle prediction quality. Unlike preview coupled to action correction in [SCOPE](https://ijcai.org/proceedings/2026/7), these features do not replace or filter executed actions.
 
+For fixed public model parameters \(\eta\), the provider is a deterministic map
+\(\mathcal R_\eta=f_\eta(O)\). It supplies a physical inductive bias rather than
+additional information conditional on its complete input:
+\(I(Y;\mathcal R_\eta\mid O)=0\). A finite-budget benefit must therefore be
+identified against information-, capacity- and budget-matched controls. If
+capability or history is supplied only to the provider, the comparator must
+also receive it to isolate representation from information. Static, neutral
+constant fills and physically/directionally mismatched probes answer different
+questions; neither encoder capacity nor training trajectories can be assumed
+equivalent merely from equal tensor dimensions. The existing L0 suite has not
+established this predictive-content advantage. See the
+[contribution criteria](FRONTIER_CONTRIBUTION_CRITERIA_20261105.md).
+
 ## Fixed team potential shaping
 
 B adds one training-only scalar to the static learner. Define \(\nu_\epsilon(x)=\sqrt{\|x\|^2+\epsilon^2}-\epsilon\), \(\epsilon=10^{-8}\), and
@@ -127,3 +148,72 @@ The registered B study cold-starts both static arms at training seeds 1511, 1522
 Deterministic evaluation uses the same 12 L0 development maps every 2,000 steps with shaping disabled. The fixed 40k checkpoint, rather than a selected best checkpoint, supplies each seed's endpoint. We separately report any-agent eventual ball entry, all-agent eventual entry and simultaneous strict capture: their quantifiers are respectively \(\exists i\exists t\), \(\forall i\exists t\) and \(\exists t\forall i\), with the speed predicate added for capture. Failures and collisions remain explicit; path efficiency is conditional on success. A separate 12-map namespace is reserved but remains sealed until the final artifacts and development decision are frozen. Training seeds, rather than repeatedly evaluated maps or checkpoints, are the replication units. The completed analysis additionally distinguishes all agents ever satisfying individual strict capture from simultaneous team capture; these events have different temporal quantifiers.
 
 Equations (5)–(7) define the representation and finite-budget learning hypothesis. At the fixed 40k endpoint, control successes for seeds 1511/1522/1533 are 2/12, 1/12, 4/12; B successes are 6/12, 0/12, 5/12. The paired count differences are +4, −1, +1, with mean success-fraction difference 1/9 (11.111 percentage points). The original preregistered engineering rule is met, supporting planning of confirmation rather than an efficacy conclusion. Both arms pass zero of three absolute 8/12 seed gates. These are three training-seed pairs on repeatedly evaluated development maps; no significance, unseen-map, moving-obstacle benefit or new-theorem claim follows. Static+B does not identify predictive-content utility. Historical Mac 80k arms and the warm-started legacy Standard-C floor are separate cohorts, not fair 40k performance comparators. The [canonical final analysis](../results/masac_v4_sync_40k_analysis_20261105/analysis.md) records the completed endpoints; the sealed test set remains unevaluated.
+
+## Separate near-objective replacement study (registered, running)
+
+This experiment disables B and fixes static probes in both arms. To avoid
+confusing it with the worst-distance/speed potential in Equation(6), denote
+its **mean-distance** potential by
+\[
+\Psi(s)=\frac{0.4}{N}\sum_{i=1}^{N}
+ \operatorname{clip}(1-\|p_i-g_i\|/15,0,1),\qquad 0\le\Psi\le0.4.
+\tag{N1}
+\]
+The actual scalar implementation preserves the multiply-per-agent-then-mean
+arithmetic of Equation(4), subject to floating-point roundoff. Define
+\(\Psi^+_{t+1}\) from physical post-step geometry even at termination. The
+original arm keeps the Path-C scalar reward unchanged. The replacement arm uses
+\[
+r^0_t=r^{\rm PathC}_t-\Psi^+_{t+1},\qquad
+r^{\rm new}_t=r^0_t+\gamma(1-\delta_t)\Psi^+_{t+1}-\Psi(s_t).
+\tag{N2}
+\]
+True termination sets only the added successor potential to zero. A timeout
+alone retains it and retains Equation(2)'s original true-terminal replay mask.
+If both flags are true, termination takes precedence. Thus the correction
+relative to Path-C is \(-\Psi(s_t)-0.01\Psi^+_{t+1}\) on nonterminal transitions
+and \(-\Psi(s_t)-\Psi^+_{t+1}\) on true terminals. Their analytic ranges are
+\([-0.404,0]\) and \([-0.8,0]\), respectively, with numerical tolerance in the
+runtime checks. This is not the coefficient0.5 B intervention.
+
+For a complete sampled episode of lengthT, writingG for discounted **reward
+sums without entropy or bootstrap**, direct telescoping gives
+\[
+G_{\rm new}-G_{\rm PathC}
+=-\sum_{t=0}^{T-1}\gamma^t\Psi^+_{t+1}-\Psi(s_0)
+ +\gamma^T(1-\delta_{T-1})\Psi^+_T.
+\tag{N3}
+\]
+Equation(N3) makes the changed objective explicit. Standard PBRS reasoning
+applies relative to \(r^0\), under the previously stated information, entropy
+and boundary conditions; it does not preserve the old Path-C objective or imply
+equivalence to sparse simultaneous success. At a timeout, a consistent
+continuation-value transformation is needed to cancel the retained boundary.
+The identity supplies neither a finite-sample neural-SAC advantage nor identical
+critic, target or automatic-temperature updates. Removing occupancy reward and
+adding potential credit assignment are one combined intervention; this two-arm
+study cannot isolate their individual causal contributions.
+
+Fresh training seeds1611/1622/1633 each receive40,000transitions/39,000updates
+in both arms, with1,000warmup, batch128, replay100,000, CUDA/Torch1thread and at
+most4independent history workers. The coordinator fixes six owned single-seed
+outputs and source/config hashes before execution; no checkpoint/replay is
+loaded. Each episode reinitializes the previous potential from its actual reset
+geometry. Each transition records the original scalar, removed physical near
+term, added potential difference, replay reward/done and termination flags.
+Evaluation uses original Path-C with B and the replacement callback disabled;
+state-isolation checks preserve the training environment and reward memory.
+
+Only each history's final40k success count on the12fixed development maps is
+primary. All three paired differences are retained. The frozen integer rule
+requires total gain at least3, at least two positive pairs, minimum pair gain
+at least-1, and complete finite histories with full source/config/checkpoint/
+replay/reward integrity. It is an engineering planning rule, not significance.
+The absolute at-least8/12-every-seed task gate is reported separately. Mid-run
+evaluations, peaks, returns, ball entry or reduced stall cannot replace the
+final endpoint. No final results or confirmed objective/prediction advantage
+are asserted while these histories are running. The
+[registered protocol](design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md)
+and [source-matched derivation](MATH_NEAR_OBJECTIVE_REPLACEMENT_20261105.md)
+govern this separate comparison; its outcomes must not be merged with the
+completed B cohort.

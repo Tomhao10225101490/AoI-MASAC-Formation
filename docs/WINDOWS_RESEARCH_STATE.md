@@ -79,7 +79,18 @@ four actual workers96–99%of oneCPUcore each; availableRAM13.78–13.94GiB.
 Read-only launch integrity and load evidence are stored under Windows audit.
 Shared tracked `results/masac_v4_parallel_runs.json` changes as expected from
 the locked trainer registry; do not stage this mutable index as launch evidence.
-Current6k evals are intermediate descriptions only, not final outcomes.
+First10k checkpoint milestone verified: all four active histories have owned
+checkpoint_010000 metadata complete=true/step10000/correctseed/cold,20source
+hash declarations equal the frozen study, replay_size/index10000, and nonempty
+model/replay files. Their declared binary hashes were not recomputed at this
+milestone; full actual final-binary/replay checks remain required after40k.
+All20eval isolation records at2k..10k arePASS, no owned error marker. Current
+intermediate evaluations cannot change decisions. Two1633histories remainqueued.
+
+Paper Methods now explicitly separates the completed B cohort and running
+near-objective cohort. New Equations(N1)–(N3) usePsi for mean-distance near
+potential, distinguish physical removal from absorbing addition, and show the
+discounted reward-sum difference from PathC. No efficacy or prediction claim.
 
 Parallel paper/frontier review: `docs/FRONTIER_CONTRIBUTION_CRITERIA_20261105.md`
 inspects12primary-source precedents, defines concrete falsifiers and disallows

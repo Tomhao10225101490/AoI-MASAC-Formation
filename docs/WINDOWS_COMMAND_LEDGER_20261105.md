@@ -853,3 +853,24 @@ abstracts. Paper plan/outline/RELATED updated to actual registered/running study
 New joint-recourse future hypothesis includes normalized constraints, causal
 information classes, joint<=pair proof and same-first-action strict-gap toy;
 it is unregistered/unimplemented and does not authorize extra experiments.
+
+## 21. First10k save milestone and source-matched Methods
+
+Existing coordinator session27468 confirmed live by write_stdin; no restart.
+Four active histories wrote checkpoint_010000, each model26682436bytes/replay
+89481742bytes. Metadata contract PASS:complete=true/correctseed/step10000/cold,
+20source declarations equal root, replay_size/index10000. Binary checksum
+declarations present; not recomputed here. This does not prove exact CUDA
+resume. Final40k analyzer still requires full actual hashes/replay checks.
+Allfour histories recordPASS at2k/4k/6k/8k/10k (20checks), no ownerror marker;
+20source/two configs current hashes still match. Evidence log:
+near_objective_40k_first_checkpoint_check.log. Two1633jobs remain pending in the
+same coordinator, no extra process or history launched.
+
+Read-only Methods/probe-source review and paper-only update: separate old B
+from registered near comparison, disclose L0 nominal range, deterministic
+information boundary, Psi mean-distance definition and exact discounted
+reward-sum replacement identity(N1–N3), termination/timeout/bootstrap and final
+decision contract. No frozen scientific file changed. Documentation diffcheck
+PASS; no new training/evaluation, model load, sealed read or software test was
+introduced for this prose edit.

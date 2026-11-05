@@ -1,0 +1,24 @@
+COORDINATOR RUNNING completed 0 error False
+FROZEN mismatches []
+JOB original 1611 RUNNING error False
+CHECKPOINT results\masac_v4_near_objective_40k_sharded_cuda_20261105\runs\original_1611\maneuver_static_1611\checkpoint_010000 [('checkpoint.pt', 26682436), ('manifest.json', 2647), ('replay.npz', 89481742)]
+METADATA manifest.json keys ['arm', 'checkpoint_sha256', 'complete', 'probe_mode', 'replay_index', 'replay_sha256', 'replay_size', 'seed', 'set_mode', 'sources', 'step', 'version', 'warm_start']
+EVAL_STATE [(2000, True), (4000, True), (6000, True), (8000, True), (10000, True)]
+JOB potential 1611 RUNNING error False
+CHECKPOINT results\masac_v4_near_objective_40k_sharded_cuda_20261105\runs\potential_1611\maneuver_static_1611\checkpoint_010000 [('checkpoint.pt', 26682436), ('manifest.json', 2647), ('replay.npz', 89481742)]
+METADATA manifest.json keys ['arm', 'checkpoint_sha256', 'complete', 'probe_mode', 'replay_index', 'replay_sha256', 'replay_size', 'seed', 'set_mode', 'sources', 'step', 'version', 'warm_start']
+EVAL_STATE [(2000, True), (4000, True), (6000, True), (8000, True), (10000, True)]
+JOB original 1622 RUNNING error False
+CHECKPOINT results\masac_v4_near_objective_40k_sharded_cuda_20261105\runs\original_1622\maneuver_static_1622\checkpoint_010000 [('checkpoint.pt', 26682436), ('manifest.json', 2647), ('replay.npz', 89481742)]
+METADATA manifest.json keys ['arm', 'checkpoint_sha256', 'complete', 'probe_mode', 'replay_index', 'replay_sha256', 'replay_size', 'seed', 'set_mode', 'sources', 'step', 'version', 'warm_start']
+EVAL_STATE [(2000, True), (4000, True), (6000, True), (8000, True), (10000, True)]
+JOB potential 1622 RUNNING error False
+CHECKPOINT results\masac_v4_near_objective_40k_sharded_cuda_20261105\runs\potential_1622\maneuver_static_1622\checkpoint_010000 [('checkpoint.pt', 26682436), ('manifest.json', 2647), ('replay.npz', 89481742)]
+METADATA manifest.json keys ['arm', 'checkpoint_sha256', 'complete', 'probe_mode', 'replay_index', 'replay_sha256', 'replay_size', 'seed', 'set_mode', 'sources', 'step', 'version', 'warm_start']
+EVAL_STATE [(2000, True), (4000, True), (6000, True), (8000, True), (10000, True)]
+JOB original 1633 PENDING error False
+JOB potential 1633 PENDING error False
+METADATA_CONTRACT PASS original 1611 step 10000 replay_size 10000 replay_index 10000 binary_hashes_declared_not_recomputed True
+METADATA_CONTRACT PASS original 1622 step 10000 replay_size 10000 replay_index 10000 binary_hashes_declared_not_recomputed True
+METADATA_CONTRACT PASS potential 1611 step 10000 replay_size 10000 replay_index 10000 binary_hashes_declared_not_recomputed True
+METADATA_CONTRACT PASS potential 1622 step 10000 replay_size 10000 replay_index 10000 binary_hashes_declared_not_recomputed True
