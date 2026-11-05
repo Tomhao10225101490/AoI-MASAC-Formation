@@ -54,16 +54,20 @@ binaries. Meaningful stages must be committed and pushed to both active branches
 Registration/code/protocol/config/test/benchmark/dashboard pushed to both branches
 as **b4b3a1e** before execution. New coordinator started12:57Asia/Shanghai, session
 **27468**, root `results/masac_v4_near_objective_40k_sharded_cuda_20261105`.
-At launch-integrity check: original1611 actualPID34136/launcher36840;
-potential1611 actual22956/launcher38088; original1622 actual23428/launcher22808;
-potential1622 actual38268/launcher7760. Original/potential1633 are PENDING until
-slots free; the registered coordinator owns those submissions. Do not duplicate.
+**Latest handoff check14:34Asia/Shanghai:** first four histories (both arms at
+1611/1622) have own complete=true/step40000/single-correct-seed and returncode0.
+Coordinator is4/6complete,0pending,0errors. Final two1633histories are RUNNING:
+original actualPID40092/launcher36056, potential actual40448/launcher36220;
+both real process command lines were inspected, single-seed manifests match
+all20source/two config hashes. Do not launch more workers. Initial1611/1622PIDs
+34136/22956/23428/38268 are retired historical identities, not live targets.
 Root study_manifest SHA256b75203f4776a38120c48fd03237a244e88228533dce24f772e8a0ddfb89110eb.
-All four own manifests truthfully list one seed, all20source/two config hashes
-match root and current source; no error/completion at initial check. First2k
+All six own manifests truthfully list one seed, all20source/two config hashes
+match root and current source at the handoff check. Earlier first2k
 evaluations and SAC updates are streaming. Intermediate outcomes cannot change
-rules/config/source/budget. Four actual workers reach roughly one CPU core each,
-GPU92–93%initial sampled load; reserved max4 based on prior measured throughput.
+rules/config/source/budget. Initial four workers reached roughly one CPU core each,
+GPU92–93%sampled load; now only the two remaining registered histories run.
+The scientific budget stays fixed; do not add seeds to fill empty slots.
 
 After all six own completions plus successful coordinator final completion,
 run the already-frozen independent analyzer once into a fresh analysis output:
@@ -79,13 +83,15 @@ four actual workers96–99%of oneCPUcore each; availableRAM13.78–13.94GiB.
 Read-only launch integrity and load evidence are stored under Windows audit.
 Shared tracked `results/masac_v4_parallel_runs.json` changes as expected from
 the locked trainer registry; do not stage this mutable index as launch evidence.
-First10k checkpoint milestone verified: all four active histories have owned
+First10k checkpoint milestone verified: the first four then-active histories have owned
 checkpoint_010000 metadata complete=true/step10000/correctseed/cold,20source
 hash declarations equal the frozen study, replay_size/index10000, and nonempty
 model/replay files. Their declared binary hashes were not recomputed at this
 milestone; full actual final-binary/replay checks remain required after40k.
 All20eval isolation records at2k..10k arePASS, no owned error marker. Current
-intermediate evaluations cannot change decisions. Two1633histories remainqueued.
+intermediate evaluations cannot change decisions. Two1633histories are nowrunning
+as the latest handoff above specifies. Full final artifact/replay validation and
+all three paired endpoints still wait for allsix+coordinator completion.
 
 Paper Methods now explicitly separates the completed B cohort and running
 near-objective cohort. New Equations(N1)–(N3) usePsi for mean-distance near

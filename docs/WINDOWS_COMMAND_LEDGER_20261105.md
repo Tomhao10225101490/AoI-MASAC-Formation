@@ -933,3 +933,26 @@ to generated figure assets and the one verbatim error log; handwritten source
 and protocol checks remain active. Recheck the entire figure change from3e2405a,
 parseSVG/JSON/PNG, verify actual artifact/source hashes and freeze20/two configs
 before push. No history restart, outcome rule change or force-push.
+
+Result: SVG/XML,PNG,JSON,allfigure/source hashes and scientific20source/two
+config freeze PASS. `git diff 3e2405a --check` across the complete figure-stage
+paths PASS with scoped generated-asset attributes; handwritten renderer source
+whitespace remains unspecified/default. Follow-up **5d41021** pushed and both
+remote refs verified. Original asset/error bytes retained, no force-push.
+
+## 25. Actual registered queue handoff,14:34Asia/Shanghai
+
+Existing session27468 remains live. Source/config hash check PASS. Both1611and
+1622histories in both arms have owned complete=true/single-correct-seed/
+step40000 and root-recordedreturncode0 (4histories). This is a completion-marker
+check, not final-binary hash/replay or efficacy analysis. No final score/pair
+decision is made before allsix complete.
+
+The coordinator submitted only its remaining original1633/potential1633jobs;
+command-before-Popen lines were recovered intact from its tee log. Actual
+processes40092/40448 (launchers36056/36220) are live, correctentry/config/out/
+seed1633/Torch1. Each ownmanifestdeclaresactualsingle1633 and the same20sources/
+two paired configs. Allownerror markers absent; root4/6complete,0pending,0error.
+Evidence: near_objective_40k_handoff_check.log. Do not duplicate, extend, choose
+checkpoints or run sealed tests. Monitor finaltwo, then frozen canonical full
+analysis into a fresh output; the older source-cache finding is not a hotfix.

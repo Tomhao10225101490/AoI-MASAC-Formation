@@ -1,0 +1,17 @@
+CHECK_TIME 2026-11-05T06:34:02.401008+00:00
+COORDINATOR RUNNING completed 4 / 6 error False
+JOB original 1611 COMPLETE returncode 0 launch_pid 36840 training_pid 34136 error False
+OWN_COMPLETION PASS final40000 original 1611
+JOB potential 1611 COMPLETE returncode 0 launch_pid 38088 training_pid 22956 error False
+OWN_COMPLETION PASS final40000 potential 1611
+JOB original 1622 COMPLETE returncode 0 launch_pid 22808 training_pid 23428 error False
+OWN_COMPLETION PASS final40000 original 1622
+JOB potential 1622 COMPLETE returncode 0 launch_pid 7760 training_pid 38268 error False
+OWN_COMPLETION PASS final40000 potential 1622
+JOB original 1633 RUNNING returncode None launch_pid 36056 training_pid 40092 error False
+ACTUAL_PROCESS 40092 True ['C:\\Users\\Tom\\AppData\\Local\\Programs\\Python\\Python310\\python.exe', '-u', 'C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py', '--protocol', 'C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json', '--out', 'C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633', '--seed', '1633', '--torch-threads', '1']
+JOB potential 1633 RUNNING returncode None launch_pid 36220 training_pid 40448 error False
+ACTUAL_PROCESS 40448 True ['C:\\Users\\Tom\\AppData\\Local\\Programs\\Python\\Python310\\python.exe', '-u', 'C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py', '--protocol', 'C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json', '--out', 'C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633', '--seed', '1633', '--torch-threads', '1']
+FROZEN20_SOURCE_TWO_CONFIG PASS
+RECORDED COMMAND BEFORE Popen: C:\research\masac-maneuverability\.venv\Scripts\python.exe -u C:\research\masac-maneuverability\scripts\train_masac_v4_near_objective_study.py --protocol C:\research\masac-maneuverability\configs\masac_v4\near_objective_40k_original_cuda_20261105.json --out C:\research\masac-maneuverability\results\masac_v4_near_objective_40k_sharded_cuda_20261105\runs\original_1633 --seed 1633 --torch-threads 1
+RECORDED COMMAND BEFORE Popen: C:\research\masac-maneuverability\.venv\Scripts\python.exe -u C:\research\masac-maneuverability\scripts\train_masac_v4_near_objective_study.py --protocol C:\research\masac-maneuverability\configs\masac_v4\near_objective_40k_potential_cuda_20261105.json --out C:\research\masac-maneuverability\results\masac_v4_near_objective_40k_sharded_cuda_20261105\runs\potential_1633 --seed 1633 --torch-threads 1
