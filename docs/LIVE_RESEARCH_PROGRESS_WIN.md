@@ -1,0 +1,43 @@
+# Local live training and experiment progress
+
+Date: 2026-11-05. Open **http://127.0.0.1:8765/** on this Windows machine.
+The user requested visible training detail and full useful local compute use.
+
+The read-only server is `scripts/serve_research_progress.py`; its page is
+`tools/research_progress/index.html`. It refreshes every five seconds, with
+pause/manual refresh and study/seed selectors. It does not launch or modify
+training. Completed pilot/history outputs are visible; the new independent
+40k history shards appear when their registered coordinator creates them.
+
+Views include per-seed steps/updates/throughput/estimated time, SAC actor and
+critic losses, temperature, entropy, Q/target/TD diagnostics, episode returns
+and near correction, every retained evaluation's success/ANY/ALL ball counts,
+failure categories, checkpoint paths, raw recent logs and errors. CPU/RAM/disk
+and GPU utilization/VRAM/temperature/power are sampled about every ten seconds.
+Benchmark results are engineering evidence, not research success outcomes.
+Missing data stays missing; old records show their age. ETA is an estimate.
+
+Own-output status/completion/error/manifest are authoritative. The page reads
+only fixed known result directories, not the shared registry or sealed maps.
+It does not load models/replays or rehash large binaries. Log/JSONL reading is
+bounded/incremental. Per-map failure categories may overlap. Mid-training
+curves and peaks do not replace final40k registered endpoints.
+
+The HTTP API is `GET /api/progress`. Bind is restricted to loopback; there is
+no external CDN. GET unknown paths returns404; POST returns405. Real pilot
+data and browser overview/SAC/evaluation views were checked before launch.
+
+## Recovery
+
+First check processes for `serve_research_progress.py` and open the URL. Do
+not start another server if this one is live. If absent, from repository root
+print the following command before executing it, as required by the user:
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts\serve_research_progress.py --port 8765 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/progress_dashboard_console.log -Append
+```
+
+This server is outside the frozen20 scientific source files and may receive
+display fixes without changing training. Preserve study bytes and outcome
+rules. Browser connection trouble alone is not evidence of training failure;
+inspect process command lines and each output's files before intervention.

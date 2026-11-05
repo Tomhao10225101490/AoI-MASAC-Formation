@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "cases": [
+    2,
+    3,
+    4
+  ],
+  "benchmark_sha256": "8c1af75f17a2f6922dd8bc13059451fd35c49e7b9b4bd271cf4a94925701dd9a",
+  "scientific_training": false
+}

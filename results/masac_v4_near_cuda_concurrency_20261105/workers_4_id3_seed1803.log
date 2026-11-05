@@ -1,0 +1,9 @@
+WORKER count=4 id=3 seed=1803 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=4 id=3 seed=1803 READY waiting_for_common_start_event=true
+WORKER count=4 id=3 seed=1803 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=7.492 finite=true
+WORKER count=4 id=3 seed=1803 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=15.096 finite=true
+WORKER count=4 id=3 seed=1803 BLOCK_COMPLETE block=1/2 elapsed_s=15.095716 steps_per_s=8.479227
+WORKER count=4 id=3 seed=1803 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=22.533 finite=true
+WORKER count=4 id=3 seed=1803 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=29.942 finite=true
+WORKER count=4 id=3 seed=1803 BLOCK_COMPLETE block=2/2 elapsed_s=14.846413 steps_per_s=8.621611
+WORKER count=4 id=3 seed=1803 FINISH measured_steps=256 common_elapsed_s=29.942492 worker_steps_per_s=8.549723 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}

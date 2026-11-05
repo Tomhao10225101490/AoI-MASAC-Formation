@@ -10,6 +10,16 @@ paper-suite rerun remain outside this launch scope.
 
 ## Hardware and available resources
 
+Additional useful-load benchmark (2026-11-05, before new near-objective study):
+matched static actor/environment/replay/update at2/3/4CUDA processes gives
+aggregate30.9038/32.6480/33.9149steps/s, all9workers finite. Four is9.7%faster
+than two; GPU point samples81/89/93%,1615/2048/2422MiB. These are early-replay
+single-run samples excluding evaluation/reference/snapshot I/O, not sustained
+utilization or scientific outcomes. Freeze at most4independent histories and
+one Torch thread each on this evidence. No change to historical CPU default.
+Raw evidence: `results/masac_v4_near_cuda_concurrency_20261105/benchmark.json`.
+Live load/seed/eval/log details: http://127.0.0.1:8765/ while local server runs.
+
 | Item | Observed value |
 |---|---|
 | OS | Windows 10 Home Chinese, 10.0.19045 |

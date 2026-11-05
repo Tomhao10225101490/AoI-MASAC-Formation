@@ -1,0 +1,156 @@
+{
+  "workers": 3,
+  "total_measured_steps": 768,
+  "outer_common_start_to_last_worker_finish_s": 23.5236384000018,
+  "aggregate_steps_per_s": 32.64801077710586,
+  "worker_results": [
+    {
+      "worker_id": 0,
+      "seed": 1800,
+      "pid": 38104,
+      "measured_steps": 256,
+      "common_elapsed_s": 23.352524499998253,
+      "worker_steps_per_s": 10.962412222285396,
+      "blocks": [
+        {
+          "block": 1,
+          "steps": 128,
+          "elapsed_s": 11.666022000004887,
+          "steps_per_s": 10.972034854721377
+        },
+        {
+          "block": 2,
+          "steps": 128,
+          "elapsed_s": 11.686138400000345,
+          "steps_per_s": 10.953147705318655
+        }
+      ],
+      "cuda_max_memory_allocated_bytes": 213060608,
+      "cuda_max_memory_reserved_bytes": 274726912,
+      "finite_counts": {
+        "prefill_transitions": 160,
+        "warmup_updates": 8,
+        "measured_updates": 256,
+        "finite_action_values": 3816,
+        "finite_observation_values": 206064,
+        "finite_rewards": 424,
+        "finite_diagnostic_values": 4488,
+        "nonfinite_values": 0
+      },
+      "torch_threads": 1,
+      "cache_risk": true,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      },
+      "gpu": "NVIDIA GeForce RTX 4060",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_cuda_concurrency_20261105\\workers_3_id0_seed1800.log"
+    },
+    {
+      "worker_id": 1,
+      "seed": 1801,
+      "pid": 30460,
+      "measured_steps": 256,
+      "common_elapsed_s": 23.5236384000018,
+      "worker_steps_per_s": 10.882670259035287,
+      "blocks": [
+        {
+          "block": 1,
+          "steps": 128,
+          "elapsed_s": 11.680522499998915,
+          "steps_per_s": 10.958413889448172
+        },
+        {
+          "block": 2,
+          "steps": 128,
+          "elapsed_s": 11.842620900002657,
+          "steps_per_s": 10.808418261532907
+        }
+      ],
+      "cuda_max_memory_allocated_bytes": 213060608,
+      "cuda_max_memory_reserved_bytes": 274726912,
+      "finite_counts": {
+        "prefill_transitions": 160,
+        "warmup_updates": 8,
+        "measured_updates": 256,
+        "finite_action_values": 3816,
+        "finite_observation_values": 206064,
+        "finite_rewards": 424,
+        "finite_diagnostic_values": 4488,
+        "nonfinite_values": 0
+      },
+      "torch_threads": 1,
+      "cache_risk": true,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      },
+      "gpu": "NVIDIA GeForce RTX 4060",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_cuda_concurrency_20261105\\workers_3_id1_seed1801.log"
+    },
+    {
+      "worker_id": 2,
+      "seed": 1802,
+      "pid": 35924,
+      "measured_steps": 256,
+      "common_elapsed_s": 23.394409900000028,
+      "worker_steps_per_s": 10.942785096708068,
+      "blocks": [
+        {
+          "block": 1,
+          "steps": 128,
+          "elapsed_s": 11.662702900001022,
+          "steps_per_s": 10.97515739683198
+        },
+        {
+          "block": 2,
+          "steps": 128,
+          "elapsed_s": 11.731154499997501,
+          "steps_per_s": 10.911117060134812
+        }
+      ],
+      "cuda_max_memory_allocated_bytes": 213060608,
+      "cuda_max_memory_reserved_bytes": 274726912,
+      "finite_counts": {
+        "prefill_transitions": 160,
+        "warmup_updates": 8,
+        "measured_updates": 256,
+        "finite_action_values": 3816,
+        "finite_observation_values": 206064,
+        "finite_rewards": 424,
+        "finite_diagnostic_values": 4488,
+        "nonfinite_values": 0
+      },
+      "torch_threads": 1,
+      "cache_risk": true,
+      "parameter_counts": {
+        "actor": 506054,
+        "twin_critics": 1273730,
+        "risk_encoder": 4928,
+        "set_encoder": 302464,
+        "total_trainable": 1779785
+      },
+      "gpu": "NVIDIA GeForce RTX 4060",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_cuda_concurrency_20261105\\workers_3_id2_seed1802.log"
+    }
+  ],
+  "gpu_single_point_sample": {
+    "command": [
+      "nvidia-smi",
+      "--query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw",
+      "--format=csv,noheader,nounits"
+    ],
+    "returncode": 0,
+    "stdout": "NVIDIA GeForce RTX 4060, 595.79, 8188, 2048, 89, [N/A]",
+    "stderr": "",
+    "scope": "One point sample per case, not continuous utilization",
+    "command_elapsed_s": 0.047265200002584606
+  },
+  "timing": "Common parent perf_counter before Event.set to last CUDA-synchronized worker finish; excludes initialization/prefill/warmup/process teardown; includes block/progress logging."
+}

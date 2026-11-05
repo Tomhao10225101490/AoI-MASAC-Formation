@@ -746,3 +746,66 @@ afterSHA34a1b688c431bf0e906c435b711eb231ef48e6b4ad6409177b17c7a578e133d3;
 recordnear_pilot_registry_repair.json. Per-output artifacts unchanged.
 Future formal entry needs a registry write lock and multi-seed/reset validation.
 The separate40k×3newcoldseed proposal is written but not registered/launched.
+
+## 18. Formal runtime preflight and measured concurrency
+
+Runtime31tests pass, including real-environment controlled success and timeout
+with nonzero potential, no actor/learner. Analyzer19unit/6production-sized
+synthetic fixture tests pass, then seventhCLIhash/nooverwritecase passes7.509s.
+All synthetic values/checkpoints/scenes are markedSYNTHETIC and stay temporary;
+these tests are software verification, never research outcomes. Root fixed
+actual schema mismatches before registration: checkpoint/seedwarm_start is
+{'mode':'cold'}, completed records do not include sync_capture; repeated input
+reads must preserve first hash and report changes. No scientific threshold changed.
+
+```powershell
+.venv\Scripts\python.exe -u scripts\benchmark_near_worker_concurrency.py --out results/masac_v4_near_cuda_concurrency_20261105 --workers 2 3 4 --steps 128 --blocks 2 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_cuda_concurrency_console.log
+```
+
+Exit0, all9workers finite, matched stochastic static actor+NumPyenv+cachedreplay+
+batch128update, capacity100k, Torch1, prefill160/warmup8, synchronized256measured
+steps/worker. Aggregate2/3/4=30.9038/32.6480/33.9149steps/s, four+9.7%over two.
+GPU point samples81/89/93%, memory1615/2048/2422MiB; not sustained utilization.
+No evaluation, reference audit, snapshots or scientific weights/endpoints.
+One order/run with early replay limits precision; do not infer scientific gain.
+
+After user's explicit fuller-compute request, before registration, the formal
+layout is changed to6owned single-seed outputs/max4worker coordinator without
+changing the240ktransition/234kupdate budget, seeds, near formula or decision.
+The coordinator and sharded analyzer must pass their integration tests and be
+pushed before launch. Existing closed runs/pilot entry/14oldcores stay unchanged.
+User also requested visual detail: a local read-only auto-refresh dashboard is
+being implemented; real own-output state only, outside the frozen source list.
+
+## 19. Final pre-registration review and live visibility
+
+Before new training: runtime31 PASS, analyzer19unit+14complete synthetic/CLI
+PASS, coordinator3 actual-Popen/fake-child PASS (repeated after PID precision).
+Independent cross-file review found uppercaseCOMPLETE versus lowercasecomplete;
+fixed analyzer phase normalization before registration, then six sharded tests
+PASS47.134s. UppercaseFAILED never decides, even with all child completions.
+Windows launch_pid differs from actual training_pid; both are now recorded,
+actual PID from own status/manifest only. Failures halt pending and drain saved
+siblings; no retry/extra seed. Three-seed raw configs/one-seed workers and20source
+freeze agree. Corrected interactive import preflight path, then both paired
+config checks PASS, old14source mismatches=[], formal output absent.
+
+Root visible commands included coordinator pytest, sharded unittest regression,
+config/hash preflight, nvidia-smi, process inventory, Git status/diff checks.
+No training was started during these checks. Prelaunch C:320630206464bytes free,
+D:655404724224; GPU40C/~998MiB includes desktop applications, not training.
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts\serve_research_progress.py --port 8765 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/progress_dashboard_console.log
+```
+
+Read-only dashboard live at http://127.0.0.1:8765/, launcher38280/actual27156,
+session71337. Browser verified real pilot overview/SAC/evaluation and failures;
+GETAPI200, unknown404, POST405. Source/HTML outside scientific20freeze. Recovery:
+docs/LIVE_RESEARCH_PROGRESS_WIN.md. Do not duplicate server.
+
+Final visible plan: cold1611/1622/1633, originalvsreplacement static/Boff,40k/
+39kupdates each,240k/234ktotal,max4CUDAworker/Torch1,eval2k/checkpoint10k/log200.
+Final40k only, all three paired counts; fixed integer planningrule and separate
+8/12everyseed gate. No intermediate adaptation, automatic extension or sealedtest.
+Push explicit intended files to both branches before one named coordinator launch.

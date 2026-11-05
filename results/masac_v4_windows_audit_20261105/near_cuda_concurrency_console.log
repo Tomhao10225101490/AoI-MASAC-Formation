@@ -1,0 +1,114 @@
+CASE_PREPARE workers=2 measured_steps_per_worker=256
+WORKER BEFORE spawn count=2 id=0 seed=1800 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER BEFORE spawn count=2 id=1 seed=1801 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER count=2 id=0 seed=1800 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=2 id=1 seed=1801 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=2 id=1 seed=1801 READY waiting_for_common_start_event=true
+WORKER count=2 id=0 seed=1800 READY waiting_for_common_start_event=true
+CASE_COMMON_START workers=2 common_perf_counter=48762.459312300
+COMMAND BEFORE subprocess: nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw --format=csv,noheader,nounits
+NVIDIA_SINGLE_POINT_SAMPLE {'command': ['nvidia-smi', '--query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw', '--format=csv,noheader,nounits'], 'returncode': 0, 'stdout': 'NVIDIA GeForce RTX 4060, 595.79, 8188, 1615, 81, [N/A]', 'stderr': '', 'scope': 'One point sample per case, not continuous utilization', 'command_elapsed_s': 0.048976499994751066}
+WORKER count=2 id=0 seed=1800 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=4.105 finite=true
+WORKER count=2 id=1 seed=1801 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=4.205 finite=true
+PARENT_PROGRESS workers=2 phase=measured ready=2/2 finished=0/2 alive=[38232, 38848] timeout_remaining_s=289.8
+WORKER count=2 id=0 seed=1800 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=8.287 finite=true
+WORKER count=2 id=0 seed=1800 BLOCK_COMPLETE block=1/2 elapsed_s=8.286894 steps_per_s=15.446076
+WORKER count=2 id=1 seed=1801 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=8.303 finite=true
+WORKER count=2 id=1 seed=1801 BLOCK_COMPLETE block=1/2 elapsed_s=8.302799 steps_per_s=15.416489
+WORKER count=2 id=0 seed=1800 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=12.413 finite=true
+WORKER count=2 id=1 seed=1801 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=12.456 finite=true
+PARENT_PROGRESS workers=2 phase=measured ready=2/2 finished=0/2 alive=[38232, 38848] timeout_remaining_s=279.8
+WORKER count=2 id=1 seed=1801 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=16.561 finite=true
+WORKER count=2 id=1 seed=1801 BLOCK_COMPLETE block=2/2 elapsed_s=8.248424 steps_per_s=15.518116
+WORKER count=2 id=1 seed=1801 FINISH measured_steps=256 common_elapsed_s=16.560656 worker_steps_per_s=15.458324 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+WORKER count=2 id=0 seed=1800 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=16.567 finite=true
+WORKER count=2 id=0 seed=1800 BLOCK_COMPLETE block=2/2 elapsed_s=8.255311 steps_per_s=15.505169
+WORKER count=2 id=0 seed=1800 FINISH measured_steps=256 common_elapsed_s=16.567540 worker_steps_per_s=15.451902 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+CASE_COMPLETE workers=2 total_steps=512 outer_elapsed_s=16.567540 aggregate_steps_per_s=30.903804
+CASE_PREPARE workers=3 measured_steps_per_worker=256
+WORKER BEFORE spawn count=3 id=0 seed=1800 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER BEFORE spawn count=3 id=1 seed=1801 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER BEFORE spawn count=3 id=2 seed=1802 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER count=3 id=1 seed=1801 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=3 id=2 seed=1802 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=3 id=0 seed=1800 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=3 id=2 seed=1802 READY waiting_for_common_start_event=true
+WORKER count=3 id=1 seed=1801 READY waiting_for_common_start_event=true
+WORKER count=3 id=0 seed=1800 READY waiting_for_common_start_event=true
+CASE_COMMON_START workers=3 common_perf_counter=48785.827869900
+COMMAND BEFORE subprocess: nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw --format=csv,noheader,nounits
+NVIDIA_SINGLE_POINT_SAMPLE {'command': ['nvidia-smi', '--query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw', '--format=csv,noheader,nounits'], 'returncode': 0, 'stdout': 'NVIDIA GeForce RTX 4060, 595.79, 8188, 2048, 89, [N/A]', 'stderr': '', 'scope': 'One point sample per case, not continuous utilization', 'command_elapsed_s': 0.047265200002584606}
+PARENT_PROGRESS workers=3 phase=measured ready=3/3 finished=0/3 alive=[38104, 30460, 35924] timeout_remaining_s=289.8
+WORKER count=3 id=0 seed=1800 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=5.747 finite=true
+WORKER count=3 id=1 seed=1801 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=5.805 finite=true
+WORKER count=3 id=2 seed=1802 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=5.832 finite=true
+WORKER count=3 id=2 seed=1802 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=11.663 finite=true
+WORKER count=3 id=2 seed=1802 BLOCK_COMPLETE block=1/2 elapsed_s=11.662703 steps_per_s=10.975157
+WORKER count=3 id=0 seed=1800 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=11.666 finite=true
+WORKER count=3 id=0 seed=1800 BLOCK_COMPLETE block=1/2 elapsed_s=11.666022 steps_per_s=10.972035
+WORKER count=3 id=1 seed=1801 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=11.681 finite=true
+WORKER count=3 id=1 seed=1801 BLOCK_COMPLETE block=1/2 elapsed_s=11.680522 steps_per_s=10.958414
+PARENT_PROGRESS workers=3 phase=measured ready=3/3 finished=0/3 alive=[38104, 30460, 35924] timeout_remaining_s=279.8
+WORKER count=3 id=2 seed=1802 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=17.524 finite=true
+WORKER count=3 id=0 seed=1800 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=17.553 finite=true
+WORKER count=3 id=1 seed=1801 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=17.659 finite=true
+WORKER count=3 id=0 seed=1800 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=23.352 finite=true
+WORKER count=3 id=0 seed=1800 BLOCK_COMPLETE block=2/2 elapsed_s=11.686138 steps_per_s=10.953148
+WORKER count=3 id=0 seed=1800 FINISH measured_steps=256 common_elapsed_s=23.352524 worker_steps_per_s=10.962412 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+WORKER count=3 id=2 seed=1802 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=23.394 finite=true
+WORKER count=3 id=2 seed=1802 BLOCK_COMPLETE block=2/2 elapsed_s=11.731154 steps_per_s=10.911117
+WORKER count=3 id=2 seed=1802 FINISH measured_steps=256 common_elapsed_s=23.394410 worker_steps_per_s=10.942785 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+WORKER count=3 id=1 seed=1801 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=23.523 finite=true
+WORKER count=3 id=1 seed=1801 BLOCK_COMPLETE block=2/2 elapsed_s=11.842621 steps_per_s=10.808418
+WORKER count=3 id=1 seed=1801 FINISH measured_steps=256 common_elapsed_s=23.523638 worker_steps_per_s=10.882670 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+PARENT_PROGRESS workers=3 phase=joining_completed_workers ready=3/3 finished=3/3 alive=[30460, 35924] timeout_remaining_s=269.7
+CASE_COMPLETE workers=3 total_steps=768 outer_elapsed_s=23.523638 aggregate_steps_per_s=32.648011
+CASE_PREPARE workers=4 measured_steps_per_worker=256
+WORKER BEFORE spawn count=4 id=0 seed=1800 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER BEFORE spawn count=4 id=1 seed=1801 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER BEFORE spawn count=4 id=2 seed=1802 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER BEFORE spawn count=4 id=3 seed=1803 device=cuda torch_threads=1 probe=static batch=128 prefill=160 warmup=8 steps=128 blocks=2 out=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105
+WORKER count=4 id=0 seed=1800 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=4 id=1 seed=1801 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=4 id=2 seed=1802 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=4 id=3 seed=1803 START device=cuda torch_threads=1 probe=static B=false batch=128 capacity=100000 prefill=160 warmup_updates=8 steps_per_block=128 blocks=2 map=urban_canyon/830001 scope=engineering_only weights_saved=false scientific_endpoint=false
+WORKER count=4 id=0 seed=1800 READY waiting_for_common_start_event=true
+WORKER count=4 id=2 seed=1802 READY waiting_for_common_start_event=true
+WORKER count=4 id=1 seed=1801 READY waiting_for_common_start_event=true
+WORKER count=4 id=3 seed=1803 READY waiting_for_common_start_event=true
+CASE_COMMON_START workers=4 common_perf_counter=48816.999803200
+COMMAND BEFORE subprocess: nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw --format=csv,noheader,nounits
+NVIDIA_SINGLE_POINT_SAMPLE {'command': ['nvidia-smi', '--query-gpu=name,driver_version,memory.total,memory.used,utilization.gpu,power.draw', '--format=csv,noheader,nounits'], 'returncode': 0, 'stdout': 'NVIDIA GeForce RTX 4060, 595.79, 8188, 2422, 93, [N/A]', 'stderr': '', 'scope': 'One point sample per case, not continuous utilization', 'command_elapsed_s': 0.04102419999981066}
+PARENT_PROGRESS workers=4 phase=measured ready=4/4 finished=0/4 alive=[8628, 35984, 35036, 13892] timeout_remaining_s=290.0
+WORKER count=4 id=1 seed=1801 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=7.466 finite=true
+WORKER count=4 id=2 seed=1802 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=7.469 finite=true
+WORKER count=4 id=3 seed=1803 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=7.492 finite=true
+WORKER count=4 id=0 seed=1800 PROGRESS block=1/2 ticks=64/128 measured_updates=64 common_elapsed_s=7.704 finite=true
+PARENT_PROGRESS workers=4 phase=measured ready=4/4 finished=0/4 alive=[8628, 35984, 35036, 13892] timeout_remaining_s=280.0
+WORKER count=4 id=1 seed=1801 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=14.905 finite=true
+WORKER count=4 id=1 seed=1801 BLOCK_COMPLETE block=1/2 elapsed_s=14.904824 steps_per_s=8.587824
+WORKER count=4 id=2 seed=1802 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=15.014 finite=true
+WORKER count=4 id=2 seed=1802 BLOCK_COMPLETE block=1/2 elapsed_s=15.014196 steps_per_s=8.525265
+WORKER count=4 id=3 seed=1803 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=15.096 finite=true
+WORKER count=4 id=3 seed=1803 BLOCK_COMPLETE block=1/2 elapsed_s=15.095716 steps_per_s=8.479227
+WORKER count=4 id=0 seed=1800 PROGRESS block=1/2 ticks=128/128 measured_updates=128 common_elapsed_s=15.198 finite=true
+WORKER count=4 id=0 seed=1800 BLOCK_COMPLETE block=1/2 elapsed_s=15.198372 steps_per_s=8.421955
+WORKER count=4 id=1 seed=1801 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=22.292 finite=true
+WORKER count=4 id=3 seed=1803 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=22.533 finite=true
+WORKER count=4 id=2 seed=1802 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=22.624 finite=true
+WORKER count=4 id=0 seed=1800 PROGRESS block=2/2 ticks=64/128 measured_updates=192 common_elapsed_s=22.827 finite=true
+PARENT_PROGRESS workers=4 phase=measured ready=4/4 finished=0/4 alive=[8628, 35984, 35036, 13892] timeout_remaining_s=270.0
+WORKER count=4 id=1 seed=1801 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=29.830 finite=true
+WORKER count=4 id=1 seed=1801 BLOCK_COMPLETE block=2/2 elapsed_s=14.924567 steps_per_s=8.576463
+WORKER count=4 id=1 seed=1801 FINISH measured_steps=256 common_elapsed_s=29.830248 worker_steps_per_s=8.581893 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+WORKER count=4 id=3 seed=1803 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=29.942 finite=true
+WORKER count=4 id=3 seed=1803 BLOCK_COMPLETE block=2/2 elapsed_s=14.846413 steps_per_s=8.621611
+WORKER count=4 id=3 seed=1803 FINISH measured_steps=256 common_elapsed_s=29.942492 worker_steps_per_s=8.549723 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+WORKER count=4 id=2 seed=1802 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=30.094 finite=true
+WORKER count=4 id=2 seed=1802 BLOCK_COMPLETE block=2/2 elapsed_s=15.078939 steps_per_s=8.488661
+WORKER count=4 id=2 seed=1802 FINISH measured_steps=256 common_elapsed_s=30.093839 worker_steps_per_s=8.506724 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+WORKER count=4 id=0 seed=1800 PROGRESS block=2/2 ticks=128/128 measured_updates=256 common_elapsed_s=30.193 finite=true
+WORKER count=4 id=0 seed=1800 BLOCK_COMPLETE block=2/2 elapsed_s=14.994413 steps_per_s=8.536513
+WORKER count=4 id=0 seed=1800 FINISH measured_steps=256 common_elapsed_s=30.193236 worker_steps_per_s=8.478720 cuda_max_allocated=213060608 finite_counts={'prefill_transitions': 160, 'warmup_updates': 8, 'measured_updates': 256, 'finite_action_values': 3816, 'finite_observation_values': 206064, 'finite_rewards': 424, 'finite_diagnostic_values': 4488, 'nonfinite_values': 0}
+CASE_COMPLETE workers=4 total_steps=1024 outer_elapsed_s=30.193236 aggregate_steps_per_s=33.914881
+CONCURRENCY_BENCH_COMPLETE output=C:\research\masac-maneuverability\results\masac_v4_near_cuda_concurrency_20261105 aggregate_steps_per_s=[(2, 30.903804021061614), (3, 32.64801077710586), (4, 33.91488102775921)]

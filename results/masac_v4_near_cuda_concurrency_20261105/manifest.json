@@ -1,0 +1,27 @@
+{
+  "scope": "Engineering throughput only, not learning evidence, scientific extra seeds or efficacy endpoints.",
+  "created_at_utc": "2026-11-05T04:30:04.265955+00:00",
+  "arguments": {
+    "out": "results\\masac_v4_near_cuda_concurrency_20261105",
+    "workers": [
+      2,
+      3,
+      4
+    ],
+    "steps": 128,
+    "blocks": 2,
+    "timeout_s": 300.0
+  },
+  "config": "configs\\masac_v4\\sync_capture_40k_control_cuda_20261105.json",
+  "config_sha256": "11700d8418b203549367f38a481fa67867c37fcbe765d0830360085f4c6d7445",
+  "script_sha256": "9a886717f9b0f7206f96b9d8623690987c222093034e82563126b3ad19fc78ec",
+  "torch": "2.5.1+cu121",
+  "numpy": "1.26.2",
+  "python": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "cuda_runtime": "12.1",
+  "cudnn": 90100,
+  "workload": "Static probes/pool, stochastic actor + NumPy environment + cached replay + batch128 SAC update, one Torch thread, CUDA, frozen control/B-off environment reward.",
+  "sampling": "Worker seed1800+id matched across cases; prefill160+warmup8, then steps*blocks per worker; no evaluations, reference-map audits, snapshots, learned weights or scientific output directories.",
+  "limitations": "One run per concurrency in listed order; thermal/order variation and synthetic early replay population limit precision. GPU point sample is not sustained utilization."
+}

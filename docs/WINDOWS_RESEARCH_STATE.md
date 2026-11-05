@@ -48,7 +48,7 @@ binaries. Meaningful stages must be committed and pushed to both active branches
   finite and0/2success (boundary collision), both saved checkpoints. CUDA RNG
   stream presence verified. This is execution validation only.
 
-## Current authoritative status: completed40k, next offline diagnosis
+## Current authoritative status: new near-objective study prelaunch verification
 
 **Latest recovery checkpoint:** reviewed dwell protocol/code pushed **ebaa9c9**
 before first execution; fixed72trajectory audit now COMPLETE, exit0. Independent
@@ -59,10 +59,40 @@ The goal remains unfinished. Near-objective2k pilot was registered/pushed9a751c3
 then both fixed cold seed1644jobs completed normally (2k/1kupdates each). Final
 success/any/all0/12both; original boundary12, replacement static9/boundary3.
 Independent analysis v2 PASS, intervention exercised103transitions. Do not rerun.
-No Python process remained after completion. Next ordered action: review and
-implement `docs/design/MASAC_V4_NEAR_OBJECTIVE_CONFIRMATION_PROPOSAL_20261105.md`
-as a **new** fixed40k×3seed/two-arm study, show concrete plan, push final protocol/
-configs/code before any launch. It is a proposal, not registered/launched now.
+No research training process remains at the prelaunch process check. New final40k×3seed/two-arm protocol,
+configs, runtime, entry and canonical analyzer are ready for registration/push,
+then the one fixed coordinator launch. Runtime31tests pass, analyzer19unit+14full-budget
+synthetic/CLI tests pass. Root found and corrected
+cold snapshot/completion schema assumptions and repeat-read hash overwrite;
+these corrections precede registration and all real outcomes.
+
+User additionally requires full useful compute utilization and visible detailed
+progress. Engineering CUDA benchmark COMPLETE:2/3/4workers aggregate
+30.9038/32.6480/33.9149steps/s,0nonfinite values, four+9.7%over two. Result:
+`results/masac_v4_near_cuda_concurrency_20261105`. Scientific budget unchanged.
+Before freezing, execution is being changed to **at most4 independent history
+workers** under root `results/masac_v4_near_objective_40k_sharded_cuda_20261105`,
+with six owned `runs/{original,potential}_{1611,1622,1633}` outputs. Coordinator
+three real-Popen/fake-child tests PASS, including max4, failure halt/drain,
+completion-last hashes, named output guard and Windows launcher/actual PID
+distinction. Sharded six-case final regression PASS47.134s after correcting
+pre-registration COMPLETE/complete schema mismatch; FAILED never decides.
+Do not use the earlier dual-layout launch commands. New protocol:
+`docs/design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md`. Final source set
+is20files (old14 unchanged plus adapter/runtime/entry/protocol/analyzer/coordinator).
+Show the concrete final command, push all intended protocol/config/source/tests,
+verify remote refs and absence of any current study process/output, then launch
+the fixed coordinator once. No warm start, automatic extension or sealed test.
+
+A read-only local live progress dashboard is running at **http://127.0.0.1:8765/**,
+launcher PID38280 / interpreter27156, exec session71337 at prelaunch.
+Implementation:
+`scripts/serve_research_progress.py` + `tools/research_progress/index.html`.
+HTTP200/API/read-only/404/405 and real pilot overview/SAC/evaluation browser views
+verified. It shows real own-output state, per-seed progress/returns/eval/failures/logs/
+checkpoints/resources with timestamps; no invented zero/live status. It is
+outside the frozen science source set and may be improved during training.
+Recovery details: `docs/LIVE_RESEARCH_PROGRESS_WIN.md`. Do not duplicate server.
 
 Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
 Both workers finished normally at07:22/07:23; no Python training process remained
@@ -173,10 +203,12 @@ Next ordered actions:
    writes lost an index entry; root repaired both from own output records after
    workers exited, preserving before/after hashes. New formal entry needs a
    shared registry write lock. Do not rerun either history.
-7. Next: the separate confirmation **proposal**, not registered/launched, uses
+7. Next: the new final40k study **prelaunch implementation**, not registered/launched, uses
    new cold seeds1611/1622/1633 and the original/near-replacement static/B-off
-   contrast, final40k only, no automatic budget extension. Follow the full proposal,
-   verify source/reset/multiple-seed/timeout handling, then show/push exact plan.
+   contrast, final40k only, no automatic budget extension. Follow the final protocol,
+   independently-owned6history/max4worker layout and sharded analyzer tests, then
+   show/push exact plan. Initial31runtime/19analyzer+7dual-layoutfixture tests
+   passed; sharded scheduler/aggregation final tests now PASS as described above.
    No old continuation or sealed evaluation queued. Keep active recovery heartbeat.
 
 Before this final stage both remote branches were e3425c2; obtain the actual new
