@@ -43,6 +43,16 @@ data and browser overview/SAC/evaluation views were checked before launch.
 
 ## Recovery
 
+New separate **3D几何诊断** tab reads only the named
+`results/masac_v4_joint_recourse_geometry_20261105` manifest/start/completion/error
+and incremental progressJSONL. It displays real CPU/CUDA repeats, selected
+device, all recorded case/first-action brackets and source-check errors. It
+does not read the large geometryanalysis, models or oldreplay. No output means
+notstarted/unknown, not synthetic zero progress. Geometry has no episode success/
+ANY/ALL/checkpoint. Its immutable startstatus is superseded only by its own
+completion/error. Backend changes require an owned-server restart and HTMLreload;
+never restart training to update this page.
+
 Latest2026-11-05: restarted only this service after six real temporary-file
 testsPASS; actualPID36692/session65925 at verification. OldPID27156/38280 and
 session71337 are obsolete identities. Recheck command lines/API`dashboard_pid`

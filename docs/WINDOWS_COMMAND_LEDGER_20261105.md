@@ -995,3 +995,32 @@ reserve and RSS2025Layered SafeMARL. Generic joint conflict anticipation is
 prior art; unimplemented multi-step recourse needs genuine3Dmatched-information/
 cost falsifiers. Full outcome/deviation and narrowed gap are in the new docs.
 No new training or witness diagnostic was launched in this stage.
+
+## 27. Register source-aligned3Dgeometry diagnostic before execution
+
+Previous stage was committed/pushed **06acd43** to both branches; strict final
+audit NOT_READY is not repaired. Current process check: only owned dashboard
+actual36692/launcher27448, no training. One rg Windowswildcard path failed and
+was corrected using rg--files; no experiment was launched by that source read.
+
+New standalone geometry protocol/config/script/seven generic tests implemented.
+Root mathematical/source review checked the full3Drecourse ball coverage,
+samefirstaction/control domains, source projection and swept dynamics, independent
+NumPy witnesses, disjoint raw obstacles versus inflated overlap, fixed-peer scope,
+analytic versus numerical bounds and the constant-action probe-family mismatch.
+AST syntax passes; previous20source hashes unchanged. Scientific cases have not
+been measured. The seven generic source-contract tests are still pending.
+
+Fixed workload:9synthetic cases x19first actions x65^3grid=46960875backup
+evaluations, plus19-action libraries and the prespecified CPU3/CPU6/CUDA1benchmark.
+No environment constructor/reset/step, learned policy, old replay/checkpoint,
+old trajectory/map or sealed input. The source pureobserve function consumes a
+synthetic record only. No training or predictive-effect claim follows this.
+
+Dashboard gets a separate3Ddiagnostic tab from fixed-whitelist metadata/progress;
+old coordinator fault remains visible with its stack, without dumping all six
+job records into the global warning. No frozen scientific source is edited.
+Register/push this plan/code first; then generic tests, owned dashboard restart,
+and a single fresh-output measurement only if preflight passes. All commands
+must be shown and output teed. Completion/error are authoritative; status is an
+immutable start record to avoid repeating the previous replace-target pattern.

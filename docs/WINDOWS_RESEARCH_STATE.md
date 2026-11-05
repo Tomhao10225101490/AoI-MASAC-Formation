@@ -19,6 +19,44 @@ before executing. Training/evaluation must stream through tee to screen and disk
 Do not kill unrelated processes, force-push, upload credentials or checkpoint/replay
 binaries. Meaningful stages must be committed and pushed to both active branches.
 
+## Current ordered action: new synthetic3Dgeometry diagnostic preflight
+
+Closed near-objective negative report/fault/full audit and direct-prior-art
+update were pushed to both branches as **06acd43**. No training is live.
+The next independent small diagnostic is now implemented for source/math review:
+`docs/design/MASAC_V4_JOINT_RECOURSE_GEOMETRY_PROTOCOL_20261105.md`,
+`configs/masac_v4/joint_recourse_geometry_20261105.json`,
+`scripts/audit_joint_recourse_geometry.py`,
+`tests/test_joint_recourse_geometry.py`.
+It is not yet executed. Never treat the planned strict-gap signs as measurements.
+
+Root review: same committed first action and information across joint/per-
+constraint objectives; all3Dbackup directions covered; norm/speed limiting and
+swept-segment collision match source. Raw moving spheres are disjoint; inflated
+configuration-space regions may overlap. Nine fixed control/conflict cases and
+19first actions,65^3backup grid each (46960875evaluations),1e-9numeric allowance
+and explicit non-interval-arithmetic limitation. Other two peers hold zero;
+not free cooperative optimization or a flight safety certificate. Source probes
+use a different constant-action family and are content-only diagnostics.
+No policy/model/replay/old trajectory/sealed reads or environment reset/step.
+
+Next: finish selected-file commit/push registration before measurement; then run
+the7generic new source-contract tests plus6dashboard-reader contracts with tee.
+If all pass, apply dashboard-only service restart after PIDownership verification
+(currentlyAPIactual36692/session65925). New HTML has a separate3Ddiagnostic tab;
+fixed-whitelist APIreads only new metadata/progress, no heavy result data.
+Then show and execute exactly once, only if named output is absent:
+`.venv\Scripts\python.exe -u scripts\audit_joint_recourse_geometry.py --out results\masac_v4_joint_recourse_geometry_20261105`
+with tee to a fresh Windows-audit console log. The script refuses untracked or
+dirty registered sources and output overwrite, snapshots source bytes, benchmarks
+CPU3/CPU6/CUDA1with identical full-grid work, chooses the lowest median for this
+diagnostic only, streams all171rows and writes artifact-hashed completion last.
+No old device default changes, no new training or sealed access follows aPASS.
+Negative geometry conditions must be preserved, not fixed by changing this id.
+After completion review every row/input/source/artifact/check, update math/paper/
+frontier and commit/push both branches. These actions supersede older next-action
+text in the long historical archive below.
+
 ## Completed and durable evidence
 
 - Hardware audit **committed/pushed `59fec6b`** to main and research branch before
@@ -48,7 +86,7 @@ binaries. Meaningful stages must be committed and pushed to both active branches
   finite and0/2success (boundary collision), both saved checkpoints. CUDA RNG
   stream presence verified. This is execution validation only.
 
-## Current authoritative status: all six owned histories finished; strict audit NOT_READY
+## Closed near-objective study: all six owned histories finished; strict audit NOT_READY
 
 **Latest15:30Asia/Shanghai:** all six owned final40000histories finished/exit0;
 last original1633/potential1633 finished15:17/15:18. No research training remains.

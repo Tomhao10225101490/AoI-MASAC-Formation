@@ -44,6 +44,7 @@ RUNS = (
 BENCHMARK = ROOT / "results/masac_v4_near_cuda_concurrency_20261105"
 SHARDED = ROOT / "results/masac_v4_near_objective_40k_sharded_cuda_20261105"
 DEVICE_EVIDENCE = ROOT / "results/masac_v4_windows_audit_20261105/device_benchmark.json"
+GEOMETRY = ROOT / "results/masac_v4_joint_recourse_geometry_20261105"
 MAX_DOCUMENT = 2 * 1024 * 1024
 MAX_LOG_BYTES = 128 * 1024
 MAX_METRICS_ROWS = 6000
@@ -450,11 +451,16 @@ class Progress:
                 name: self.reader.document(BENCHMARK / name) for name in
                 ("case_2.json", "case_3.json", "case_4.json", "benchmark.json", "completion.json", "error.json")
             }
+            geometry = dict(path=str(GEOMETRY), documents={
+                name: self.reader.document(GEOMETRY / name) for name in
+                ("manifest.json", "status.json", "completion.json", "error.json")
+            }, progress=self.reader.metrics(GEOMETRY / "progress.jsonl"))
             return clean(dict(generated_at=stamp(time.time()), generated_epoch=time.time(),
                               dashboard_pid=os.getpid(),
                               reader_file_sharing="READ|WRITE|DELETE" if os.name == "nt" else "binary read",
                               refresh_s=5, stale_after_s=STALE_AFTER_S, runs=runs,
                               coordinator=coordinator,
+                              geometry=geometry,
                               benchmark=dict(path=str(BENCHMARK), documents=benchmark),
                               device_evidence=self.reader.document(DEVICE_EVIDENCE),
                               resources=self.resources.snapshot(),

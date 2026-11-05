@@ -22,7 +22,7 @@
 </header>
 <nav aria-label="页签">
   <button class="active" data-tab="overview">总览</button><button data-tab="learning">SAC / 奖励</button>
-  <button data-tab="evaluation">评估 / 失败原因</button><button data-tab="detail">实时日志 / 快照</button><button data-tab="resources">资源 / 基准</button>
+  <button data-tab="evaluation">评估 / 失败原因</button><button data-tab="detail">实时日志 / 快照</button><button data-tab="geometry">3D 几何诊断</button><button data-tab="resources">资源 / 基准</button>
 </nav>
 <main>
   <div id="globalError" class="errorbox hide"></div>
@@ -32,6 +32,7 @@
   <section class="page" id="evaluation"><p class="tabsnote">确定性 original Path-C，12 张开发图。Any = 至少一机曾进入球；All = 每机都曾进入，时间可不同；Success = 实现的同时位置/速度捕获。原因计数以每次 eval JSON 为准。</p><div id="evalCharts"></div><div class="panel"><h2>逐次评估与失败计数</h2><div id="evalTable" class="tablewrap"></div></div></section>
   <section class="page" id="detail"><div id="detailPanels"></div></section>
   <section class="page" id="resources"><div id="resourceDetails"></div><div id="benchmarks"></div></section>
+  <section class="page" id="geometry"><div id="geometryPanels"></div></section>
   <div class="foot">127.0.0.1 only · 固定白名单目录 · 无外网 / CDN · 不读取 sealed maps · 不重新计算大文件哈希。状态由各自 output 的 status / completion / error 决定；全局 registry 不参与。</div>
 </main>
 <script>
@@ -166,6 +167,19 @@ function resources(){
  empty($("benchmarks"));const bench=panel("CUDA 并行基准 · 真实输出");bench.append(el("p",snapshot.benchmark.path,"path"));for(const [name,doc]of Object.entries(snapshot.benchmark.documents)){if(doc.meta?.exists||doc.meta?.error)details(bench,name+(doc.meta?.error?" · 读取错误":""),doc,name==="benchmark.json");}const visible=Object.values(snapshot.benchmark.documents).some(d=>d.meta?.exists);if(!visible)bench.append(el("p","基准输出尚未创建；不推测基准进度或吞吐。","muted"));details(bench,"先前 CPU / CUDA 完整工作负载依据",snapshot.device_evidence);$("benchmarks").append(bench);
  const coord=panel("正式 study coordinator");coord.append(el("p",snapshot.coordinator.path,"path"));details(coord,"固定 study manifest / 状态 / completion / error",snapshot.coordinator,true);$("benchmarks").append(coord);
 }
+function geometryPanels(){
+ const target=$("geometryPanels");empty(target);const g=object(snapshot.geometry),docs=object(g.documents),manifest=object(raw(docs["manifest.json"])),done=object(raw(docs["completion.json"])),failure=raw(docs["error.json"]);
+ const progress=object(g.progress),events=progress.rows||[],actions=events.filter(r=>r.kind==="first_action_complete"),latest=events.at(-1),selected=events.find(r=>r.kind==="benchmark_selected")?.selected;
+ const box=panel("完整 3D 动作域 · 联合恢复几何诊断");box.append(el("p",g.path||"尚无诊断接口","path"));
+ box.append(el("p",failure?"诊断错误 · 保留原始记录":done.complete?"诊断执行已完成 · relevance "+(done.diagnostic_relevance_pass?"PASS":"FAIL"):manifest.experiment_id?"已启动 · 进程状态需结合 PID 核实":"尚未启动；不推测进度",failure?"bad":done.complete?"good":"muted"));
+ const total=numeric(latest?.total)?latest.total:manifest.config?.cases?.length?manifest.config.cases.length*19:null;
+ box.append(el("p","已记录首动作 "+(manifest.experiment_id?fmt(actions.length,0):"—")+" / "+fmt(total,0)+" · PID "+fmt(manifest.pid,0)+" · 最近事件 "+(latest?.time_utc||"—")));
+ box.append(el("p","设备 / 线程："+(selected?selected.device+" / "+selected.threads:"基准尚未选定")+" · 每首动作网格数 "+fmt(manifest.config?.grid_resolution**3,0)));
+ box.append(el("p","两步数学恢复、固定 peer 备份；不是训练或任务成功率。success / ANY / ALL / checkpoint 均不适用。网格界含数值容差，不能作为真实飞行安全证书。","muted small"));
+ if(latest)details(box,"最新完整事件",latest,true);if(failure)details(box,"原始诊断错误",failure,true);details(box,"登记清单 / 完成证据",{manifest:docs["manifest.json"],completion:docs["completion.json"]});target.append(box);
+ const bench=panel("同一几何内核 · CPU / CUDA 真实基准"),bt=el("div",null,"tablewrap");table(bt,["设备","线程","repeat","秒","动作 / 秒","峰值 allocated bytes"],events.filter(r=>r.kind==="benchmark_repeat").map(r=>[r.device,r.threads,r.repeat,fmt(r.elapsed_s_kernel,4),fmt(r.actions_per_s,0),fmt(r.peak_allocated_bytes,0)]));bench.append(bt);target.append(bench);
+ const rows=panel("全部首动作 · 已记录下界 / 上界"),rt=el("div",null,"tablewrap");table(rt,["场景","首动作 index","首动作","共同恢复 J 区间","逐约束 P 区间","动作 / 秒","源核对误差"],actions.map(r=>[r.case,r.first_action_index,pretty(r.first_action),r.joint_bracket.map(v=>fmt(v,6)).join(" … "),r.pair_bracket.map(v=>fmt(v,6)).join(" … "),fmt(r.actions_per_s,0),String(r.source_oracle_error)]));rows.append(rt);details(rows,"进度流读取提示",{meta:progress.meta,errors:progress.errors,incomplete_line:progress.incomplete_line,dropped_rows:progress.dropped_rows});target.append(rows);
+}
 function render(){
  selectors();resourceBar();const rows=selectedRows();
  const tab=document.querySelector("nav button.active")?.dataset.tab||"overview";
@@ -177,9 +191,11 @@ function render(){
  else if(tab==="evaluation")evaluations(rows);
  else if(tab==="detail")detailPanels(rows);
  else if(tab==="resources")resources();
+ else if(tab==="geometry")geometryPanels();
  $("timestamp").textContent="快照 "+new Date(snapshot.generated_at).toLocaleTimeString()+" · UTC "+snapshot.generated_at;
  const coordinatorError=raw(snapshot.coordinator?.documents?.["error.json"]);
- const errors=[...(snapshot.coordinator?.errors||[]),...(coordinatorError?["Study coordinator: "+pretty(coordinatorError)]:[]),...currentRuns().flatMap(r=>[...(r.errors||[]).map(e=>r.label+": "+e),...(r.error?.data?[r.label+": "+pretty(r.error.data)]:[])])];
+ const coordinatorFault=coordinatorError?.failures?{failures:coordinatorError.failures,no_automatic_retry:coordinatorError.no_automatic_retry,note:"完整 coordinator 元数据保留在资源 / 基准页"}:coordinatorError;
+ const errors=[...(snapshot.coordinator?.errors||[]),...(coordinatorFault?["Study coordinator: "+pretty(coordinatorFault)]:[]),...currentRuns().flatMap(r=>[...(r.errors||[]).map(e=>r.label+": "+e),...(r.error?.data?[r.label+": "+pretty(r.error.data)]:[])])];
  $("globalError").classList.toggle("hide",!errors.length);$("globalError").textContent=errors.join("\n");
 }
 async function refresh(){
