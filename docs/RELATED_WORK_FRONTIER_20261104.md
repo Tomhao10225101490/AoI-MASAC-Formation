@@ -4,6 +4,15 @@
 **Scope:** selected 2022–2026 methods, with SAC/CTDE foundations kept separately.
 **Evidence boundary:** this is a focused positioning audit, not a systematic review or proof of novelty. A verified title/abstract does not imply independent reproduction of a paper's results or verification of all theorem assumptions.
 
+**Additional direct-source audit:** [contribution criteria against inspected
+2022–2026 papers](FRONTIER_CONTRIBUTION_CRITERIA_20261105.md) adds independent-goal
+physical swarm RL, GCBF+/DGPPO and dynamic flight precedents with exact versions
+and reading limits. It specifies matched-baseline falsifiers and the distinction
+between new information and a deterministic physical inductive bias. None of
+these comparisons establishes our superiority. The new near-objective40k study,
+registered **b4b3a1e** before launch, is running as a separate static/B-off
+objective comparison; it is not evidence for moving-obstacle prediction utility.
+
 ## Defensible positioning after the historical suite and 40k B study
 
 We test the usefulness of a fixed acceleration-probe representation inside an otherwise frozen MASAC joint-capture protocol. The historical 80k development suite gives **static 26/36, full 15/36, zero 2/36**, with three training seeds and the same 12 development maps. This is a descriptive ordering; maps reused for development are not independent held-out evidence. Identifying useful predictive information requires additional controls for neutral values, validity and saturation; arm names alone do not establish that predictive content was the informative difference.

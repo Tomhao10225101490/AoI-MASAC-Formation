@@ -809,3 +809,47 @@ Final visible plan: cold1611/1622/1633, originalvsreplacement static/Boff,40k/
 Final40k only, all three paired counts; fixed integer planningrule and separate
 8/12everyseed gate. No intermediate adaptation, automatic extension or sealedtest.
 Push explicit intended files to both branches before one named coordinator launch.
+
+## 20. Registered study launched, max4 live CUDA histories
+
+Visible `git add` selected37intended files only; removed analyzer trailing blank
+line, staged diffcheck PASS, commit **b4b3a1e**, push to main+research both verified
+same fullb4b3a1eb69be9bb5c7b1feac73c4df72066b9705 before any new40k execution.
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts\launch_near_objective_study.py --out results/masac_v4_near_objective_40k_sharded_cuda_20261105 --benchmark-evidence results/masac_v4_near_cuda_concurrency_20261105/benchmark.json 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_40k_coordinator_console.log
+```
+
+Session27468 active,12:57Asia/Shanghai. Coordinator prints each full child
+command before Popen, tees all output into root coordinator/logs plus console.
+Root frozenmanifestSHAb75203f4776a38120c48fd03237a244e88228533dce24f772e8a0ddfb89110eb.
+Initial workers actual/launcher:original1611 34136/36840,potential1611 22956/38088,
+original1622 23428/22808,potential1622 38268/7760. Two1633 pending, automatically
+fill only registered vacancies. Four ownmanifestseed_list singlecorrect,20source
+andpairedconfighashesequal, noerror. Startup integrity log near_objective_40k_launch_integrity.log.
+First2k original-PathC evals and finite SAC loss/gradient diagnostics stream;
+no efficacy inference or rule changes from these intermediate evaluations.
+
+Browser dashboard switched to formal sharded group, realGPU93%/56C initial.
+Separate30s resource samples record actual workerCPU/RSS, GPU/VRAM/temp to
+near_objective_40k_load_samples.json andnear_objective_40k_load_console.log.
+User explicitly requested maximum useful load and detailed visualization.
+Existing heartbeatmasac updated ACTIVE15min to newregisteredroot/session/freeze
+and final-analysis recovery, no duplicate scheduler or server. New primary-source
+frontier/real-contribution review proceeds independently during training.
+
+Resource check completed6samplesGPU92/93/92/92/93/92%,63–64C. Actual four
+workerCPU96–99%of one core each,RSS~1.145GiB,availableRAM13.78–13.94GiB.
+Separate readers never changed frozen source/config. Root checked actual2k
+evalJSON and summaryANY/ALL counts against dashboard; agree exactly, no display
+imputation. First6k evaluation logs and state-isolationPASS streaming normally.
+
+Primary-source review expanded12direct precedents, with exact versions and
+reading limits, not a systematic review or comparative performance result.
+New contribution criteria distinguish base objective, calibrated predictive
+content, validity/saturation, and quality–cost evidence; no superiority earned.
+Root independently opened Huangv2,DGPPOv2,2026conformaldistancefield/reachability
+abstracts. Paper plan/outline/RELATED updated to actual registered/running study.
+New joint-recourse future hypothesis includes normalized constraints, causal
+information classes, joint<=pair proof and same-first-action strict-gap toy;
+it is unregistered/unimplemented and does not authorize extra experiments.

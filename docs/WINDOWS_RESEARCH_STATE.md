@@ -48,7 +48,46 @@ binaries. Meaningful stages must be committed and pushed to both active branches
   finite and0/2success (boundary collision), both saved checkpoints. CUDA RNG
   stream presence verified. This is execution validation only.
 
-## Current authoritative status: new near-objective study prelaunch verification
+## Current authoritative status: registered near-objective study RUNNING
+
+**Latest next ordered action:** monitor the existing coordinator, not a new launch.
+Registration/code/protocol/config/test/benchmark/dashboard pushed to both branches
+as **b4b3a1e** before execution. New coordinator started12:57Asia/Shanghai, session
+**27468**, root `results/masac_v4_near_objective_40k_sharded_cuda_20261105`.
+At launch-integrity check: original1611 actualPID34136/launcher36840;
+potential1611 actual22956/launcher38088; original1622 actual23428/launcher22808;
+potential1622 actual38268/launcher7760. Original/potential1633 are PENDING until
+slots free; the registered coordinator owns those submissions. Do not duplicate.
+Root study_manifest SHA256b75203f4776a38120c48fd03237a244e88228533dce24f772e8a0ddfb89110eb.
+All four own manifests truthfully list one seed, all20source/two config hashes
+match root and current source; no error/completion at initial check. First2k
+evaluations and SAC updates are streaming. Intermediate outcomes cannot change
+rules/config/source/budget. Four actual workers reach roughly one CPU core each,
+GPU92–93%initial sampled load; reserved max4 based on prior measured throughput.
+
+After all six own completions plus successful coordinator final completion,
+run the already-frozen independent analyzer once into a fresh analysis output:
+`scripts/analyze_near_objective_study.py --study <root> --out <fresh>` (full hashes).
+Report every pair/negative seed and absolute gate separately, then paper/math/
+frontier analysis and selected-file push. No automatic extension or sealed test.
+Updated15minute heartbeat now targets this registered run, not the stale proposal.
+Read-only dashboard remains http://127.0.0.1:8765/; browser verified it switched
+to the new six-history study and displayed real GPU93%/56C load. Keep it available.
+
+Thirty-second useful-load check: six GPU samples92/93/92/92/93/92%,63–64C,
+four actual workers96–99%of oneCPUcore each; availableRAM13.78–13.94GiB.
+Read-only launch integrity and load evidence are stored under Windows audit.
+Shared tracked `results/masac_v4_parallel_runs.json` changes as expected from
+the locked trainer registry; do not stage this mutable index as launch evidence.
+Current6k evals are intermediate descriptions only, not final outcomes.
+
+Parallel paper/frontier review: `docs/FRONTIER_CONTRIBUTION_CRITERIA_20261105.md`
+inspects12primary-source precedents, defines concrete falsifiers and disallows
+unsupported novelty/SOTA claims. Long L0 sensor range is not strong limited
+sensing. `docs/design/MASAC_V4_JOINT_RECOURSE_HYPOTHESIS_20261105.md` is only an
+unregistered/unimplemented future hypothesis, not a launch or an active-source
+change. Read it after complete current analysis if planning the next minimal
+experiment. Do not automatically execute its proposed tests or add training.
 
 **Latest recovery checkpoint:** reviewed dwell protocol/code pushed **ebaa9c9**
 before first execution; fixed72trajectory audit now COMPLETE, exit0. Independent
@@ -59,9 +98,9 @@ The goal remains unfinished. Near-objective2k pilot was registered/pushed9a751c3
 then both fixed cold seed1644jobs completed normally (2k/1kupdates each). Final
 success/any/all0/12both; original boundary12, replacement static9/boundary3.
 Independent analysis v2 PASS, intervention exercised103transitions. Do not rerun.
-No research training process remains at the prelaunch process check. New final40k×3seed/two-arm protocol,
-configs, runtime, entry and canonical analyzer are ready for registration/push,
-then the one fixed coordinator launch. Runtime31tests pass, analyzer19unit+14full-budget
+No research training process remained at the earlier prelaunch process check.
+New final40k×3seed/two-arm protocol/config/runtime/entry/analyzer are now registered
+and running as above. Runtime31tests pass, analyzer19unit+14full-budget
 synthetic/CLI tests pass. Root found and corrected
 cold snapshot/completion schema assumptions and repeat-read hash overwrite;
 these corrections precede registration and all real outcomes.
@@ -80,9 +119,9 @@ pre-registration COMPLETE/complete schema mismatch; FAILED never decides.
 Do not use the earlier dual-layout launch commands. New protocol:
 `docs/design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md`. Final source set
 is20files (old14 unchanged plus adapter/runtime/entry/protocol/analyzer/coordinator).
-Show the concrete final command, push all intended protocol/config/source/tests,
-verify remote refs and absence of any current study process/output, then launch
-the fixed coordinator once. No warm start, automatic extension or sealed test.
+Concrete final command was shown, all intended protocol/config/source/tests
+pushed, remote refs verified and fresh output absence checked before the one
+coordinator launch. Do not launch again. No warm start, extension or sealed test.
 
 A read-only local live progress dashboard is running at **http://127.0.0.1:8765/**,
 launcher PID38280 / interpreter27156, exec session71337 at prelaunch.
@@ -203,11 +242,11 @@ Next ordered actions:
    writes lost an index entry; root repaired both from own output records after
    workers exited, preserving before/after hashes. New formal entry needs a
    shared registry write lock. Do not rerun either history.
-7. Next: the new final40k study **prelaunch implementation**, not registered/launched, uses
+7. RUNNING: the new final40k study **registered/pushed b4b3a1e**, uses
    new cold seeds1611/1622/1633 and the original/near-replacement static/B-off
    contrast, final40k only, no automatic budget extension. Follow the final protocol,
    independently-owned6history/max4worker layout and sharded analyzer tests, then
-   show/push exact plan. Initial31runtime/19analyzer+7dual-layoutfixture tests
+   monitor existing coordinator as the latest header specifies. Initial31runtime/19analyzer+7dual-layoutfixture tests
    passed; sharded scheduler/aggregation final tests now PASS as described above.
    No old continuation or sealed evaluation queued. Keep active recovery heartbeat.
 

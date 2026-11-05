@@ -180,7 +180,9 @@ The three verified final trajectory summaries are under results/masac_v4_sync_40
 
 ## VII. Discussion
 
-- New near-objective formula/runtime boundary: [2k results](NEAR_OBJECTIVE_2K_RESULTS_20261105.md), seed1644static/B-off arms both0/12; replacement103nonzero corrections,17source/config and replay checks pass. This deliberately changes old Path-C soft reward and is only a runtime milestone. No confirmed gain/new theorem; a separate fresh-seed study remains a proposal.
+- New near-objective formula/runtime boundary: [2k results](NEAR_OBJECTIVE_2K_RESULTS_20261105.md), seed1644static/B-off arms both0/12; replacement103nonzero corrections,17source/config and replay checks pass. This deliberately changes old Path-C soft reward and is only a runtime milestone. The separate fresh1611/1622/1633 original/replacement40k study was registered/pushed **b4b3a1e** before launch and is RUNNING; no final outcome is asserted. Its [protocol](design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md) freezes final40k and all paired counts, and [math audit](MATH_NEAR_OBJECTIVE_REPLACEMENT_20261105.md) states the terminal/timeout and PBRS scope. No prediction gain or new theorem follows.
+
+- Contribution requirements against direct independent-goal/swarm-RL, graph-CBF, predictive enforcement and goal-retention precedents: [criteria and failure rules](FRONTIER_CONTRIBUTION_CRITERIA_20261105.md). For deterministic fixed-parameter R=f(O), conditional information I(Y;R|O)=0; a possible benefit is finite-budget physical inductive bias, requiring static/constant-fill/calibration and cost controls. No current result establishes superiority to those papers.
 
 - What static preview might expose; observed results do not certify feasibility or prove encoder-use causality.
 - CV mismatch, constant-fill/saturation, feature scale and optimization are candidate explanations for full's weaker historical mean, each requiring an identifiable test. Standard affine constant-offset/bias equivalence concerns representational function classes, not SAC/Adam/clipping trajectories; see [constant-fill identity](MATH_CONSTANT_FILL_IDENTITY_20261105.md).

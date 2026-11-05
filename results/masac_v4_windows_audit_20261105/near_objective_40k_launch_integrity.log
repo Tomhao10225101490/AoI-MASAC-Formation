@@ -1,0 +1,13 @@
+COORDINATOR RUNNING completed 0 / 6
+source_count 20 current_mismatches []
+JOB original 1611 RUNNING launch_pid 36840 training_pid 34136 error_exists False
+  MANIFEST PASS seed_list [1611] sources 20
+JOB potential 1611 RUNNING launch_pid 38088 training_pid 22956 error_exists False
+  MANIFEST PASS seed_list [1611] sources 20
+JOB original 1622 RUNNING launch_pid 22808 training_pid 23428 error_exists False
+  MANIFEST PASS seed_list [1622] sources 20
+JOB potential 1622 RUNNING launch_pid 7760 training_pid 38268 error_exists False
+  MANIFEST PASS seed_list [1622] sources 20
+JOB original 1633 PENDING launch_pid None training_pid None error_exists False
+JOB potential 1633 PENDING launch_pid None training_pid None error_exists False
+completion_exists False error_exists False

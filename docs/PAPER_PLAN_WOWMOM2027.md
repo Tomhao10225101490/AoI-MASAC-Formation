@@ -1,5 +1,22 @@
 # PAPER_PLAN_WOWMOM2027 — Predictive Maneuverability-Aware MASAC
 
+**Current registered study (2026-11-05):** the separate near-objective comparison
+was pushed as **b4b3a1e** before launch and is RUNNING: original versus fixed
+near-potential replacement, static/B-off, fresh1611/1622/1633,40k each, six owned
+histories/max4CUDAworkers. Final40k only; no result asserted here. See
+[frozen protocol](design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md) and
+[exact objective/boundary derivation](MATH_NEAR_OBJECTIVE_REPLACEMENT_20261105.md).
+The intervention changes Path-C's soft objective and is not predictive utility.
+
+**Contribution criterion:** [inspected2022–2026 precedents and falsification
+criteria](FRONTIER_CONTRIBUTION_CRITERIA_20261105.md) govern proposed advantages.
+Independent goals, decentralization, pooling, preview and PBRS already have
+direct precedents. The strongest candidate is useful physically calibrated
+temporal content beyond static/constant-fill at matched information, capacity,
+budget and measured cost. It remains unverified. A positive near-objective
+result alone would be a baseline/objective finding, insufficient to establish
+a frontier predictive-method contribution. No SOTA or safety claim is earned.
+
 **2026-11-05 evidence update:** All12 archived L0 development maps have zero
 external moving objects. Full/static cannot identify moving-obstacle prediction;
 new early-replay evidence also exposes neutral-value saturation confounds
