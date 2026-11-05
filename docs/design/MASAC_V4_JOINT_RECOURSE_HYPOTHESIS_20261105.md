@@ -2,6 +2,13 @@
 
 Date: 2026-11-05. **UNREGISTERED / UNIMPLEMENTED / NOT AN EXPERIMENT LAUNCH.**
 
+**Later review:** [direct joint-feasibility prior art](../FRONTIER_JOINT_FEASIBILITY_GAP_20261105.md)
+checks2026joint-margin feedback and exactCBF feasibility reserve, plus RSS2025
+Layered SafeMARL. Shared-control conflict anticipation is already established;
+the mathematical distinction below is not novelty or evidence of superiority.
+The separate near-objective cohort has now finished with zero aggregate gain
+and a coordinator protocol deviation; it does not validate this hypothesis.
+
 This document proposes a possible later research question. It registers no
 training, evaluation, simulator calls, diagnostic execution, seed, test access,
 budget extension, Attention/L1 module, or change to an active run. The registered

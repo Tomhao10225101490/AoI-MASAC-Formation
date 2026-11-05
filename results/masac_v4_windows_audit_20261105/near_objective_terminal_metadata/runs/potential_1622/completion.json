@@ -1,0 +1,73 @@
+{
+  "complete": true,
+  "scope": "maneuver_static L0 12-map gate",
+  "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+  "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+  "probe_mode": "static",
+  "set_mode": "pool",
+  "runs": [
+    {
+      "seed": 1622,
+      "step": 40000,
+      "final_development_success": 0.0,
+      "gate_met": false,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "probe_mode": "static",
+      "warm_start": {
+        "mode": "cold"
+      }
+    }
+  ],
+  "gate_threshold": 0.6,
+  "all_seeds_gate_met": false,
+  "smoke": false,
+  "finished_at": 1793859900.088573,
+  "finished_at_asia_shanghai": "2026-11-05 14:25 Asia/Shanghai",
+  "elapsed_s": 5249.788881600005,
+  "authorization": {
+    "date": "2026-11-05",
+    "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+    "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+  },
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "warm_start_path": null,
+  "do_not_auto_launch_further": true,
+  "baseline_comparison": {
+    "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+  },
+  "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+  "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+}

@@ -956,3 +956,42 @@ two paired configs. Allownerror markers absent; root4/6complete,0pending,0error.
 Evidence: near_objective_40k_handoff_check.log. Do not duplicate, extend, choose
 checkpoints or run sealed tests. Monitor finaltwo, then frozen canonical full
 analysis into a fresh output; the older source-cache finding is not a hotfix.
+
+## 26. Coordinator failure, completed workers and strict final audit
+
+Coordinator root error14:34:32WinError5/os.replace was found14:54, preserved
+raw snapshotSHA1e4066dceec9bac195a2ad6a3407e19e85f41fa36c47caef8aec0095e580873a.
+No frozen source, rules or active budget changed; existing1633children drained
+normally and finished15:17/15:18. Six owned completion markers and exit0 do not
+repair the failed coordinator contract. All six training processes are retired.
+
+Frozen analyzer executed once after all workers finished:
+
+```powershell
+.venv\Scripts\python.exe -u scripts\analyze_near_objective_study.py --study results\masac_v4_near_objective_40k_sharded_cuda_20261105 --out results\masac_v4_near_objective_40k_analysis_20261105 2>&1 | Tee-Object -FilePath results\masac_v4_windows_audit_20261105\near_objective_final_analysis_console.log
+```
+
+Exit0, actual12checkpoint/replay hashes and source/config/reward/replay/finite/
+map-pairing checks PASS, no input mutation. ScientificINVALID_OR_INCOMPLETE,
+decision_ready=false, decision=null: two coordinator issues and missing root
+completion retained. Original[2,0,5],replacement[1,0,6]/12;delta[-1,0,+1],mean0,
+both absolute gates0/3FAIL. No extension or sealed read.33raw terminal metadata
+JSONs snapshotted386995bytes with hashes; no weights/replay copied or staged.
+
+Initial reader repair failed2/6temporary-file tests; original logs retained.
+Native and wrapped FILE_SHARE_DELETE readers both still block os.replace onto
+their opened destination on this machine. Revised contracts explicitly retain
+this limit; all6PASS. Sharing is a hint, not proven race elimination. Future
+writer bounded retries need their own preflight. Only verified dashboardPID27156
+was stopped; launcher38280 had already exited after its child. New server:
+
+```powershell
+.venv\Scripts\python.exe -u scripts\serve_research_progress.py --port 8765 2>&1 | Tee-Object -FilePath results\masac_v4_windows_audit_20261105\progress_dashboard_shared_read_console.log
+```
+
+Session65925/APIactualPID36692,HTTP200/browser6/6finished/rootfault retained.
+Primary-source follow-up adds2026joint-margin feedback,2026exactCBF feasibility
+reserve and RSS2025Layered SafeMARL. Generic joint conflict anticipation is
+prior art; unimplemented multi-step recourse needs genuine3Dmatched-information/
+cost falsifiers. Full outcome/deviation and narrowed gap are in the new docs.
+No new training or witness diagnostic was launched in this stage.

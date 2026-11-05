@@ -1,0 +1,138 @@
+{
+  "source_root": "results\\masac_v4_near_objective_40k_sharded_cuda_20261105",
+  "scope": "Raw final JSON metadata only; no weights/replay; failed coordinator preserved",
+  "files": {
+    "study_manifest.json": {
+      "sha256": "b75203f4776a38120c48fd03237a244e88228533dce24f772e8a0ddfb89110eb",
+      "bytes": 4899
+    },
+    "status.json": {
+      "sha256": "010bb2c8d9014bacb145961d65ae44398aa9d0898aa5a20d5e4885827e57e8a5",
+      "bytes": 42090
+    },
+    "error.json": {
+      "sha256": "0177043fc65a17605da0c53f722c4c51356c2e948aa24f243ea73bedc8553afd",
+      "bytes": 43088
+    },
+    "runs/original_1611/run_manifest.json": {
+      "sha256": "fda03a7f25b5fb2765508e095ef1d9845e12dcacb4455b57a465ff5952015bb2",
+      "bytes": 9133
+    },
+    "runs/original_1611/status.json": {
+      "sha256": "70bb4030be39b370dce182e8c4ad64a3df1530b8f1e6263b1924fffcc6ff6e1a",
+      "bytes": 2478
+    },
+    "runs/original_1611/completion.json": {
+      "sha256": "290e588651efabbb3208e9e4a9f2c2b879030b1c2e0ffe3cb13d401174936e28",
+      "bytes": 2454
+    },
+    "runs/original_1611/maneuver_static_1611/completion.json": {
+      "sha256": "65ab97ed6f4d16f16de63fb0153ccee5d166d028960f372ff64903840045de2f",
+      "bytes": 579
+    },
+    "runs/original_1611/maneuver_static_1611/evaluation_40000.json": {
+      "sha256": "fb1c5de91c85cdf836728e96d772a7e1a0f5cf3a19cafd86dc0552315eb6482a",
+      "bytes": 34822
+    },
+    "runs/original_1622/run_manifest.json": {
+      "sha256": "d459905ba236545b876f6a8eda20680b2186ade1c56febad8a8a603811ada543",
+      "bytes": 9133
+    },
+    "runs/original_1622/status.json": {
+      "sha256": "3b4e0c072c7630b4121a7c4d413e25da47f450ca59bab4f7ea5c574e771af643",
+      "bytes": 2462
+    },
+    "runs/original_1622/completion.json": {
+      "sha256": "42e26e49c51458215638c851187bc151087c3d28ce771536de8728cb8144aa0f",
+      "bytes": 2438
+    },
+    "runs/original_1622/maneuver_static_1622/completion.json": {
+      "sha256": "fedb29140562e0667548afeb88cdc02a509d959255937a873ec96be90bce5df7",
+      "bytes": 563
+    },
+    "runs/original_1622/maneuver_static_1622/evaluation_40000.json": {
+      "sha256": "72618796180ca812d625a81f67abc56d017845faae193e5a871a0dd1af660bba",
+      "bytes": 34640
+    },
+    "runs/original_1633/run_manifest.json": {
+      "sha256": "3504459c004c30c401ef4c27f45eb3d8d758311370cfb84096a894f4736a1f0a",
+      "bytes": 9133
+    },
+    "runs/original_1633/status.json": {
+      "sha256": "07059995fbcebb3c1a84cc929e6efe211fec8464380507b411ca13bc3f026d12",
+      "bytes": 2476
+    },
+    "runs/original_1633/completion.json": {
+      "sha256": "a5c1687d7c58aa968ea88f95752aac2402da5023247c43525b8e6fb994da5b20",
+      "bytes": 2452
+    },
+    "runs/original_1633/maneuver_static_1633/completion.json": {
+      "sha256": "5a634eae3e3917945a134c7473bfcecd388b14369d7bf1cfa62706be67c1f2c2",
+      "bytes": 578
+    },
+    "runs/original_1633/maneuver_static_1633/evaluation_40000.json": {
+      "sha256": "c89666bf39f1b35752a3fc5cc2bb86e9c4a627a7bb0bb3b950af1ad6614e557e",
+      "bytes": 35063
+    },
+    "runs/potential_1611/run_manifest.json": {
+      "sha256": "d028bdaa3d5a18af903810f8eeb6c50465f1b3b0a47135433e3a77cdc84a1dcf",
+      "bytes": 9138
+    },
+    "runs/potential_1611/status.json": {
+      "sha256": "3af2c367699cd2538ba9452212c3b87652d8e766bcc56bee7b7a4c83784aa1b4",
+      "bytes": 2480
+    },
+    "runs/potential_1611/completion.json": {
+      "sha256": "35ea0d572a2ff318552f3716285ddba1dd2ece46ccbff459493033dfc70c8798",
+      "bytes": 2456
+    },
+    "runs/potential_1611/maneuver_static_1611/completion.json": {
+      "sha256": "a90e4ab2208decba66c3e82a11b137b3ee237962826110b7c19a9fdff705dca1",
+      "bytes": 579
+    },
+    "runs/potential_1611/maneuver_static_1611/evaluation_40000.json": {
+      "sha256": "110f56a8a33c72be43f94d692753e6a3223e865184bd1648a6760a90c24de699",
+      "bytes": 34962
+    },
+    "runs/potential_1622/run_manifest.json": {
+      "sha256": "a53915ea1e49469c82d0cb3e08cb42fe063345db78369b0fb1c63cbc33a1f765",
+      "bytes": 9139
+    },
+    "runs/potential_1622/status.json": {
+      "sha256": "5cf0a4d066f866e880290f25460208cdafa874cd4934a930e6de0db11d1307e9",
+      "bytes": 2463
+    },
+    "runs/potential_1622/completion.json": {
+      "sha256": "e2c21528f657c7467a2e67efb43077d7a8669cad5a66db843339c648a7a2b98d",
+      "bytes": 2439
+    },
+    "runs/potential_1622/maneuver_static_1622/completion.json": {
+      "sha256": "fedb29140562e0667548afeb88cdc02a509d959255937a873ec96be90bce5df7",
+      "bytes": 563
+    },
+    "runs/potential_1622/maneuver_static_1622/evaluation_40000.json": {
+      "sha256": "156dda0ed6418016e51284a4527277e9420eb2cb3a095fdc999b45756ac4066e",
+      "bytes": 34588
+    },
+    "runs/potential_1633/run_manifest.json": {
+      "sha256": "90bcd2aa1d7c977e7580b04b1ae827c7ed3a987549333286d112489235e22b8e",
+      "bytes": 9139
+    },
+    "runs/potential_1633/status.json": {
+      "sha256": "294a4adf67590e047e7dad376228c92040441c5ce1f8708bfe40962252e872d6",
+      "bytes": 2465
+    },
+    "runs/potential_1633/completion.json": {
+      "sha256": "6c1b2fe8021afb97a7c30645fb73a2d163a0571fc232033eed6a3eac8dd84222",
+      "bytes": 2441
+    },
+    "runs/potential_1633/maneuver_static_1633/completion.json": {
+      "sha256": "d280034b172b5fd7b69a44b3bab40ad706bf92d17b464a75d6f82bb624fe33d5",
+      "bytes": 563
+    },
+    "runs/potential_1633/maneuver_static_1633/evaluation_40000.json": {
+      "sha256": "949e63040e47c1134722d81e73444bdc52df0798d7b9480644097f078018c12a",
+      "bytes": 35099
+    }
+  }
+}

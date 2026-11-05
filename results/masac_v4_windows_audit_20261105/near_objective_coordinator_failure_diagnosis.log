@@ -1,0 +1,11 @@
+COORDINATOR_FAILURES
+[
+  {
+    "time_utc": "2026-11-05T06:34:32.369691+00:00",
+    "reason": "Coordinator monitoring failed",
+    "job": null,
+    "traceback": "Traceback (most recent call last):\n  File \"C:\\research\\masac-maneuverability\\scripts\\launch_near_objective_study.py\", line 307, in execute\n    save_status()\n  File \"C:\\research\\masac-maneuverability\\scripts\\launch_near_objective_study.py\", line 206, in save_status\n    write(out / 'status.json', dict(schema_version=1, phase=phase, complete=False,\n  File \"C:\\research\\masac-maneuverability\\scripts\\launch_near_objective_study.py\", line 73, in write\n    os.replace(temporary, path)\nPermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\\\research\\\\masac-maneuverability\\\\results\\\\masac_v4_near_objective_40k_sharded_cuda_20261105\\\\status.json.tmp.12436' -> 'C:\\\\research\\\\masac-maneuverability\\\\results\\\\masac_v4_near_objective_40k_sharded_cuda_20261105\\\\status.json'\n"
+  }
+]
+KNOWN_PIDS [36056, 36220, 40092, 40448]
+FROZEN_MISMATCHES []

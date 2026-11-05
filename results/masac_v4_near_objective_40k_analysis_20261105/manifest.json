@@ -1,0 +1,1127 @@
+{
+  "analysis_version": 1,
+  "started_at_utc": "2026-11-05T07:20:47.353345+00:00",
+  "command": [
+    "scripts\\analyze_near_objective_study.py",
+    "--study",
+    "results\\masac_v4_near_objective_40k_sharded_cuda_20261105",
+    "--out",
+    "results\\masac_v4_near_objective_40k_analysis_20261105"
+  ],
+  "study_root": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105",
+  "control_root": null,
+  "treatment_root": null,
+  "fixed_training_seeds": [
+    1611,
+    1622,
+    1633
+  ],
+  "fixed_final_step": 40000,
+  "development_map_seeds": [
+    830001,
+    830002,
+    830003,
+    830004,
+    830005,
+    830006,
+    830007,
+    830008,
+    830009,
+    830010,
+    830011,
+    830012
+  ],
+  "analyzer_sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+  "python_version": "3.10.6 (tags/v3.10.6:9c7b4bd, Aug  1 2022, 21:53:49) [MSC v.1932 64 bit (AMD64)]",
+  "numpy_version": "1.26.2",
+  "heavy_artifact_hashes_requested": true,
+  "scope": "Read-only final endpoint analysis; no training, model loading, environment or sealed-map access.",
+  "input_sha256": {
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\error.json": {
+      "sha256": "0177043fc65a17605da0c53f722c4c51356c2e948aa24f243ea73bedc8553afd",
+      "bytes": 43088,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\study_manifest.json": {
+      "sha256": "b75203f4776a38120c48fd03237a244e88228533dce24f772e8a0ddfb89110eb",
+      "bytes": 4899,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\status.json": {
+      "sha256": "010bb2c8d9014bacb145961d65ae44398aa9d0898aa5a20d5e4885827e57e8a5",
+      "bytes": 42090,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json": {
+      "sha256": "a7ef50ee697f8513edc59c4e3aaf24f3a15b23e0056719a14a1ff3095363ce0e",
+      "bytes": 4076,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json": {
+      "sha256": "2abb584be0d96472ec3c676374b2e966a734ca153df0c2492499387b63d4a108",
+      "bytes": 4080,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\run_manifest.json": {
+      "sha256": "fda03a7f25b5fb2765508e095ef1d9845e12dcacb4455b57a465ff5952015bb2",
+      "bytes": 9133,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\status.json": {
+      "sha256": "70bb4030be39b370dce182e8c4ad64a3df1530b8f1e6263b1924fffcc6ff6e1a",
+      "bytes": 2478,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\completion.json": {
+      "sha256": "290e588651efabbb3208e9e4a9f2c2b879030b1c2e0ffe3cb13d401174936e28",
+      "bytes": 2454,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\source_snapshot\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json": {
+      "sha256": "a7ef50ee697f8513edc59c4e3aaf24f3a15b23e0056719a14a1ff3095363ce0e",
+      "bytes": 4076,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\completion.json": {
+      "sha256": "65ab97ed6f4d16f16de63fb0153ccee5d166d028960f372ff64903840045de2f",
+      "bytes": 579,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\metrics.jsonl": {
+      "sha256": "9216efef97c21f5a2105e22a8d4e340983c29ee19c7e5c5ad5b773b5650bedce",
+      "bytes": 790325,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\near_reward_transitions.jsonl": {
+      "sha256": "01c1bef08b783dadf5fcadabe08698e1903d01ea36f8e74181459c321de96ce7",
+      "bytes": 25379645,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\evaluation_state_checks.jsonl": {
+      "sha256": "1b15ef6d53fb15d286c320c58dd6aa259e98f0478842a9e077ab532b2525701e",
+      "bytes": 2776,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\evaluation_40000.json": {
+      "sha256": "fb1c5de91c85cdf836728e96d772a7e1a0f5cf3a19cafd86dc0552315eb6482a",
+      "bytes": 34822,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\checkpoint_040000\\manifest.json": {
+      "sha256": "f83ec15f65323fee62ce24671be92660425267c955c697d90b6cd9c901f29e9f",
+      "bytes": 2647,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\checkpoint_040000\\checkpoint.pt": {
+      "sha256": "940c920b0ed394bb279475c617a624ad90a02debe5b8e96bd89103bf58eb0332",
+      "bytes": 26682436,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611\\maneuver_static_1611\\checkpoint_040000\\replay.npz": {
+      "sha256": "2162a3e8dd86b71490cc94b985e918bc8344324c478a1ada16163c370bcd912e",
+      "bytes": 357921742,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\run_manifest.json": {
+      "sha256": "d459905ba236545b876f6a8eda20680b2186ade1c56febad8a8a603811ada543",
+      "bytes": 9133,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\status.json": {
+      "sha256": "3b4e0c072c7630b4121a7c4d413e25da47f450ca59bab4f7ea5c574e771af643",
+      "bytes": 2462,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\completion.json": {
+      "sha256": "42e26e49c51458215638c851187bc151087c3d28ce771536de8728cb8144aa0f",
+      "bytes": 2438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\source_snapshot\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json": {
+      "sha256": "a7ef50ee697f8513edc59c4e3aaf24f3a15b23e0056719a14a1ff3095363ce0e",
+      "bytes": 4076,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\completion.json": {
+      "sha256": "fedb29140562e0667548afeb88cdc02a509d959255937a873ec96be90bce5df7",
+      "bytes": 563,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\metrics.jsonl": {
+      "sha256": "526c605d943f7e37235f35d45e39c6c81f8374ca43de8a1bebb3b1d9f3681eec",
+      "bytes": 809946,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\near_reward_transitions.jsonl": {
+      "sha256": "fb0d99d2f778454126dbb49622375a6146d26335b4ae66a2f21b7ba45a578b89",
+      "bytes": 24874403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\evaluation_state_checks.jsonl": {
+      "sha256": "30ab3a365afcf1c1ca6dab1f81fd5aaf7d0f4263e7127f4802f83e26c41cf451",
+      "bytes": 2776,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\evaluation_40000.json": {
+      "sha256": "72618796180ca812d625a81f67abc56d017845faae193e5a871a0dd1af660bba",
+      "bytes": 34640,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\checkpoint_040000\\manifest.json": {
+      "sha256": "8e1d8728ab7a0beac58c58dc677fd4b8dbffbdd1b17cd7f67a1b555142ce58ef",
+      "bytes": 2647,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\checkpoint_040000\\checkpoint.pt": {
+      "sha256": "8606a8b328330c28818965987666deee5fb394cb31d459324c5bc324734d354e",
+      "bytes": 26682500,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622\\maneuver_static_1622\\checkpoint_040000\\replay.npz": {
+      "sha256": "5b9f05fbd499e389ab435b04ca2703589b0308ead208a45ef7f62a81a8910cac",
+      "bytes": 357921742,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\run_manifest.json": {
+      "sha256": "3504459c004c30c401ef4c27f45eb3d8d758311370cfb84096a894f4736a1f0a",
+      "bytes": 9133,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\status.json": {
+      "sha256": "07059995fbcebb3c1a84cc929e6efe211fec8464380507b411ca13bc3f026d12",
+      "bytes": 2476,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\completion.json": {
+      "sha256": "a5c1687d7c58aa968ea88f95752aac2402da5023247c43525b8e6fb994da5b20",
+      "bytes": 2452,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\source_snapshot\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json": {
+      "sha256": "a7ef50ee697f8513edc59c4e3aaf24f3a15b23e0056719a14a1ff3095363ce0e",
+      "bytes": 4076,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\completion.json": {
+      "sha256": "5a634eae3e3917945a134c7473bfcecd388b14369d7bf1cfa62706be67c1f2c2",
+      "bytes": 578,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\metrics.jsonl": {
+      "sha256": "7551c05c46f86120ade97d2196550f160e09ade8110f10d7b3b1b71ff2a12487",
+      "bytes": 915178,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\near_reward_transitions.jsonl": {
+      "sha256": "1fc1998545a35f6294dd186dbff5ded3eb7532d87bf57490a8bf931aa1dce304",
+      "bytes": 25257451,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\evaluation_state_checks.jsonl": {
+      "sha256": "b0c364dbd3aea3f5fd609357e97f551d82f80bacda6926189b8283dcc5bf19a6",
+      "bytes": 2776,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\evaluation_40000.json": {
+      "sha256": "c89666bf39f1b35752a3fc5cc2bb86e9c4a627a7bb0bb3b950af1ad6614e557e",
+      "bytes": 35063,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\checkpoint_040000\\manifest.json": {
+      "sha256": "5bd115771e26e9055bf8f55256d753c45a880797b5082bc16e1f550cf09166cf",
+      "bytes": 2647,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\checkpoint_040000\\checkpoint.pt": {
+      "sha256": "0a948c77b20710f4402c36e9ec950c27d136287c87224374e95d6b58167d70bb",
+      "bytes": 26682244,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633\\maneuver_static_1633\\checkpoint_040000\\replay.npz": {
+      "sha256": "5d5940032b023e59515459fd4ef1bc20f49578b9a7c7492a02ceb241d27752e6",
+      "bytes": 357921742,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\run_manifest.json": {
+      "sha256": "d028bdaa3d5a18af903810f8eeb6c50465f1b3b0a47135433e3a77cdc84a1dcf",
+      "bytes": 9138,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\status.json": {
+      "sha256": "3af2c367699cd2538ba9452212c3b87652d8e766bcc56bee7b7a4c83784aa1b4",
+      "bytes": 2480,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\completion.json": {
+      "sha256": "35ea0d572a2ff318552f3716285ddba1dd2ece46ccbff459493033dfc70c8798",
+      "bytes": 2456,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\source_snapshot\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json": {
+      "sha256": "2abb584be0d96472ec3c676374b2e966a734ca153df0c2492499387b63d4a108",
+      "bytes": 4080,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\completion.json": {
+      "sha256": "a90e4ab2208decba66c3e82a11b137b3ee237962826110b7c19a9fdff705dca1",
+      "bytes": 579,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\metrics.jsonl": {
+      "sha256": "c30cb5752853e19b5b3a523cf58207f9916541dea53789bd620c7302e2ac3171",
+      "bytes": 744155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\near_reward_transitions.jsonl": {
+      "sha256": "7e8adbccea1a836bd7efc6dd44aabb4791345a7e923ee0e177450dbc603edb96",
+      "bytes": 26571891,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\evaluation_state_checks.jsonl": {
+      "sha256": "b5e2087571130942d523d2d70e4134a7018f814cc0c8c9683e5debba9fda927c",
+      "bytes": 2796,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\evaluation_40000.json": {
+      "sha256": "110f56a8a33c72be43f94d692753e6a3223e865184bd1648a6760a90c24de699",
+      "bytes": 34962,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\checkpoint_040000\\manifest.json": {
+      "sha256": "f10abbea219a8e4bf92a7638806e01ed8c534e15225b4d8ac121c051e32471db",
+      "bytes": 2647,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\checkpoint_040000\\checkpoint.pt": {
+      "sha256": "e85ec7b26ff1c97c43e6057ce1a9b82cec7a3960f6182d222ddbfba7ab208d55",
+      "bytes": 26682436,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611\\maneuver_static_1611\\checkpoint_040000\\replay.npz": {
+      "sha256": "852b448e7d89a7f018fb3ff30b8e6b0f05a7e6921539cdc9e292a98d90135475",
+      "bytes": 357921742,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\run_manifest.json": {
+      "sha256": "a53915ea1e49469c82d0cb3e08cb42fe063345db78369b0fb1c63cbc33a1f765",
+      "bytes": 9139,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\status.json": {
+      "sha256": "5cf0a4d066f866e880290f25460208cdafa874cd4934a930e6de0db11d1307e9",
+      "bytes": 2463,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\completion.json": {
+      "sha256": "e2c21528f657c7467a2e67efb43077d7a8669cad5a66db843339c648a7a2b98d",
+      "bytes": 2439,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\source_snapshot\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json": {
+      "sha256": "2abb584be0d96472ec3c676374b2e966a734ca153df0c2492499387b63d4a108",
+      "bytes": 4080,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\completion.json": {
+      "sha256": "fedb29140562e0667548afeb88cdc02a509d959255937a873ec96be90bce5df7",
+      "bytes": 563,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\metrics.jsonl": {
+      "sha256": "81ad9bf09f53958a7ac5c52785ebb50d225cc515b3b5dc76716079263f035954",
+      "bytes": 845611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\near_reward_transitions.jsonl": {
+      "sha256": "0da02c5a1221c2034ea65607a5b04c12833897f28207086aa50f26c18704eb92",
+      "bytes": 26108205,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\evaluation_state_checks.jsonl": {
+      "sha256": "d5c3da4f394f49822e0f3f355a6e2c74220a9216f049e0f67d49a46b3ec0a917",
+      "bytes": 2796,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\evaluation_40000.json": {
+      "sha256": "156dda0ed6418016e51284a4527277e9420eb2cb3a095fdc999b45756ac4066e",
+      "bytes": 34588,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\checkpoint_040000\\manifest.json": {
+      "sha256": "707e9a68241ebb38848a7779baa446c619c7b366d3e45a4abfa3eed7567c8e9c",
+      "bytes": 2647,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\checkpoint_040000\\checkpoint.pt": {
+      "sha256": "03935d087c82199207a313c451ad6b4d74e4f094ca2eabfbeea742bafe794fbb",
+      "bytes": 26682436,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622\\maneuver_static_1622\\checkpoint_040000\\replay.npz": {
+      "sha256": "834ffad718abbd5c89dee391600780b998bd106aec74e67d84d2fc0bd25291bb",
+      "bytes": 357921742,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\run_manifest.json": {
+      "sha256": "90bcd2aa1d7c977e7580b04b1ae827c7ed3a987549333286d112489235e22b8e",
+      "bytes": 9139,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\status.json": {
+      "sha256": "294a4adf67590e047e7dad376228c92040441c5ce1f8708bfe40962252e872d6",
+      "bytes": 2465,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\completion.json": {
+      "sha256": "6c1b2fe8021afb97a7c30645fb73a2d163a0571fc232033eed6a3eac8dd84222",
+      "bytes": 2441,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\scripts\\train_masac_v4_maneuver.py": {
+      "sha256": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+      "bytes": 42403,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_maneuver_masac.py": {
+      "sha256": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+      "bytes": 10551,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_networks.py": {
+      "sha256": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+      "bytes": 7155,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_prediction.py": {
+      "sha256": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+      "bytes": 6530,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_reward_reshape.py": {
+      "sha256": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+      "bytes": 11611,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_training.py": {
+      "sha256": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+      "bytes": 4606,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_environment.py": {
+      "sha256": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+      "bytes": 8464,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_maps.py": {
+      "sha256": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+      "bytes": 15520,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\shared_masac.py": {
+      "sha256": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+      "bytes": 5033,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\structured.py": {
+      "sha256": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+      "bytes": 8083,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\environment.py": {
+      "sha256": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+      "bytes": 4719,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_reference.py": {
+      "sha256": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+      "bytes": 9215,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\run_lock.py": {
+      "sha256": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+      "bytes": 1722,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_sync_capture.py": {
+      "sha256": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+      "bytes": 3991,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_near_objective.py": {
+      "sha256": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+      "bytes": 6539,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\uav_planning\\v4_near_study_runtime.py": {
+      "sha256": "04a50d8dd105d1d9cc0ba0566abc25d39a42a39c3b097c4f4ee7173bae50c986",
+      "bytes": 16583,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\scripts\\train_masac_v4_near_objective_study.py": {
+      "sha256": "8708fceb6e9239eba40d243444f208253d61f551b091d89850070a2c98227548",
+      "bytes": 5665,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\docs\\design\\MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md": {
+      "sha256": "3d705d776c27ad36a3fa6c74c024fceb9e6756cd83c81b05920f44108e653c45",
+      "bytes": 10356,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\scripts\\analyze_near_objective_study.py": {
+      "sha256": "1d6c4df3dcc2fc97e055d0c59298fdcc14c2243a667ae4dcd6aae16e4215d012",
+      "bytes": 65652,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\scripts\\launch_near_objective_study.py": {
+      "sha256": "f5d8d9acfeeba33c556dfffe52b48eb77a1af05f1cf9b8a11117bc2a5e9e6cca",
+      "bytes": 20438,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\source_snapshot\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json": {
+      "sha256": "2abb584be0d96472ec3c676374b2e966a734ca153df0c2492499387b63d4a108",
+      "bytes": 4080,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\completion.json": {
+      "sha256": "d280034b172b5fd7b69a44b3bab40ad706bf92d17b464a75d6f82bb624fe33d5",
+      "bytes": 563,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\metrics.jsonl": {
+      "sha256": "00f1c7fc67b7a12b8c1c59632ba97a7166178a77887f51a4fabd372554d6ee72",
+      "bytes": 874811,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\near_reward_transitions.jsonl": {
+      "sha256": "ab63f339d2d0810b9daa3556d2076494de2edde8b4dd05339bbaa3dcc276aa26",
+      "bytes": 26678285,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\evaluation_state_checks.jsonl": {
+      "sha256": "ad2b576cb210b4ebb04068ee903ec1d7a1e1cdbc23931c937855a00c6103bf41",
+      "bytes": 2796,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\evaluation_40000.json": {
+      "sha256": "949e63040e47c1134722d81e73444bdc52df0798d7b9480644097f078018c12a",
+      "bytes": 35099,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\checkpoint_040000\\manifest.json": {
+      "sha256": "2dd8c7d7578e5968724fdda8d9e6d6ffb1d8b72a9509a254420c410a7bfa5f25",
+      "bytes": 2647,
+      "heavy": false
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\checkpoint_040000\\checkpoint.pt": {
+      "sha256": "cbc63c810e4b411542704a6b718b03518b10b4177c7b8151c91d13a93c14ba58",
+      "bytes": 26682500,
+      "heavy": true
+    },
+    "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633\\maneuver_static_1633\\checkpoint_040000\\replay.npz": {
+      "sha256": "c819f27a49edf665e63b8f68c38b4fdba7ab346c3fe94fd8d2bb0df7fe699a52",
+      "bytes": 357921742,
+      "heavy": true
+    }
+  },
+  "inputs_rechecked_unchanged": true
+}

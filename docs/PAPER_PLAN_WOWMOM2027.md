@@ -1,12 +1,22 @@
 # PAPER_PLAN_WOWMOM2027 — Predictive Maneuverability-Aware MASAC
 
 **Current registered study (2026-11-05):** the separate near-objective comparison
-was pushed as **b4b3a1e** before launch and is RUNNING: original versus fixed
+was pushed as **b4b3a1e** before launch: original versus fixed
 near-potential replacement, static/B-off, fresh1611/1622/1633,40k each, six owned
-histories/max4CUDAworkers. Final40k only; no result asserted here. See
+histories/max4CUDAworkers. All six owned histories finished. Final original
+[2,0,5]versus replacement[1,0,6]/12 gives no aggregate gain; both absolute gates
+fail0/3. The coordinator's Windows metadata write failed; frozen final audit is
+INVALID_OR_INCOMPLETE/decision_ready=false. See
+[final outcomes and deviation](NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md),
 [frozen protocol](design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md) and
 [exact objective/boundary derivation](MATH_NEAR_OBJECTIVE_REPLACEMENT_20261105.md).
 The intervention changes Path-C's soft objective and is not predictive utility.
+
+**New direct prior art:** [joint-feasibility gap review](FRONTIER_JOINT_FEASIBILITY_GAP_20261105.md)
+adds2026signed joint margins/exact feasibility reserve and RSS2025MARL conflict
+resolution. Generic shared-control margins or conflict anticipation are already
+established. A computationally useful multi-step common-recovery representation
+requires its own matched geometry/information/cost evidence before new training.
 
 **Contribution criterion:** [inspected2022–2026 precedents and falsification
 criteria](FRONTIER_CONTRIBUTION_CRITERIA_20261105.md) govern proposed advantages.

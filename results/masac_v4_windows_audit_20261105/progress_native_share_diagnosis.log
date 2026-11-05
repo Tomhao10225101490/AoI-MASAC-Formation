@@ -1,0 +1,2 @@
+native PermissionError(13, '�ܾ����ʡ�') winerror 5
+wrapped PermissionError(13, '�ܾ����ʡ�') winerror 5

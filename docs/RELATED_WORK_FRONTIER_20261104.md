@@ -10,8 +10,18 @@ physical swarm RL, GCBF+/DGPPO and dynamic flight precedents with exact versions
 and reading limits. It specifies matched-baseline falsifiers and the distinction
 between new information and a deterministic physical inductive bias. None of
 these comparisons establishes our superiority. The new near-objective40k study,
-registered **b4b3a1e** before launch, is running as a separate static/B-off
-objective comparison; it is not evidence for moving-obstacle prediction utility.
+registered **b4b3a1e** before launch, has six finished static/B-off histories:
+original[2,0,5]versus replacement[1,0,6]/12, no aggregate gain. The coordinator
+metadata-write failure keeps the frozen analysis INVALID_OR_INCOMPLETE and
+decision_ready=false. [Final report](NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md).
+It is not evidence for moving-obstacle prediction utility.
+
+**Additional direct gap check:** [joint-feasibility and MARL conflict precedents](FRONTIER_JOINT_FEASIBILITY_GAP_20261105.md)
+reviews Yang/He2026Equations9–13, Sah/Keshavan2026formulation/feasibility reserve,
+and the official RSS2025Layered SafeMARL abstract. Signed common-control margin,
+actuator demand/supply and learned conflict anticipation are prior art. Multi-step
+causal geometric recourse is a different proposed object, without implemented
+benefit, full comparative proof audit or novelty clearance.
 
 ## Defensible positioning after the historical suite and 40k B study
 

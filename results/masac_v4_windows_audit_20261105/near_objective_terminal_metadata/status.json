@@ -1,0 +1,1062 @@
+{
+  "phase": "FAILED",
+  "complete": false,
+  "all_jobs_complete": false,
+  "total_jobs": 6,
+  "jobs": [
+    {
+      "mode": "original",
+      "training_seed": 1611,
+      "relative_root": "runs/original_1611",
+      "config": "configs/masac_v4/near_objective_40k_original_cuda_20261105.json",
+      "state": "COMPLETE",
+      "launch_pid": 36840,
+      "training_pid": 34136,
+      "training_pid_source": "run_manifest.json",
+      "returncode": 0,
+      "command": [
+        "C:\\research\\masac-maneuverability\\.venv\\Scripts\\python.exe",
+        "-u",
+        "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py",
+        "--protocol",
+        "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json",
+        "--out",
+        "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1611",
+        "--seed",
+        "1611",
+        "--torch-threads",
+        "1"
+      ],
+      "started_at_utc": "2026-11-05T04:57:26.506224+00:00",
+      "finished_at_utc": "2026-11-05T06:26:59.964250+00:00",
+      "child_status": {
+        "phase": "complete",
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1611,
+            "step": 40000,
+            "final_development_success": 0.16666666666666666,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793860019.0381768,
+        "finished_at_asia_shanghai": "2026-11-05 14:26 Asia/Shanghai",
+        "elapsed_s": 5368.662074500004,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_manifest_pid": 34136,
+      "child_completion": {
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1611,
+            "step": 40000,
+            "final_development_success": 0.16666666666666666,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793860019.0381768,
+        "finished_at_asia_shanghai": "2026-11-05 14:26 Asia/Shanghai",
+        "elapsed_s": 5368.662074500004,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_error": null
+    },
+    {
+      "mode": "potential",
+      "training_seed": 1611,
+      "relative_root": "runs/potential_1611",
+      "config": "configs/masac_v4/near_objective_40k_potential_cuda_20261105.json",
+      "state": "COMPLETE",
+      "launch_pid": 38088,
+      "training_pid": 22956,
+      "training_pid_source": "run_manifest.json",
+      "returncode": 0,
+      "command": [
+        "C:\\research\\masac-maneuverability\\.venv\\Scripts\\python.exe",
+        "-u",
+        "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py",
+        "--protocol",
+        "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json",
+        "--out",
+        "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1611",
+        "--seed",
+        "1611",
+        "--torch-threads",
+        "1"
+      ],
+      "started_at_utc": "2026-11-05T04:57:26.523994+00:00",
+      "finished_at_utc": "2026-11-05T06:28:04.949184+00:00",
+      "child_status": {
+        "phase": "complete",
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1611,
+            "step": 40000,
+            "final_development_success": 0.08333333333333333,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793860084.0082316,
+        "finished_at_asia_shanghai": "2026-11-05 14:28 Asia/Shanghai",
+        "elapsed_s": 5433.696175500001,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_manifest_pid": 22956,
+      "child_completion": {
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1611,
+            "step": 40000,
+            "final_development_success": 0.08333333333333333,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793860084.0082316,
+        "finished_at_asia_shanghai": "2026-11-05 14:28 Asia/Shanghai",
+        "elapsed_s": 5433.696175500001,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_error": null
+    },
+    {
+      "mode": "original",
+      "training_seed": 1622,
+      "relative_root": "runs/original_1622",
+      "config": "configs/masac_v4/near_objective_40k_original_cuda_20261105.json",
+      "state": "COMPLETE",
+      "launch_pid": 22808,
+      "training_pid": 23428,
+      "training_pid_source": "run_manifest.json",
+      "returncode": 0,
+      "command": [
+        "C:\\research\\masac-maneuverability\\.venv\\Scripts\\python.exe",
+        "-u",
+        "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py",
+        "--protocol",
+        "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json",
+        "--out",
+        "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1622",
+        "--seed",
+        "1622",
+        "--torch-threads",
+        "1"
+      ],
+      "started_at_utc": "2026-11-05T04:57:26.539992+00:00",
+      "finished_at_utc": "2026-11-05T06:26:27.192671+00:00",
+      "child_status": {
+        "phase": "complete",
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1622,
+            "step": 40000,
+            "final_development_success": 0.0,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793859986.0704727,
+        "finished_at_asia_shanghai": "2026-11-05 14:26 Asia/Shanghai",
+        "elapsed_s": 5335.625933699994,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_manifest_pid": 23428,
+      "child_completion": {
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1622,
+            "step": 40000,
+            "final_development_success": 0.0,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793859986.0704727,
+        "finished_at_asia_shanghai": "2026-11-05 14:26 Asia/Shanghai",
+        "elapsed_s": 5335.625933699994,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_error": null
+    },
+    {
+      "mode": "potential",
+      "training_seed": 1622,
+      "relative_root": "runs/potential_1622",
+      "config": "configs/masac_v4/near_objective_40k_potential_cuda_20261105.json",
+      "state": "COMPLETE",
+      "launch_pid": 7760,
+      "training_pid": 38268,
+      "training_pid_source": "run_manifest.json",
+      "returncode": 0,
+      "command": [
+        "C:\\research\\masac-maneuverability\\.venv\\Scripts\\python.exe",
+        "-u",
+        "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py",
+        "--protocol",
+        "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json",
+        "--out",
+        "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1622",
+        "--seed",
+        "1622",
+        "--torch-threads",
+        "1"
+      ],
+      "started_at_utc": "2026-11-05T04:57:26.560732+00:00",
+      "finished_at_utc": "2026-11-05T06:25:00.922626+00:00",
+      "child_status": {
+        "phase": "complete",
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1622,
+            "step": 40000,
+            "final_development_success": 0.0,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793859900.088573,
+        "finished_at_asia_shanghai": "2026-11-05 14:25 Asia/Shanghai",
+        "elapsed_s": 5249.788881600005,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_manifest_pid": 38268,
+      "child_completion": {
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1622,
+            "step": 40000,
+            "final_development_success": 0.0,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793859900.088573,
+        "finished_at_asia_shanghai": "2026-11-05 14:25 Asia/Shanghai",
+        "elapsed_s": 5249.788881600005,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_error": null
+    },
+    {
+      "mode": "original",
+      "training_seed": 1633,
+      "relative_root": "runs/original_1633",
+      "config": "configs/masac_v4/near_objective_40k_original_cuda_20261105.json",
+      "state": "COMPLETE",
+      "launch_pid": 36056,
+      "training_pid": 40092,
+      "training_pid_source": "run_manifest.json",
+      "returncode": 0,
+      "command": [
+        "C:\\research\\masac-maneuverability\\.venv\\Scripts\\python.exe",
+        "-u",
+        "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py",
+        "--protocol",
+        "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_original_cuda_20261105.json",
+        "--out",
+        "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\original_1633",
+        "--seed",
+        "1633",
+        "--torch-threads",
+        "1"
+      ],
+      "started_at_utc": "2026-11-05T06:25:00.962627+00:00",
+      "finished_at_utc": "2026-11-05T07:17:42.654658+00:00",
+      "child_status": {
+        "phase": "complete",
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1633,
+            "step": 40000,
+            "final_development_success": 0.4166666666666667,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793863062.083386,
+        "finished_at_asia_shanghai": "2026-11-05 15:17 Asia/Shanghai",
+        "elapsed_s": 3157.129752300003,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_manifest_pid": 40092,
+      "child_completion": {
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_original_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1633,
+            "step": 40000,
+            "final_development_success": 0.4166666666666667,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793863062.083386,
+        "finished_at_asia_shanghai": "2026-11-05 15:17 Asia/Shanghai",
+        "elapsed_s": 3157.129752300003,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_error": null
+    },
+    {
+      "mode": "potential",
+      "training_seed": 1633,
+      "relative_root": "runs/potential_1633",
+      "config": "configs/masac_v4/near_objective_40k_potential_cuda_20261105.json",
+      "state": "COMPLETE",
+      "launch_pid": 36220,
+      "training_pid": 40448,
+      "training_pid_source": "run_manifest.json",
+      "returncode": 0,
+      "command": [
+        "C:\\research\\masac-maneuverability\\.venv\\Scripts\\python.exe",
+        "-u",
+        "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective_study.py",
+        "--protocol",
+        "C:\\research\\masac-maneuverability\\configs\\masac_v4\\near_objective_40k_potential_cuda_20261105.json",
+        "--out",
+        "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_40k_sharded_cuda_20261105\\runs\\potential_1633",
+        "--seed",
+        "1633",
+        "--torch-threads",
+        "1"
+      ],
+      "started_at_utc": "2026-11-05T06:26:27.217107+00:00",
+      "finished_at_utc": "2026-11-05T07:18:52.686548+00:00",
+      "child_status": {
+        "phase": "complete",
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1633,
+            "step": 40000,
+            "final_development_success": 0.5,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793863132.1126544,
+        "finished_at_asia_shanghai": "2026-11-05 15:18 Asia/Shanghai",
+        "elapsed_s": 3140.9330953000026,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_manifest_pid": 40448,
+      "child_completion": {
+        "complete": true,
+        "scope": "maneuver_static L0 12-map gate",
+        "suite_experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105",
+        "experiment_id": "masac_v4_near_objective_40k_potential_cuda_20261105_static",
+        "probe_mode": "static",
+        "set_mode": "pool",
+        "runs": [
+          {
+            "seed": 1633,
+            "step": 40000,
+            "final_development_success": 0.5,
+            "gate_met": false,
+            "reshape": {
+              "progress_scale": 1.0,
+              "living_cost": 0.005,
+              "acc_penalty": 0.002,
+              "near_goal_radius_m": 15.0,
+              "near_goal_bonus": 0.4,
+              "ball_enter_bonus": 3.0,
+              "capture_bonus": 8.0,
+              "team_success_bonus": 50.0,
+              "collision_penalty": 20.0,
+              "train_ball_m": 4.0,
+              "train_speed_mps": 2.0,
+              "capture_latch": false,
+              "horizon": 350
+            },
+            "probe_mode": "static",
+            "warm_start": {
+              "mode": "cold"
+            }
+          }
+        ],
+        "gate_threshold": 0.6,
+        "all_seeds_gate_met": false,
+        "smoke": false,
+        "finished_at": 1793863132.1126544,
+        "finished_at_asia_shanghai": "2026-11-05 15:18 Asia/Shanghai",
+        "elapsed_s": 3140.9330953000026,
+        "authorization": {
+          "date": "2026-11-05",
+          "provenance": "Persistent user-authorized research loop; complete new two-arm 40k x3 cold-seed plan shown before launch, after closed 2k runtime pilot.",
+          "scope": "Named fresh-seed static/B-off near-objective study only; no old continuation, automatic extension, Attention/L1, historical suite rerun or sealed evaluation."
+        },
+        "reshape": {
+          "progress_scale": 1.0,
+          "living_cost": 0.005,
+          "acc_penalty": 0.002,
+          "near_goal_radius_m": 15.0,
+          "near_goal_bonus": 0.4,
+          "ball_enter_bonus": 3.0,
+          "capture_bonus": 8.0,
+          "team_success_bonus": 50.0,
+          "collision_penalty": 20.0,
+          "train_ball_m": 4.0,
+          "train_speed_mps": 2.0,
+          "capture_latch": false,
+          "horizon": 350
+        },
+        "capture_train_and_gate": {
+          "ball_m": 4.0,
+          "speed_mps": 2.0,
+          "latch": false
+        },
+        "warm_start_path": null,
+        "do_not_auto_launch_further": true,
+        "baseline_comparison": {
+          "role": "paired original near occupancy versus fixed discounted near-potential replacement"
+        },
+        "next_if_pass": "Record maneuver arm evidence; await user before Attention/L1/further stages.",
+        "next_if_fail": "save_and_diagnose; no Attention/L1/silent budget restack."
+      },
+      "child_error": null
+    }
+  ],
+  "known_running_pids": [],
+  "known_running_launch_pids": [],
+  "known_running_training_pids": [],
+  "updated_at_utc": "2026-11-05T07:18:52.711541+00:00"
+}

@@ -43,6 +43,17 @@ data and browser overview/SAC/evaluation views were checked before launch.
 
 ## Recovery
 
+Latest2026-11-05: restarted only this service after six real temporary-file
+testsPASS; actualPID36692/session65925 at verification. OldPID27156/38280 and
+session71337 are obsolete identities. Recheck command lines/API`dashboard_pid`
+before stopping or starting anything. Reader uses WindowsREAD|WRITE|DELETE
+sharing, but local tests prove this does NOT ensure os.replace can replace an
+open destination. JSON handles close before decode; writer-side bounded retries
+remain necessary to investigate before future training. See
+[the incident and final study report](NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md).
+The six own histories finished; the failed coordinator is intentionally still
+visible and cannot be cleared by a dashboard restart.
+
 First check processes for `serve_research_progress.py` and open the URL. Do
 not start another server if this one is live. If absent, from repository root
 print the following command before executing it, as required by the user:

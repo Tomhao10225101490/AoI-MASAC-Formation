@@ -48,9 +48,66 @@ binaries. Meaningful stages must be committed and pushed to both active branches
   finite and0/2success (boundary collision), both saved checkpoints. CUDA RNG
   stream presence verified. This is execution validation only.
 
-## Current authoritative status: registered near-objective study RUNNING
+## Current authoritative status: all six owned histories finished; strict audit NOT_READY
 
-**Latest next ordered action:** monitor the existing coordinator, not a new launch.
+**Latest15:30Asia/Shanghai:** all six owned final40000histories finished/exit0;
+last original1633/potential1633 finished15:17/15:18. No research training remains.
+Coordinator endedFAILED after the14:34:32WinError5metadata replacement fault.
+Rooterror retained, rootcompletion absent. No restart/extension/fakecompletion.
+Frozen full analyzer ran once into
+`results/masac_v4_near_objective_40k_analysis_20261105`, exit0, scientific
+INVALID_OR_INCOMPLETE/decision_ready=false/decision=null. Its aggregate
+all_six_training_completions=false includes the failed coordinator contract;
+six own completions must not override it. Source20/config2, actual12finalbinary/
+replay hashes, reward/replay checks, finite diagnostics and map pairing verified;
+no input mutations. All paired descriptive finals:original[2,0,5]/12,
+replacement[1,0,6]/12,delta[-1,0,+1],mean0,absolutegates0/3each.
+See `docs/NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md`; do not rerun this audit.
+
+Read-only dashboard restarted alone after six temporary-file contract testsPASS:
+http://127.0.0.1:8765/, actualPID36692/session65925 at this check. Sharing flags
+READ|WRITE|DELETE do NOT guarantee replacement of an open destination on this
+Windows host; the first attempted testsfailed2/6and remain archived. Current
+reader closes before decode. A future new writer needs separately tested bounded
+retry; no frozen writer was hotfixed. Dashboard still displays the rootfault.
+
+**Next ordered action:** commit/push this closed-study negative report, fault,
+strict audit and primary-source gap update to both branches. Then review/design
+the smallest new near-range3Dgeometry/common-recourse diagnostic against
+`docs/FRONTIER_JOINT_FEASIBILITY_GAP_20261105.md`: signed joint margins and MARL
+constraint-conflict anticipation already have direct2025/2026precedents. The
+unimplemented hypothesis is not a novel method yet. Specify identical information,
+real3Descape/limiter controls, comparator validity, latency and stopping rules;
+review/push a separate protocol/code before execution. No new training is queued.
+Before any future training also validate Windows writer retries with overlapping
+readers. Keep useful compute busy when an actual reviewed scientific workload is
+available; do not add seeds or extend closed studies just to fill GPU slots.
+
+The14:54fault and14:34queue paragraphs below are historical observations, not
+current recovery commands. This latest block takes precedence over all older
+RUNNING/proposal/automatic-analysis instructions in the long state archive.
+
+**Latest fault14:54check:** coordinator error occurred14:34:32Asia/Shanghai:
+`PermissionError [WinError5]` in `os.replace(status.json.tmp.12436,status.json)`.
+Root phaseFAILED_DRAINING,4/6own completions, two1633workers continue; no child
+error markers observed and all20source/two config current hashes still match.
+The failure is a monitoring metadata write, not an established training numeric
+failure. The process holding/refusing the file was not identified. Preserve the
+original error and let registered active children finish/save. Do not restart,
+hotfix frozen coordinator/training, delete error or fabricate root completion.
+Inspect/repair only the out-of-freeze dashboard read-sharing behavior after
+Windows-specific file-I/O tests; this cannot retroactively clear the failure.
+
+After all six own histories finish, run the frozen analyzer as a **strict audit**
+into a fresh output, retaining the coordinator failure. Under its existing
+contract decision_ready must remain false without valid coordinator completion.
+Any descriptive outcome/integrity report must disclose this protocol deviation;
+do not loosen frozen rules or report formal ADVANCEMENT_RULE_MET by override.
+
+**Latest next ordered action:** diagnose this fault and monitor the existing
+coordinator/children, not a new launch. The normal-run recovery below is historical
+where it assumes successful coordinator completion; the fault instructions above
+take precedence.
 Registration/code/protocol/config/test/benchmark/dashboard pushed to both branches
 as **b4b3a1e** before execution. New coordinator started12:57Asia/Shanghai, session
 **27468**, root `results/masac_v4_near_objective_40k_sharded_cuda_20261105`.

@@ -1,0 +1,46 @@
+C:\Users\Tom\AppData\Local\Programs\Python\Python310\lib\site-packages\pytest_asyncio\plugin.py:207: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+F..CONTROL ordinary read blocks atomic replace winerror=5
+.F.
+================================== FAILURES ===================================
+_ SharedReadContracts.test_document_reads_coherent_snapshot_during_actual_replacement _
+
+self = <test_research_progress_shared_read.SharedReadContracts testMethod=test_document_reads_coherent_snapshot_during_actual_replacement>
+
+    def test_document_reads_coherent_snapshot_during_actual_replacement(self):
+        target, replacement = self.root / "status.json", self.root / "new.json"
+        target.write_bytes(b'{"version":0}')
+        replacement.write_bytes(b'{"version":1000,"longer":true}')
+        original_open = progress.open_shared_binary
+    
+        @contextmanager
+        def replace_while_open(path):
+            with original_open(path) as handle:
+                os.replace(replacement, target)
+                yield handle
+    
+        reader = progress.Reader()
+        with patch.object(progress, "open_shared_binary", replace_while_open):
+            first = reader.document(target)
+>       self.assertEqual(first["data"], {"version": 0})
+E       AssertionError: None != {'version': 0}
+
+tests\test_research_progress_shared_read.py:79: AssertionError
+_ SharedReadContracts.test_shared_reader_allows_replace_and_retains_original_view _
+
+self = <test_research_progress_shared_read.SharedReadContracts testMethod=test_shared_reader_allows_replace_and_retains_original_view>
+
+    def test_shared_reader_allows_replace_and_retains_original_view(self):
+        target, replacement = self.root / "status.json", self.root / "new.json"
+        target.write_bytes(b"old snapshot")
+        replacement.write_bytes(b"new snapshot")
+        with progress.open_shared_binary(target) as handle:
+>           os.replace(replacement, target)
+E           PermissionError: [WinError 5] �ܾ����ʡ�: 'C:\\Users\\Tom\\AppData\\Local\\Temp\\masac_status_share_wnyei7p5\\new.json' -> 'C:\\Users\\Tom\\AppData\\Local\\Temp\\masac_status_share_wnyei7p5\\status.json'
+
+tests\test_research_progress_shared_read.py:36: PermissionError
+=========================== short test summary info ===========================
+FAILED tests/test_research_progress_shared_read.py::SharedReadContracts::test_document_reads_coherent_snapshot_during_actual_replacement
+FAILED tests/test_research_progress_shared_read.py::SharedReadContracts::test_shared_reader_allows_replace_and_retains_original_view

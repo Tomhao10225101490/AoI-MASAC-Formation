@@ -1,0 +1,17 @@
+{
+  "complete": true,
+  "phase": "analysis_complete",
+  "study_status": "INVALID_OR_INCOMPLETE",
+  "decision_ready": false,
+  "decision_label": null,
+  "analysis_complete_is_not_study_complete": true,
+  "finished_at_utc": "2026-11-05T07:20:57.885341+00:00",
+  "artifact_sha256": {
+    "manifest.json": "2f9052e2776a242771f475b11316f5a34565a83459d43ef765347f6bfcd6641d",
+    "analysis.json": "dd0928dc12d6b9d82b01db3866077fdd8d81c5f35c639e48428fb68d7eedb0bf",
+    "analysis.md": "38cd1cac71995dab0a6c3cfb040977660a151e72c39bf989b1cf1ff7d478ef89",
+    "paired_seeds.csv": "fd834e14eca5ea4d1596e50f5fe97f3d3967fa2b9ae94ff1c49e923587b20b16",
+    "analysis.log": "073c80db7e9c3f40c366b567a29bf29b2762220adcf346ff6b357ba3928249d4",
+    "status.json": "86a21dbd25a7cf1755eae36612144b70561e5ae826fc7f1c724e700f9879593d"
+  }
+}

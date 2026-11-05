@@ -1,5 +1,14 @@
 # Contribution criteria against inspected 2022–2026 primary sources
 
+**Latest outcome and prior-art update:** the six near-objective histories finished,
+original[2,0,5]versus replacement[1,0,6]/12, with no aggregate gain and both
+absolute gates0/3FAIL. A coordinator Windows I/O fault keeps the frozen audit
+INVALID_OR_INCOMPLETE/decision_ready=false; [full report](NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md).
+[Three newly checked direct precedents](FRONTIER_JOINT_FEASIBILITY_GAP_20261105.md)
+already address joint-feasibility margins, multi-robot feasibility reserve and
+MARL constraint conflicts. The twelve-source review below is the earlier
+snapshot; generic shared-recourse/conflict anticipation is not a novel gap.
+
 **Audit date:** 2026-11-05, Asia/Shanghai. **Status:** research criteria and proposed falsification tests, not a novelty clearance, comparative-performance result, or launch authorization. The new near-objective study was registered before execution at **b4b3a1e**. Its frozen scientific sources/configurations, six histories and final endpoint are not modified by this document. No training, policy rollout, or sealed-map access was performed for this review.
 
 The present evidence does **not** establish that our method is better than the inspected papers. A useful paper needs a specific advantage under a common task and resource contract; a list of familiar components is insufficient. Independent goals, decentralized policies, variable-sized entity encoders, finite-horizon capability representations, predictive safety and low-speed goal arrival all have close precedents. The current static-probe near-objective comparison is a foundational objective test, not a test of predictive advantage.
@@ -76,9 +85,9 @@ This is mean-distance shaping, not a worst-agent/speed/synchronization represent
 
 **What prior work already does.** Vasan supplies low-speed reaching/retention distinctions; Huang, GCBF+ and DGPPO already combine goal approach with collision concerns. A stricter endpoint is an evaluation choice, not a new solution or proof that prior policies cannot satisfy it.
 
-**Current evidence/gap.** Both new 2k pilot arms finish at 0/12. The registered fresh-seed 40k comparison has no final outcome asserted here. Historical B control/treatment finals [2,1,4]/12 and [6,0,5]/12 are a different cohort and intervention; reduced near-stall in one B seed did not ensure capture. Those observations motivate an objective hypothesis without identifying its cause.
+**Current evidence/gap.** Both2k pilot arms finish0/12. The separate registered40k replacement has no aggregate final gain: original[2,0,5]versus replacement[1,0,6]/12, with the coordinator deviation retained as described above. Historical B control/treatment finals[2,1,4]and[6,0,5]/12 are a different cohort/intervention; reduced near-stall in one B seed did not ensure capture. No replacement efficacy or failure cause is established.
 
-**Smallest falsifiable same-budget test.** Complete the already registered original-versus-replacement six-history study without changing its formulas, seeds, budget or final endpoint. Its sum-count gain at least 3, at least two positive seed pairs and minimum pair gain at least -1 are engineering planning criteria only. Keep the separate at-least-8/12-every-seed gate. Use \(\mathsf A,\mathsf I,\mathsf J\), collisions and retention diagnostics to explain the result after the primary endpoint, not replace it. A separately registered removal-only/PBRS factorial would be needed to distinguish those two mechanisms; none is launched by this note.
+**Completed fixed-budget test.** The registered six-history comparison is closed with unchanged formulas/seeds/budget/final endpoint and the disclosed coordinator failure. It gives no aggregate gain or all-seed gate success. Do not rerun or extend it. A separately registered removal-only/PBRS factorial would be needed to distinguish those mechanisms; this note launches none. Arrival/retention diagnostics cannot replace the original endpoint or clear the failed coordinator contract.
 
 **Failure/allowed claim.** Mixed or negative final success, or lower stall without higher success, does not establish an advantage. Even a positive result supports the **complete replacement under this contract/budget**, not a new PBRS method, sparse-success equivalence, universal reward pathology, stabilization or prediction utility. On its own this is an incremental learning-objective result, not sufficient evidence for a frontier method paper.
 

@@ -1,1 +1,7 @@
 system_figure_render_console.log -whitespace
+near_objective_coordinator_error_snapshot_20261105_1454.json -text -whitespace
+progress_shared_read_tests.log -text -whitespace
+progress_shared_read_tests_v2.log -text -whitespace
+progress_shared_read_tests_final.log -text -whitespace
+progress_native_share_diagnosis.log -text -whitespace
+near_objective_coordinator_failure_diagnosis.log -text -whitespace

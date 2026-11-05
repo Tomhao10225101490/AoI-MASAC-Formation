@@ -1,6 +1,6 @@
 # Method: observation-only control probes and team potential shaping
 
-*Paper draft, 2026-11-05. The B 40k study (seeds1511/1522/1533) is COMPLETE: all six final histories and artifacts were verified. Its original advancement rule permits planning confirmation only; both arms fail the absolute task gate. A separate near-objective 40k study (fresh1611/1622/1633) was registered/pushed b4b3a1e before launch and is RUNNING. No final outcome for that study is asserted here.*
+*Paper draft, 2026-11-05. The B40k cohort remains separate. All six fresh near-objective histories1611/1622/1633 finished40000steps, but the coordinator failed with a Windows metadata replacement error. Frozen final audit: INVALID_OR_INCOMPLETE, decision_ready=false. Original[2,0,5]/12 versus replacement[1,0,6]/12 gives zero aggregate gain; both absolute gates fail0/3. See the [full result and protocol deviation](NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md).*
 
 ## Task, information and constrained motion
 
@@ -157,7 +157,7 @@ Deterministic evaluation uses the same 12 L0 development maps every 2,000 steps 
 
 Equations (5)–(7) define the representation and finite-budget learning hypothesis. At the fixed 40k endpoint, control successes for seeds 1511/1522/1533 are 2/12, 1/12, 4/12; B successes are 6/12, 0/12, 5/12. The paired count differences are +4, −1, +1, with mean success-fraction difference 1/9 (11.111 percentage points). The original preregistered engineering rule is met, supporting planning of confirmation rather than an efficacy conclusion. Both arms pass zero of three absolute 8/12 seed gates. These are three training-seed pairs on repeatedly evaluated development maps; no significance, unseen-map, moving-obstacle benefit or new-theorem claim follows. Static+B does not identify predictive-content utility. Historical Mac 80k arms and the warm-started legacy Standard-C floor are separate cohorts, not fair 40k performance comparators. The [canonical final analysis](../results/masac_v4_sync_40k_analysis_20261105/analysis.md) records the completed endpoints; the sealed test set remains unevaluated.
 
-## Separate near-objective replacement study (registered, running)
+## Separate near-objective replacement study (owned histories finished; coordinator failed)
 
 This experiment disables B and fixes static probes in both arms. To avoid
 confusing it with the worst-distance/speed potential in Equation(6), denote
@@ -219,8 +219,13 @@ at least-1, and complete finite histories with full source/config/checkpoint/
 replay/reward integrity. It is an engineering planning rule, not significance.
 The absolute at-least8/12-every-seed task gate is reported separately. Mid-run
 evaluations, peaks, returns, ball entry or reduced stall cannot replace the
-final endpoint. No final results or confirmed objective/prediction advantage
-are asserted while these histories are running. The
+final endpoint. Final original[2,0,5]versus replacement[1,0,6]/12 yields paired
+differences[-1,0,+1], with no aggregate gain and neither arm passing any absolute
+seed gate. The coordinator failed replacing Windows status metadata; all six
+owned histories finished, but the frozen analyzer retains decision_ready=false
+and INVALID_OR_INCOMPLETE. The [final report](NEAR_OBJECTIVE_40K_FINAL_RESULTS_20261105.md)
+preserves this deviation and every endpoint. No confirmed objective/prediction
+advantage follows. The
 [registered protocol](design/MASAC_V4_NEAR_OBJECTIVE_40K_PROTOCOL_20261105.md)
 and [source-matched derivation](MATH_NEAR_OBJECTIVE_REPLACEMENT_20261105.md)
 govern this separate comparison; its outcomes must not be merged with the

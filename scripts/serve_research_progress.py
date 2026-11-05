@@ -9,10 +9,13 @@ from __future__ import annotations
 
 import argparse
 from collections import deque
+from contextlib import contextmanager
 from datetime import datetime, timezone
+from functools import lru_cache
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import math
+import os
 from pathlib import Path
 import re
 import shutil
@@ -82,6 +85,57 @@ def inside(path, parent):
         return False
 
 
+@lru_cache(maxsize=1)
+def _windows_file_api():
+    import ctypes
+    from ctypes import wintypes
+    library = ctypes.WinDLL("kernel32", use_last_error=True)
+    create = library.CreateFileW
+    create.argtypes = (wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                       wintypes.LPVOID, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE)
+    create.restype = wintypes.HANDLE
+    close = library.CloseHandle
+    close.argtypes = (wintypes.HANDLE,)
+    close.restype = wintypes.BOOL
+    return create, close, ctypes.c_void_p(-1).value
+
+
+@contextmanager
+def open_shared_binary(path):
+    """Read only with Windows read/write/delete sharing consent.
+
+    FILE_SHARE_DELETE is sharing consent, not delete access for this reader.
+    This does NOT guarantee os.replace can replace an open destination on
+    Windows. Callers close promptly before decoding; future writers need their
+    own bounded retry contract. No frozen study writer is changed here.
+    """
+    if os.name != "nt":
+        with Path(path).open("rb") as stream:
+            yield stream
+        return
+    import ctypes
+    import msvcrt
+    create, close, invalid = _windows_file_api()
+    # GENERIC_READ; FILE_SHARE_READ|WRITE|DELETE; OPEN_EXISTING; normal file.
+    handle = create(os.fspath(path), 0x80000000, 0x7, None, 3, 0x80, None)
+    if handle == invalid:
+        raise ctypes.WinError(ctypes.get_last_error())
+    try:
+        descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY)
+    except BaseException:
+        close(handle)
+        raise
+    # The CRT descriptor owns the native handle after open_osfhandle succeeds.
+    try:
+        msvcrt.setmode(descriptor, os.O_BINARY)
+        stream = os.fdopen(descriptor, "rb")
+    except BaseException:
+        os.close(descriptor)
+        raise
+    with stream:
+        yield stream
+
+
 class Reader:
     def __init__(self):
         self.documents = {}
@@ -116,7 +170,11 @@ class Reader:
         try:
             if meta["bytes"] > MAX_DOCUMENT:
                 raise ValueError(f"JSON exceeds {MAX_DOCUMENT} byte read limit")
-            data = decode_json(path.read_text(encoding="utf-8-sig"))
+            with open_shared_binary(path) as handle:
+                payload = handle.read(MAX_DOCUMENT + 1)
+            if len(payload) > MAX_DOCUMENT:
+                raise ValueError(f"JSON exceeds {MAX_DOCUMENT} byte read limit")
+            data = decode_json(payload.decode("utf-8-sig"))
             self.documents[path] = dict(signature=meta["signature"], data=data, error=None)
             result["data"] = data
         except (OSError, UnicodeError, ValueError) as exc:
@@ -141,7 +199,7 @@ class Reader:
         if state["signature"] != meta["signature"]:
             try:
                 # Metrics are small; parse only newly appended complete lines.
-                with path.open("rb") as handle:
+                with open_shared_binary(path) as handle:
                     handle.seek(state["offset"])
                     data = handle.read(8 * 1024 * 1024)
                 state["offset"] += len(data)
@@ -177,7 +235,7 @@ class Reader:
             return result
         try:
             offset = max(0, meta["bytes"] - MAX_LOG_BYTES)
-            with path.open("rb") as handle:
+            with open_shared_binary(path) as handle:
                 handle.seek(offset)
                 raw = handle.read(MAX_LOG_BYTES)
             result["clipped"] = offset > 0
@@ -393,6 +451,8 @@ class Progress:
                 ("case_2.json", "case_3.json", "case_4.json", "benchmark.json", "completion.json", "error.json")
             }
             return clean(dict(generated_at=stamp(time.time()), generated_epoch=time.time(),
+                              dashboard_pid=os.getpid(),
+                              reader_file_sharing="READ|WRITE|DELETE" if os.name == "nt" else "binary read",
                               refresh_s=5, stale_after_s=STALE_AFTER_S, runs=runs,
                               coordinator=coordinator,
                               benchmark=dict(path=str(BENCHMARK), documents=benchmark),
@@ -511,7 +571,9 @@ def main():
                 return
             try:
                 if address.path == "/":
-                    payload, mime = HTML.read_bytes(), "text/html; charset=utf-8"
+                    with open_shared_binary(HTML) as stream:
+                        payload = stream.read()
+                    mime = "text/html; charset=utf-8"
                 elif address.path == "/api/progress":
                     payload = json.dumps(progress.snapshot(), ensure_ascii=False,
                                          allow_nan=False).encode("utf-8")
