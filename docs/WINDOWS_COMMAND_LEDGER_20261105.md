@@ -539,3 +539,42 @@ trailing spaces. The SVG exporter now strips line-end whitespace, and the
 existing SVG was cleaned after asserting every parsed path's numeric command
 tokens remain identical. This is formatting only; plot values and geometry
 remain unchanged. No check was bypassed and no commit was made before repair.
+
+PhaseA/code/math/figure stage subsequently passed cached diff check and was
+committed/pushed to both branches as9166477c12c4bd0bd06dbfcff504e7eed0fdab1f;
+both remote refs verified.33files changed, no weights/replay staged.
+
+## 14. Next protocol: fixed-population offline actor responses
+
+New plan/code were prepared and root reviewed before loading any checkpoint:
+`design/MASAC_V4_NEAR_GOAL_ACTOR_OFFLINE_PROTOCOL_20261105.md` and
+`scripts/audit_sync_near_goal_actor.py`. Independent mathematical review checked
+the scope: tanh(mu) differs from the squashed distribution's expectation; common
+64x3epsilon vectors support marginal, not independent-agent joint MC; one-step
+kinematics are neither collision feasibility nor episode success. Distance>=4.4
+cannot capture in one .2s step ending below2m/s. The tighter state-dependent
+necessary bound is also reported, with all observations/bins retained.
+
+Only own final40000actors from verified local checkpoints, same6144obs/hashes,
+fixed CPU-generator seed20261105,64draws, no learner/Q/optimizer/update/environment
+creation or step. Float32actor/noise precedes float64geometry from quantized
+observations. Strict4/2 predicates remain unchanged. Each seed and full/binned
+denominator remains visible. Starting-in-set retention is distinct from new
+acquisition; zero-of64 is not a true zero probability or significance claim.
+
+Source reads verified V4observe max(world) goal displacement scaling, exact
+actor feature/body/heads, checkpoint packaging and the original vector limiter.
+Root reviewed the complete new code in two bounded reads; corrected the live
+progress reset between histories and applied the protocol's1e-9 tolerance only
+to a numerical necessary-bound assertion, never to strict capture.
+
+```powershell
+.\.venv\Scripts\python.exe -m py_compile scripts/audit_sync_near_goal_actor.py
+git diff --check
+```
+
+Both checks exit0. Four fixed-vector limiter cross-checks are scheduled before
+actor loading, followed by actual sample/actor/RNG consistency checks in the run.
+Output-specific manifest/status/completion/error support recovery; completion
+is the last write and includes hashes. Existing nonempty output cannot be reused.
+The new protocol and code must be pushed before the printed execution CLI.

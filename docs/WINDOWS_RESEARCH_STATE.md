@@ -105,11 +105,18 @@ Next ordered actions:
    finish yields54.06949 and beats waiting in the documented example.
    See `docs/MATH_PATHC_OBJECTIVE_DIAGNOSTIC_20261105.md`; no root cause claimed.
 4. Next minimum is a separately frozen **offline actor-response** diagnostic
-   (protocol/script under preparation, not yet executed). Reuse the same6144
+   (protocol/script reviewed and syntax-checked, not yet executed at this entry).
+   Protocol: `docs/design/MASAC_V4_NEAR_GOAL_ACTOR_OFFLINE_PROTOCOL_20261105.md`;
+   script: `scripts/audit_sync_near_goal_actor.py`; intended new output:
+   `results/masac_v4_sync_40k_near_goal_actor_audit_20261105`.
+   Review new output's manifest/status/completion/error and process command line
+   before starting; completion.json written last is authoritative, not audit.json.
+   Reuse the same6144
    observations/hashes; compare tanh(mu), not E[action], with64fixed isolated
    Gaussian draws; only analytic one-step distance/speed, no simulator/rollout,
-   new training or sealed maps. Root must review and push the new concrete
-   protocol/code before any model load/run. It is separate from the completed
+   new training or sealed maps. Push the reviewed protocol/code before any model
+   load/run; after that the visible planned CLI is the next authorized action.
+   It is separate from the completed
    phaseA no-policy-load contract. Any substantial new training still needs a
    visible plan; current relative rule supports planning confirmation only.
 
