@@ -27,7 +27,7 @@
 <main>
   <div id="globalError" class="errorbox hide"></div>
   <div class="notice">开发集结果为描述性证据。实时曲线与中途峰值不替代 final 40k 主终点；相对工程门槛与绝对 8/12 门控分开。缺失值显示“—”，不补零。</div>
-  <section class="page active" id="overview"><div id="runCards" class="cards"></div><div id="overviewCharts" class="grid" style="margin-top:16px"></div></section>
+  <section class="page active" id="overview"><div id="queueSummary" class="hide"></div><div id="runCards" class="cards"></div><div id="overviewCharts" class="grid" style="margin-top:16px"></div></section>
   <section class="page" id="learning"><p class="tabsnote">曲线直接取 metrics.jsonl 顶层 loss 字段及已关闭 episode；episode return 是未折扣日志和，跨奖励定义不可直接解释为同一目标。near correction 与旧 B shaping 的语义不同。</p><div id="learningCharts" class="grid"></div><div id="latestMetrics"></div></section>
   <section class="page" id="evaluation"><p class="tabsnote">确定性 original Path-C，12 张开发图。Any = 至少一机曾进入球；All = 每机都曾进入，时间可不同；Success = 实现的同时位置/速度捕获。原因计数以每次 eval JSON 为准。</p><div id="evalCharts"></div><div class="panel"><h2>逐次评估与失败计数</h2><div id="evalTable" class="tablewrap"></div></div></section>
   <section class="page" id="detail"><div id="detailPanels"></div></section>
@@ -43,24 +43,69 @@ const numeric = v => typeof v==="number" && Number.isFinite(v);
 const fmt = (v,d=2) => numeric(v) ? v.toLocaleString(undefined,{maximumFractionDigits:d}) : "—";
 const duration = v => !numeric(v) ? "—" : v<60 ? fmt(v,0)+"s" : v<3600 ? fmt(v/60,1)+"min" : fmt(v/3600,2)+"h";
 const gib = v => numeric(v) ? fmt(v/1073741824,2)+" GiB" : "—";
-const phaseNames={complete:"已完成",training:"训练中",evaluating:"评估中",saving:"保存中",error:"错误",not_created:"未创建",not_started:"尚未记录",queued:"排队",running:"运行中",observed:"已有输出",awaiting_or_incomplete:"待核实 / 未完成"};
+const phaseNames={complete:"已完成",training:"训练中",evaluating:"评估中",saving:"保存中",error:"错误",not_created:"未创建",not_started:"尚未记录",queued:"排队",pending:"排队等待空位",starting:"启动中，等待输出",held:"故障后暂停排队",failed:"故障",failed_to_start:"启动失败",not_launched_after_failure:"故障后未启动",failed_draining:"故障，等待在跑任务保存",interrupted_draining:"已中断，等待在跑任务保存",running:"运行中",observed:"已有输出",awaiting_or_incomplete:"待核实 / 未完成"};
 function el(tag, text, cls){const n=document.createElement(tag);if(text!==undefined&&text!==null)n.textContent=String(text);if(cls)n.className=cls;return n;}
 function empty(node){node.replaceChildren();}
 function object(v){return v&&typeof v==="object"&&!Array.isArray(v)?v:{};}
 function raw(doc){return object(doc).data;}
 function pretty(value){return JSON.stringify(value,null,2);}
-function badge(phase,stale){return el("span",stale?"STALE · 数据陈旧":(phaseNames[phase]||phase||"未知"),"badge "+(stale?"warn":phase==="complete"?"good":phase==="error"?"bad":""));}
+function badge(phase,stale){phase=String(phase||"").toLowerCase();return el("span",stale?"STALE · 数据陈旧":(phaseNames[phase]||phase||"未知"),"badge "+(stale?"warn":phase==="complete"?"good":phase==="error"||phase.includes("fail")||phase==="held"?"bad":""));}
 function panel(title){const n=el("div",null,"panel");if(title)n.append(el("h2",title));return n;}
 function details(parent,title,value,open=false){const d=el("details");d.open=open;d.append(el("summary",title),el("pre",pretty(value)));parent.append(d);}
 function table(node,headers,rows){empty(node);const t=el("table"),head=el("thead"),tr=el("tr");for(const h of headers)tr.append(el("th",h));head.append(tr);t.append(head);const body=el("tbody");for(const row of rows){const r=el("tr");for(const value of row)r.append(el("td",value));body.append(r);}t.append(body);node.append(t);if(!rows.length)node.append(el("div","尚无可读取的记录","empty"));}
 function currentRuns(){if(!snapshot)return[];if(selected.startsWith("group:"))return snapshot.runs.filter(r=>r.group===selected.slice(6));return snapshot.runs.filter(r=>r.id===selected);}
+function visibleRuns(){return currentRuns().filter(r=>selectedSeed==="all"||(r.seed_list||[]).map(String).includes(selectedSeed));}
+function coordinatorView(){
+ const docs=object(snapshot?.coordinator?.documents),doc=object(docs["status.json"]);
+ const status=object(raw(doc)),manifest=object(raw(docs["study_manifest.json"]));
+ const phase=String(status.phase||"").toLowerCase();
+ return {status,manifest,phase,doc,jobs:Array.isArray(status.jobs)?status.jobs:[],
+  stale:Boolean(doc.from_last_good||doc.meta?.error||(numeric(doc.meta?.age_s)&&doc.meta.age_s>snapshot.stale_after_s)),
+  halted:phase.startsWith("failed")||phase.startsWith("interrupted")||Boolean(raw(docs["error.json"]))};
+}
+function coordinatedJob(run){
+ if(run.group!=="sharded")return null;
+ const matches=coordinatorView().jobs.filter(j=>j&&run.id===`shard_${j.mode}_${j.training_seed}`&&j.relative_root===`runs/${j.mode}_${j.training_seed}`);
+ return matches.length===1?matches[0]:null;
+}
+function displayedPhase(run){
+ if(run.exists)return run.phase;
+ const job=coordinatedJob(run),state=String(job?.state||"").toLowerCase();
+ if(state==="pending")return coordinatorView().halted?"held":"pending";
+ if(state==="running")return"starting";
+ if(state==="complete")return"awaiting_or_incomplete";
+ return state||run.phase;
+}
+function queueSummary(){
+ const target=$("queueSummary");empty(target);
+ const shown=currentRuns().some(r=>r.group==="sharded");target.className=shown?"panel":"hide";
+ if(!shown)return;
+ const c=coordinatorView(),m=c.manifest,registered=Array.isArray(m.jobs)?m.jobs:[];
+ const ids=jobs=>jobs.map(j=>`${j?.mode}/${j?.training_seed}/${j?.relative_root}`).sort();
+ const known=registered.length>0&&c.jobs.length===registered.length&&new Set(ids(c.jobs)).size===c.jobs.length&&pretty(ids(c.jobs))===pretty(ids(registered));
+ const count=state=>c.jobs.filter(j=>j.state===state).length;
+ const heading=el("div",null,"top");
+ heading.append(el("h2","已登记的 40k 队列 · 全部 seed"),badge(c.phase,c.stale));target.append(heading);
+ const grid=el("div",null,"statgrid"),stats=[
+  ["运行槽位",known?count("RUNNING")+" / "+fmt(m.max_workers,0):"—"],
+  ["等待启动",known?fmt(count("PENDING"),0):"—"],
+  ["已完成 history",known?count("COMPLETE")+" / "+registered.length:"—"],
+  ["故障 / 故障后未启动",known?fmt(c.jobs.filter(j=>["FAILED","FAILED_TO_START","NOT_LAUNCHED_AFTER_FAILURE"].includes(j.state)).length,0):"—"]];
+ for(const[label,value]of stats){const cell=el("div",null,"stat");cell.append(el("strong",value),el("span",label));grid.append(cell);}
+ target.append(grid,
+  el("p","协调器 PID "+fmt(c.status.coordinator_pid,0)+" · 状态记录 "+(c.status.updated_at_utc||"尚未获得")+" · 年龄 "+duration(c.doc.meta?.age_s),"muted small"),
+  el("p","固定总预算 "+fmt(m.total_training_transitions,0)+" transitions；按登记顺序补入空位。此队列总览不随 seed 筛选改变。","small"));
+ if(c.stale)target.append(el("p","当前为陈旧 / 最近可读的协调器记录，实时进程状态需核实。","warn small"));
+ if(!known)target.append(el("p","队列身份记录尚不完整或不一致，计数保持未知。","warn small"));
+ if(c.halted)target.append(el("p","协调器已停止提交新任务；保留在跑任务输出并等待诊断。","bad small"));
+}
 function selectedRows(){return currentRuns().flatMap(run=>(run.seeds||[]).filter(s=>selectedSeed==="all"||String(s.seed)===selectedSeed).map(seed=>({run,seed,name:run.label+" / seed "+seed.seed})));}
 function selectors(){
  const old=selected;const available=snapshot.runs.filter(r=>r.exists);
  const groups=[["sharded","正式 40k · 独立 seed histories"],["near40","正式 40k · 双臂目录"],["pilot","已完成 2k pilot"],["previous","历史 B 40k"]];
  if(!manualSelection)selected=available.some(r=>r.group==="sharded")?"group:sharded":available.some(r=>r.group==="near40")?"group:near40":"group:pilot";
  empty($("runSelect"));for(const [key,label]of groups){if(snapshot.runs.some(r=>r.group===key)){const o=el("option",label);o.value="group:"+key;$("runSelect").append(o);}}
- for(const run of snapshot.runs){const o=el("option",run.label+(run.exists?"":" · 未创建"));o.value=run.id;$("runSelect").append(o);}
+ for(const run of snapshot.runs){const phase=displayedPhase(run),o=el("option",run.label+(run.exists?"":" · "+(phaseNames[phase]||phase)));o.value=run.id;$("runSelect").append(o);}
  if(![...$("runSelect").options].some(o=>o.value===selected))selected="group:pilot";$("runSelect").value=selected;
  const seeds=[...new Set(currentRuns().flatMap(r=>r.seed_list||[]))];empty($("seedSelect"));const all=el("option","全部");all.value="all";$("seedSelect").append(all);for(const seed of seeds){const o=el("option",seed);o.value=String(seed);$("seedSelect").append(o);}if(selectedSeed!=="all"&&!seeds.includes(Number(selectedSeed)))selectedSeed="all";$("seedSelect").value=selectedSeed;
 }
@@ -87,9 +132,9 @@ function resourceBar(){
  for(const [name,text,pct]of entries){const n=el("div",name+"  "+text,"resource");const meter=el("div",null,"meter"),fill=el("i");fill.style.width=numeric(pct)?Math.max(0,Math.min(100,pct))+"%":"0%";meter.append(fill);n.append(meter);$("resourcebar").append(n);}
 }
 function runCards(rows){
- empty($("runCards"));for(const run of currentRuns()){
- const card=panel(),heading=el("div",null,"top");heading.append(el("h2",run.label),badge(run.phase,run.stale));card.append(heading,el("div",run.path,"path"));
- if(!run.exists){card.append(el("p","输出目录尚未创建；未将其表示为正在训练。","muted"));$("runCards").append(card);continue;}
+ empty($("runCards"));for(const run of visibleRuns()){
+ const phase=displayedPhase(run),coord=coordinatorView(),card=panel(),heading=el("div",null,"top");heading.append(el("h2",run.label),badge(phase,run.stale||(!run.exists&&coordinatedJob(run)&&coord.stale)));card.append(heading,el("div",run.path,"path"));
+ if(!run.exists){const text=phase==="pending"?"已登记，等待协调器的四个运行槽位释放后启动。":phase==="starting"?"协调器已提交此任务，等待其独立输出记录。":phase==="held"||phase==="not_launched_after_failure"?"协调器故障后暂停提交；此 history 尚未启动。":phase==="awaiting_or_incomplete"?"协调器记录已完成，但独立输出不可读，需要核实。":"输出目录尚未创建；未将其表示为正在训练。";card.append(el("p",text,"muted"));$("runCards").append(card);continue;}
  const runRows=rows.filter(r=>r.run.id===run.id);for(const r of runRows){const s=r.seed,line=el("div",null,"seedline"),head=el("div",null,"top");head.append(el("strong","Seed "+s.seed),badge(s.phase,s.stale));line.append(head);const pct=numeric(s.step)&&numeric(s.budget)?100*s.step/s.budget:null;const meter=el("div",null,"meter"),fill=el("i");fill.style.width=numeric(pct)?Math.min(100,pct)+"%":"0%";meter.append(fill);line.append(meter,el("p",fmt(s.step,0)+" / "+fmt(s.budget,0)+" steps · updates "+fmt(s.updates,0),"numbers small"));
  line.append(el("p",fmt(s.steps_per_s,2)+" step/s · ETA "+duration(s.eta_s)+" · 数据年龄 "+duration(s.age_s),"muted small"));
  const last=(s.evaluations||[]).at(-1);line.append(el("p",last?"最近 eval @"+last.step+": success "+last.successes+"/"+last.maps+" · any "+last.ever_ball_any_maps+" · all "+last.ever_ball_all_maps:"尚无完成的 eval JSON","small"));
@@ -112,7 +157,7 @@ function evaluations(rows){
  table($("evalTable"),["实验","Seed","Step","Success","Any","All","失败原因（互斥）","碰撞 flags（非互斥）","写入时间 UTC"],data);
 }
 function detailPanels(rows){
- empty($("detailPanels"));for(const run of currentRuns()){
+ empty($("detailPanels"));for(const run of visibleRuns()){
  const box=panel(run.label+" · train.log 最后 60 行"),log=el("pre",run.logs?.lines?.join("\n")||"尚无日志","log");box.append(el("p",run.logs?.meta?.path||run.path,"path"),log);details(box,"Root 状态 / 完成 / 错误",{status:run.status,completion:run.completion,error:run.error});details(box,"Run manifest（记录值，不重算大文件 hash）",run.manifest);$("detailPanels").append(box);}
  for(const r of rows){const s=r.seed,box=panel(r.name+" · checkpoint / reward detail");if(s.checkpoint){const cp=s.checkpoint,meta=object(raw(cp.manifest));box.append(el("p",cp.path,"path"),el("p","记录 step "+fmt(meta.step,0)+" · replay "+fmt(meta.replay_size,0)+" · checkpoint "+gib(cp.checkpoint_metadata?.bytes),"small"));details(box,"Checkpoint manifest + SHA metadata（未重算）",cp,true);}else box.append(el("p","尚无完整 checkpoint manifest","muted"));details(box,"Near reward 最后 24 条完整记录",s.near_tail||{});details(box,"Evaluation state checks",s.evaluation_checks||{});details(box,"Metrics 流读取与完整性",s.metrics_meta||{});if(s.errors?.length)box.append(el("div",s.errors.join("\n"),"errorbox"));$("detailPanels").append(box);}
 }
@@ -122,10 +167,16 @@ function resources(){
  const coord=panel("正式 study coordinator");coord.append(el("p",snapshot.coordinator.path,"path"));details(coord,"固定 study manifest / 状态 / completion / error",snapshot.coordinator,true);$("benchmarks").append(coord);
 }
 function render(){
- selectors();resourceBar();const rows=selectedRows();runCards(rows);empty($("overviewCharts"));
- chart($("overviewCharts"),"训练吞吐 · 每 seed 累积平均",lineSeries(rows,"progress","steps_per_s","throughput"),"step / s");
- chart($("overviewCharts"),"训练更新进度",lineSeries(rows,"progress","updates","updates"),"SAC updates");
- learning(rows);evaluations(rows);detailPanels(rows);resources();
+ selectors();resourceBar();const rows=selectedRows();
+ const tab=document.querySelector("nav button.active")?.dataset.tab||"overview";
+ if(tab==="overview"){
+  queueSummary();runCards(rows);empty($("overviewCharts"));
+  chart($("overviewCharts"),"训练吞吐 · 每 seed 累积平均",lineSeries(rows,"progress","steps_per_s","throughput"),"step / s");
+  chart($("overviewCharts"),"训练更新进度",lineSeries(rows,"progress","updates","updates"),"SAC updates");
+ }else if(tab==="learning")learning(rows);
+ else if(tab==="evaluation")evaluations(rows);
+ else if(tab==="detail")detailPanels(rows);
+ else if(tab==="resources")resources();
  $("timestamp").textContent="快照 "+new Date(snapshot.generated_at).toLocaleTimeString()+" · UTC "+snapshot.generated_at;
  const coordinatorError=raw(snapshot.coordinator?.documents?.["error.json"]);
  const errors=[...(snapshot.coordinator?.errors||[]),...(coordinatorError?["Study coordinator: "+pretty(coordinatorError)]:[]),...currentRuns().flatMap(r=>[...(r.errors||[]).map(e=>r.label+": "+e),...(r.error?.data?[r.label+": "+pretty(r.error.data)]:[])])];
@@ -141,7 +192,7 @@ $("runSelect").addEventListener("change",event=>{selected=event.target.value;man
 $("seedSelect").addEventListener("change",event=>{selectedSeed=event.target.value;if(snapshot)render();});
 $("pause").addEventListener("click",()=>{paused=!paused;$("pause").textContent=paused?"恢复刷新":"暂停刷新";$("pause").classList.toggle("active",paused);clearTimeout(timer);if(!paused)refresh();else{$("connection").textContent="已暂停自动刷新 · 显示最近快照";$("connection").className="warn";}});
 $("refresh").addEventListener("click",refresh);
-for(const button of document.querySelectorAll("nav button"))button.addEventListener("click",()=>{for(const b of document.querySelectorAll("nav button"))b.classList.toggle("active",b===button);for(const page of document.querySelectorAll(".page"))page.classList.toggle("active",page.id===button.dataset.tab);});
+for(const button of document.querySelectorAll("nav button"))button.addEventListener("click",()=>{for(const b of document.querySelectorAll("nav button"))b.classList.toggle("active",b===button);for(const page of document.querySelectorAll(".page"))page.classList.toggle("active",page.id===button.dataset.tab);if(snapshot)render();});
 refresh();
 </script>
 </body>

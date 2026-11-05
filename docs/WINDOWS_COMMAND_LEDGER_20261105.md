@@ -874,3 +874,22 @@ reward-sum replacement identity(N1–N3), termination/timeout/bootstrap and fina
 decision contract. No frozen scientific file changed. Documentation diffcheck
 PASS; no new training/evaluation, model load, sealed read or software test was
 introduced for this prose edit.
+
+## 22. Live queue visibility and bounded page rendering
+
+First read persistent state/Git/process command lines, then polled existing
+session27468: all four actual workers and coordinator live, no restart.
+Read-only Python/HTML source inspection, HTML-only update outside the scientific
+20source freeze. Registered1633PENDING cards now say waiting for a slot; queue
+summary uses matching fixed-manifest/status identities for active/waiting/
+completed/failure counts and PID/age, with unknown/stale/error handling.
+Seed filtering now also applies to cards and raw logs.
+
+Node --check on extracted inline JS PASS; staged-scope diffcheck PASS. Actual
+browser/API validation showed4/4active,2waiting,0/6complete,0failure and seed1611
+only its two cards. Rendering is restricted to active page while resources and
+errors update; initial hidden-pageSVGcount0, all5tabs render their real data,
+browserconsoleerrors[]. No measured training-speedup claim. Existing local
+server remains live; only the page was reloaded, no training/worker/source/config
+change, new experiment or sealed read. Screenshot shown in chat; live dashboard
+remains the current-data deliverable.

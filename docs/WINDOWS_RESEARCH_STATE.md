@@ -144,6 +144,12 @@ checkpoints/resources with timestamps; no invented zero/live status. It is
 outside the frozen science source set and may be improved during training.
 Recovery details: `docs/LIVE_RESEARCH_PROGRESS_WIN.md`. Do not duplicate server.
 
+Dashboard display-only update verified on real API/browser: whole-study queue
+shows4/4active,2pending,0/6complete/0fail at validation;1633cards explicitly
+waiting. Seed1611filter shows only its two arms. Charts/logs render only for the
+active tab; all five tabs switch normally, initial hidden-pageSVGcount0 and
+browserconsoleerrors[]. This does not change execution, data or frozen20sources.
+
 Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
 Both workers finished normally at07:22/07:23; no Python training process remained
 at the post-completion check. Do not restart or extend these completed runs.

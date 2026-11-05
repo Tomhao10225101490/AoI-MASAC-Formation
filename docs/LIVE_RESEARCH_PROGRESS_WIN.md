@@ -9,6 +9,20 @@ pause/manual refresh and study/seed selectors. It does not launch or modify
 training. Completed pilot/history outputs are visible; the new independent
 40k history shards appear when their registered coordinator creates them.
 
+The overview also shows the full registered queue: running slots, waiting,
+completed histories, failures, coordinator PID and status-record age. Counts
+remain unknown if the manifest/status identities do not agree. A registered
+PENDING history is labeled as waiting for a slot, not as missing work; failure
+or interruption pauses pending submissions. Stale coordinator records are
+labeled separately. Seed filtering applies to overview cards and raw logs;
+the queue summary explicitly remains for all six histories.
+
+Only the currently selected page renders charts/log detail on refresh; other
+pages render when selected. Resource and error summaries still update. This
+avoids repeated hidden-page rendering without claiming a measured training
+speedup. Reload an already-open page after HTML updates; the server and training
+processes do not need a restart.
+
 Views include per-seed steps/updates/throughput/estimated time, SAC actor and
 critic losses, temperature, entropy, Q/target/TD diagnostics, episode returns
 and near correction, every retained evaluation's success/ANY/ALL ball counts,
