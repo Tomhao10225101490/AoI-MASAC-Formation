@@ -1,5 +1,12 @@
 # Recovery: unexecuted final-trajectory diagnostic draft
 
+**Historical draft snapshot, superseded after normal tool access resumed.**
+Root and an independent read-only reviewer completed the checks below and added
+original source/config verification, saved-transition consistency, premeasurement
+hash freeze and output hashes. The original draft hash JSON is preserved as
+history; it must not be used as the expected hash for the reviewed version.
+Follow `WINDOWS_RESEARCH_STATE.md` for the latest registration/execution state.
+
 2026-11-05, Asia/Shanghai. Completed actor results were pushed to both branches
 as83ea09073bf5461d579835fc1bffc868373c7bf0. The trajectory-analysis agent then
 reported account usage unavailable. No billing/account changes were made.

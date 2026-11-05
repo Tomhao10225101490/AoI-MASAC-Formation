@@ -50,13 +50,14 @@ binaries. Meaningful stages must be committed and pushed to both active branches
 
 ## Current authoritative status: completed40k, next offline diagnosis
 
-**Latest recovery checkpoint:** completed actor results pushed83ea090 to both
-remote branches. The next trajectory-analysis agent hit a usage limit during
-draft preparation. Both draft files are preserved and will be pushed as drafts;
-they are not reviewed/registered/executed, and the script CLI is blocked.
-Resume from `docs/FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md` when usage returns.
-No Python process remained at the quota recovery check. Keep automation active;
-do not change billing, restart completed studies or interpret this as goal completion.
+**Latest recovery checkpoint:** actor results pushed83ea090; interrupted draft
+preserved4b92498. Normal tools resumed. Root and independent read-only review
+completed the trajectory dwell/reward protocol/code; syntax check passed.
+Before first execution, push the reviewed version and verify both remote refs.
+Then run once into `results/masac_v4_sync_40k_final_dwell_audit_20261105` using
+the printed CLI in the command ledger. Check output existence/status/processes
+first; an existing completed output must be analyzed, not rerun. No Python
+process remained at the current recovery check. The goal remains unfinished.
 
 Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
 Both workers finished normally at07:22/07:23; no Python training process remained
@@ -130,13 +131,14 @@ Next ordered actions:
    Not uniform MCrescue, control failure, causal evidence or actualfinaloccupancy.
    Report: `docs/NEAR_GOAL_ACTOR_OFFLINE_RESULTS_20261105.md`.
    It is separate from completed phaseA's no-model contract.
-5. Next minimum under preparation: **saved final trajectory dwell/reward audit**,
+5. Next minimum reviewed, pending registration push/execution: **saved final trajectory dwell/reward audit**,
    exactly72 original40000NPZs/JSONs, no new rollout/model/training/test. Fixed
    near-stall description4<=d<10 andspeed<.5,>=25consecutivepoststepframes:
    5s occupancy-equivalent step count,4.8s first-to-last sample span; no
    continuous-time dwell proof,
-   plus all distance/speed bins and A/C/J/event cross-checks. Protocol/code need
-   review/push before run. Actual evalJSON lacks cumulative return, so source-
+   plus all distance/speed bins and A/C/J/event cross-checks. Protocol/code reviewed;
+   push before run. Includes original14source/config freeze, saved action physics
+   consistency, premeasurement manifest and hashed final artifacts. Actual evalJSON lacks cumulative return, so source-
    derived reward components must mark reference-return validation UNAVAILABLE;
    do not invent it. Reward/dwell remain diagnostic, not a new primary endpoint.
    Any substantial new training still needs a visible plan; relative40k rule

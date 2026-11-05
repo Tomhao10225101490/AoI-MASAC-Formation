@@ -1,10 +1,11 @@
 # Final-trajectory dwell and Path-C reward decomposition protocol
 
-**DRAFT / NOT REGISTERED / NOT EXECUTED.** Preparation was interrupted by an
-agent usage-limit error before root review. This snapshot push does not make
-the protocol execution-ready. The script CLI is blocked. Resume from
-`../FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md`, review/fix the full draft,
-then record and push a final protocol/code version before running it.
+**Root-reviewed final protocol; first execution requires this version to be
+committed and pushed.** The earlier interrupted draft is archived in
+`../FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md`; its hash snapshot describes the
+old draft, not this reviewed version. Root and an independent read-only reviewer
+checked reset memory, realized acceleration, shared terminal reward, time
+conventions and missing-data handling before execution.
 
 Date: 2026-11-05. Status: specified before executing this diagnostic, after the
 40k study endpoint and the separate actor diagnostic were known. This is a
@@ -65,7 +66,7 @@ transitions use the shaper's false reset capture memory; the unobserved interval
 after termination contributes no exit event.
 
 Cross-check available evaluation fields and the existing trajectory summary:
-per-agent ever-ball and closest distance (including reset, as in the writer),
+per-agent ever-ball (post-step only) and closest distance (including reset, as in the writer),
 final distances, A/C/J, maximum simultaneous capture occupancy, first capture
 times, capture-frame counts and longest runs. Capture events newly measured here
 have no prior exit-time field to validate against. Verify equal map family and
@@ -73,6 +74,16 @@ scene hash across all histories. Preserve all four nonexclusive collision flags;
 the fixed 72-episode population is expected to have no collisions. Inconsistent
 numeric data, metadata or existing summaries fails the audit with a traceback;
 it is not silently omitted.
+
+When actions and scene metadata exist, independently transcribe the frozen
+`limited` update using clipped float64 actions, unit-norm action limiting,
+speed projection and semi-implicit position update. Require maximum absolute
+velocity and position discrepancy <=1e-9. Read dt, amax and vmax from each saved
+scene; require dt=0.2 and the frozen horizon. This verifies saved transition
+consistency, not collision feasibility. Missing action/metadata makes only this
+cross-check unavailable. JSON identity, success and collision flags are checked
+even when a trajectory is missing. An unsuccessful collision-free trajectory
+must reach the horizon; success may coincide with horizon truncation.
 
 ## Formula-derived reward components and unavailable return reference
 
@@ -113,9 +124,13 @@ directory, streams one line per map to stdout and `audit.log` with flushing, and
 writes per-map records, summary JSON/Markdown, manifest and status. The manifest
 records SHA-256 hashes of each history's evaluation/config/prior summary, each
 map's NPZ/metadata, this protocol, this script and the named reward/writer/helper
-sources. It rechecks input hashes before completion. Missing inputs remain
+sources. Before measurements it also checks both original run manifests, all
+six seed completion records, all 14 original frozen training-source hashes and
+both original config hashes. Prior summaries must match seed, step, paired-map
+verification and map identity. The input manifest and numerical environment are
+written before measurements; input hashes are rechecked before completion. Missing inputs remain
 explicitly unavailable. The completion marker is written last, after all other
-artifacts; exceptions write FAILED status and a full traceback without a complete
+artifacts, and hashes all six final output artifacts; exceptions write FAILED status and a full traceback without a complete
 marker. Completion of a descriptive audit does not turn unavailable reward
 validation into a pass.
 

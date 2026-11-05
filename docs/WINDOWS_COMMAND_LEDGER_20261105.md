@@ -637,3 +637,28 @@ time-counting checks are in FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md.
 Do not read25sampled post-step frames as a proof of continuous5s dwell:25h=5s
 occupancy-equivalent count versus24h=4.8s endpoint span. Account/payment settings
 were untouched; the same15-minute heartbeat remains active for normal resumption.
+
+## 16. Reviewed final-trajectory audit registration
+
+Resumed from4b92498 without restarting a completed study. Root read original
+reward/limiter/writer/helper and scene metadata; independent read-only review
+checked reward/reset/time handling and found a provenance issue: repeated
+snapshots must compare against the first hash, never replace it. Corrected.
+All14 frozen training-source hashes and original config hashes are verified
+before measurement. No training source/config was changed.
+
+```powershell
+.venv\Scripts\python.exe -m py_compile scripts\audit_sync_final_trajectory_dwell.py
+git diff --check
+```
+
+Initial checks exit0. Final protocol/code must be explicitly staged and pushed
+to both branches before this intended first execution, after checking the
+output directory and processes:
+
+```powershell
+.venv\Scripts\python.exe -u scripts\audit_sync_final_trajectory_dwell.py --out results/masac_v4_sync_40k_final_dwell_audit_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/final_dwell_console.log
+```
+
+Fixed72 saved trajectories, CPU/NumPy only, no weights, actor, environment,
+training or sealed maps. Logged evaluation-return reference remains UNAVAILABLE.

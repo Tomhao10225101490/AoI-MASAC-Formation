@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
-"""DRAFT: not root-reviewed or executed; CLI is blocked pending recovery review.
-
-Fixed 72-trajectory, CPU-only descriptive audit; no environment or model imports.
-"""
+"""Fixed 72-trajectory CPU-only descriptive audit; no environment/model imports."""
 from __future__ import annotations
 
 import argparse
@@ -10,11 +7,13 @@ from collections import Counter
 import hashlib
 import json
 from pathlib import Path
+import platform
+import sys
 import traceback
 
 import numpy as np
 
-from diagnose_sync_capture_trajectories import diagnose_map, first_time, longest_streak, require
+from diagnose_sync_capture_trajectories import diagnose_map, longest_streak, require
 
 ROOT = Path(__file__).resolve().parents[1]
 STEP, DT, GAMMA = 40000, 0.2, 0.99
@@ -58,7 +57,8 @@ def runs(mask):
 def occupancy(mask):
     count, longest = int(mask.sum()), longest_streak(mask)
     return dict(frames=count, occupancy_s=count * DT, fraction=count / len(mask),
-                longest_frames=longest, longest_occupancy_s=longest * DT)
+                longest_frames=longest, longest_occupancy_s=longest * DT,
+                longest_endpoint_span_s=(longest - 1) * DT if longest else None)
 
 
 def statistics(values):
@@ -107,7 +107,26 @@ def reward_components(full_distance, velocity, ball, captured, joint, reshape):
 
 def audit_map(directory, row, old, reshape):
     path = directory / f'eval_{STEP}_{row["map_seed"]}.npz'
-    result = dict(map_seed=row['map_seed'], family=row['family'], scene_sha256=row['scene_sha256'])
+    require(row['step'] == STEP and type(row['success']) is bool, 'Invalid evaluation endpoint')
+    require(all(type(row.get(key)) is bool for key in COLLISIONS), 'Invalid collision flags')
+    require(not any(row[key] for key in COLLISIONS),
+            'Fixed population unexpectedly has a collision; event timing is unavailable')
+    require(row['reshape'] == reshape, 'Recorded reshape differs from frozen configuration')
+    require(not any('return' in key.lower() or 'reward' in key.lower() for key in row),
+            'Unexpected return-like evaluation field requires a separate writer audit')
+    require(old['map_seed'] == row['map_seed'] and old['family'] == row['family'] and
+            old['scene_sha256'] == row['scene_sha256'], 'Prior map identity mismatch')
+    result = dict(map_seed=row['map_seed'], family=row['family'], scene_sha256=row['scene_sha256'],
+                  json_success=row['success'], collision=False,
+                  collision_flags_nonexclusive={key: row[key] for key in COLLISIONS},
+                  saved_ever_ball_any=row['ever_ball_any'], saved_ever_ball_all=row['ever_ball_all'])
+    metadata_path = directory / f'eval_{STEP}_{row["map_seed"]}_map.json'
+    metadata = read_json(metadata_path) if metadata_path.is_file() else None
+    if metadata is not None:
+        require(metadata['seed'] == row['map_seed'] and metadata['scene_sha256'] == row['scene_sha256']
+                and metadata['config']['family'] == row['family'], 'Scene metadata identity mismatch')
+        require(metadata['config']['dt'] == DT and metadata['config']['horizon'] == reshape['horizon'],
+                'Scene timestep/horizon mismatch')
     if not path.is_file():
         return dict(result, dwell_status='UNAVAILABLE', reason='Missing trajectory NPZ',
                     reward_sum_reference='UNAVAILABLE', reward_formula_status='UNAVAILABLE')
@@ -117,16 +136,34 @@ def audit_map(directory, row, old, reshape):
             return dict(result, dwell_status='UNAVAILABLE', reason=f'Missing NPZ arrays: {missing}',
                         reward_sum_reference='UNAVAILABLE', reward_formula_status='UNAVAILABLE')
         position, velocity, goal = [trace[key] for key in ('positions', 'velocities', 'goals')]
+        actions = trace['actions'] if 'actions' in trace.files else None
     # Reuse the previously audited pure-array JSON/trajectory checks, without an environment.
     result = diagnose_map(directory, row, STEP)
     require(not result['collision'], 'Fixed population unexpectedly has a collision; timing is unavailable')
-    require(row['reshape'] == reshape, 'Recorded reshape differs from frozen configuration')
-    require(not any('return' in key.lower() or 'reward' in key.lower() for key in row),
-            'Unexpected return-like evaluation field requires a separate writer audit')
     for key in ('all_agents_ever_in_ball', 'all_agents_ever_captured', 'recomputed_joint_capture',
                 'first_joint_capture_time_s', 'max_simultaneous_capture_occupancy'):
         require(result[key] == old[key], f'Existing trajectory summary mismatch: {key}')
     position, velocity, goal = [x.astype(np.float64, copy=False) for x in (position, velocity, goal)]
+    physics = dict(status='UNAVAILABLE', reason='Missing actions or scene metadata')
+    if metadata is not None:
+        require(np.allclose(position[0], metadata['starts'], rtol=0, atol=1e-9) and
+                np.allclose(goal, metadata['goals'], rtol=0, atol=1e-9), 'Scene start/goal mismatch')
+    if actions is not None and metadata is not None:
+        require(actions.shape == (len(position) - 1, 3, 3) and np.isrealobj(actions) and
+                np.issubdtype(actions.dtype, np.number) and np.isfinite(actions).all(),
+                'Invalid saved actions')
+        # Pure-array transcription of source limited(); no environment is instantiated.
+        action = np.clip(actions.astype(np.float64), -1, 1)
+        action /= np.maximum(1, np.linalg.norm(action, axis=-1, keepdims=True))
+        candidate = velocity[:-1] + DT * metadata['config']['amax'] * action
+        expected_v = candidate * np.minimum(
+            1, metadata['config']['vmax'] / (np.linalg.norm(candidate, axis=-1, keepdims=True) + 1e-12))
+        velocity_error = float(np.max(np.abs(expected_v - velocity[1:])))
+        position_error = float(np.max(np.abs(position[:-1] + DT * velocity[1:] - position[1:])))
+        require(velocity_error <= 1e-9 and position_error <= 1e-9, 'Saved physics transition mismatch')
+        physics = dict(status='PASS', max_velocity_abs_error=velocity_error,
+                       max_position_abs_error=position_error, tolerance=1e-9,
+                       amax=metadata['config']['amax'], vmax=metadata['config']['vmax'])
     full_distance = np.linalg.norm(goal[None] - position, axis=-1)
     distance, speed = full_distance[1:], np.linalg.norm(velocity[1:], axis=-1)
     real_acc = np.diff(velocity, axis=0) / DT
@@ -134,9 +171,13 @@ def audit_map(directory, row, old, reshape):
     joint = captured.all(axis=1)
     require(len(distance) <= reshape['horizon'], 'Trajectory exceeds frozen horizon')
     require(not joint[:-1].any(), 'Saved trajectory continues after joint terminal capture')
-    require(row['terminated'] == bool(joint[-1]) and row['timeout'] == (not bool(joint[-1])),
+    require(all(type(row.get(key)) is bool for key in ('terminated', 'truncated', 'timeout')),
+            'Nonboolean termination flags')
+    require(row['terminated'] == bool(joint[-1]) and
+            row['timeout'] == (row['truncated'] and not row['terminated']),
             'Evaluation termination/timeout does not match collision-free trajectory')
     require(row['truncated'] == (len(distance) == reshape['horizon']), 'Truncation/horizon mismatch')
+    require(bool(joint[-1]) or len(distance) == reshape['horizon'], 'Nonterminal trajectory ends early')
     require(row['ever_ball_any'] == bool(ball.any()) and row['ever_ball_all'] == bool(ball.any(axis=0).all()),
             'Evaluation any/all-ball mismatch')
     require(np.allclose(row['final_goal_m_by_uav'], distance[-1], rtol=1e-7, atol=1e-6),
@@ -164,6 +205,7 @@ def audit_map(directory, row, old, reshape):
                      realized_acceleration_norm_mps2=statistics(np.linalg.norm(real_acc[:, i], axis=-1)),
                      mean_realized_acceleration_xyz_mps2=real_acc[:, i].mean(axis=0).tolist())
     result.update(dwell_status='AVAILABLE', reward_formula_status='AVAILABLE',
+                  saved_physics_cross_check=physics,
                   joint_capture_entry_times_s=event_times(joint & ~np.r_[False, joint[:-1]]),
                   joint_capture_exit_times_s=event_times(~joint & np.r_[False, joint[:-1]]),
                   reward=reward_components(full_distance, velocity, ball, captured, joint, reshape),
@@ -171,16 +213,57 @@ def audit_map(directory, row, old, reshape):
     return result
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--out', type=Path, required=True)
-    args = parser.parse_args()
-    out = args.out.resolve()
-    out.mkdir(parents=True, exist_ok=False)
+def audit(out):
     inputs, histories, signatures = {}, [], {}
 
     def snapshot(path):
-        inputs[str(path.resolve())] = digest(path)
+        key, value = str(path.resolve()), digest(path)
+        require(inputs.setdefault(key, value) == value, f'Input changed after initial freeze: {path}')
+
+    # Freeze every input before measurements. Only trajectories/scene metadata may be absent.
+    for relative in SOURCES:
+        require((ROOT / relative).is_file(), f'Missing audited source/protocol: {relative}')
+        snapshot(ROOT / relative)
+    for arm in ARMS:
+        root = ROOT / f'results/masac_v4_sync_40k_{arm}_cuda_20261105'
+        config_path = ROOT / f'configs/masac_v4/sync_capture_40k_{arm}_cuda_20261105.json'
+        manifest_path, completion_path = root / 'run_manifest.json', root / 'completion.json'
+        for path in (config_path, manifest_path, completion_path):
+            snapshot(path)
+        manifest, completion, config = map(read_json, (manifest_path, completion_path, config_path))
+        require(manifest['config_hashes']['protocol'] == digest(config_path), 'Original config hash changed')
+        require(manifest['seed_list'] == list(SEEDS) and manifest['steps_per_seed'] == STEP and
+                completion['complete'] is True and len(completion['runs']) == 3 and
+                {r['seed'] for r in completion['runs']} == set(SEEDS), 'Incomplete frozen study')
+        require(manifest['reshape'] == config['reshape'] == completion['reshape'] and
+                manifest['sync_capture'] == config['sync_capture'] and
+                manifest['development_maps_used'] == config['development_maps'], 'Run manifest/config mismatch')
+        require(len(manifest['sources']) == 14, 'Unexpected frozen source set')
+        for relative, expected_sha in manifest['sources'].items():
+            path = (ROOT / relative).resolve()
+            require(path.is_relative_to(ROOT), 'Frozen source outside repository')
+            require(digest(path) == expected_sha, f'Original frozen source changed: {relative}')
+            snapshot(path)
+        for seed in SEEDS:
+            directory = root / f'maneuver_static_{seed}'
+            final = directory / 'completion.json'
+            snapshot(final)
+            record = read_json(final)
+            require(record['seed'] == seed and record['step'] == STEP and
+                    record['reshape'] == config['reshape'] and record in completion['runs'],
+                    'Seed completion differs from frozen study')
+            for path in (directory / f'evaluation_{STEP}.json', ROOT /
+                         f'results/masac_v4_sync_40k_progress_20261105/trajectory_40000_seed{seed}/summary.json'):
+                snapshot(path)
+                require(path.is_file(), f'Missing required evaluation/prior summary: {path}')
+            for map_seed in MAPS:
+                for suffix in ('.npz', '_map.json'):
+                    snapshot(directory / f'eval_{STEP}_{map_seed}{suffix}')
+    provenance = dict(inputs_sha256=inputs, fixed_seeds=SEEDS, fixed_maps=MAPS, step=STEP,
+                      original_training_source_config_hashes_verified=True,
+                      numerical_environment=dict(python=sys.version, numpy=np.__version__, platform=platform.platform()),
+                      input_hashes_rechecked=False)
+    write_json(out / 'manifest.json', provenance)
 
     with (out / 'audit.log').open('x', encoding='utf-8', buffering=1) as log:
         def say(line):
@@ -188,9 +271,8 @@ def main():
             print(line, file=log, flush=True)
 
         try:
-            for relative in SOURCES:
-                snapshot(ROOT / relative)
-                require((ROOT / relative).is_file(), f'Missing audited source/protocol: {relative}')
+            say(f'START CPU fixed_maps=72 seeds={SEEDS} step={STEP} gamma={GAMMA} '
+                'training=false environment=false weights=false reward_reference=UNAVAILABLE')
             write_json(out / 'status.json', dict(phase='RUNNING', processed_maps=0, total_maps=72))
             with (out / 'maps.jsonl').open('x', encoding='utf-8') as stream:
                 for arm in ARMS:
@@ -214,7 +296,13 @@ def main():
                         rows = read_json(evaluation)
                         require(len(rows) == 12 and {r['map_seed'] for r in rows} == set(MAPS),
                                 'Expected every fixed development map exactly once')
-                        old_arm = read_json(prior)['arms']['control' if arm == 'control' else 'treatment']
+                        prior_record = read_json(prior)
+                        require(prior_record['training_seed'] == seed and prior_record['step'] == STEP and
+                                prior_record['paired_map_metadata_verified'] is True, 'Invalid prior population')
+                        old_arm = prior_record['arms']['control' if arm == 'control' else 'treatment']
+                        require(old_arm['training_seed'] == seed and old_arm['step'] == STEP and
+                                len(old_arm['maps']) == 12 and
+                                {m['map_seed'] for m in old_arm['maps']} == set(MAPS), 'Invalid prior arm')
                         old_maps = {r['map_seed']: r for r in old_arm['maps']}
                         maps = []
                         for row in sorted(rows, key=lambda r: r['map_seed']):
@@ -240,6 +328,12 @@ def main():
                         bands = Counter({name: sum(a['bands'][name]['frames'] for a in agents)
                                          for name in agents[0]['bands']}) if agents else Counter()
                         histories.append(dict(arm=arm, training_seed=seed, maps=maps,
+                                              success_maps=sum(m['json_success'] for m in maps),
+                                              all_ball_maps=sum(m.get('all_agents_ever_in_ball',
+                                                                     m.get('saved_ever_ball_all')) for m in maps),
+                                              all_capture_maps=(sum(m['all_agents_ever_captured'] for m in maps)
+                                                  if all(m['dwell_status'] == 'AVAILABLE' for m in maps) else None),
+                                              dwell_available_maps=sum(m['dwell_status'] == 'AVAILABLE' for m in maps),
                                               agent_frames=sum(bands.values()), band_agent_frames=dict(bands),
                                               near_stall_agent_frames=sum(a['near_stall']['frames'] for a in agents),
                                               agent_maps_with_25plus_run=sum(bool(a['near_stall_runs_25plus']) for a in agents)))
@@ -260,20 +354,42 @@ def main():
             lines += [f'| {h["arm"]} | {h["training_seed"]} | {h["agent_frames"]} | '
                       f'{h["near_stall_agent_frames"]} | {h["agent_maps_with_25plus_run"]} |' for h in histories]
             (out / 'summary.md').write_text('\n'.join(lines) + '\n', encoding='utf-8')
-            write_json(out / 'manifest.json', dict(inputs_sha256=inputs, fixed_seeds=SEEDS, fixed_maps=MAPS,
-                                                  step=STEP, input_hashes_rechecked=True))
+            provenance['input_hashes_rechecked'] = True
+            write_json(out / 'manifest.json', provenance)
             status = dict(phase='COMPLETE', complete=True, processed_maps=72, dwell_available_maps=available,
                           reward_reference_validation='UNAVAILABLE', missing_input_measurements=72 - available)
             write_json(out / 'status.json', status)
             say(f'COMPLETE maps=72 dwell_available={available} reward_reference=UNAVAILABLE out={out}')
-            write_json(out / 'completion.json', status)  # Last artifact write; never signals return validation.
+            artifact_hashes = {name: digest(out / name) for name in
+                               ('maps.jsonl', 'summary.json', 'summary.md', 'manifest.json', 'status.json', 'audit.log')}
+            write_json(out / 'completion.json', dict(status, artifact_sha256=artifact_hashes))
+            # Last artifact write; complete means processed, never return-reference validation.
         except Exception:
             error = traceback.format_exc()
             (out / 'error.txt').write_text(error, encoding='utf-8')
+            write_json(out / 'error.json', dict(complete=False, traceback=error))
             write_json(out / 'status.json', dict(phase='FAILED', complete=False, error=error))
             say(error)
             raise
 
 
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--out', type=Path, required=True)
+    out = parser.parse_args().out.resolve()
+    # This check is outside the error handler: an existing output is never modified.
+    out.mkdir(parents=True, exist_ok=False)
+    try:
+        audit(out)
+    except Exception:
+        if not (out / 'error.txt').exists():
+            error = traceback.format_exc()
+            (out / 'error.txt').write_text(error, encoding='utf-8')
+            write_json(out / 'error.json', dict(complete=False, traceback=error))
+            write_json(out / 'status.json', dict(phase='FAILED', complete=False, error=error))
+            (out / 'audit.log').write_text(error, encoding='utf-8')
+        raise
+
+
 if __name__ == '__main__':
-    raise SystemExit('DRAFT_REVIEW_PENDING: read docs/FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md; root must review protocol/code and remove this guard before any execution.')
+    main()
