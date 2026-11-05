@@ -625,3 +625,15 @@ mark reference-return verification UNAVAILABLE; complete dwell/event checking
 remains possible. This missing reference is not to be filled from training
 episode logs, which are different trajectories. The next protocol/code is
 prepared separately, not launched by the completed actor diagnosis.
+
+Actor results/paper/state were explicitly staged, cached checks passed and
+19files pushed to both branches as83ea09073bf5461d579835fc1bffc868373c7bf0;
+remote refs verified. No Python process remained. The next trajectory-analysis
+agent then reported usage unavailable before root review. Its two new files
+exist locally and were inspected only at the header/CLI tail, not validated.
+Root preserved them as visibly unreviewed drafts and blocked the CLI; no
+diagnostic execution occurred. Recovery details and necessary initialization/
+time-counting checks are in FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md.
+Do not read25sampled post-step frames as a proof of continuous5s dwell:25h=5s
+occupancy-equivalent count versus24h=4.8s endpoint span. Account/payment settings
+were untouched; the same15-minute heartbeat remains active for normal resumption.

@@ -1,0 +1,18 @@
+{
+  "status": "DRAFT_NOT_ROOT_REVIEWED_NOT_EXECUTED",
+  "created_at_utc": "2026-11-05T02:03:48.641087+00:00",
+  "cli_blocked_pending_review": true,
+  "research_goal_complete": false,
+  "files": [
+    {
+      "path": "docs/design/MASAC_V4_FINAL_TRAJECTORY_DWELL_PROTOCOL_20261105.md",
+      "bytes": 7641,
+      "sha256": "eb02fb33ff80fc0bfc0e65c725bec5392648d854a2f22df3d164f8ee910298d2"
+    },
+    {
+      "path": "scripts/audit_sync_final_trajectory_dwell.py",
+      "bytes": 17623,
+      "sha256": "6f2394d8be2d51b69a3a75a6d2fb44ea7ce4f336a2eb730213aec3395e323298"
+    }
+  ]
+}

@@ -50,6 +50,14 @@ binaries. Meaningful stages must be committed and pushed to both active branches
 
 ## Current authoritative status: completed40k, next offline diagnosis
 
+**Latest recovery checkpoint:** completed actor results pushed83ea090 to both
+remote branches. The next trajectory-analysis agent hit a usage limit during
+draft preparation. Both draft files are preserved and will be pushed as drafts;
+they are not reviewed/registered/executed, and the script CLI is blocked.
+Resume from `docs/FINAL_TRAJECTORY_DRAFT_RECOVERY_20261105.md` when usage returns.
+No Python process remained at the quota recovery check. Keep automation active;
+do not change billing, restart completed studies or interpret this as goal completion.
+
 Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
 Both workers finished normally at07:22/07:23; no Python training process remained
 at the post-completion check. Do not restart or extend these completed runs.
@@ -124,7 +132,9 @@ Next ordered actions:
    It is separate from completed phaseA's no-model contract.
 5. Next minimum under preparation: **saved final trajectory dwell/reward audit**,
    exactly72 original40000NPZs/JSONs, no new rollout/model/training/test. Fixed
-   near-stall description4<=d<10 andspeed<.5,>=25consecutivepoststepframes=5s,
+   near-stall description4<=d<10 andspeed<.5,>=25consecutivepoststepframes:
+   5s occupancy-equivalent step count,4.8s first-to-last sample span; no
+   continuous-time dwell proof,
    plus all distance/speed bins and A/C/J/event cross-checks. Protocol/code need
    review/push before run. Actual evalJSON lacks cumulative return, so source-
    derived reward components must mark reference-return validation UNAVAILABLE;
