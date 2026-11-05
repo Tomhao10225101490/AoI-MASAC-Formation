@@ -24,8 +24,8 @@
     "finished_at_asia_shanghai": "2026-11-04 18:34 Asia/Shanghai"
   },
   "authorization": "Tom Zhong t1u 2026-11-03 max intensity for paper on learnable strategy + path planning",
-  "updated_at": 1793834627.0290089,
-  "updated_at_asia_shanghai": "2026-11-05 07:23 Asia/Shanghai",
+  "updated_at": 1793846453.3507571,
+  "updated_at_asia_shanghai": "2026-11-05 10:40 Asia/Shanghai",
   "load_after": {
     "note": "monitor 2026-11-03 15:43 Asia/Shanghai; Path C L0 FULL PASS 3/3; train pids gone; machine idle"
   },
@@ -640,6 +640,90 @@
       "do_not_auto_launch_further": true,
       "caffeinate_pid": null,
       "completed_at": 1793834627.0290089,
+      "all_seeds_gate_met": false
+    },
+    {
+      "out": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_2k_original_cuda_20261105",
+      "pid": 2664,
+      "started_at": 1793845969.1214468,
+      "kind": "v4_maneuver_static",
+      "phase": "complete",
+      "experiment_id": "masac_v4_near_objective_2k_original_cuda_20261105_static",
+      "suite_experiment_id": "masac_v4_near_objective_2k_original_cuda_20261105",
+      "probe_mode": "static",
+      "set_mode": "pool",
+      "seeds": [
+        1644
+      ],
+      "steps": 2000,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "lock_path": "C:\\research\\masac-maneuverability\\results\\locks\\masac_v4_maneuver_static_masac_v4_near_objective_2k_original_cuda_20261105.lock",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_2k_original_cuda_20261105\\train.log",
+      "authorization": {
+        "date": "2026-11-05",
+        "provenance": "Persistent user-authorized problem-hypothesis-minimal-experiment loop; concrete two-arm 2k plan shown before launch.",
+        "scope": "New cold-start two-arm 2k runtime/numerical pilot only; no historical continuation or automatic 40k launch."
+      },
+      "do_not_auto_launch_further": true,
+      "caffeinate_pid": null,
+      "completed_at": 1793846055.0215814,
+      "all_seeds_gate_met": false
+    },
+    {
+      "out": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_2k_potential_cuda_20261105",
+      "pid": 33264,
+      "started_at": 1793845969.1204405,
+      "kind": "v4_maneuver_static",
+      "phase": "complete",
+      "experiment_id": "masac_v4_near_objective_2k_potential_cuda_20261105_static",
+      "suite_experiment_id": "masac_v4_near_objective_2k_potential_cuda_20261105",
+      "probe_mode": "static",
+      "set_mode": "pool",
+      "seeds": [
+        1644
+      ],
+      "steps": 2000,
+      "reshape": {
+        "progress_scale": 1.0,
+        "living_cost": 0.005,
+        "acc_penalty": 0.002,
+        "near_goal_radius_m": 15.0,
+        "near_goal_bonus": 0.4,
+        "ball_enter_bonus": 3.0,
+        "capture_bonus": 8.0,
+        "team_success_bonus": 50.0,
+        "collision_penalty": 20.0,
+        "train_ball_m": 4.0,
+        "train_speed_mps": 2.0,
+        "capture_latch": false,
+        "horizon": 350
+      },
+      "warm_start": null,
+      "lock_path": "C:\\research\\masac-maneuverability\\results\\locks\\masac_v4_maneuver_static_masac_v4_near_objective_2k_potential_cuda_20261105.lock",
+      "log": "C:\\research\\masac-maneuverability\\results\\masac_v4_near_objective_2k_potential_cuda_20261105\\train.log",
+      "authorization": {
+        "date": "2026-11-05",
+        "provenance": "Persistent user-authorized problem-hypothesis-minimal-experiment loop; concrete two-arm 2k plan shown before launch.",
+        "scope": "New cold-start two-arm 2k runtime/numerical pilot only; no historical continuation or automatic 40k launch."
+      },
+      "do_not_auto_launch_further": true,
+      "caffeinate_pid": null,
+      "completed_at": 1793846055.92866,
       "all_seeds_gate_met": false
     }
   ],

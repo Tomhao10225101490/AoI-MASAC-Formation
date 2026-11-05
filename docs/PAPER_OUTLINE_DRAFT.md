@@ -180,6 +180,8 @@ The three verified final trajectory summaries are under results/masac_v4_sync_40
 
 ## VII. Discussion
 
+- New near-objective formula/runtime boundary: [2k results](NEAR_OBJECTIVE_2K_RESULTS_20261105.md), seed1644static/B-off arms both0/12; replacement103nonzero corrections,17source/config and replay checks pass. This deliberately changes old Path-C soft reward and is only a runtime milestone. No confirmed gain/new theorem; a separate fresh-seed study remains a proposal.
+
 - What static preview might expose; observed results do not certify feasibility or prove encoder-use causality.
 - CV mismatch, constant-fill/saturation, feature scale and optimization are candidate explanations for full's weaker historical mean, each requiring an identifiable test. Standard affine constant-offset/bias equivalence concerns representational function classes, not SAC/Adam/clipping trajectories; see [constant-fill identity](MATH_CONSTANT_FILL_IDENTITY_20261105.md).
 - Post-hoc [fixed-state actor responses](NEAR_GOAL_ACTOR_OFFLINE_RESULTS_20261105.md) give mixed MC-minus-deterministic one-step membership differences, not a uniform stochastic rescue. Necessary-distance exclusions, correlated late-replay population and omitted collisions preclude an episode-success interpretation.

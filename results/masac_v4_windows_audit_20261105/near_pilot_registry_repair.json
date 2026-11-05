@@ -1,0 +1,9 @@
+{
+  "action": "Restore both completed pilot index entries from authoritative per-output manifests/completions; no scientific artifact changed",
+  "before_sha256": "51d7871f7ea3edf7cc8c7d2f5a5c82b21203acc69e85b1a56c2dec799e3d845a",
+  "after_sha256": "34a1b688c431bf0e906c435b711eb231ef48e6b4ad6409177b17c7a578e133d3",
+  "modes": [
+    "original",
+    "potential"
+  ]
+}

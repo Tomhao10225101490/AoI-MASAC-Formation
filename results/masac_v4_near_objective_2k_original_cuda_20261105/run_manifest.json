@@ -1,0 +1,204 @@
+{
+  "experiment_id": "masac_v4_near_objective_2k_original_cuda_20261105_static",
+  "suite_experiment_id": "masac_v4_near_objective_2k_original_cuda_20261105",
+  "mode": "predictive_maneuverability_aware_masac",
+  "smoke": false,
+  "level": "L0",
+  "set_mode": "pool",
+  "probe_mode": "static",
+  "created_at": 1793845969.1214468,
+  "device": "cuda",
+  "compute_evidence": {
+    "path": "results/masac_v4_windows_audit_20261105/device_benchmark.json",
+    "sha256": "e0a80390905f891ec8f5ff4452b3ce8fd718f58cd17ff653e49da744e2b63ea4",
+    "best_cpu_steps_per_s": 2.5488481165938826,
+    "cuda_steps_per_s": 22.317500902992126,
+    "measured_speedup": 8.75591635205624,
+    "workload": "full probes, act + numpy environment + cached replay + batch128 SAC update; 8 update warmup; no eval/reference audits/checkpoint IO"
+  },
+  "created_at_asia_shanghai": "2026-11-05 10:32 Asia/Shanghai",
+  "pid": 2664,
+  "config_hashes": {
+    "protocol": "7eac323be8493907f7f2f85cf6bc0ecbe9aff5362c622f673c63ee5625e5c4e8",
+    "authorization": null
+  },
+  "sources": {
+    "scripts/train_masac_v4_maneuver.py": "aae58fdadd5c31a65fa132b76c00eb7280a81277d386b0ef01f8e4421f5ed859",
+    "uav_planning/v4_maneuver_masac.py": "2643f907070e824221d0006f0ed4782862d9740b8df21ec4a8faf698c768b2d4",
+    "uav_planning/v4_networks.py": "ccdc44cbb7fefddcd501e127ade281dd82aab5052370c7224ee8d34fd025682f",
+    "uav_planning/v4_prediction.py": "f3c4131ffe12ec70f4e21606071d99b5b1907f008c0067e105d2e94751426e3a",
+    "uav_planning/v4_reward_reshape.py": "30e99fb4ac1ba10ad9aa6cb33dec719b3749591fd830b858db67967bcdadbfef",
+    "uav_planning/v4_training.py": "36a4b825551bbde6f10ad8674549749734b4d461dd0bd91aacdec54e733ca75a",
+    "uav_planning/v4_environment.py": "48c3cee7d37f9414f8506c6655a745def76e677e8a68f65cabe2859a281dacb2",
+    "uav_planning/v4_maps.py": "fa2529eea3d6267ecf9d38921f7796a1d6509a1f45730b52bd56997f97e764c1",
+    "uav_planning/shared_masac.py": "b7879ba178ecb699631d5e806fa3a9e8791bba92340cf1c5ec96e155537c0a80",
+    "uav_planning/structured.py": "e3472c487759661f661f134fdf200cf2e7fb63772bfd3d1c525578378cf1cf02",
+    "uav_planning/environment.py": "e36935f3e2008bc683173bcef4c40c866eb86f6fba58db98423cfd8941301e99",
+    "uav_planning/v4_reference.py": "05522409eca1bcc9b12e7557e34eee084602b54a40a729f957e3c83b1ec3c3bc",
+    "uav_planning/run_lock.py": "1b72fd23d7362a63c4c4f029a1f2ae915b1e9857898d81c897f5e2307fc4b1f2",
+    "uav_planning/v4_sync_capture.py": "339c1d98890163427bd18732b451e13f6af525be2e95adb5ac981f80227c6647",
+    "scripts/train_masac_v4_near_objective.py": "94b1ce5b949afa33cde9d9512c5ce27e526e3e6223cea392a2c9f3b11f38767c",
+    "uav_planning/v4_near_objective.py": "3afe68c9988ab11c78139ec5e3aae11e12dda45dfc6cd1579c332c71c2d83256",
+    "docs/design/MASAC_V4_NEAR_OBJECTIVE_2K_PROTOCOL_20261105.md": "7f79c3fcb3abb36c08ff9c4deb5f31c0683f49a20cf3dfaa7fd4542fe0a572fc"
+  },
+  "seed_list": [
+    1644
+  ],
+  "steps_per_seed": 2000,
+  "warmup": 1000,
+  "replay_capacity": 10000,
+  "families": [
+    "urban_canyon",
+    "warehouse",
+    "courtyard",
+    "overpass",
+    "narrow_crossing",
+    "dynamic_crossing"
+  ],
+  "development_maps_used": [
+    {
+      "seed": 830001,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830002,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830003,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830004,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830005,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830006,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830007,
+      "family": "urban_canyon",
+      "level": "L0"
+    },
+    {
+      "seed": 830008,
+      "family": "warehouse",
+      "level": "L0"
+    },
+    {
+      "seed": 830009,
+      "family": "courtyard",
+      "level": "L0"
+    },
+    {
+      "seed": 830010,
+      "family": "overpass",
+      "level": "L0"
+    },
+    {
+      "seed": 830011,
+      "family": "narrow_crossing",
+      "level": "L0"
+    },
+    {
+      "seed": 830012,
+      "family": "dynamic_crossing",
+      "level": "L0"
+    }
+  ],
+  "reshape": {
+    "progress_scale": 1.0,
+    "living_cost": 0.005,
+    "acc_penalty": 0.002,
+    "near_goal_radius_m": 15.0,
+    "near_goal_bonus": 0.4,
+    "ball_enter_bonus": 3.0,
+    "capture_bonus": 8.0,
+    "team_success_bonus": 50.0,
+    "collision_penalty": 20.0,
+    "train_ball_m": 4.0,
+    "train_speed_mps": 2.0,
+    "capture_latch": false,
+    "horizon": 350
+  },
+  "sync_capture": {
+    "enabled": false,
+    "coefficient": 0.5,
+    "temperature": 0.1,
+    "ball_m": 4.0,
+    "speed_mps": 2.0
+  },
+  "capture_train_and_gate": {
+    "ball_m": 4.0,
+    "speed_mps": 2.0,
+    "latch": false
+  },
+  "probe_config": {
+    "world": [
+      240.0,
+      240.0,
+      90.0
+    ],
+    "body_radius": 1.0,
+    "dt": 0.2,
+    "horizon_s": 2.0,
+    "clearance_scale": 40.0
+  },
+  "parameter_counts": {
+    "actor": 506054,
+    "twin_critics": 1273730,
+    "risk_encoder": 4928,
+    "set_encoder": 302464,
+    "total_trainable": 1779785
+  },
+  "warm_start_path": null,
+  "warm_start_mode": "cold",
+  "warm_start_note": "Cold start: Legacy SharedMASAC Path-C L0 checkpoints are architecture-incompatible with V4 pool+RiskEncoder; paper suite trains maneuver arms from scratch under matched C-reshape + frozen 4/2. Standard-C baseline comparison uses completed Path-C L0 results.",
+  "baseline_comparison": {
+    "role": "paired original near occupancy vs discounted near potential replacement",
+    "paired_mode": "potential"
+  },
+  "authorization_protocol": null,
+  "authorization": {
+    "date": "2026-11-05",
+    "provenance": "Persistent user-authorized problem-hypothesis-minimal-experiment loop; concrete two-arm 2k plan shown before launch.",
+    "scope": "New cold-start two-arm 2k runtime/numerical pilot only; no historical continuation or automatic 40k launch."
+  },
+  "failure_action": "save_and_diagnose",
+  "success_action": "declare maneuver arm evidence; do not auto-launch Attention/L1/further stages",
+  "do_not_auto_launch_further": true,
+  "command": [
+    "scripts\\train_masac_v4_near_objective.py",
+    "--protocol",
+    "configs/masac_v4/near_objective_2k_original_cuda_20261105.json",
+    "--out",
+    "results/masac_v4_near_objective_2k_original_cuda_20261105",
+    "--torch-threads",
+    "1"
+  ],
+  "note": "Predictive Maneuverability probe_mode=static; V4 pool+RiskEncoder; C reshape + frozen capture 4/2; cold start; no Attention/L1 auto-launch.",
+  "near_objective": {
+    "mode": "original",
+    "coefficient": 0.4,
+    "radius_m": 15.0,
+    "gamma": 0.99
+  },
+  "training_entry_point": "C:\\research\\masac-maneuverability\\scripts\\train_masac_v4_near_objective.py",
+  "evaluation_near_objective": "original Path-C; no reward callback during evaluation",
+  "shaping_return_semantics": "near replacement correction; base_return remains original Path-C",
+  "preregistered_near_protocol": {
+    "path": "docs/design/MASAC_V4_NEAR_OBJECTIVE_2K_PROTOCOL_20261105.md",
+    "sha256": "7f79c3fcb3abb36c08ff9c4deb5f31c0683f49a20cf3dfaa7fd4542fe0a572fc"
+  }
+}

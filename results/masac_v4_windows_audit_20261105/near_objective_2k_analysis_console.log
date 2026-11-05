@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\research\masac-maneuverability\scripts\analyze_near_objective_pilot.py", line 145, in <module>
+    main()
+  File "C:\research\masac-maneuverability\scripts\analyze_near_objective_pilot.py", line 134, in main
+    arms = [analyze(mode) for mode in ('original', 'potential')]
+  File "C:\research\masac-maneuverability\scripts\analyze_near_objective_pilot.py", line 134, in <listcomp>
+    arms = [analyze(mode) for mode in ('original', 'potential')]
+  File "C:\research\masac-maneuverability\scripts\analyze_near_objective_pilot.py", line 80, in analyze
+    require(progress and progress[-1]['step'] == 2000 and progress[-1]['updates'] == 1000 and
+  File "C:\research\masac-maneuverability\scripts\analyze_near_objective_pilot.py", line 31, in require
+    raise ValueError(message)
+ValueError: Missing final update/finite diagnostics

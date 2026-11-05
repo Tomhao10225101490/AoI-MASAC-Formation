@@ -55,11 +55,14 @@ before first execution; fixed72trajectory audit now COMPLETE, exit0. Independent
 summary verifies183input/six output hashes,72MAP lines and zero physics errors.
 Report: `docs/FINAL_TRAJECTORY_DWELL_RESULTS_20261105.md`; original audit and
 summary outputs named in action5below. Do not rerun completed diagnostics.
-The goal remains unfinished. Near-objective2k pilot code/protocol/config/tests
-are reviewed and ready for registration push, not launched yet. After verifying
-that push and fresh output paths, launch only the two fixed seed1644jobs. Their
-own manifest/status/completion/error will become authoritative. Do not start
-a new copy if a process/output already exists. No40k experiment is registered.
+The goal remains unfinished. Near-objective2k pilot was registered/pushed9a751c3,
+then both fixed cold seed1644jobs completed normally (2k/1kupdates each). Final
+success/any/all0/12both; original boundary12, replacement static9/boundary3.
+Independent analysis v2 PASS, intervention exercised103transitions. Do not rerun.
+No Python process remained after completion. Next ordered action: review and
+implement `docs/design/MASAC_V4_NEAR_OBJECTIVE_CONFIRMATION_PROPOSAL_20261105.md`
+as a **new** fixed40k×3seed/two-arm study, show concrete plan, push final protocol/
+configs/code before any launch. It is a proposal, not registered/launched now.
 
 Updated after final verification, 2026-11-05. **All six histories COMPLETE**.
 Both workers finished normally at07:22/07:23; no Python training process remained
@@ -148,7 +151,7 @@ Next ordered actions:
    Of65never-ball agentmaps,39have>=25frame near-stall runs,48end near-stall;
   11491/22750frames meet it. B1522haslowest near-stall fraction20.09%yet0/12success,
   58capture entries/53exits. Lower sampled stall is insufficient for joint success.
-6. Next smallest **reviewed, registration push pending**, not launched: static/B-off
+6. **COMPLETE new near-objective2k runtime pilot**: static/B-off
    original near occupancy reward versus replacement by discounted near potential
    difference. Samec=.4,R15,gamma.99; true-terminal absorbingPhi0, timeout retains
    continuation. This intentionally changes the old PathC soft objective; PBRS
@@ -159,10 +162,22 @@ Next ordered actions:
    `docs/design/MASAC_V4_NEAR_OBJECTIVE_2K_PROTOCOL_20261105.md`; entry:
    `scripts/train_masac_v4_near_objective.py`; outputs
    `results/masac_v4_near_objective_2k_{original,potential}_cuda_20261105`.
-   Push before launch. Every reward transition is logged; evaluations assert
-   unchanged training reward/environment state. Any later
-  40k×3newseed confirmation requires its own visible concrete plan/registration.
-   No old continuation or sealed evaluation queued.
+   Pushed9a751c3 before both launches. Every2k reward transition/replay mask
+   verified;17source/config and both checkpoint/replay hashes match. Original
+   correction0; treatment103nonzero corrections,minimum-.0957327142. Each has
+   26true terminations/0timeouts; timeout runtime coverage absent (unit algebra
+   passes). Both finalsuccess/any/all0/12; not gain evidence. Report:
+   `docs/NEAR_OBJECTIVE_2K_RESULTS_20261105.md`; independent analysis v2 root:
+   `results/masac_v4_near_objective_2k_analysis_v2_20261105`. First analyzer schema
+   failure is retained; it did not affect training. Concurrent legacy registry
+   writes lost an index entry; root repaired both from own output records after
+   workers exited, preserving before/after hashes. New formal entry needs a
+   shared registry write lock. Do not rerun either history.
+7. Next: the separate confirmation **proposal**, not registered/launched, uses
+   new cold seeds1611/1622/1633 and the original/near-replacement static/B-off
+   contrast, final40k only, no automatic budget extension. Follow the full proposal,
+   verify source/reset/multiple-seed/timeout handling, then show/push exact plan.
+   No old continuation or sealed evaluation queued. Keep active recovery heartbeat.
 
 Before this final stage both remote branches were e3425c2; obtain the actual new
 tip from Git. Preserve uncommitted intended edits and historical restoration

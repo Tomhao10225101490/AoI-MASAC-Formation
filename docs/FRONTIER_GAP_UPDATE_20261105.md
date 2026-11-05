@@ -71,6 +71,14 @@ The **dwell/reward decomposition of all72 saved final trajectories is now comple
 
 ## WoWMoM 2027 venue check
 
+Near-objective follow-up: the new original/replacement2k pilot is COMPLETE,
+both0/12success;103replacement corrections exercise the intervention. It supplies
+runtime evidence only ([report](NEAR_OBJECTIVE_2K_RESULTS_20261105.md)). The
+discounted near-potential replacement intentionally changes the old Path-C soft
+objective; PBRS applies relative to Path-C-minus-near. It is established reward
+shaping, not novelty clearance or sparse-success equivalence. A separate matched
+fresh-seed study is proposed, not launched or justified as effective by this pilot.
+
 The [official CFP](https://wowmom2027.dii.unipi.it/call-for-papers.html) and [conference home page](https://wowmom2027.dii.unipi.it/) were checked on 2026-11-05. The published submission deadline is **2026-12-01 23:59 AoE**, equal to **2026-12-02 19:59 Asia/Shanghai**. Regular submissions allow **10 pages including figures and references**, IEEE two-column format with font size at least 10 pt. Review is double blind. The event is in person in Irvine, 21–24 June 2027. Recheck the official pages before submission because rules and dates may change.
 
 The CFP includes navigation, mobility, networked intelligence, and reproducible system artifacts. A capture-control simulation needs a concrete explanation of its relevance to mobile/networked systems; citing AoI papers does not supply an evaluated networking contribution. The paper should describe the information available to each actor and the training/runtime information model faithfully.

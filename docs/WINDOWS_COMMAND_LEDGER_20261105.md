@@ -715,3 +715,34 @@ must be pushed before either exact CLI below is executed:
 .venv\Scripts\python.exe -u scripts\train_masac_v4_near_objective.py --protocol configs/masac_v4/near_objective_2k_original_cuda_20261105.json --out results/masac_v4_near_objective_2k_original_cuda_20261105 --torch-threads 1 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_2k_original_console.log
 .venv\Scripts\python.exe -u scripts\train_masac_v4_near_objective.py --protocol configs/masac_v4/near_objective_2k_potential_cuda_20261105.json --out results/masac_v4_near_objective_2k_potential_cuda_20261105 --torch-threads 1 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_2k_potential_console.log
 ```
+
+Pushed9a751c37984b5cfa66234275a6d618052d020579beforelaunch; refs verified,
+no Python processes, both outputs absent. Two jobs finished normally: each2k
+transitions/1kupdates; original85.864s,replacement86.770s. Both finalsuccess/
+any/all0/12; originalboundary12, replacementstatic9/boundary3. Checkpoints saved
+locally at eachmaneuver_static_1644/checkpoint_002000. No binaries staged.
+One resource sample:GPU60%,1570/8188MiB,54C,14.9GiBRAM free.
+
+```powershell
+.venv\Scripts\python.exe -u scripts\analyze_near_objective_pilot.py --out results/masac_v4_near_objective_2k_analysis_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_2k_analysis_console.log
+.venv\Scripts\python.exe -u scripts\analyze_near_objective_pilot.py --out results/masac_v4_near_objective_2k_analysis_v2_20261105 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_objective_2k_analysis_v2_console.log
+```
+
+First analyzer failed on schema assumption (nestedlosses instead of flattened
+fields). Preserved error/traceback, fixed analyzer only, used freshv2directory.
+V2exit0/PASS:2000ordered reward records/history,17source and originalconfig
+hashes, allfourfinal checkpoint/replaySHA256s, transformed replay reward/done
+mask and episode component totals.10retained finite postwarmup rows/history
+plus perupdatefinite guards. Original0corrections; treatment103nonzero,
+min-.0957327142. Each26true training terminations/0timeouts; timeout runtime
+path not exercised, unit algebra passed. Evaluation-state guards bothPASS.
+
+No Python process remained after completion. Legacy parallel registry lost the
+original index entry through concurrent unlocked read/modify/write. After
+workers exited, a printed pure-JSON repair reconstructed both completed entries
+from own manifests/completions, preserving original history. Repair beforeSHA
+51d7871f7ea3edf7cc8c7d2f5a5c82b21203acc69e85b1a56c2dec799e3d845a,
+afterSHA34a1b688c431bf0e906c435b711eb231ef48e6b4ad6409177b17c7a578e133d3;
+recordnear_pilot_registry_repair.json. Per-output artifacts unchanged.
+Future formal entry needs a registry write lock and multi-seed/reset validation.
+The separate40k×3newcoldseed proposal is written but not registered/launched.

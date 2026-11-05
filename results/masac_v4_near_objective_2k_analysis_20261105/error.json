@@ -1,0 +1,7 @@
+{
+  "complete": false,
+  "phase": "independent analysis only; training already complete",
+  "error": "Analyzer expected nested losses; original progress metrics flatten diagnostics at top level.",
+  "traceback_log": "results/masac_v4_windows_audit_20261105/near_objective_2k_analysis_console.log",
+  "action": "Preserve failed output; corrected analyzer uses a fresh v2 output. No training rerun."
+}
