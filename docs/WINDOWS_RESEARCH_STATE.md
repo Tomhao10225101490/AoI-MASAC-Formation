@@ -104,21 +104,33 @@ Next ordered actions:
    reward alone does not establish hover preference; a feasible near-goal
    finish yields54.06949 and beats waiting in the documented example.
    See `docs/MATH_PATHC_OBJECTIVE_DIAGNOSTIC_20261105.md`; no root cause claimed.
-4. Next minimum is a separately frozen **offline actor-response** diagnostic
-   (protocol/script reviewed and syntax-checked, not yet executed at this entry).
+4. Separately frozen **offline actor-response** diagnostic is **COMPLETE**.
+   Protocol/code pushed3615a66 before any checkpoint load; actual CUDA run exit0.
    Protocol: `docs/design/MASAC_V4_NEAR_GOAL_ACTOR_OFFLINE_PROTOCOL_20261105.md`;
    script: `scripts/audit_sync_near_goal_actor.py`; intended new output:
    `results/masac_v4_sync_40k_near_goal_actor_audit_20261105`.
-   Review new output's manifest/status/completion/error and process command line
-   before starting; completion.json written last is authoritative, not audit.json.
-   Reuse the same6144
+   completion.json written last is authoritative; all six histories complete,
+   actor hashes/global Torch RNG unchanged; four limiter witnesses and48chunks
+   pass. Output hash/bin/paired-count integrity independently PASS. Do not rerun.
+   The same6144
    observations/hashes; compare tanh(mu), not E[action], with64fixed isolated
    Gaussian draws; only analytic one-step distance/speed, no simulator/rollout,
-   new training or sealed maps. Push the reviewed protocol/code before any model
-   load/run; after that the visible planned CLI is the next authorized action.
-   It is separate from the completed
-   phaseA no-policy-load contract. Any substantial new training still needs a
-   visible plan; current relative rule supports planning confirmation only.
+   new training or sealed maps were used. Primarynear subset8000agentobs,7359
+   fail a necessary distance bound for one-step capture. Mean inwarddetaccel
+   1.90513, dchange-.0712755m; deterministic168/8000 versus marginalMC10440/512000,
+   MC-minus-det=-.0609375percentagepoints, three positive/three negativehistories.
+   Not uniform MCrescue, control failure, causal evidence or actualfinaloccupancy.
+   Report: `docs/NEAR_GOAL_ACTOR_OFFLINE_RESULTS_20261105.md`.
+   It is separate from completed phaseA's no-model contract.
+5. Next minimum under preparation: **saved final trajectory dwell/reward audit**,
+   exactly72 original40000NPZs/JSONs, no new rollout/model/training/test. Fixed
+   near-stall description4<=d<10 andspeed<.5,>=25consecutivepoststepframes=5s,
+   plus all distance/speed bins and A/C/J/event cross-checks. Protocol/code need
+   review/push before run. Actual evalJSON lacks cumulative return, so source-
+   derived reward components must mark reference-return validation UNAVAILABLE;
+   do not invent it. Reward/dwell remain diagnostic, not a new primary endpoint.
+   Any substantial new training still needs a visible plan; relative40k rule
+   supports planning confirmation only. No training or sealed evaluation queued.
 
 Before this final stage both remote branches were e3425c2; obtain the actual new
 tip from Git. Preserve uncommitted intended edits and historical restoration

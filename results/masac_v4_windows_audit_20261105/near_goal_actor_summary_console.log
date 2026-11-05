@@ -1,0 +1,7 @@
+ACTOR_SUBSET control primary_d4_10_speed_lt2 n 3897 necessary_bound_excluded 3613 det 70 mc 4352 mc_den 249408 det_inward_accel 1.6944950346951402 det_delta_distance -0.06070720561401765 MC_minus_det_membership -0.0005132152938157557
+ACTOR_SUBSET control boundary_d4_4p4_speed_lt2 n 356 necessary_bound_excluded 72 det 70 mc 4352 mc_den 22784 det_inward_accel 1.5034472042732554 det_delta_distance -0.06686004924227999 MC_minus_det_membership -0.0056179775280898875
+ACTOR_SUBSET b primary_d4_10_speed_lt2 n 4103 necessary_bound_excluded 3746 det 98 mc 6088 mc_den 262592 det_inward_accel 2.1051889707813154 det_delta_distance -0.0813131477054724 MC_minus_det_membership -0.0007007067999025105
+ACTOR_SUBSET b boundary_d4_4p4_speed_lt2 n 446 necessary_bound_excluded 89 det 98 mc 6088 mc_den 28544 det_inward_accel 1.9080587784747993 det_delta_distance -0.07180362611705976 MC_minus_det_membership -0.006446188340807175
+ACTOR_SUBSET all primary_d4_10_speed_lt2 n 8000 necessary_bound_excluded 7359 det 168 mc 10440 mc_den 512000 det_inward_accel 1.9051296871653374 det_delta_distance -0.07127547816417247 MC_minus_det_membership -0.0006093750000000001
+ACTOR_SUBSET all boundary_d4_4p4_speed_lt2 n 802 necessary_bound_excluded 161 det 168 mc 10440 mc_den 51328 det_inward_accel 1.7284556358117698 det_delta_distance -0.06960922042202035 MC_minus_det_membership -0.0060785536159600985
+COMPLETION True

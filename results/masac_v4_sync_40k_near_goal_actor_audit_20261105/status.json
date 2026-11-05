@@ -1,0 +1,41 @@
+{
+  "state": "COMPLETE",
+  "updated_at_utc": "2026-11-05T01:48:34.295724+00:00",
+  "stage": "complete",
+  "checkpoint_deserialized": true,
+  "owns_empty_output_directory": true,
+  "arm": "b",
+  "seed": 1533,
+  "manifest_sha256": "08c2ca25f77adf9bc07971ed963da14c16654a313463052d3623b506cecc0169",
+  "chunk_start": 896,
+  "sampled_transitions_completed": 1024,
+  "near_agent_observations_so_far": 1439,
+  "completed_histories": [
+    {
+      "arm": "control",
+      "seed": 1511
+    },
+    {
+      "arm": "control",
+      "seed": 1522
+    },
+    {
+      "arm": "control",
+      "seed": 1533
+    },
+    {
+      "arm": "b",
+      "seed": 1511
+    },
+    {
+      "arm": "b",
+      "seed": 1522
+    },
+    {
+      "arm": "b",
+      "seed": 1533
+    }
+  ],
+  "histories_completed": 6,
+  "global_torch_rng_unchanged": true
+}

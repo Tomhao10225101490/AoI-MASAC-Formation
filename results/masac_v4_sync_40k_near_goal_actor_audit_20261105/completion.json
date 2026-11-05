@@ -1,0 +1,42 @@
+{
+  "complete": true,
+  "status": "COMPLETE",
+  "histories_completed": 6,
+  "sampled_joint_observations": 6144,
+  "agent_observations": 18432,
+  "created_at_utc": "2026-11-05T01:48:34.333723+00:00",
+  "artifacts": {
+    "audit.json": {
+      "bytes": 2706897,
+      "sha256": "5c66a527d07b67da07abc86f34d8bd7a5a65c41b484cdc429ba61a5717ff0837"
+    },
+    "audit.md": {
+      "bytes": 5131,
+      "sha256": "f1a8736095d6daff00028ea06df615dd614bf7f0ac1d204669afbf66623818a9"
+    },
+    "groups.csv": {
+      "bytes": 1144766,
+      "sha256": "27c195c2aca2bc61270270a165a51b01870489eee0d61ff9dca83632494cc27b"
+    },
+    "manifest.json": {
+      "bytes": 28366,
+      "sha256": "08c2ca25f77adf9bc07971ed963da14c16654a313463052d3623b506cecc0169"
+    },
+    "status.json": {
+      "bytes": 859,
+      "sha256": "fe50453d56bc41eeae72faf6f1308058d55002b6452c0b733cf1544f2a3bb492"
+    },
+    "sample_indices.json": {
+      "bytes": 43637,
+      "sha256": "eca0cfd9c12108af9627b89910fcf6a657c168a9c1bb54622eb628d15d3b3fc7"
+    },
+    "standard_normal_vectors.json": {
+      "bytes": 7027,
+      "sha256": "92574cf5e682c5c090e206ea333d8e1134c8eb5278f18fbc7e29f9827dbdca83"
+    }
+  },
+  "protocol_sha256": "fe959d616fe5a13d61bbe04875845cdc506cae77ec7a0d9ffb4bbba31779ce37",
+  "script_sha256": "b28e8cf9c1fa0e4d343e0bac490f6fc40b8a4dbdc8e6c7b6f4419b6a1ec8ee2d",
+  "no_training_rollout_or_sealed_evaluation": true,
+  "decision": null
+}

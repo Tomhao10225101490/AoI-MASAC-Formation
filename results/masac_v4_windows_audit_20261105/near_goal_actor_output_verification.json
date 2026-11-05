@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "histories": 6,
+  "chunk_logs": 48,
+  "completion_sha256": "5927358b11428d2eda072469e9f8268f373f1005e4cc6d7ff54302ad893876a7",
+  "artifact_bytes_and_hashes_match": true,
+  "actor_and_rng_unchanged": true,
+  "distance_bins_exhaustive": true,
+  "paired_membership_difference_matches_counts": true
+}

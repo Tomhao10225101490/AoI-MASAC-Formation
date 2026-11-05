@@ -578,3 +578,50 @@ actor loading, followed by actual sample/actor/RNG consistency checks in the run
 Output-specific manifest/status/completion/error support recovery; completion
 is the last write and includes hashes. Existing nonempty output cannot be reused.
 The new protocol and code must be pushed before the printed execution CLI.
+
+The four protocol/code/state files passed cached checks and were pushed to both
+branches as3615a66bada42e5e10662ec37f92fc9bcfcfb677, remote refs verified.
+
+## 15. Fixed-state actor audit: COMPLETE, mixed marginal responses
+
+```powershell
+.\.venv\Scripts\python.exe -u scripts/audit_sync_near_goal_actor.py --control results/masac_v4_sync_40k_control_cuda_20261105 --treatment results/masac_v4_sync_40k_b_cuda_20261105 --phase-a results/masac_v4_sync_40k_late_content_audit_20261105/audit.json --protocol docs/design/MASAC_V4_NEAR_GOAL_ACTOR_OFFLINE_PROTOCOL_20261105.md --out results/masac_v4_sync_40k_near_goal_actor_audit_20261105 --device cuda --chunk-size 128 2>&1 | Tee-Object -FilePath results/masac_v4_windows_audit_20261105/near_goal_actor_console.log
+```
+
+Exit0, six histories/6144jointobs/18432agentobs; four fixed-vector limiter
+cross-checks pass,48chunks complete, all actor hashes before/after match and
+global CPU/CUDA Torch RNG states unchanged. No learner/environment was created,
+no update/Q/TD/rollout/sealed map. The trusted own checkpoints were hashed before
+deserialization; only actor states were consumed. Each output has manifest,
+atomic live status and a final completion file with artifact sizes/SHA256s.
+
+The first tool display clipped119tokens from the middle of the75-line console;
+the full tee log is retained. The affected control1533@384/512/640 chunk lines
+were explicitly printed again with Select-String, without rerunning inference.
+
+Primarynear4–10m/speed<2:8000agentobs,7359 outside a necessary one-step distance
+bound. Deterministic168/8000 memberships versus marginalMC10440/512000, paired
+mean difference-.0609375pp. Per-history differences have3positive/3negative
+signs, not a uniform rescue. Mean inwarddetaccel1.90513m/s², dchange-.0712755m;
+MC-minus-det dchange+.00255531m. Boundary4–4.4m/speed<2:802obs,161 excluded by
+the tighter bound, deterministic168/802, marginalMC10440/51328. These are
+correlated, one-step strict-set memberships, not feasible joint/episode outcomes.
+
+Root independently read completion and checked each listed artifact size/hash,
+script/protocol SHA, six actors' immutable hashes, RNG marker,48chunklog count,
+3072states/history, exhaustive parent bins and their boundary sub-bins, and
+within-state paired differences against raw membership fractions. Result:
+ACTOR_AUDIT_INTEGRITY PASS. Record:
+results/masac_v4_windows_audit_20261105/near_goal_actor_output_verification.json.
+Detailed compact differences/console are in the adjacent summary and verification
+tee logs. Full report: NEAR_GOAL_ACTOR_OFFLINE_RESULTS_20261105.md.
+
+For the next already-saved-trajectory diagnostic, root inspected one original
+final evaluation row and its NPZ schema, without running a policy. Arrays are
+positions/velocities(T+1,3,3)float64, actions(T,3,3)float32, goals(3,3), buildings
+(M,2,3). JSON has final/collision/event data and reshape coefficients but **no
+cumulative reward/return**. Thus any later source-derived component table must
+mark reference-return verification UNAVAILABLE; complete dwell/event checking
+remains possible. This missing reference is not to be filled from training
+episode logs, which are different trajectories. The next protocol/code is
+prepared separately, not launched by the completed actor diagnosis.
